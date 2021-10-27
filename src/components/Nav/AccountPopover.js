@@ -9,7 +9,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { Button, Box, Divider, MenuItem, Typography, IconButton, Avatar } from '@mui/material';
 // components
-import MenuPopover from '.MenuPopover';
+import MenuPopover from "./MenuPopover";
 //
 //import account from '../../_mocks_/account';
 

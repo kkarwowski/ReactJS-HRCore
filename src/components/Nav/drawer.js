@@ -4,6 +4,7 @@ import DashboardNavbar from "./DashboardNavbar";
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Home from "../../pages/Home";
+import Associates from "../../pages/Associates";
 const drawerWidth = 200;
 
 export default function PermanentDrawerLeft() {
@@ -73,10 +74,10 @@ return (
                 <Route exact path ="/">
                     <Home/> 
                 </Route>
-                {/* <Route exact path ="/Associates">
+                 <Route exact path ="/Associates">
                     <Associates/> 
                 </Route>
-                <Route path ="/Associates/:id">
+                {/*<Route path ="/Associates/:id">
                     <UsersDetails/>
                 </Route> */}
         </Switch>

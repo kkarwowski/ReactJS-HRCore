@@ -1,8 +1,16 @@
-
+import ThemeConfig from './theme';
+import GlobalStyles from './theme/globalStyles';
+import { Typography } from '@mui/material';
+import PermanentDrawerLeft from './components/Nav/drawer';
 function App() {
+
   return (
     <>
-    <h1>Hello</h1>
+    <ThemeConfig>
+      <GlobalStyles />
+      <Typography variant="h2">Hello</Typography>
+      <PermanentDrawerLeft/>
+    </ThemeConfig>
     </>
   );
 }

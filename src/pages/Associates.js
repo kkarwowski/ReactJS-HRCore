@@ -6,9 +6,8 @@ import UserMoreMenu from '../components/Associates/UserMoreMenu';
 import Label from '../components/Label';
 import { Link } from "react-router-dom";
 import { sentenceCase } from 'change-case';
-import { Card,Table,Stack,Avatar,Button,Checkbox,TableRow,TableBody,TableCell,Container,Typography,TableContainer,TablePagination, Box} from '@mui/material';
+import { Card,Table,Stack,Avatar,Button,TableRow,TableBody,TableCell,Container,Typography,TableContainer,TablePagination, Box} from '@mui/material';
 import {  associatesContext } from "../utils/context/contexts";
-
   const TABLE_HEAD = [
     { id: '' , label: "    ", alignRight: false },
     { id: '' , label: "    ", alignRight: false },
@@ -94,7 +93,7 @@ return (
                                        <TableRow
                                       key = {index}
                                       hover
-                                    component={Link} to={`/Associates/${filteredassociate.id}`}>
+                                        underline="none" component={Link } to={`/Associates/${filteredassociate.id}` } >
                                     
                                   <TableCell align="left"/>
                                   <TableCell component="th" scope="row" padding="none">
@@ -104,7 +103,7 @@ return (
                                           </Stack>
                                       </TableCell>
                                       <TableCell align="left" >
-                                              <Typography variant="subtitle2" noWrap>
+                                              <Typography variant="subtitle2" noWrap style={{ textDecoration: 'none' }}>
                                                   {filteredassociate.FirstName}
                                                   
                                               </Typography>

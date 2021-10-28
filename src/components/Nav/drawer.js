@@ -5,6 +5,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Home from "../../pages/Home";
 import Associates from "../../pages/Associates";
+import Upload from '../../pages/Upload'
 const drawerWidth = 200;
 
 export default function PermanentDrawerLeft() {
@@ -41,7 +42,7 @@ return (
         <Toolbar />
         
         <List >
-          {['Dashboard', 'Associates'].map((text, index) => (
+          {['Dashboard', 'Associates', 'Upload'].map((text, index) => (
             
             <ListItem button key={text} component={Link} to={text=='Dashboard'?"/" :"/" + text}>
               <ListItemIcon>
@@ -80,6 +81,9 @@ return (
                 {/*<Route path ="/Associates/:id">
                     <UsersDetails/>
                 </Route> */}
+                <Route exact path ="/Upload">
+                    <Upload/> 
+                </Route>
         </Switch>
       </Box>
     </Box>

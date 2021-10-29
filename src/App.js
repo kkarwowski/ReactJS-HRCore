@@ -14,7 +14,6 @@ function App() {
   useEffect(() => {
     const getAssociates = async () => {
       const data = await getDocs(associatesCollectionRef)
-      console.log(data)
       setAssociates(data.docs.map((user) => ({...user.data(), id: user.id})))
     }
     getAssociates()

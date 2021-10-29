@@ -6,6 +6,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import Home from "../../pages/Home";
 import Associates from "../../pages/Associates";
 import Upload from '../../pages/Upload'
+import AssociateDetails from "../../pages/AssociateDetails";
 const drawerWidth = 200;
 
 export default function PermanentDrawerLeft() {
@@ -78,9 +79,9 @@ return (
                  <Route exact path ="/Associates">
                     <Associates/> 
                 </Route>
-                {/*<Route path ="/Associates/:id">
-                    <UsersDetails/>
-                </Route> */}
+                <Route path ="/Associates/:id">
+                    <AssociateDetails/>
+                </Route>
                 <Route exact path ="/Upload">
                     <Upload/> 
                 </Route>

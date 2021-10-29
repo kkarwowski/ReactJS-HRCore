@@ -9,6 +9,7 @@ import Cropper from "react-easy-crop";
 import Slider from '@mui/material/Slider';
 import styles from '../../src/uploaderCSS.css'
 // import { dataURLtoFile } from '../utils/URLtoFILE';
+
 import { generateDownload } from "../utils/cropImage";
 import { styled } from '@mui/material/styles';
 import { Avatar } from '@mui/material';

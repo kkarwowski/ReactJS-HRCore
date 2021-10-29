@@ -25,9 +25,8 @@ const AssociateDetails = () => {
     useEffect(() => { 
       const getAssociate = async () => {
           const associateFromServer = await fetchDetails()
-          setAssociateData(associateFromServer)}
+          setAssociateData({...associateFromServer, id:id})}
       getAssociate();
-      console.log("assocaite",associateData)
     },[])
     
     // const handleClose = () => {
@@ -39,7 +38,6 @@ const AssociateDetails = () => {
     const fetchDetails = async () => {
       const associateCollectionRef = doc(db, "Associates",id)
       const data = await getDoc(associateCollectionRef)
-      console.log("id",data)
       return data.data()
     }
 

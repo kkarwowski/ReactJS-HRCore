@@ -98,8 +98,8 @@ return (
                                   <TableCell align="left"/>
                                   <TableCell component="th" scope="row" padding="none">
                                   <Stack direction="row" alignItems="center" spacing={0}>
-                                              {/* <Avatar src={`data:image/jpg;base64,${filteredassociate.pictures.map((pic,i) => (pic.largePicture))}`} alt="Profile Pic"  sx={{ width: 40, height: 40 }} />                                          */}
-                                              <Avatar src={filteredassociate.FirstName} />                                         
+                                              <Avatar src={filteredassociate.profilePicture} alt="Profile Pic"  sx={{ width: 40, height: 40 }} />                                         
+                                              {/* <Avatar src={filteredassociate.FirstName} />                                          */}
                                           </Stack>
                                       </TableCell>
                                       <TableCell align="left" >

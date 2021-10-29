@@ -55,14 +55,12 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
       0 - safeArea / 2 + image.width * 0.5 - pixelCrop.x,
       0 - safeArea / 2 + image.height * 0.5 - pixelCrop.y
     )
-  
-    // if (resize) {
+
       const oc = document.createElement('canvas')
       const octx = oc.getContext('2d');
       oc.width = 300
       oc.height = 300
       octx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 300, 300);
-    //   console.log("oc", oc.toDataURL('image/jpeg'))
       return oc.toDataURL('image/jpeg');
       
     //   return oc.toDataURL('image/jpeg');

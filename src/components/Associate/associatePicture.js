@@ -19,7 +19,7 @@ const AssociatePic = (props) => {
           }}>
       <Box sx={{ p: 0, pr: 1 }} dir="ltr">
         {/* <Avatar src={`data:image/png;base64,${props.UserPicture}`} alt="Profile Pic"  sx={{ width: 250, height: 250 }} />     */}
-        <Avatar src={props.UserPicture} alt="Profile Pic"  sx={{ width: 250, height: 250 }} />    
+        <Avatar src={props.UserPicture}  sx={{ width: 250, height: 250 }} />    
       <div className='.crop-container'>
       {/* <img src={`data:image/png;base64,${props.UserPicture}`} className='avatar-crop'/> */}
       </div>

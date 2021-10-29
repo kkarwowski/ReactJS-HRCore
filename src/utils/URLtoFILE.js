@@ -1,4 +1,4 @@
-export const dataURLtoFile = (dataurl, filename) => {
+const dataURLtoFile = (dataurl, filename) => {
 	const arr = dataurl.split(",");
 	const mime = arr[0].match(/:(.*?);/)[1];
 	const bstr = atob(arr[1]);
@@ -9,3 +9,4 @@ export const dataURLtoFile = (dataurl, filename) => {
 
 	return new File([u8arr], filename, { type: mime });
 };
+export default dataURLtoFile

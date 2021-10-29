@@ -79,7 +79,7 @@ export default async function getCroppedImg(imageSrc, pixelCrop, rotation = 0) {
     // })
 
 
-  export const generateDownload = async (imageSrc, crop) => {
+  export const generateCropFile = async (imageSrc, crop) => {
     if (!crop || !imageSrc) {
         return;
     }

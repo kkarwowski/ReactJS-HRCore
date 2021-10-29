@@ -79,7 +79,7 @@ const AssociateHeader = (props) => {
                     <Grid Item sx={{pl:0}} >
                       {/* <UserPic status={props.EmplStatus} UserPicture={props.pictures.map((pic,i) => (pic.largePicture))}/> */}
                       {/* <AssociatePic status={associateData.EmplStatus} UserPicture={associateData.pictures.map((pic,i) => (pic.largePicture))}/> */}
-                      <AssociatePic status={associateData.EmplStatus} UserPicture={associateData.profilePicture}/>
+                      <AssociatePic status={associateData.EmplStatus} UserPicture={associateData.profilePicture} />
                     </Grid>
                     <Grid Item >
                     <CardContent>

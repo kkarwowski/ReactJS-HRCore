@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { Avatar, IconButton } from '@mui/material';
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -13,7 +13,10 @@ import styles from '../../uploaderCSS.css'
 import { generateCropFile } from "../../utils/cropImage";
 import { styled } from '@mui/material/styles';
 import { getStorage, ref, uploadString, getDownloadURL} from "firebase/storage";
+import { updateDoc, doc} from "firebase/firestore"
+
 import { associateContext } from "../../utils/context/contexts";
+import db from '../../utils/firebase'
 
 const style = {
   position: 'absolute',
@@ -31,23 +34,65 @@ const style = {
 
 const AssociatePic = () => { 
   const {associateData, setAssociateData} = useContext(associateContext)
+  const updateProfileURL = async (url) => {
+    const associateCollectionRef = doc(db, "Associates", associateData.id)
+    console.log("iddddd",associateData.id)
+    await updateDoc(associateCollectionRef, {
+      "profilePicture": url});
+  }
 
   const UploadToFirebase = (testimage) =>{
     const storage = getStorage();
-    const storageRef = ref(storage, `associateImages/${associateData.ID}.jpg`);
+    const storageRef = ref(storage, `associateImages/${associateData.id}.jpg`);
     uploadString(storageRef, testimage.split(',')[1],'base64').then(() => {
       console.log('Uploaded a blob or file!');
       getDownloadURL(ref(storageRef)).then((url) => {
-
-      //   await updateDoc(frankDocRef, {
-      //     "age": 13,
-      //     "favorites.color": "Red"
-      // });
+        setAssociateData({...associateData, "profilePicture": url})
+        updateProfileURL(url)
       })
   })
   }
 
+  const [image, setImage] = React.useState(null);
+  const Input = styled('input')({
+    display: 'none',
+    });
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false)
+    setImage(null)
+    setZoom(null)
+  };
 
+  const inputRef = React.useRef();
+
+  const triggerFileSelectPopup = () => inputRef.current.click();
+
+  const [croppedArea, setCroppedArea] = React.useState(null);
+  const [crop, setCrop] = React.useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = React.useState(1);
+  
+  const onCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
+    setCroppedArea(croppedAreaPixels);
+    };
+
+    const onSelectFile = (event) => {
+      handleOpen()
+        if (event.target.files && event.target.files.length > 0) {
+            const reader = new FileReader();
+            reader.readAsDataURL(event.target.files[0]);
+            
+            reader.addEventListener("load", () => {
+                setImage(reader.result);
+            });
+        }
+    };
+    const onUpload = async () => {
+        const result = await generateCropFile(image, croppedArea)
+        UploadToFirebase(result)
+        handleClose()
+		console.log("result", result);}
 
 
 
@@ -66,9 +111,65 @@ const AssociatePic = () => {
           }}>
       <Box sx={{ p: 0, pr: 1 }} dir="ltr">
         {/* <Avatar src={`data:image/png;base64,${props.UserPicture}`} alt="Profile Pic"  sx={{ width: 250, height: 250 }} />     */}
-    <IconButton color="primary" aria-label="upload picture" component="span" >
-        <Avatar src={associateData.profilePicture}  sx={{ width: 250, height: 250 }} className='.crop-container'/>    
-    </IconButton>
+        <label htmlFor="icon-button-file">
+          <Input accept="image/*" id="icon-button-file" type="file" ref={inputRef} onChange={onSelectFile} />
+          <IconButton color="primary" aria-label="upload picture" component="span" >
+              <Avatar src={associateData.profilePicture}  sx={{ width: 250, height: 250 }} className='.crop-container' />    
+          </IconButton>
+        </label>
+        <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+              <div className="styles.container">
+              <div className='styles.container-cropper'>
+				{image ? (
+					<>
+						<div className='styles.cropper'>
+							<Cropper
+								image={image}
+								crop={crop}
+								zoom={zoom}
+								aspect={1}
+								onCropChange={setCrop}
+								onZoomChange={setZoom}
+								onCropComplete={onCropComplete}
+							/>
+						</div>
+					</>
+				) : null}
+			</div>
+            {image && <div className='slider'>
+                <Slider
+                    min={1}
+                    max={3}
+                    step={0.1}
+                    value={zoom}
+                    onChange={(e, zoom) => setZoom(zoom)}/>
+			</div>}
+            <div className="container-buttons">
+                  <input type="file" accept="image/*" ref={inputRef}
+					onChange={onSelectFile}
+					style={{ display: "none" }}/>
+                      {!image &&<Button variant="contained" onClick={triggerFileSelectPopup}>Choose File</Button>}
+                      {image && <Button variant="contained"onClick={onUpload}>Upload</Button>}
+            </div>
+                  </div>
+            <Typography id="transition-modal-title" variant="h6" component="h2">
+              Text in a modal
+            </Typography>
+          </Box>
+        </Fade>
+      </Modal>
       {/* <div className='.crop-container'> */}
       {/* <img src={`data:image/png;base64,${props.UserPicture}`} className='avatar-crop'/> */}
       {/* </div> */}

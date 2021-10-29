@@ -1,4 +1,4 @@
-import { Toolbar,List, Divider, ListItem, ListItemIcon, ListItemText,CssBaseline, Drawer, Box, Typography, AppBar  } from "@mui/material";
+import { Grid,Toolbar,List, Divider, ListItem, ListItemIcon, ListItemText,CssBaseline, Drawer, Box, Typography, AppBar  } from "@mui/material";
 import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
 import DashboardNavbar from "./DashboardNavbar";
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -7,6 +7,9 @@ import Home from "../../pages/Home";
 import Associates from "../../pages/Associates";
 import Upload from '../../pages/Upload'
 import AssociateDetails from "../../pages/AssociateDetails";
+import logo from '../../logo.png'
+import styles from './drawer.css'
+
 const drawerWidth = 200;
 
 export default function PermanentDrawerLeft() {
@@ -40,6 +43,9 @@ return (
         }}
         variant="permanent"
         anchor="left">
+        <div className="logo">
+          <img src={logo} />
+        </div>
         <Toolbar />
         
         <List >

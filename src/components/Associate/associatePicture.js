@@ -95,8 +95,6 @@ const AssociatePic = () => {
 		console.log("result", result);}
 
 
-
-
     return (
         <Box sx={{
             display: 'flex',
@@ -114,7 +112,7 @@ const AssociatePic = () => {
         <label htmlFor="icon-button-file">
           <Input accept="image/*" id="icon-button-file" type="file" ref={inputRef} onChange={onSelectFile} />
           <IconButton color="primary" aria-label="upload picture" component="span" >
-              <Avatar src={associateData.profilePicture}  sx={{ width: 250, height: 250 }} className='.crop-container' />    
+              <Avatar src={associateData.profilePicture}  sx={{ width: 300, height: 300 }} className='.crop-container' />    
           </IconButton>
         </label>
         <Modal

@@ -1,46 +1,48 @@
-
 import Box from '@mui/material/Box';
 import { Grid, Avatar, AvatarGroup, Stack } from '@mui/material';
 import { Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import DataFromFirebase from '../../../utils/dataFromFirebase'
-import { useState, useEffect } from 'react';
-import { getDocs, where, query, collection} from "firebase/firestore"
+import { useState, useEffect, useContext } from 'react';
+import { getDocs, where, query, collection ,doc, getDoc} from "firebase/firestore"
 import db from '../../../utils/firebase'
+import { associateContext } from '../../../utils/context/contexts';
 
 
-const AssociateSubdetails = (props) => { 
-  // const {data: TeamMembers, error:errorTeams, loading:loadingTeam} = useFetch(`http://localhost:5000/associates?Department=${props.Department}&_embed=pictures`)
+const AssociateSubdetails = () => { 
   
-  // const {data: ManagerDetails,  loading:loadingManager} = useFetch(`http://localhost:5000/associates/${props.ManagerID}?_embed=pictures`)
-   const {data: managerDetails} = DataFromFirebase(props.ManagerID)
+  const {associateData, setAssociateData} = useContext(associateContext)
+   const [managerDetails, setManagerDetails] = useState()
    const [TeamMembers, setTeamMembers] = useState([])
    
-   const fetchDetails = async () => {
-    console.log("id", props.UserID)
+   const fetchTeamMembers = async () => {
        const associateCollectionRef = collection(db, "Associates")
-       const q = query(associateCollectionRef, where("Department", "==", props.Department));
+       const q = query(associateCollectionRef, where("Department", "==", associateData.Department));
        const thedata = await getDocs(q)
-       console.log("team members",thedata)
-       const TempManagers = []
-      //  return thedata.data()
+       const TempMembers = []
       thedata.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data().FirstName);
-       
-        if(props.UserID!==doc.id){
-          TempManagers.push(doc.data())
+        if(associateData.id!==doc.id){
+          TempMembers.push(doc.data())
           }
       });
-      return TempManagers
-
+      return TempMembers
    }
+   const fetchManager = async (ID) => {
+    const associateCollectionRef = doc(db, "Associates",ID)
+    const thedata = await getDoc(associateCollectionRef)
+    console.log("Managers is :=> ",thedata.data())
+    return thedata.data()
+   }
+
    useEffect(() => { 
-   const getManager = async () => {
-       const associateFromServer = await fetchDetails()
-       setTeamMembers(associateFromServer)}
-   getManager();
-   console.log("sdsd",TeamMembers)
+   const getMembers = async () => {
+       const associateFromServer = await fetchTeamMembers()
+       setTeamMembers(associateFromServer)
+       const managerFromServer = await fetchManager(associateData.Manager)
+       setManagerDetails(managerFromServer)
+  }
+   getMembers();
+   console.log("TEam Members",TeamMembers)
    },[])
   
   
@@ -50,8 +52,8 @@ const AssociateSubdetails = (props) => {
 <>    
 {/* {loadingManager && <Stack direction="row" alignItems="center" justifyContent="center" mb={5}><CircularProgress/></Stack> } */}
 
-{/* { ManagerDetails && TeamMembers && */}
-{ managerDetails &&
+{ managerDetails && TeamMembers &&
+
         <Box sx={{
             display: 'flex',
             flexWrap: 'wrap',
@@ -85,14 +87,13 @@ const AssociateSubdetails = (props) => {
                         justifyContent="space-around"
                         alignItems="center">
                           <Grid Item xs={2} sx={{pr:2, pl:1}}>
-                              {/* <Avatar src={`data:image/png;base64,${ManagerDetails.pictures.map((pic,i) => (pic.largePicture))}`} alt="Profile Pic"  sx={{ width: 60, height: 60 }} />  */}
+                              <Avatar src={managerDetails.profilePicture} alt="Profile Pic"  sx={{ width: 60, height: 60 }} /> 
                           </Grid>
                           <Grid Item xs={8} sx={{pr:2, pl:3}}>
                               <Typography variant="h6">
                                 {managerDetails.FirstName} {managerDetails.LastName} 
                               </Typography>
                             {managerDetails.Title}
-                  
                           </Grid>
                           </Grid>
                 </Grid>
@@ -103,21 +104,21 @@ const AssociateSubdetails = (props) => {
                   </Typography>
                   <Grid container alignItems="flex-start">
                     <Grid Item>
-                    {/* <AvatarGroup sx={{pb:1,pt:2}} max={6} >
+                    <AvatarGroup sx={{pb:1,pt:2}} max={6} >
                       {TeamMembers.map((FilteredMember)=>{
-                        if(!(FilteredMember.id==props.UserID))
+                        if(!(FilteredMember.id==associateData.id))
                         return(
-                        <Avatar name="sdfgd" src={`data:image/png;base64,${FilteredMember.pictures.map((pic,i) => (pic.largePicture))}`} />
+                        <Avatar name="sdfgd" src={FilteredMember.profilePicture} />
                         )
                       })}
-                    </AvatarGroup> */}
+                    </AvatarGroup>
                     </Grid>
                   </Grid>
               </Grid>
           </Grid>
       </Box>
         </Box>
-        }
+}
 </>
     )
 }

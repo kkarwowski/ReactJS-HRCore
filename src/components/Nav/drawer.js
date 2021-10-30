@@ -1,4 +1,4 @@
-import { Grid,Toolbar,List, Divider, ListItem, ListItemIcon, ListItemText,CssBaseline, Drawer, Box, Typography, AppBar  } from "@mui/material";
+import { Toolbar,List, Divider, ListItem, ListItemIcon, ListItemText,CssBaseline, Drawer, Box, Typography, AppBar  } from "@mui/material";
 import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
 import DashboardNavbar from "./DashboardNavbar";
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -46,7 +46,7 @@ return (
         <div className="logo">
           <img src={logo} />
         </div>
-        <Toolbar />
+        {/* <Toolbar /> */}
         
         <List >
           {['Dashboard', 'Associates', 'Upload'].map((text, index) => (

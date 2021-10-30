@@ -2,12 +2,12 @@ import { getDoc, doc} from "firebase/firestore"
 import { useState, useEffect } from 'react';
 import db from '../utils/firebase'
 
-const DataFromFirebase= (ID) => {
+const DataFromFirebase = async (ID) => {
     const [data, setData] = useState()
     const fetchDetails = async () => {
         const associateCollectionRef = doc(db, "Associates",ID)
         const thedata = await getDoc(associateCollectionRef)
-        console.log("manager111",thedata.data())
+        console.log("Managers is :=> ",thedata.data())
         return thedata.data()
     }
     useEffect(() => { 

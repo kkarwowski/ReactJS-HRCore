@@ -151,7 +151,7 @@ const AssociateHeader = (props) => {
           {/* Tab Panels in seperate card*/}
           <Grid item xs={2}>
               <Card>
-                {associateData&& <AssociateSubdetails ManagerID={associateData.Manager} UserID={associateData.id} Department={associateData.Department} />}
+                {associateData&& <AssociateSubdetails/>}
               </Card>
           </Grid>
           <Grid item xs={10}>

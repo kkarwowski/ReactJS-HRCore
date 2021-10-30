@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { useState} from "react";
 import UserListHead from '../components/Associates/UserListHead';
 import UserListToolbar from '../components/Associates/UserListToolbar';
-import UserMoreMenu from '../components/Associates/UserMoreMenu';
 import Label from '../components/Label';
 import { Link } from "react-router-dom";
 import { sentenceCase } from 'change-case';
@@ -56,7 +55,7 @@ import {  associatesContext } from "../utils/context/contexts";
 console.log(associatesData)
 return (
     <>
-    <Box pt={5}>
+    <Box pt={1}>
 
     <Container maxWidth="sl" >
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -124,7 +123,7 @@ return (
                                           </Label>
                                       </TableCell>
                                       <TableCell align="right">
-                                          <UserMoreMenu />
+                                          {/* <UserMoreMenu /> */}
                                       </TableCell>
                                   </TableRow>
                                     )

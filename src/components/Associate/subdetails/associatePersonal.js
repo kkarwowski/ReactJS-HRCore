@@ -3,36 +3,29 @@ import { Divider, Button, Grid, Item, Card, CardHeader, CardContent, Box } from 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { associateContext, associatesContext } from '../../../utils/context/contexts';
+import { associateContext, associatesContext, officesContext } from '../../../utils/context/contexts';
 import { useContext, useState, useEffect } from 'react';
-import { collection, getDocs, addDoc} from "firebase/firestore"
+import { doc, setDoc} from "firebase/firestore"
 import db from "../../../utils/firebase"
 
 const AssociateInfo = (props) => {
 
   const {associateData, setAssociateData} = useContext(associateContext)
   const {associatesData, setAssociatesData} = useContext(associatesContext)
-  // const {data:allOffices} = useFetch('http://localhost:5000/offices')
-  const {allOffices, setOffices} = useState()
-
-
-
-  useEffect(() => {
-    const getOffices = async () => {
-      const data = await getDocs(collection(db, "Offices"))
-      setOffices(data)
-    }
-    getOffices()
-  }, [])
+  const {allOffices} = useContext(officesContext)
+  const [edited, setEdited] = useState(false)
 
   const onUpdate = (event) => {
-    // 
     console.log("name ",event.target.id," value ",event.target.value)
-    console.log("event",event)
-    // setAssociateData({
-    //   ...associateData,[event.target.name]:event.target.value
-    // })
-    console.log("new user", associateData)
+    setAssociateData({
+      ...associateData,[event.target.name]:event.target.value
+    })
+    setEdited(true)
+  }
+
+  const SaveDetails = async () => {
+    const resutl = await setDoc(doc(db, "Associates",associateData.id),associateData)
+    console.log("result after post data",resutl)
   }
 
 //   const SaveDetails = async (id) => {
@@ -46,16 +39,17 @@ const AssociateInfo = (props) => {
     
 //     console.log(res.status)
 // }
-// const onSubmit = (event) => {
-//   event.preventDefault()
-//   SaveDetails(associateData.id)
-// }
+const onSubmit = (event) => {
+  event.preventDefault()
+  SaveDetails(associateData.id)
+  setEdited(false)
+}
 
 
 return(
           <Box sx={{ p: 1, pb: 1 }} dir="ltr">
                 <FormControl>
-                  {/* <form onSubmit={e =>onSubmit(e)}> */}
+                  <form onSubmit={e =>onSubmit(e)}>
                 <Grid
                 sx={{ p: 1, pb: 5, pt:2 }}
                     container
@@ -65,7 +59,7 @@ return(
                     justifyContent="flex-start"
                     alignItems="flex-start">
                         <Grid item >
-                        {/* <Button variant="contained" type="submit">Save</Button> */}
+                        {edited && <Button variant="contained" type="submit">Save</Button>}
                         </Grid>
 
                         <Grid item  xs={2} xm={2}>
@@ -251,7 +245,7 @@ return(
                       </Grid>
 
                   </Grid>
-                  {/* </form> */}
+                  </form>
               </FormControl> 
               </Box>
 )

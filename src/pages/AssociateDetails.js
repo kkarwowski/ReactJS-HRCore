@@ -48,9 +48,6 @@ const AssociateDetails = () => {
 return (
     <>
     <associateContext.Provider value={{associateData,setAssociateData}}>
-    <br></br>
-    <br></br>
-    <br></br>
     {/* <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}
@@ -63,16 +60,9 @@ return (
   </Alert>
  
   </Snackbar> */}
-        <Button variant="contained" size="large" onClick={handleBack}>Back</Button>
-        {/* <Button
-            onClick={handleClick({
-              vertical: 'top',
-              horizontal: 'right',
-            })}
-          >
-            Top-Right
-          </Button> */}
-    {associateData && <AssociateHeader />}
+        <Button variant="contained" size="large" onClick={handleBack} size="medium">Back</Button>
+    {associateData && 
+      <AssociateHeader />}
     </associateContext.Provider>
 </>
 )

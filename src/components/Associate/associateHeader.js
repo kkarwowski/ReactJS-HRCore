@@ -46,7 +46,7 @@ function a11yProps(index) {
   };
 }
 
-const AssociateHeader = (props) => {
+const AssociateHeader = () => {
     const [value, setValue] = useState(0);
     const {associateData, setAssociateData} = useContext(associateContext)
     const handleChangetoTab = (event, newValue) => {
@@ -68,7 +68,7 @@ const AssociateHeader = (props) => {
           justifyContent="flex-start"
           alignItems="flex-start"
           rowSpacing={2}
-          columnSpacing={2} pt={5}>
+          columnSpacing={2} pt={3}>
           
           <Grid item xs={12} ms={12}>
                 <Card> 
@@ -157,7 +157,7 @@ const AssociateHeader = (props) => {
           <Grid item xs={10}>
                 <Card>
                   <TabPanel value={value} index={0}>
-                    {/* <AssociateInfo/> */}
+                    <AssociateInfo/>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
                     Item Two

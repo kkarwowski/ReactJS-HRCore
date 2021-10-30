@@ -108,7 +108,7 @@ const AssociateSubdetails = () => {
                       {TeamMembers.map((FilteredMember)=>{
                         if(!(FilteredMember.id==associateData.id))
                         return(
-                        <Avatar name="sdfgd" src={FilteredMember.profilePicture} />
+                        <Avatar name={FilteredMember.FirstName} src={FilteredMember.profilePicture} />
                         )
                       })}
                     </AvatarGroup>

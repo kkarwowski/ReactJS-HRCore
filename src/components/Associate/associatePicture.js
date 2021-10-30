@@ -36,7 +36,6 @@ const AssociatePic = () => {
   const {associateData, setAssociateData} = useContext(associateContext)
   const updateProfileURL = async (url) => {
     const associateCollectionRef = doc(db, "Associates", associateData.id)
-    console.log("iddddd",associateData.id)
     await updateDoc(associateCollectionRef, {
       "profilePicture": url});
   }
@@ -45,7 +44,7 @@ const AssociatePic = () => {
     const storage = getStorage();
     const storageRef = ref(storage, `associateImages/${associateData.id}.jpg`);
     uploadString(storageRef, testimage.split(',')[1],'base64').then(() => {
-      console.log('Uploaded a blob or file!');
+      console.log('Uploaded file to Firebase!');
       getDownloadURL(ref(storageRef)).then((url) => {
         setAssociateData({...associateData, "profilePicture": url})
         updateProfileURL(url)
@@ -74,26 +73,24 @@ const AssociatePic = () => {
   const [zoom, setZoom] = React.useState(1);
   
   const onCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
-    setCroppedArea(croppedAreaPixels);
-    };
+    setCroppedArea(croppedAreaPixels)}
 
     const onSelectFile = (event) => {
       handleOpen()
         if (event.target.files && event.target.files.length > 0) {
             const reader = new FileReader();
             reader.readAsDataURL(event.target.files[0]);
-            
             reader.addEventListener("load", () => {
                 setImage(reader.result);
             });
         }
     };
+
     const onUpload = async () => {
         const result = await generateCropFile(image, croppedArea)
         UploadToFirebase(result)
         handleClose()
-		console.log("result", result);}
-
+      }
 
     return (
         <Box sx={{

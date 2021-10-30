@@ -12,6 +12,7 @@ import { associateContext } from '../../utils/context/contexts';
 import AssociateSubdetails from './subdetails/associateSubdetails';
 import AssociateInfo from '../Associate/subdetails/associatePersonal';
 import AssociatePic from './associatePicture';
+import AssociateDocuments from './subdetails/associateDocuments';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -149,12 +150,12 @@ const AssociateHeader = () => {
                 </Card>
           </Grid>
           {/* Tab Panels in seperate card*/}
-          <Grid item xs={2}>
+          <Grid item xs={2.5}>
               <Card>
                 {associateData&& <AssociateSubdetails/>}
               </Card>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={9.5}>
                 <Card>
                   <TabPanel value={value} index={0}>
                     <AssociateInfo/>
@@ -166,7 +167,7 @@ const AssociateHeader = () => {
                     Item Three
                   </TabPanel>
                   <TabPanel value={value} index={3}>
-                  Documents
+                  <AssociateDocuments/>
                   </TabPanel>
                 </Card>
           </Grid>

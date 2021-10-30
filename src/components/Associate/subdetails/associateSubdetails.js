@@ -93,7 +93,10 @@ const AssociateSubdetails = () => {
                               <Typography variant="h6">
                                 {managerDetails.FirstName} {managerDetails.LastName} 
                               </Typography>
+                              <Typography variant="h7">
+                              
                             {managerDetails.Title}
+                            </Typography>
                           </Grid>
                           </Grid>
                 </Grid>

@@ -12,6 +12,7 @@ function App() {
   const [associates, setAssociates] = useState([])
 
   useEffect(() => {
+    document.title = "HR Core";  
     const getAssociates = async () => {
       const data = await getDocs(associatesCollectionRef)
       setAssociates(data.docs.map((user) => ({...user.data(), id: user.id})))
@@ -21,6 +22,7 @@ function App() {
   
   return (
     <>
+    
       <associatesContext.Provider value={{associates, setAssociates}}>
     <ThemeConfig>
       <GlobalStyles />

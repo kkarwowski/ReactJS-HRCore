@@ -5,7 +5,7 @@ import { Button, Grid, Item, Card, CardHeader } from '@mui/material';
 import Label from '../../Label'
 import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { getStorage, ref, listAll, getMetadata, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, listAll, getMetadata, getDownloadURL, uploadBytes } from "firebase/storage";
 import { associateContext } from '../../../utils/context/contexts';
 import UserListToolbar from './UserListToolbar';
 import UserListHead from './UserListHead'
@@ -57,6 +57,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 const AssociateDocuments = () => {
+
   const [isloading, setLoading] = useState(true)
   const {associateData} = useContext(associateContext)
   const prettyBytes = require ('pretty-bytes');
@@ -67,33 +68,39 @@ const AssociateDocuments = () => {
   const [alert, setAlert] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
-
-  const handleCloseAlert = () => {
-        setAlert(false);
-  };
-  const handleOpenAlert= () => {
-        setAlert(true);
-      };
   const onSelectFile = (event) => {
     if (event.target.files && event.target.files.length > 0) {
-      console.log(event.target.files[0].name)
-      fileList.forEach(file=>{
-        if(file.fileName == event.target.files[0].name)
-        {handleOpenAlert()}
-        {console.log()}
-      })
-        // const reader = new FileReader();
-        
-        // reader.readAsDataURL(event.target.files[0]);
-        // reader.addEventListener("load", () => {
-        //     setImage(reader.result);
-        // });
+     const uploadName = event.target.files[0].name
+      if (fileList.length >0)
+        // {fileList.forEach(file=>{
+        //   // if file name is the same as already uplaoded in fileList - stop and open Alert
+        //   if(file.fileName == uploadName)
+        //   {setAlert(true)}
+        //   else{
+        //     console.log("files present")
+        //     uploadFile(event.target.files[0], uploadName)
+        //   }
+        // })
+        // }
+        {fileList.map((file)=>
+          file.name == uploadName
+          )}
+      else{
+        console.log("files NOT present")
+        uploadFile(event.target.files[0], uploadName)
+      }
     }
   };
 
-  const uploadFile = () => {
-    console.log("uploadFile")
-  }
+  const uploadFile = (file, uploadName) => {
+    const storageRef = ref(listRef, `${uploadName}`);
+    uploadBytes(storageRef, file).then((snapshot) => {
+      GetMetadata(storageRef)
+      }
+  );
+  setUploadSuccess(true)
+  console.log("uploadFile", uploadName)
+}
 
   const DownloadFile = (fileName) => {
     
@@ -121,6 +128,13 @@ const AssociateDocuments = () => {
       getAssociates()
     }, [])
 
+    const GetMetadata = (theRef) => {
+      getMetadata(theRef)
+          .then((metadata) => {
+              setFileList(fileList => [... fileList, {"fileName": metadata.name, "size":  prettyBytes(metadata.size), "uploadDate": metadata.timeCreated, "fullPath": metadata.fullPath, "type": metadata.contentType  }])
+          })
+    }
+
   const ListFiles = () => {
     listAll(listRef)
       .then((res) => {
@@ -129,13 +143,14 @@ const AssociateDocuments = () => {
           // You may call listAll() recursively on them.
         });
         res.items.forEach((itemRef) => {
-          getMetadata(itemRef)
-          .then((metadata) => {
-              setFileList(fileList => [... fileList, {"fileName": metadata.name, "size":  prettyBytes(metadata.size), "uploadDate": metadata.timeCreated, "fullPath": metadata.fullPath, "type": metadata.contentType  }])
-          })
+          GetMetadata(itemRef)
+          // getMetadata(itemRef)
+          // .then((metadata) => {
+          //     setFileList(fileList => [... fileList, {"fileName": metadata.name, "size":  prettyBytes(metadata.size), "uploadDate": metadata.timeCreated, "fullPath": metadata.fullPath, "type": metadata.contentType  }])
+          // })
         });
       }).catch((error) => {
-        // Uh-oh, an error occurred!
+       console.log("err", error)
       }
       );
   }
@@ -202,16 +217,14 @@ const AssociateDocuments = () => {
 
     return (
       <Box>
-        <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert} anchorOrigin={{vertical: 'top',
-    horizontal: 'right'}}>
-          <Alert variant="filled"  severity="error" sx={{ width: '100%', mt:7 }}>
+        <Snackbar open={alert} autoHideDuration={6000} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+          <Alert variant="filled"  severity="error" onClose={() => setAlert(false)}  sx={{ width: '100%', mt:7 }}>
             File of this name detected. Please rename your file and uplaod again!
           </Alert>
         </Snackbar>
-        <Snackbar open={alert} autoHideDuration={6000} onClose={handleCloseAlert}  anchorOrigin={{vertical: 'top',
-    horizontal: 'right'}}>
-          <Alert variant="filled" severity="error" sx={{ width: '100%', mt:7 }}>
-            File of this name detected. Please rename your file and uplaod again!
+        <Snackbar open={uploadSuccess} autoHideDuration={2000} onClose={ () => setUploadSuccess(false)}  anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+          <Alert variant="filled" severity="success" sx={{ width: '100%', mt:7 }}>
+            File upload successful!
           </Alert>
         </Snackbar>
         {fileList && 

@@ -50,7 +50,7 @@ UserListToolbar.propTypes = {
   onFilterName: PropTypes.func
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName, onSelectFile }) {
+export default function UserListToolbar({ numSelected, filterName, onFilterName, onSelectFile, onDeleteFiles }) {
 
   return (
     <RootStyle
@@ -80,14 +80,14 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName,
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={onDeleteFiles}>
             <Icon icon={trash2Fill} />
           </IconButton>
         </Tooltip>
       ) : (
         <div>
           <label htmlFor="contained-button-file">
-        <Input accept="*" type="file" id="contained-button-file" onChange={onSelectFile} multiple />
+        <Input accept="*" type="file" id="contained-button-file" onChange={onSelectFile}/>
         <Button variant="contained" component="span">
           Upload
           </Button>

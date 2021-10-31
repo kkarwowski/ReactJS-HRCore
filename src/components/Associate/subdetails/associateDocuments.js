@@ -61,32 +61,38 @@ const AssociateDocuments = () => {
   const [isloading, setLoading] = useState(true)
   const {associateData} = useContext(associateContext)
   const prettyBytes = require ('pretty-bytes');
-  const [fileToUpload, setFileToUpload] = useState()
   const [fileList, setFileList] = useState([])
   const storage = getStorage();
   const listRef = ref(storage, `documents/${associateData.id}`);
   const [alert, setAlert] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState('asc');
+  const [selected, setSelected] = useState([]);
+  const [orderBy, setOrderBy] = useState('name');
+  const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const iconSize = {width:30, height:30}
+
+  const onDeleteFiles = () => {
+    console.log(selected)
+    selected.forEach((filename) => {console.log(filename)})
+    setSelected([])
+  }
 
   const onSelectFile = (event) => {
     if (event.target.files && event.target.files.length > 0) {
      const uploadName = event.target.files[0].name
-      if (fileList.length >0)
-        // {fileList.forEach(file=>{
-        //   // if file name is the same as already uplaoded in fileList - stop and open Alert
-        //   if(file.fileName == uploadName)
-        //   {setAlert(true)}
-        //   else{
-        //     console.log("files present")
-        //     uploadFile(event.target.files[0], uploadName)
-        //   }
-        // })
-        // }
-        {fileList.map((file)=>
-          file.name == uploadName
-          )}
+        if (fileList.length > 0)
+            {
+            if (fileList.some(e => e.fileName === uploadName)) {
+              setAlert(true)
+            }
+            else{
+              uploadFile(event.target.files[0], uploadName)
+            }
+        }
       else{
-        console.log("files NOT present")
         uploadFile(event.target.files[0], uploadName)
       }
     }
@@ -144,24 +150,12 @@ const AssociateDocuments = () => {
         });
         res.items.forEach((itemRef) => {
           GetMetadata(itemRef)
-          // getMetadata(itemRef)
-          // .then((metadata) => {
-          //     setFileList(fileList => [... fileList, {"fileName": metadata.name, "size":  prettyBytes(metadata.size), "uploadDate": metadata.timeCreated, "fullPath": metadata.fullPath, "type": metadata.contentType  }])
-          // })
         });
       }).catch((error) => {
        console.log("err", error)
       }
       );
   }
-
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const iconSize = {width:30, height:30}
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -178,8 +172,9 @@ const AssociateDocuments = () => {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
+  const handleSelectFile= (event, name) => {
     const selectedIndex = selected.indexOf(name);
+    console.log("selected", name)
     let newSelected = [];
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
@@ -194,6 +189,7 @@ const AssociateDocuments = () => {
       );
     }
     setSelected(newSelected);
+    console.log(newSelected)
   };
 
   const handleChangePage = (event, newPage) => {
@@ -217,9 +213,9 @@ const AssociateDocuments = () => {
 
     return (
       <Box>
-        <Snackbar open={alert} autoHideDuration={6000} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+        <Snackbar open={alert} autoHideDuration={5000} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
           <Alert variant="filled"  severity="error" onClose={() => setAlert(false)}  sx={{ width: '100%', mt:7 }}>
-            File of this name detected. Please rename your file and uplaod again!
+            File of this name detected. Please rename your file and upload again!
           </Alert>
         </Snackbar>
         <Snackbar open={uploadSuccess} autoHideDuration={2000} onClose={ () => setUploadSuccess(false)}  anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
@@ -236,6 +232,7 @@ const AssociateDocuments = () => {
             onFilterName={handleFilterByName}
             upload={uploadFile}
             onSelectFile={onSelectFile}
+            onDeleteFiles={onDeleteFiles}
           />
 
           {/* <Scrollbar> */}
@@ -270,7 +267,7 @@ const AssociateDocuments = () => {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, fileName)}
+                              onChange={(event) => handleSelectFile(event, fileName)}
                             />
                           </TableCell>
                           <TableCell align="left">{fileName}</TableCell>

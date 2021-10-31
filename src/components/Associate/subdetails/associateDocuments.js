@@ -5,7 +5,7 @@ import { Button, Grid, Item, Card, CardHeader } from '@mui/material';
 import Label from '../../Label'
 import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { getStorage, ref, listAll, getMetadata, getDownloadURL, uploadBytes } from "firebase/storage";
+import { getStorage, ref, listAll, getMetadata, getDownloadURL, uploadBytes, deleteObject, uploadBytesResumable } from "firebase/storage";
 import { associateContext } from '../../../utils/context/contexts';
 import UserListToolbar from './UserListToolbar';
 import UserListHead from './UserListHead'
@@ -66,6 +66,7 @@ const AssociateDocuments = () => {
   const listRef = ref(storage, `documents/${associateData.id}`);
   const [alert, setAlert] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -75,11 +76,23 @@ const AssociateDocuments = () => {
   const iconSize = {width:30, height:30}
 
   const onDeleteFiles = () => {
-    console.log(selected)
-    selected.forEach((filename) => {console.log(filename)})
+    selected.forEach((filename) => {
+      console.log("deleting file =", filename)
+      setFileList( fileList.filter(file => file.fileName !== filename) )
+      deleteFileFromFirebase(filename)
+    })
+    setDeleteSuccess(true)
     setSelected([])
   }
 
+  const deleteFileFromFirebase = (fileName) => {
+    const deleteRef = ref(storage, `documents/${associateData.id}/${fileName}`);
+    deleteObject(deleteRef).then(() => {
+      // File deleted successfully
+    }).catch((error) => {
+      // Uh-oh, an error occurred!
+    });
+  }
   const onSelectFile = (event) => {
     if (event.target.files && event.target.files.length > 0) {
      const uploadName = event.target.files[0].name
@@ -98,15 +111,49 @@ const AssociateDocuments = () => {
     }
   };
 
-  const uploadFile = (file, uploadName) => {
+  // const uploadFile = (file, uploadName) => {
+  //   const storageRef = ref(listRef, `${uploadName}`);
+  //   uploadBytes(storageRef, file).then((snapshot) => {
+  //     GetMetadata(storageRef)
+  //     }
+  //   );
+  //   setUploadSuccess(true)
+  //   console.log("uploadFile", uploadName)
+  //  }
+   const uploadFile = (file, uploadName) => {
     const storageRef = ref(listRef, `${uploadName}`);
-    uploadBytes(storageRef, file).then((snapshot) => {
-      GetMetadata(storageRef)
-      }
-  );
-  setUploadSuccess(true)
-  console.log("uploadFile", uploadName)
-}
+    const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on('state_changed', 
+        (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+        }
+        }, 
+        (error) => {
+          // Handle unsuccessful uploads
+        }, 
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL);
+            GetMetadata(uploadTask.snapshot.ref)
+            setUploadSuccess(true)
+
+          });
+        }
+    );
+    
+   }
 
   const DownloadFile = (fileName) => {
     
@@ -223,6 +270,11 @@ const AssociateDocuments = () => {
             File upload successful!
           </Alert>
         </Snackbar>
+        <Snackbar open={deleteSuccess} autoHideDuration={2000} onClose={ () => setDeleteSuccess(false)}  anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+          <Alert variant="filled" severity="success" sx={{ width: '100%', mt:7 }}>
+            Successfully deleted file
+          </Alert>
+        </Snackbar>
         {fileList && 
         <Container>
         <Card>
@@ -247,7 +299,6 @@ const AssociateDocuments = () => {
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
-                {isloading && <CircularProgress/> }
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 import roundFilterList from '@iconify/icons-ic/round-filter-list';
-
+import LinearProgress from '@mui/material/LinearProgress';
 // material
 import { styled } from '@mui/material/styles';
 import {
@@ -77,7 +77,7 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName,
           }
         />
       )}
-
+      <LinearProgress variant="determinate" value={10} />
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={onDeleteFiles}>

@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { Avatar, IconButton } from '@mui/material';
 import * as React from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
@@ -52,11 +52,11 @@ const AssociatePic = () => {
   })
   }
 
-  const [image, setImage] = React.useState(null);
+  const [image, setImage] = useState(null);
   const Input = styled('input')({
     display: 'none',
     });
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false)
@@ -64,13 +64,10 @@ const AssociatePic = () => {
     setZoom(null)
   };
 
-  const inputRef = React.useRef();
-
-  const triggerFileSelectPopup = () => inputRef.current.click();
-
-  const [croppedArea, setCroppedArea] = React.useState(null);
-  const [crop, setCrop] = React.useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = React.useState(1);
+  const inputRef = useRef();
+  const [croppedArea, setCroppedArea] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
   
   const onCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
     setCroppedArea(croppedAreaPixels)}
@@ -152,11 +149,7 @@ const AssociatePic = () => {
                     onChange={(e, zoom) => setZoom(zoom)}/>
 			</div>}
             <div className="container-buttons">
-                  <input type="file" accept="image/*" ref={inputRef}
-					onChange={onSelectFile}
-					style={{ display: "none" }}/>
-                      {!image &&<Button variant="contained" onClick={triggerFileSelectPopup}>Choose File</Button>}
-                      {image && <Button variant="contained"onClick={onUpload}>Upload</Button>}
+                {image && <Button variant="contained"onClick={onUpload}>Upload</Button>}
             </div>
                   </div>
             <Typography id="transition-modal-title" variant="h6" component="h2">

@@ -69,7 +69,6 @@ const TABLE_HEAD = [
               numSelected={selected.length}
               filterName={filterName}
               onFilterName={handleFilterByName}/>
-                  {/* <Scrollbar> */}
                   <TableContainer sx={{ minWidth: 800 }}>
                   <Table>
                           <UserListHead
@@ -132,7 +131,6 @@ const TABLE_HEAD = [
                               </TableBody>
                               </Table>
                   </TableContainer>
-                  {/* </Scrollbar> */}
                   <TablePagination
                       rowsPerPageOptions={[5, 10, 25]}
                       component="div"

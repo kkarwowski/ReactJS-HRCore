@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 import roundFilterList from '@iconify/icons-ic/round-filter-list';
+
 // material
 import { styled } from '@mui/material/styles';
 import {
@@ -12,10 +13,14 @@ import {
   IconButton,
   Typography,
   OutlinedInput,
-  InputAdornment
+  InputAdornment,
+  Button
 } from '@mui/material';
 
 // ----------------------------------------------------------------------
+const Input = styled('input')({
+  display: 'none',
+});
 
 const RootStyle = styled(Toolbar)(({ theme }) => ({
   height: 96,
@@ -45,7 +50,8 @@ UserListToolbar.propTypes = {
   onFilterName: PropTypes.func
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+export default function UserListToolbar({ numSelected, filterName, onFilterName, onSelectFile }) {
+
   return (
     <RootStyle
       sx={{
@@ -79,11 +85,20 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
           </IconButton>
         </Tooltip>
       ) : (
+        <div>
+          <label htmlFor="contained-button-file">
+        <Input accept="*" type="file" id="contained-button-file" onChange={onSelectFile} multiple />
+        <Button variant="contained" component="span">
+          Upload
+          </Button>
+          </label>
         <Tooltip title="Filter list">
           <IconButton>
             <Icon icon={roundFilterList} />
           </IconButton>
         </Tooltip>
+        </div>
+
       )}
     </RootStyle>
   );

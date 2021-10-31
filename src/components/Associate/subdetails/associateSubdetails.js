@@ -30,7 +30,6 @@ const AssociateSubdetails = () => {
    const fetchManager = async (ID) => {
     const associateCollectionRef = doc(db, "Associates",ID)
     const thedata = await getDoc(associateCollectionRef)
-    console.log("Managers is :=> ",thedata.data())
     return thedata.data()
    }
 
@@ -42,7 +41,6 @@ const AssociateSubdetails = () => {
        setManagerDetails(managerFromServer)
   }
    getMembers();
-   console.log("TEam Members",TeamMembers)
    },[])
   
   

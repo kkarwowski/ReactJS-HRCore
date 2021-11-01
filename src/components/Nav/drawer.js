@@ -8,7 +8,7 @@ import Associates from "../../pages/Associates";
 import Upload from '../../pages/Upload'
 import AssociateDetails from "../../pages/AssociateDetails";
 import logo from '../../logo.png'
-
+import NewAssociate from "../Associate/newAssociate";
 const drawerWidth = 200;
 
 export default function PermanentDrawerLeft() {
@@ -68,8 +68,11 @@ return (
                  <Route exact path ="/Associates">
                     <Associates/> 
                 </Route>
-                <Route path ="/Associates/:id">
+                <Route exact path ="/Associates/:id">
                     <AssociateDetails/>
+                </Route>
+                <Route path={'/NewAssociate'}>
+                <NewAssociate/>
                 </Route>
                 <Route exact path ="/Upload">
                     <Upload/> 

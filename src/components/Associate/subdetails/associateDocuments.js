@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { useState, useContext, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
-import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert, Divider } from '@mui/material';
+import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert, Divider, Card } from '@mui/material';
 import { getStorage, ref, listAll, getMetadata, getDownloadURL, uploadBytes, deleteObject, uploadBytesResumable } from "firebase/storage";
 import { associateContext, loadingContext } from '../../../utils/context/contexts';
 import UserListToolbar from './UserListToolbar';
@@ -70,6 +70,7 @@ const AssociateDocuments = () => {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
   const filteredUsers = applySortFilter(fileList, getComparator(order, orderBy), filterName);
   const isUserNotFound = filteredUsers.length === 0;
+
 
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
@@ -260,8 +261,8 @@ const AssociateDocuments = () => {
           </Alert>
         </Snackbar>
         {fileList && 
-        <Container>
-
+        <Container sx={{ pt: 2}} >
+          <Card sx={{ boxShadow: 0 }} variant="outlined">
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
@@ -347,7 +348,7 @@ const AssociateDocuments = () => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-
+        </Card>
       </Container>}
       </Box>
         )

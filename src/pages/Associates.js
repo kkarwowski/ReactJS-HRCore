@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { sentenceCase } from 'change-case';
 import { Card,Table,Stack,Avatar,Button,TableRow,TableBody,TableCell,Container,Typography,TableContainer,TablePagination, Box} from '@mui/material';
 import {  associatesContext } from "../utils/context/contexts";
-  
+
 const TABLE_HEAD = [
     { id: '' , label: "    ", alignRight: false },
     { id: '' , label: "    ", alignRight: false },
@@ -20,7 +20,6 @@ const TABLE_HEAD = [
   ];
 
     const Associates = () => {
-
     const {associates:associatesData, setAssociates:setAssociatesData} = useContext(associatesContext)
     // const [associatesData, setAssociatesData] = useState()
     const [filterName, setFilterName] = useState('')
@@ -58,7 +57,8 @@ const TABLE_HEAD = [
               Associates
             </Typography>
             <Button
-              variant="contained">
+              variant="contained"
+              component={Link } to={'/NewAssociate'}>
               New User
             </Button>
           </Stack>
@@ -85,7 +85,7 @@ const TABLE_HEAD = [
                                         <TableRow
                                         key = {index}
                                         hover
-                                          underline="none" component={Link } to={`/Associates/${filteredassociate.id}`}>
+                                          sx={{underline:"false"}} component={Link } to={`/Associates/${filteredassociate.id}`}>
                                     <TableCell align="left"/>
                                     <TableCell component="th" scope="row" padding="none">
                                     <Stack direction="row" alignItems="center" spacing={0}>

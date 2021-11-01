@@ -121,6 +121,7 @@ const NewAssociate = () => {
                             value={""}
                             onChange={(e) => onUpdate(e)}
                             select // tell TextField to render select
+                            
                             name="Office"
                             label="Office">
                               {allOffices.map((office, index) => (

@@ -9,8 +9,9 @@ import db from "./utils/firebase"
 
 function App() {
   const associatesCollectionRef = collection(db, "Associates")
+
   const [associates, setAssociates] = useState([])
-  const [allOffices, setOffices] = useState()
+  const [allOffices, setOffices] = useState([])
 
   useEffect(() => {
     document.title = "HR Core";  
@@ -18,22 +19,23 @@ function App() {
       const data = await getDocs(associatesCollectionRef)
       setAssociates(data.docs.map((user) => ({...user.data(), id: user.id})))
     }
-    getAssociates()
-  }, [])
-  
-  useEffect(() => {
     const getOffices = async () => {
       const data = await getDocs(collection(db, "Offices"))
-      setOffices(data)
+      console.log(data.docs)
+      data.docs.map((office => console.log(office.data().name)))
+      setOffices(data.docs.map((office) => ([office.data().name])))
     }
+    getAssociates()
     getOffices()
+    
   }, [])
+  
 
   return (
     <>
     
       <associatesContext.Provider value={{associates, setAssociates}}>
-      <officesContext.Provider value={allOffices,setOffices}>
+      <officesContext.Provider value={{allOffices,setOffices}}>
     <ThemeConfig>
       <GlobalStyles />
       <Typography variant="h2">Hello</Typography>

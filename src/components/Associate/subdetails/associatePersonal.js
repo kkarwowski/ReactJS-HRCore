@@ -1,27 +1,29 @@
-import { FormControl, MenuItem, TextField, Typography,Divider, Grid, Box} from '@mui/material';
+import { FormControl, MenuItem, TextField, Typography,Divider, Grid, Box, Button} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import frLocale from 'date-fns/locale/fr';
+
+import LocalizationProvider from '@mui/lab/LocalizationProvider/';
 import DatePicker from '@mui/lab/DatePicker';
 import { associateContext, associatesContext, officesContext } from '../../../utils/context/contexts';
 import { useContext, useState } from 'react';
 import { doc, setDoc} from "firebase/firestore"
 import db from "../../../utils/firebase"
-
+import * as moment from 'moment';
 const AssociateInfo = () => {
 
   const {associateData, setAssociateData} = useContext(associateContext)
-  const {associatesData, setAssociatesData} = useContext(associatesContext)
   const {allOffices} = useContext(officesContext)
-  const [edited, setEdited] = useState(false)
 
   const onUpdate = (event) => {
-    console.log("name ",event.target.id," value ",event.target.value)
+    console.log("name ",event.target.name," value ",event.target.value)
     setAssociateData({
       ...associateData,[event.target.name]:event.target.value
     })
-    setEdited(true)
   }
+  const tt = () => {
+    console.log("offices", allOffices)
 
+  }
   const SaveDetails = async () => {
     const resutl = await setDoc(doc(db, "Associates",associateData.id),associateData)
     console.log("result after post data",resutl)
@@ -41,8 +43,8 @@ const AssociateInfo = () => {
 const onSubmit = (event) => {
   event.preventDefault()
   SaveDetails(associateData.id)
-  setEdited(false)
 }
+ console.log(moment(associateData.StartDate).format("DD-MM-YYYY"))
 
 return(
           <Box sx={{ p: 0, pb: 1 }} dir="ltr">
@@ -61,6 +63,9 @@ return(
                         {/* <Grid item >
                         {edited && <Button variant="contained" type="submit">Save</Button>}
                         </Grid> */}
+                         <Grid item >
+                        <Button variant="contained" onClick={()=>tt()}>Log</Button>
+                        </Grid>
 
                         <Grid item  xs={2} xm={2}>
                           <TextField
@@ -141,10 +146,11 @@ return(
                             onChange={(e) => onUpdate(e)}
                             select // tell TextField to render select
                             name="Office"
+                            id="Office1"
                             label="Office">
                               {allOffices.map((office, index) => (
-                                <MenuItem key={index} value={`${office.name}`}>
-                                  {office.name}
+                                <MenuItem key={index} value={`${office}`}>
+                                  {office}
                                 </MenuItem>
                               ))}
                             </TextField>
@@ -186,7 +192,22 @@ return(
                           <DatePicker
                             label="Start Date"
                             name="StartDate"
-                            defaultValue={associateData.StartDate}
+                            value={frLocale}
+                            format="DD-MM-YYYY"
+                            onChange={e => onUpdate(e)}
+                            // onChange={(newValue) => {
+                            //   setValue(newValue);
+                            // }}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </LocalizationProvider>
+                        </Grid>
+                        <Grid item >
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                            label="Termination Date"
+                            name="TerminationDate"
+                            value={associateData.TerminationtDate ? associateData.TerminationDate : null}
                             format="DD-MM-YYYY"
                             onChange={e => onUpdate(e)}
                             // onChange={(newValue) => {

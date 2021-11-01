@@ -13,7 +13,7 @@ const NewAssociate = () => {
     const [newAssociate, setNewAssocaite] = useState()
     
     const onUpdate = (event) => {
-        console.log("name ",event.target.id," value ",event.target.value)
+        console.log("name ",event.target.name," value ",event.target.value)
         setNewAssocaite({
           ...newAssociate,[event.target.name]:event.target.value
         })
@@ -45,6 +45,7 @@ const NewAssociate = () => {
 
                         <Grid item  xs={2} xm={2}>
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="small"
                           name="FirstName"
@@ -54,6 +55,7 @@ const NewAssociate = () => {
                         </Grid>
                         <Grid item >
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="small"
                           name="LastName"
@@ -63,6 +65,7 @@ const NewAssociate = () => {
                         </Grid>
                         <Grid item >
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="small"
                           name="Title"
@@ -72,6 +75,7 @@ const NewAssociate = () => {
                         </Grid>
                         <Grid item >
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="small"
                           name="Department"
@@ -81,6 +85,7 @@ const NewAssociate = () => {
                         </Grid>
                         <Grid item >
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="small"
                           name="PhoneNumber"
@@ -90,6 +95,7 @@ const NewAssociate = () => {
                         </Grid>
                         <Grid item >
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="smal"
                           name="WorkEmail"
@@ -99,6 +105,7 @@ const NewAssociate = () => {
                         </Grid>
                         <Grid item >
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="small"
                           name="PrivateEmail"
@@ -108,6 +115,7 @@ const NewAssociate = () => {
                         </Grid>
                         <Grid item >
                           <TextField
+                          required
                           style ={{width: '100%'}}
                           size="small"
                           name="City"
@@ -121,12 +129,12 @@ const NewAssociate = () => {
                             value={""}
                             onChange={(e) => onUpdate(e)}
                             select // tell TextField to render select
-                            
+                            required
                             name="Office"
                             label="Office">
                               {allOffices.map((office, index) => (
-                                <MenuItem key={index} value={`${office.name}`}>
-                                  {office.name}
+                                <MenuItem key={index} value={`${office}`}>
+                                  {office}
                                 </MenuItem>
                               ))}
                             </TextField>
@@ -135,7 +143,9 @@ const NewAssociate = () => {
                           }
                         <Grid item >
                           <TextField
+                          required
                             value={""}
+                            size="5"
                             onChange={(e) => onUpdate(e)}
                             select // tell TextField to render select
                             name="EmplStatus"

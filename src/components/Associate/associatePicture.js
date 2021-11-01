@@ -14,7 +14,6 @@ import { generateCropFile } from "../../utils/cropImage";
 import { styled } from '@mui/material/styles';
 import { getStorage, ref, uploadString, getDownloadURL} from "firebase/storage";
 import { updateDoc, doc} from "firebase/firestore"
-
 import { associateContext } from "../../utils/context/contexts";
 import db from '../../utils/firebase'
 
@@ -87,6 +86,7 @@ const AssociatePic = () => {
         const result = await generateCropFile(image, croppedArea)
         UploadToFirebase(result)
         handleClose()
+        
       }
 
     return (

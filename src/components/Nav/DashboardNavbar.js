@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { alpha, styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton, Grid, Badge } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { AppBar, Toolbar, IconButton, Grid, Badge } from '@mui/material';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 // components
 // import { MHidden } from '../../components/@material-extend';

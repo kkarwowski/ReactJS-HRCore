@@ -1,9 +1,9 @@
-import { FormControl, InputLabel,Input,FormHelperText, TextFiel, Select, MenuItem, TextField, Typography,Divider, Button, Grid, Item, Card, CardHeader, CardContent, Box} from '@mui/material';
+import { FormControl, MenuItem, TextField, Typography,Divider, Grid, Box} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { associateContext, associatesContext, officesContext } from '../../../utils/context/contexts';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import { doc, setDoc} from "firebase/firestore"
 import db from "../../../utils/firebase"
 
@@ -43,11 +43,6 @@ const onSubmit = (event) => {
   SaveDetails(associateData.id)
   setEdited(false)
 }
-
-
-
-
-console.log("associate", associateData)
 
 return(
           <Box sx={{ p: 0, pb: 1 }} dir="ltr">
@@ -248,14 +243,10 @@ return(
                           label="Ddfg"
                           defaultValue={"sdf"}/>
                       </Grid>
-
                   </Grid>
                   {/* </form> */}
               </FormControl> 
-              </Box>
-)
-}
-
+              </Box>)}
 export default AssociateInfo
 
 

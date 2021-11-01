@@ -1,29 +1,22 @@
 import { filter } from 'lodash';
 import { useState, useContext, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
-import { Button, Grid, Item, Card, CardHeader } from '@mui/material';
-import Label from '../../Label'
 import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert, Divider } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
 import { getStorage, ref, listAll, getMetadata, getDownloadURL, uploadBytes, deleteObject, uploadBytesResumable } from "firebase/storage";
 import { associateContext, loadingContext } from '../../../utils/context/contexts';
 import UserListToolbar from './UserListToolbar';
 import UserListHead from './UserListHead'
-import CircularProgress from '@mui/material/CircularProgress';
 import { Icon } from '@iconify/react';
 import filePdfBox from '@iconify/icons-mdi/file-pdf-box';
 import fileExcelBox from '@iconify/icons-mdi/file-excel-box';
 import fileWordBox from '@iconify/icons-mdi/file-word-box';
 import imageIcon from '@iconify/icons-mdi/image';
-import { HorizontalRule } from '@mui/icons-material';
-
 
 const TABLE_HEAD = [
-  // { id: '' },
-  { id: 'fileName', label: 'Name', alignRight: false },  //name
-  { id: 'size', label: 'Size', alignRight: false }, //company
-  { id: 'type', label: 'Type', alignRight: false }, //company
-  { id: 'uploadDate', label: 'Upload Date', alignRight: false }, //role
+  { id: 'fileName', label: 'Name', alignRight: false }, 
+  { id: 'size', label: 'Size', alignRight: false }, 
+  { id: 'type', label: 'Type', alignRight: false }, 
+  { id: 'uploadDate', label: 'Upload Date', alignRight: false }, 
   { id: '' }
 ];
 
@@ -72,8 +65,11 @@ const AssociateDocuments = () => {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const {loadingProgress, setLoadingProgress} = useContext(loadingContext)
+  const {setLoadingProgress} = useContext(loadingContext)
   const iconSize = {width:30, height:30}
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
+  const filteredUsers = applySortFilter(fileList, getComparator(order, orderBy), filterName);
+  const isUserNotFound = filteredUsers.length === 0;
 
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
@@ -88,7 +84,6 @@ const AssociateDocuments = () => {
   const deleteFileFromFirebase = (fileName) => {
     const deleteRef = ref(storage, `documents/${associateData.id}/${fileName}`);
     deleteObject(deleteRef).then(() => {
-      // File deleted successfully
     }).catch((error) => {
       // Uh-oh, an error occurred!
     });
@@ -111,15 +106,7 @@ const AssociateDocuments = () => {
     }
   };
 
-  // const uploadFile = (file, uploadName) => {
-  //   const storageRef = ref(listRef, `${uploadName}`);
-  //   uploadBytes(storageRef, file).then((snapshot) => {
-  //     GetMetadata(storageRef)
-  //     }
-  //   );
-  //   setUploadSuccess(true)
-  //   console.log("uploadFile", uploadName)
-  //  }
+
    const uploadFile = (file, uploadName) => {
     const storageRef = ref(listRef, `${uploadName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -144,13 +131,11 @@ const AssociateDocuments = () => {
         }, 
         () => {
           // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setLoadingProgress(null)
             console.log('File available at', downloadURL);
             GetMetadata(uploadTask.snapshot.ref)
             setUploadSuccess(true)
-
           });
         }
     );
@@ -252,11 +237,7 @@ const AssociateDocuments = () => {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
 
-  const filteredUsers = applySortFilter(fileList, getComparator(order, orderBy), filterName);
-
-  const isUserNotFound = filteredUsers.length === 0;
 
     return (
       <Box>

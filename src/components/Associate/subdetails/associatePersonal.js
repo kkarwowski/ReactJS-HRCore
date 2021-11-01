@@ -1,5 +1,4 @@
-import { FormControl, InputLabel,Input,FormHelperText, TextFiel, Select, MenuItem, TextField} from '@mui/material';
-import { Divider, Button, Grid, Item, Card, CardHeader, CardContent, Box } from '@mui/material';
+import { FormControl, InputLabel,Input,FormHelperText, TextFiel, Select, MenuItem, TextField, Typography,Divider, Button, Grid, Item, Card, CardHeader, CardContent, Box} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
@@ -8,7 +7,7 @@ import { useContext, useState, useEffect } from 'react';
 import { doc, setDoc} from "firebase/firestore"
 import db from "../../../utils/firebase"
 
-const AssociateInfo = (props) => {
+const AssociateInfo = () => {
 
   const {associateData, setAssociateData} = useContext(associateContext)
   const {associatesData, setAssociatesData} = useContext(associatesContext)
@@ -46,21 +45,27 @@ const onSubmit = (event) => {
 }
 
 
+
+
+console.log("associate", associateData)
+
 return(
-          <Box sx={{ p: 1, pb: 1 }} dir="ltr">
+          <Box sx={{ p: 0, pb: 1 }} dir="ltr">
+            <Typography variant="inherit">Personal</Typography>
+            <Divider variant="middle"  sx={{ pb: 2}} />
                 <FormControl>
-                  <form onSubmit={e =>onSubmit(e)}>
+                  {/* <form onSubmit={e =>onSubmit(e)}> */}
                 <Grid
-                sx={{ p: 1, pb: 5, pt:2 }}
+                sx={{ p: 1, pb: 5, pt:5 }}
                     container
                     columnSpacing={2}
                     rowSpacing={2}
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="flex-start">
-                        <Grid item >
+                        {/* <Grid item >
                         {edited && <Button variant="contained" type="submit">Save</Button>}
-                        </Grid>
+                        </Grid> */}
 
                         <Grid item  xs={2} xm={2}>
                           <TextField
@@ -245,7 +250,7 @@ return(
                       </Grid>
 
                   </Grid>
-                  </form>
+                  {/* </form> */}
               </FormControl> 
               </Box>
 )

@@ -3,10 +3,10 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import { Button, Grid, Item, Card, CardHeader } from '@mui/material';
 import Label from '../../Label'
-import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert } from '@mui/material';
+import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert, Divider } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { getStorage, ref, listAll, getMetadata, getDownloadURL, uploadBytes, deleteObject, uploadBytesResumable } from "firebase/storage";
-import { associateContext } from '../../../utils/context/contexts';
+import { associateContext, loadingContext } from '../../../utils/context/contexts';
 import UserListToolbar from './UserListToolbar';
 import UserListHead from './UserListHead'
 import CircularProgress from '@mui/material/CircularProgress';
@@ -58,7 +58,6 @@ function applySortFilter(array, comparator, query) {
 
 const AssociateDocuments = () => {
 
-  const [isloading, setLoading] = useState(true)
   const {associateData} = useContext(associateContext)
   const prettyBytes = require ('pretty-bytes');
   const [fileList, setFileList] = useState([])
@@ -73,6 +72,7 @@ const AssociateDocuments = () => {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const {loadingProgress, setLoadingProgress} = useContext(loadingContext)
   const iconSize = {width:30, height:30}
 
   const onDeleteFiles = () => {
@@ -128,6 +128,7 @@ const AssociateDocuments = () => {
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setLoadingProgress(progress)
         console.log('Upload is ' + progress + '% done');
         switch (snapshot.state) {
           case 'paused':
@@ -145,6 +146,7 @@ const AssociateDocuments = () => {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setLoadingProgress(null)
             console.log('File available at', downloadURL);
             GetMetadata(uploadTask.snapshot.ref)
             setUploadSuccess(true)
@@ -173,10 +175,8 @@ const AssociateDocuments = () => {
     }
 
     useEffect(() => {
-      setLoading(true)
       const getAssociates = async () => {
         ListFiles()
-        setLoading(false)
       }
       getAssociates()
     }, [])
@@ -260,6 +260,9 @@ const AssociateDocuments = () => {
 
     return (
       <Box>
+        <Typography variant="inherit">Documents</Typography>
+        <Divider variant="middle"  sx={{ pb: 2}} />
+
         <Snackbar open={alert} autoHideDuration={5000} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
           <Alert variant="filled"  severity="error" onClose={() => setAlert(false)}  sx={{ width: '100%', mt:7 }}>
             File of this name detected. Please rename your file and upload again!
@@ -277,7 +280,7 @@ const AssociateDocuments = () => {
         </Snackbar>
         {fileList && 
         <Container>
-        <Card>
+
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
@@ -363,7 +366,7 @@ const AssociateDocuments = () => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </Card>
+
       </Container>}
       </Box>
         )

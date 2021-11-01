@@ -51,10 +51,9 @@ const TABLE_HEAD = [
 
     return (
       <>
-      <Box pt={3}>
-
+      <Box >
       <Container maxWidth="sl" >
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
           <Typography variant="h3" gutterBottom>
               Associates
             </Typography>

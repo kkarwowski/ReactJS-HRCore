@@ -20,16 +20,6 @@ return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <DashboardNavbar />
-      {/* <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }} style={{ background: '#fff' }}
-      >
-        <Toolbar>
-          <Typography variant="h5" noWrap component="div">
-            HR core
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
       <Drawer
         sx={{
           width: drawerWidth,
@@ -37,45 +27,39 @@ return (
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            background: '#ffff'
+            background: '#233044'
             // background: '#233044'
           },
         }}
         variant="permanent"
         anchor="left">
-        <div className="logo">
+
+        {/* <div className="logo">
           <img src={logo} />
-        </div>
+        </div> */}
         {/* <Toolbar /> */}
         
         <List >
           {['Dashboard', 'Associates', 'Upload'].map((text, index) => (
             
             <ListItem button key={text} component={Link} to={text=='Dashboard'?"/" :"/" + text}>
-              <ListItemIcon>
+              <ListItemIcon sx={{color:"white"}}> 
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
-              <ListItemText classes={{ primary: 'ffff' }} primary={text} />
+              <ListItemText primary={<Typography style={{ color: "#f7f9fc" }}>{text}</Typography>} />
+              {/* <ListItemText classes={{ primary: 'ffff' }} primary={text} /> */}
+              {/* <ListItemText  sx={{color:"white"}}/> */}
             </ListItem>
           ))}
         </List>
         <Divider />
-        {/* <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text} >
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
       <Box
         component="main"
         // '#F4F6F8
-        sx={{ flexGrow: 1, bgcolor: '#F4F6F8', p: 3 }}
+        sx={{ flexGrow: 1, bgcolor: '#f4f7f9', p: 3 }}
       >
+        {/* #f7f9fc */}
         {/* 'background.default' */}
         
           <Switch>

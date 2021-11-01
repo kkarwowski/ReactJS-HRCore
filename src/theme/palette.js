@@ -28,11 +28,19 @@ const GREY = {
   500_80: alpha('#919EAB', 0.8)
 };
 
+// const PRIMARY = {
+//   lighter: '#C8FACD',
+//   light: '#5BE584',
+//   main: '#00AB55',
+//   dark: '#007B55',
+//   darker: '#005249',
+//   contrastText: '#fff'
+// };
 const PRIMARY = {
   lighter: '#C8FACD',
-  light: '#5BE584',
-  main: '#00AB55',
-  dark: '#007B55',
+  light: '#6B9BE1',
+  main: '#4782da',
+  dark: '#315B98',
   darker: '#005249',
   contrastText: '#fff'
 };
@@ -106,8 +114,8 @@ const palette = {
   gradients: GRADIENTS,
   chart: CHART_COLORS,
   divider: GREY[500_24],
-  text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-  background: { paper: '#fff', default: GREY[200], neutral: GREY[200] },
+  text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500], menu: "e5e5e5"},
+  background: { paper: '#fff', default: "f7f9fc", neutral: GREY[200] },
   action: {
     active: GREY[600],
     hover: GREY[500_8],

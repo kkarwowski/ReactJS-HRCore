@@ -1,18 +1,19 @@
-import { Grid, Card, CardContent, Box } from '@mui/material';
+import { Grid, Card, CardContent, Box, CardHeader } from '@mui/material';
 import { useState, useContext } from 'react';
 import Label from '../Label';
 import { sentenceCase } from 'change-case';
-import { Typography, Link } from '@mui/material';
+import { Typography, Link, TextField } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react'
 import EmailIcon from '@mui/icons-material/Email';
-import { associateContext } from '../../utils/context/contexts';
+import { associateContext, loadingContext } from '../../utils/context/contexts';
 import AssociateSubdetails from './subdetails/associateSubdetails';
 import AssociateInfo from '../Associate/subdetails/associatePersonal';
 import AssociatePic from './associatePicture';
 import AssociateDocuments from './subdetails/associateDocuments';
+import AssociateEmergencyInfo from './subdetails/associateEmergency';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,6 +49,7 @@ function a11yProps(index) {
 }
 
 const AssociateHeader = () => {
+    const [loadingProgress, setLoadingProgress] = useState(null);
     const [value, setValue] = useState(0);
     const {associateData, setAssociateData} = useContext(associateContext)
     const handleChangetoTab = (event, newValue) => {
@@ -64,6 +66,7 @@ const AssociateHeader = () => {
   const dateDiffYears = diffDates(Todayy,otherDate, "years")
     return (
         <>
+        <loadingContext.Provider value={{loadingProgress, setLoadingProgress}}>
         <Grid container
           direction="row"
           justifyContent="flex-start"
@@ -136,7 +139,7 @@ const AssociateHeader = () => {
                               <Grid Item>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider', pt:3 }}>
                                   <Tabs value={value} onChange={handleChangetoTab} aria-label="basic tabs example">
-                                    <Tab label="Personal" {...a11yProps(0)} />
+                                    <Tab label="Personal" {...a11yProps(0)}  />
                                     <Tab label="Emergency Info" {...a11yProps(1)} />
                                     <Tab label="Notes" {...a11yProps(2)} />
                                     <Tab label="Documents" {...a11yProps(3)} />
@@ -157,14 +160,26 @@ const AssociateHeader = () => {
           </Grid>
           <Grid item xs={9.5}>
                 <Card>
+                  
                   <TabPanel value={value} index={0}>
                     <AssociateInfo/>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    Item Two
+                    <AssociateEmergencyInfo/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    Item Three
+                    <div>
+                    <TextField
+          id="outlined-multiline-flexible"
+          label="Notes"
+          multiline
+          defaultValue={"sdfsdfdf"}
+          maxRows={8}
+          rows={8}
+          fullWidth
+          // onChange={handleChange}
+        />
+                    </div>
                   </TabPanel>
                   <TabPanel value={value} index={3}>
                   <AssociateDocuments/>
@@ -172,6 +187,7 @@ const AssociateHeader = () => {
                 </Card>
           </Grid>
           </Grid>
+          </loadingContext.Provider>
         </>
     )
 }

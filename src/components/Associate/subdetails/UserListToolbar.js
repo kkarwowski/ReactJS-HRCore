@@ -4,6 +4,8 @@ import searchFill from '@iconify/icons-eva/search-fill';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 import roundFilterList from '@iconify/icons-ic/round-filter-list';
 import LinearProgress from '@mui/material/LinearProgress';
+import { useContext } from 'react';
+import { loadingContext } from '../../../utils/context/contexts';
 // material
 import { styled } from '@mui/material/styles';
 import {
@@ -51,6 +53,7 @@ UserListToolbar.propTypes = {
 };
 
 export default function UserListToolbar({ numSelected, filterName, onFilterName, onSelectFile, onDeleteFiles }) {
+  const {loadingProgress} = useContext(loadingContext)
 
   return (
     <RootStyle
@@ -77,7 +80,10 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName,
           }
         />
       )}
-      <LinearProgress variant="determinate" value={10} />
+      <Box sx={{ width: '30%' }}>
+
+      {loadingProgress >1 && <LinearProgress variant="determinate" value={loadingProgress} />}
+      </Box>
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={onDeleteFiles}>

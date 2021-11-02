@@ -1,4 +1,4 @@
-import { Grid, Card, CardContent, Box, CardHeader } from '@mui/material';
+import { Grid, Card, CardContent, Box } from '@mui/material';
 import { useState, useContext } from 'react';
 import Label from '../Label';
 import { sentenceCase } from 'change-case';
@@ -6,7 +6,6 @@ import { Typography, Link, TextField } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react'
 import EmailIcon from '@mui/icons-material/Email';
 import { associateContext, loadingContext } from '../../utils/context/contexts';
 import AssociateSubdetails from './subdetails/associateSubdetails';
@@ -51,7 +50,7 @@ function a11yProps(index) {
 const AssociateHeader = () => {
     const [loadingProgress, setLoadingProgress] = useState(null);
     const [value, setValue] = useState(0);
-    const {associateData, setAssociateData} = useContext(associateContext)
+    const {associateData} = useContext(associateContext)
     const handleChangetoTab = (event, newValue) => {
       setValue(newValue);
     };
@@ -81,8 +80,6 @@ const AssociateHeader = () => {
                   justifyContent="flex-start"
                   alignItems="center">
                     <Grid item sx={{pl:0}} >
-                      {/* <UserPic status={props.EmplStatus} UserPicture={props.pictures.map((pic,i) => (pic.largePicture))}/> */}
-                      {/* <AssociatePic status={associateData.EmplStatus} UserPicture={associateData.pictures.map((pic,i) => (pic.largePicture))}/> */}
                       <AssociatePic />
                     </Grid>
                     <Grid item >
@@ -106,7 +103,7 @@ const AssociateHeader = () => {
                                   <Grid item sx={{pl:1}} >
                                     <Label
                                       variant="ghost"
-                                      color={(associateData.EmplStatus == 'Terminated' && 'error') || 'success'}>
+                                      color={(associateData.EmplStatus === 'Terminated' && 'error') || 'success'}>
                                       {sentenceCase(associateData.EmplStatus)}
                                     </Label>
                                   </Grid>

@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import PermanentDrawerLeft from './components/Nav/drawer';
 import { associatesContext, officesContext } from './utils/context/contexts';
 import {useEffect, useState} from 'react'
-import { collection, getDocs, addDoc} from "firebase/firestore"
+import { collection, getDocs} from "firebase/firestore"
 import db from "./utils/firebase"
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
   const [associates, setAssociates] = useState([])
   const [allOffices, setOffices] = useState([])
 
-  useEffect(() => {
+  useEffect((associateCollectionRef) => {
     document.title = "HR Core";  
     const getAssociates = async () => {
       const data = await getDocs(associatesCollectionRef)

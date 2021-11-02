@@ -4,20 +4,10 @@ import { useParams } from "react-router-dom"
 import { Button } from "@mui/material"
 import { useHistory } from 'react-router-dom';
 import { associateContext } from "../utils/context/contexts";
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import db from '../utils/firebase'
 import {  getDoc, doc} from "firebase/firestore"
 
-
 const AssociateDetails = () => {
-    // const [alert, setAlert] = useState({
-    //     open: false,
-    //     vertical: '',
-    //     horizontal: '',
-    //   }); 
-    // const { vertical, horizontal, open } = alert;
-
     const {id} = useParams();
     const [associateData, setAssociateData] = useState()
     const history = useHistory()
@@ -29,12 +19,6 @@ const AssociateDetails = () => {
       getAssociate();
     },[])
     
-    // const handleClose = () => {
-    //     setAlert({ ...alert, open: false });
-    //   };
-    //   const handleClick = (newState) => () => {
-    //     setAlert({ open: true, ...newState });
-    //   };
     const fetchDetails = async () => {
       const associateCollectionRef = doc(db, "Associates",id)
       const data = await getDoc(associateCollectionRef)
@@ -48,18 +32,6 @@ const AssociateDetails = () => {
 return (
     <>
     <associateContext.Provider value={{associateData,setAssociateData}}>
-    {/* <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleClose}
-        message="I love snacks"
-        key={vertical + horizontal}
-        autoHideDuration={6000}>
-        <Alert onClose={handleClose} severity="success" >
-    Changes Saved!
-  </Alert>
- 
-  </Snackbar> */}
         <Button variant="contained" size="large" onClick={handleBack} size="medium">Back</Button>
     {associateData && 
       <AssociateHeader />}

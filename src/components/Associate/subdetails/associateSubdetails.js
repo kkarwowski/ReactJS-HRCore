@@ -1,8 +1,6 @@
 import Box from '@mui/material/Box';
-import { Grid, Avatar, AvatarGroup, Stack, Skeleton } from '@mui/material';
+import { Grid, Avatar, AvatarGroup, Skeleton } from '@mui/material';
 import { Typography } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
-import DataFromFirebase from '../../../utils/dataFromFirebase'
 import { useState, useEffect, useContext } from 'react';
 import { getDocs, where, query, collection ,doc, getDoc} from "firebase/firestore"
 import db from '../../../utils/firebase'
@@ -47,7 +45,6 @@ const AssociateSubdetails = () => {
 
 
 <>    
-{/* {loadingManager && <Stack direction="row" alignItems="center" justifyContent="center" mb={5}><CircularProgress/></Stack> } */}
 
 { managerDetails && TeamMembers ?
 
@@ -127,11 +124,8 @@ const AssociateSubdetails = () => {
 <Skeleton variant="rectangular" height={40}/>
 <Skeleton variant="circular" width={40} height={40} />
 <Skeleton variant="rectangular" height={40} />
-
-</Box>
-                    }
+</Box>}
 </>
-    )
-}
+)}
 
 export default AssociateSubdetails

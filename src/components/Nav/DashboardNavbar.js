@@ -1,18 +1,8 @@
 import PropTypes from 'prop-types';
-// material
 import { styled } from '@mui/material/styles';
 import { AppBar, Toolbar, IconButton, Grid, Badge } from '@mui/material';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-// components
-// import { MHidden } from '../../components/@material-extend';
-//
-// import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
-
-// import LanguagePopover from './LanguagePopover';
-// import NotificationsPopover from './NotificationsPopover';
-
-// ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 200;
 const APPBAR_MOBILE = 64;

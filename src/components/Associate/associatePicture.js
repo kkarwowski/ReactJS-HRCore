@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Cropper from "react-easy-crop";
 import Slider from '@mui/material/Slider';
-import styles from '../../uploaderCSS.css'
 import { generateCropFile } from "../../utils/cropImage";
 import { styled } from '@mui/material/styles';
 import { getStorage, ref, uploadString, getDownloadURL} from "firebase/storage";

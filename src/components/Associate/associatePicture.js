@@ -39,10 +39,10 @@ const AssociatePic = () => {
       "profilePicture": url});
   }
 
-  const UploadToFirebase = (testimage) =>{
+  const UploadToFirebase = (mage) =>{
     const storage = getStorage();
     const storageRef = ref(storage, `associateImages/${associateData.id}.jpg`);
-    uploadString(storageRef, testimage.split(',')[1],'base64').then(() => {
+    uploadString(storageRef, image.split(',')[1],'base64').then(() => {
       console.log('Uploaded file to Firebase!');
       getDownloadURL(ref(storageRef)).then((url) => {
         setAssociateData({...associateData, "profilePicture": url})

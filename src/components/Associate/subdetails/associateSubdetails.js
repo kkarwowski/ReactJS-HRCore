@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { Grid, Avatar, AvatarGroup, Stack } from '@mui/material';
+import { Grid, Avatar, AvatarGroup, Stack, Skeleton } from '@mui/material';
 import { Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import DataFromFirebase from '../../../utils/dataFromFirebase'
@@ -7,7 +7,6 @@ import { useState, useEffect, useContext } from 'react';
 import { getDocs, where, query, collection ,doc, getDoc} from "firebase/firestore"
 import db from '../../../utils/firebase'
 import { associateContext } from '../../../utils/context/contexts';
-
 
 const AssociateSubdetails = () => { 
   
@@ -50,7 +49,7 @@ const AssociateSubdetails = () => {
 <>    
 {/* {loadingManager && <Stack direction="row" alignItems="center" justifyContent="center" mb={5}><CircularProgress/></Stack> } */}
 
-{ managerDetails && TeamMembers &&
+{ managerDetails && TeamMembers ?
 
         <Box sx={{
             display: 'flex',
@@ -75,7 +74,7 @@ const AssociateSubdetails = () => {
                   direction="rows"
                   justifyContent="flex-start"
                   alignItems="center">
-                    <Grid Item xs={12} sx={{pr:2, pl:3, pb:1}}>
+                    <Grid item xs={12} sx={{pr:2, pl:3, pb:1}}>
                         <Typography variant="overline">
                         Manager
                         </Typography>                   
@@ -84,10 +83,10 @@ const AssociateSubdetails = () => {
                         direction="rows"
                         justifyContent="space-around"
                         alignItems="center">
-                          <Grid Item xs={2} sx={{pr:2, pl:1}}>
+                          <Grid item xs={2} sx={{pr:2, pl:1}}>
                               <Avatar src={managerDetails.profilePicture} alt="Profile Pic"  sx={{ width: 60, height: 60 }} /> 
                           </Grid>
-                          <Grid Item xs={8} sx={{pr:2, pl:3}}>
+                          <Grid item xs={8} sx={{pr:2, pl:3}}>
                               <Typography variant="h6">
                                 {managerDetails.FirstName} {managerDetails.LastName} 
                               </Typography>
@@ -104,7 +103,7 @@ const AssociateSubdetails = () => {
                   Team Members
                   </Typography>
                   <Grid container alignItems="flex-start">
-                    <Grid Item>
+                    <Grid item>
                     <AvatarGroup sx={{pb:1,pt:2}} max={6} >
                       {TeamMembers.map((FilteredMember)=>{
                         if(!(FilteredMember.id==associateData.id))
@@ -119,7 +118,18 @@ const AssociateSubdetails = () => {
           </Grid>
       </Box>
         </Box>
-}
+:
+<Box sx={{p:2}}>
+<Skeleton variant="text" />
+<Skeleton variant="circular" width={40} height={40} />
+<Skeleton variant="text" />
+<Skeleton variant="rectangular" height={40}/>
+<Skeleton variant="rectangular" height={40}/>
+<Skeleton variant="circular" width={40} height={40} />
+<Skeleton variant="rectangular" height={40} />
+
+</Box>
+                    }
 </>
     )
 }

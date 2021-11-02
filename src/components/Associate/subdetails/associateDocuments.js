@@ -50,7 +50,8 @@ function applySortFilter(array, comparator, query) {
 }
 
 const AssociateDocuments = () => {
-
+  
+  const [isLoading, setLoading] = useState(false)
   const {associateData} = useContext(associateContext)
   const prettyBytes = require ('pretty-bytes');
   const [fileList, setFileList] = useState([])
@@ -161,10 +162,12 @@ const AssociateDocuments = () => {
     }
 
     useEffect(() => {
-      const getAssociates = async () => {
+      setLoading(true)
+      const getFiles = async () => {
         ListFiles()
       }
-      getAssociates()
+      getFiles()
+      setLoading(false)
     }, [])
 
     const GetMetadata = (theRef) => {
@@ -260,7 +263,7 @@ const AssociateDocuments = () => {
             Successfully deleted file
           </Alert>
         </Snackbar>
-        {fileList && 
+        
         <Container sx={{ pt: 2}} >
           <Card sx={{ boxShadow: 0 }} variant="outlined">
           <UserListToolbar
@@ -271,9 +274,8 @@ const AssociateDocuments = () => {
             onSelectFile={onSelectFile}
             onDeleteFiles={onDeleteFiles}
           />
-
-          {/* <Scrollbar> */}
             <TableContainer sx={{ minWidth: 800 }}>
+            {fileList && 
               <Table>
                 <UserListHead
                   order={order}
@@ -335,10 +337,8 @@ const AssociateDocuments = () => {
                     </TableRow>
                   </TableBody>
                 )}
-              </Table>
+              </Table>}
             </TableContainer>
-          {/* </Scrollbar> */}
-
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
@@ -349,7 +349,7 @@ const AssociateDocuments = () => {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Card>
-      </Container>}
+      </Container>
       </Box>
         )
     }

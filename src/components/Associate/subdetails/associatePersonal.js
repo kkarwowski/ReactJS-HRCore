@@ -123,7 +123,8 @@ return(
                         </Grid>
                         <Grid item >
                           <TextField
-                          style ={{width: '100%'}}
+                          // fullWidth
+                          // style ={{width: '100%'}}
                           size="small"
                           name="PrivateEmail"
                           label="Private Email"

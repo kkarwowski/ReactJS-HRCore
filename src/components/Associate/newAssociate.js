@@ -4,13 +4,36 @@ import { Container, FormControl, MenuItem, TextField, Grid, Box, Card, Typograph
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const NewAssociate = () => {
+    const top100Films = []
+
     const {allOffices} = useContext(officesContext)
     const { associates, setAssciates} = useContext(associatesContext)
-    const [newAssociate, setNewAssocaite] = useState()
+    const [newAssociate, setNewAssocaite] = useState({
+      emergencyInfo: {
+          TelephoneNumber: "",
+          LastName: "",
+          FirstName: "",
+          Relationship: ""
+        },
+        profilePicture: "",
+        FirstName: "",
+        Title: "",
+        Department: "",
+        Manager: "",
+        PrivateEmail: "",
+        Office: "",
+        LastName: "",
+        EmplStatus: "",
+        StartDate: "",
+        Gender: "",
+        WorkEmail: "",
+        City: "",
+        PhoneNumber: ""
+    })
     
     const onUpdate = (event) => {
         console.log("name ",event.target.name," value ",event.target.value)
@@ -68,8 +91,8 @@ const NewAssociate = () => {
                         <Grid item >
                           <TextField
                           required
-                          style ={{width: '100%'}}
                           size="small"
+                          sx={{ width: 300 }}
                           name="Title"
                           label="Title"
                           defaultValue={""}
@@ -98,8 +121,8 @@ const NewAssociate = () => {
                         <Grid item >
                           <TextField
                           required
-                          style ={{width: '100%'}}
-                          size="smal"
+                          sx={{ width: 250 }}
+                          size="small"
                           name="WorkEmail"
                           label="Work Email"
                           defaultValue={""}
@@ -108,11 +131,11 @@ const NewAssociate = () => {
                         <Grid item >
                           <TextField
                           required
-                          style ={{width: '100%'}}
                           size="small"
                           name="PrivateEmail"
                           label="Private Email"
                           defaultValue={""}
+                          sx={{ width: 250 }}
                           onChange={e => onUpdate(e)}/>
                         </Grid>
                         <Grid item >
@@ -128,12 +151,14 @@ const NewAssociate = () => {
                         {allOffices &&
                         <Grid item >
                           <TextField
+                            size="small"
                             value={""}
                             onChange={(e) => onUpdate(e)}
                             select // tell TextField to render select
                             required
                             name="Office"
-                            label="Office">
+                            label="Office"
+                            sx={{ width: 120 }}>
                               {allOffices.map((office, index) => (
                                 <MenuItem key={index} value={`${office}`}>
                                   {office}
@@ -145,13 +170,14 @@ const NewAssociate = () => {
                           }
                         <Grid item >
                           <TextField
-                          required
+                            required
+                            size="small"
                             value={""}
-                            size="5"
                             onChange={(e) => onUpdate(e)}
                             select // tell TextField to render select
                             name="EmplStatus"
-                            label="Employment Status">
+                            label="Employment Status"
+                            sx={{ width: 195 }}>
                               <MenuItem key={1} value="Employed">
                                 Employed
                               </MenuItem>
@@ -163,10 +189,12 @@ const NewAssociate = () => {
                           <Grid item >
                           <TextField
                             value={""}
+                            size="small"
                             onChange={(e) => onUpdate(e)}
                             select // tell TextField to render select
                             name="Gender"
-                            label="Gender">
+                            label="Gender"
+                            sx={{ width: 100 }}>
                               <MenuItem key={1} value="Male">
                                 Male
                               </MenuItem>
@@ -178,6 +206,7 @@ const NewAssociate = () => {
                         <Grid item >
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <DatePicker
+                            size="small"
                             label="Start Date"
                             name="StartDate"
                             defaultValue={null}
@@ -189,13 +218,16 @@ const NewAssociate = () => {
                             renderInput={(params) => <TextField {...params} />}
                           />
                         </LocalizationProvider>
-                        <Autocomplete
-                          disablePortal
-                          id="combo-box-demo"
-                          options={top100Films}
-                          sx={{ width: 300 }}
-                          renderInput={(params) => <TextField {...params} label="Manager" />}
-                        />
+                        </Grid>
+                        <Grid item >
+                          <Autocomplete
+                            size="small"
+                            disablePortal
+                            id="combo-box-demo"
+                            options={top100Films}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Manager" />}
+                          />
                         </Grid>
                         </Grid>
                            

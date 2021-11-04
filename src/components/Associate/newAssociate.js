@@ -1,15 +1,20 @@
 import { useContext, useState } from 'react';
 import { associatesContext, officesContext } from '../../utils/context/contexts';
-import { Container, FormControl, MenuItem, TextField, Grid, Box, Card, Typography, Divider} from '@mui/material';
+import { Container, FormControl, MenuItem, TextField, Grid, Box, Card, Typography, Divider, Step, Stepper, StepLabel} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import Autocomplete from '@mui/material/Autocomplete';
 
+const steps = [
+  'Personal details',
+  'Emergency contact',
+  'Documents',
+];
 
 const NewAssociate = () => {
     const top100Films = []
-
+    const [activeStep, setActiveStep] = useState(0)
     const {allOffices} = useContext(officesContext)
     const { associates, setAssciates} = useContext(associatesContext)
     const [newAssociate, setNewAssocaite] = useState({
@@ -50,8 +55,15 @@ const NewAssociate = () => {
 
     return (
         <Container>
-        <h1>lala</h1>
+        <h1>Add new Associate</h1>
         <Card>
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
         <FormControl>
                   {/* <form onSubmit={e =>onSubmit(e)}> */}
                   <Typography variant="inherit" sx={{ p: 2, pb: 1 }}>Basic Information</Typography>

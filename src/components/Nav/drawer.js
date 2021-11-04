@@ -9,7 +9,7 @@ import Upload from '../../pages/Upload'
 import AssociateDetails from "../../pages/AssociateDetails";
 import logo from '../../logo.png'
 import NewAssociate from "../Associate/newAssociate";
-const drawerWidth = 200;
+const drawerWidth = 250;
 
 export default function PermanentDrawerLeft() {
 
@@ -56,7 +56,7 @@ return (
       <Box
         component="main"
         // '#F4F6F8
-        sx={{ flexGrow: 1, bgcolor: '#f4f7f9', p: 3 }}
+        sx={{ flexGrow: 1, bgcolor: '#f4f7f9', p: 3, height:"100vh"}}
       >
         {/* #f7f9fc */}
         {/* 'background.default' */}

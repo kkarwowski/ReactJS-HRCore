@@ -55,16 +55,16 @@ const NewAssociate = () => {
 
     return (
         <Container>
-        <h1>Add new Associate</h1>
-        <Card>
-        <Stepper activeStep={activeStep} alternativeLabel>
+          <Typography variant="h3"sx={{pb:5}}>Add new Associate</Typography>
+        <Card >
+        <Stepper activeStep={activeStep} alternativeLabel sx={{pt:5, pb:2}}>
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
             </Step>
           ))}
         </Stepper>
-        <FormControl>
+        <FormControl sx={{p:2}}>
                   {/* <form onSubmit={e =>onSubmit(e)}> */}
                   <Typography variant="inherit" sx={{ p: 2, pb: 1 }}>Basic Information</Typography>
 

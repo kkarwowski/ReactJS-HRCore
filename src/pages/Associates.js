@@ -59,7 +59,7 @@ const TABLE_HEAD = [
             <Button
               variant="contained"
               component={Link } to={'/NewAssociate'}>
-              New User
+              New Associate
             </Button>
           </Stack>
           {associatesData &&

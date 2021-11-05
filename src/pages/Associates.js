@@ -69,7 +69,7 @@ const Associates = () => {
   return (
     <>
       <Box>
-        <Container maxWidth="sl">
+        <Container maxWidth="xl">
           <Stack
             direction="row"
             alignItems="center"
@@ -121,6 +121,7 @@ const Associates = () => {
                       .map((filteredassociate, index) => {
                         return (
                           <TableRow
+                            style={{ textDecoration: "none" }}
                             key={index}
                             hover
                             sx={{ underline: "false" }}

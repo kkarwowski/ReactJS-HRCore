@@ -1,5 +1,5 @@
-import React , {useEffect, useState } from "react";
-import { Grid, Container, Typography,Button} from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { Grid, Container, Typography, Button } from "@mui/material";
 import { useQuery } from "react-query";
 
 // import associatesjson from "../Offices.json"
@@ -13,10 +13,12 @@ import { useContext } from "react";
 import { update } from "lodash";
 
 const Home = () => {
-return( 
+  return (
     <Container maxWidth="xl">
-      <Typography variant="h3" pt={8} pb={5}>Hi, Welcome back</Typography>
-      <Grid  container spacing={3}>
+      <Typography variant="h3" pt={8} pb={5}>
+        Hi, Welcome back
+      </Typography>
+      <Grid container spacing={3}>
         {/* <Grid Grid item xs={12} sm={6} md={3}>
           <TotalEmployed/>
         </Grid>
@@ -32,10 +34,9 @@ return(
         <Grid item xs={12} md={6} lg={4}>
           <DepartmentGraph/>
         </Grid> */}
- 
-    </Grid>
-   </Container>
-)
-}
+      </Grid>
+    </Container>
+  );
+};
 
-export default Home
+export default Home;

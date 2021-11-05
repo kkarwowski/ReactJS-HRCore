@@ -1,23 +1,49 @@
-import { filter } from 'lodash';
-import { useState, useContext, useEffect, useRef } from 'react';
-import Box from '@mui/material/Box';
-import { TableRow,TableBody,TableCell,Container,Typography,TableContainer, Table, Checkbox,TablePagination, Snackbar, Alert, Divider, Card } from '@mui/material';
-import { getStorage, ref, listAll, getMetadata, getDownloadURL, uploadBytes, deleteObject, uploadBytesResumable } from "firebase/storage";
-import { associateContext, loadingContext } from '../../../utils/context/contexts';
-import UserListToolbar from './UserListToolbar';
-import UserListHead from './UserListHead'
-import { Icon } from '@iconify/react';
-import filePdfBox from '@iconify/icons-mdi/file-pdf-box';
-import fileExcelBox from '@iconify/icons-mdi/file-excel-box';
-import fileWordBox from '@iconify/icons-mdi/file-word-box';
-import imageIcon from '@iconify/icons-mdi/image';
+import { filter } from "lodash";
+import { useState, useContext, useEffect, useRef } from "react";
+import Box from "@mui/material/Box";
+import {
+  TableRow,
+  TableBody,
+  TableCell,
+  Container,
+  Typography,
+  TableContainer,
+  Table,
+  Checkbox,
+  TablePagination,
+  Snackbar,
+  Alert,
+  Divider,
+  Card,
+} from "@mui/material";
+import {
+  getStorage,
+  ref,
+  listAll,
+  getMetadata,
+  getDownloadURL,
+  uploadBytes,
+  deleteObject,
+  uploadBytesResumable,
+} from "firebase/storage";
+import {
+  associateContext,
+  loadingContext,
+} from "../../../utils/context/contexts";
+import UserListToolbar from "./UserListToolbar";
+import UserListHead from "./UserListHead";
+import { Icon } from "@iconify/react";
+import filePdfBox from "@iconify/icons-mdi/file-pdf-box";
+import fileExcelBox from "@iconify/icons-mdi/file-excel-box";
+import fileWordBox from "@iconify/icons-mdi/file-word-box";
+import imageIcon from "@iconify/icons-mdi/image";
 
 const TABLE_HEAD = [
-  { id: 'fileName', label: 'Name', alignRight: false }, 
-  { id: 'size', label: 'Size', alignRight: false }, 
-  { id: 'type', label: 'Type', alignRight: false }, 
-  { id: 'uploadDate', label: 'Upload Date', alignRight: false }, 
-  { id: '' }
+  { id: "fileName", label: "Name", alignRight: false },
+  { id: "size", label: "Size", alignRight: false },
+  { id: "type", label: "Type", alignRight: false },
+  { id: "uploadDate", label: "Upload Date", alignRight: false },
+  { id: "" },
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -31,7 +57,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -44,138 +70,149 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 const AssociateDocuments = () => {
-  
-  const [isLoading, setLoading] = useState(false)
-  const {associateData} = useContext(associateContext)
-  const prettyBytes = require ('pretty-bytes');
-  const [fileList, setFileList] = useState([])
+  const [isLoading, setLoading] = useState(false);
+  const { associateData } = useContext(associateContext);
+  const prettyBytes = require("pretty-bytes");
+  const [fileList, setFileList] = useState([]);
   const storage = getStorage();
   const listRef = ref(storage, `documents/${associateData.id}`);
   const [alert, setAlert] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState("asc");
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
+  const [orderBy, setOrderBy] = useState("name");
+  const [filterName, setFilterName] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const {setLoadingProgress} = useContext(loadingContext)
-  const iconSize = {width:30, height:30}
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
-  const filteredUsers = applySortFilter(fileList, getComparator(order, orderBy), filterName);
+  const { setLoadingProgress } = useContext(loadingContext);
+  const iconSize = { width: 30, height: 30 };
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
+  const filteredUsers = applySortFilter(
+    fileList,
+    getComparator(order, orderBy),
+    filterName
+  );
   const isUserNotFound = filteredUsers.length === 0;
-
 
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
-      console.log("deleting file =", filename)
-      setFileList( fileList.filter(file => file.fileName !== filename) )
-      deleteFileFromFirebase(filename)
-    })
-    setDeleteSuccess(true)
-    setSelected([])
-  }
+      console.log("deleting file =", filename);
+      setFileList(fileList.filter((file) => file.fileName !== filename));
+      deleteFileFromFirebase(filename);
+    });
+    setDeleteSuccess(true);
+    setSelected([]);
+  };
 
   const deleteFileFromFirebase = (fileName) => {
     const deleteRef = ref(storage, `documents/${associateData.id}/${fileName}`);
-    deleteObject(deleteRef).then(() => {
-    }).catch((error) => {
-      // Uh-oh, an error occurred!
-    });
-  }
+    deleteObject(deleteRef)
+      .then(() => {})
+      .catch((error) => {
+        // Uh-oh, an error occurred!
+      });
+  };
   const onSelectFile = (event) => {
     if (event.target.files && event.target.files.length > 0) {
-     const uploadName = event.target.files[0].name
-        if (fileList.length > 0)
-            {
-            if (fileList.some(e => e.fileName === uploadName)) {
-              setAlert(true)
-            }
-            else{
-              uploadFile(event.target.files[0], uploadName)
-            }
+      const uploadName = event.target.files[0].name;
+      if (fileList.length > 0) {
+        if (fileList.some((e) => e.fileName === uploadName)) {
+          setAlert(true);
+        } else {
+          uploadFile(event.target.files[0], uploadName);
         }
-      else{
-        uploadFile(event.target.files[0], uploadName)
+      } else {
+        uploadFile(event.target.files[0], uploadName);
       }
     }
   };
 
-
-   const uploadFile = (file, uploadName) => {
+  const uploadFile = (file, uploadName) => {
     const storageRef = ref(listRef, `${uploadName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
-        uploadTask.on('state_changed', 
-        (snapshot) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setLoadingProgress(progress)
-        console.log('Upload is ' + progress + '% done');
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setLoadingProgress(progress);
+        console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
+          case "paused":
+            console.log("Upload is paused");
             break;
-          case 'running':
-            console.log('Upload is running');
+          case "running":
+            console.log("Upload is running");
             break;
         }
-        }, 
-        (error) => {
-          // Handle unsuccessful uploads
-        }, 
-        () => {
-          // Handle successful uploads on complete
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setLoadingProgress(null)
-            console.log('File available at', downloadURL);
-            GetMetadata(uploadTask.snapshot.ref)
-            setUploadSuccess(true)
-          });
-        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+      },
+      () => {
+        // Handle successful uploads on complete
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setLoadingProgress(null);
+          console.log("File available at", downloadURL);
+          GetMetadata(uploadTask.snapshot.ref);
+          setUploadSuccess(true);
+        });
+      }
     );
-    
-   }
+  };
 
   const DownloadFile = (fileName) => {
-    
     getDownloadURL(ref(storage, `documents/${associateData.id}/${fileName}`))
-    .then((url) => {
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = (event) => {
-        const blob = xhr.response;
-      };
-      xhr.open('GET', url);
-      xhr.send();
-    })
-    .catch((error) => {
-      // Handle any errors
+      .then((url) => {
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = (event) => {
+          const blob = xhr.response;
+        };
+        xhr.open("GET", url);
+        xhr.send();
+      })
+      .catch((error) => {
+        // Handle any errors
+      });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    const getFiles = async () => {
+      ListFiles();
+    };
+    getFiles();
+    setLoading(false);
+  }, []);
+
+  const GetMetadata = (theRef) => {
+    getMetadata(theRef).then((metadata) => {
+      setFileList((fileList) => [
+        ...fileList,
+        {
+          fileName: metadata.name,
+          size: prettyBytes(metadata.size),
+          uploadDate: metadata.timeCreated,
+          fullPath: metadata.fullPath,
+          type: metadata.contentType,
+        },
+      ]);
     });
-    }
-
-    useEffect(() => {
-      setLoading(true)
-      const getFiles = async () => {
-        ListFiles()
-      }
-      getFiles()
-      setLoading(false)
-    }, [])
-
-    const GetMetadata = (theRef) => {
-      getMetadata(theRef)
-          .then((metadata) => {
-              setFileList(fileList => [... fileList, {"fileName": metadata.name, "size":  prettyBytes(metadata.size), "uploadDate": metadata.timeCreated, "fullPath": metadata.fullPath, "type": metadata.contentType  }])
-          })
-    }
+  };
 
   const ListFiles = () => {
     listAll(listRef)
@@ -185,17 +222,17 @@ const AssociateDocuments = () => {
           // You may call listAll() recursively on them.
         });
         res.items.forEach((itemRef) => {
-          GetMetadata(itemRef)
+          GetMetadata(itemRef);
         });
-      }).catch((error) => {
-       console.log("err", error)
-      }
-      );
-  }
+      })
+      .catch((error) => {
+        console.log("err", error);
+      });
+  };
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -208,9 +245,9 @@ const AssociateDocuments = () => {
     setSelected([]);
   };
 
-  const handleSelectFile= (event, name) => {
+  const handleSelectFile = (event, name) => {
     const selectedIndex = selected.indexOf(name);
-    console.log("selected", name)
+    console.log("selected", name);
     let newSelected = [];
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
@@ -225,7 +262,7 @@ const AssociateDocuments = () => {
       );
     }
     setSelected(newSelected);
-    console.log(newSelected)
+    console.log(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -241,31 +278,56 @@ const AssociateDocuments = () => {
     setFilterName(event.target.value);
   };
 
+  return (
+    <Box>
+      <Typography variant="inherit">Documents</Typography>
+      <Divider variant="middle" sx={{ pb: 2 }} />
 
+      <Snackbar
+        open={alert}
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          variant="filled"
+          severity="error"
+          onClose={() => setAlert(false)}
+          sx={{ width: "100%", mt: 7 }}
+        >
+          File of this name detected. Please rename your file and upload again!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={uploadSuccess}
+        autoHideDuration={2000}
+        onClose={() => setUploadSuccess(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          variant="filled"
+          severity="success"
+          sx={{ width: "100%", mt: 7 }}
+        >
+          File upload successful!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={deleteSuccess}
+        autoHideDuration={2000}
+        onClose={() => setDeleteSuccess(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          variant="filled"
+          severity="success"
+          sx={{ width: "100%", mt: 7 }}
+        >
+          Successfully deleted file
+        </Alert>
+      </Snackbar>
 
-    return (
-      <Box>
-        <Typography variant="inherit">Documents</Typography>
-        <Divider variant="middle"  sx={{ pb: 2}} />
-
-        <Snackbar open={alert} autoHideDuration={5000} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
-          <Alert variant="filled"  severity="error" onClose={() => setAlert(false)}  sx={{ width: '100%', mt:7 }}>
-            File of this name detected. Please rename your file and upload again!
-          </Alert>
-        </Snackbar>
-        <Snackbar open={uploadSuccess} autoHideDuration={2000} onClose={ () => setUploadSuccess(false)}  anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
-          <Alert variant="filled" severity="success" sx={{ width: '100%', mt:7 }}>
-            File upload successful!
-          </Alert>
-        </Snackbar>
-        <Snackbar open={deleteSuccess} autoHideDuration={2000} onClose={ () => setDeleteSuccess(false)}  anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
-          <Alert variant="filled" severity="success" sx={{ width: '100%', mt:7 }}>
-            Successfully deleted file
-          </Alert>
-        </Snackbar>
-        
-        <Container sx={{ pt: 2}} >
-          <Card sx={{ boxShadow: 0 }} variant="outlined">
+      <Container sx={{ pt: 2 }}>
+        <Card sx={{ boxShadow: 0 }} variant="outlined">
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}
@@ -274,8 +336,8 @@ const AssociateDocuments = () => {
             onSelectFile={onSelectFile}
             onDeleteFiles={onDeleteFiles}
           />
-            <TableContainer sx={{ minWidth: 800 }}>
-            {fileList && 
+          <TableContainer sx={{ minWidth: 800 }}>
+            {fileList && (
               <Table>
                 <UserListHead
                   order={order}
@@ -290,9 +352,10 @@ const AssociateDocuments = () => {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { fullPath, fileName, size, type, uploadDate } = row;
+                      const { fullPath, fileName, size, type, uploadDate } =
+                        row;
                       const isItemSelected = selected.indexOf(fileName) !== -1;
-                      const formattedDate = new Date(uploadDate)
+                      const formattedDate = new Date(uploadDate);
                       return (
                         <TableRow
                           hover
@@ -305,20 +368,47 @@ const AssociateDocuments = () => {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleSelectFile(event, fileName)}
+                              onChange={(event) =>
+                                handleSelectFile(event, fileName)
+                              }
                             />
                           </TableCell>
                           <TableCell align="left">{fileName}</TableCell>
                           <TableCell align="left">{size}</TableCell>
                           <TableCell align="left">
                             {type == "application/pdf" ? (
-                               <Icon icon={filePdfBox} width={iconSize.width} height={iconSize.height} />)
-                               : type == "image/png" ||type == "image/jpeg"  ? (<Icon icon={imageIcon}  width={iconSize.width} height={iconSize.height} />) 
-                               : type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (<Icon icon={fileExcelBox}  width={iconSize.width} height={iconSize.height} />) 
-                               : type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (<Icon icon={fileWordBox} width={iconSize.width} height={iconSize.height} />) 
-                               : type }
-                            </TableCell>
-                          <TableCell align="left">{formattedDate.toLocaleDateString()}</TableCell>
+                              <Icon
+                                icon={filePdfBox}
+                                width={iconSize.width}
+                                height={iconSize.height}
+                              />
+                            ) : type == "image/png" || type == "image/jpeg" ? (
+                              <Icon
+                                icon={imageIcon}
+                                width={iconSize.width}
+                                height={iconSize.height}
+                              />
+                            ) : type ==
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                              <Icon
+                                icon={fileExcelBox}
+                                width={iconSize.width}
+                                height={iconSize.height}
+                              />
+                            ) : type ==
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
+                              <Icon
+                                icon={fileWordBox}
+                                width={iconSize.width}
+                                height={iconSize.height}
+                              />
+                            ) : (
+                              type
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {formattedDate.toLocaleDateString()}
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -337,8 +427,9 @@ const AssociateDocuments = () => {
                     </TableRow>
                   </TableBody>
                 )}
-              </Table>}
-            </TableContainer>
+              </Table>
+            )}
+          </TableContainer>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
@@ -350,7 +441,7 @@ const AssociateDocuments = () => {
           />
         </Card>
       </Container>
-      </Box>
-        )
-    }
-export default AssociateDocuments
+    </Box>
+  );
+};
+export default AssociateDocuments;

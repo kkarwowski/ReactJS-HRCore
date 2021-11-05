@@ -1,18 +1,25 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // material
-import { visuallyHidden } from '@mui/utils';
-import { Box, Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import { visuallyHidden } from "@mui/utils";
+import {
+  Box,
+  Checkbox,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableSortLabel,
+} from "@mui/material";
 
 // ----------------------------------------------------------------------
 
 UserListHead.propTypes = {
-  order: PropTypes.oneOf(['asc', 'desc']),
+  order: PropTypes.oneOf(["asc", "desc"]),
   orderBy: PropTypes.string,
   rowCount: PropTypes.number,
   headLabel: PropTypes.array,
   numSelected: PropTypes.number,
   onRequestSort: PropTypes.func,
-  onSelectAllClick: PropTypes.func
+  onSelectAllClick: PropTypes.func,
 };
 
 export default function UserListHead({
@@ -22,7 +29,7 @@ export default function UserListHead({
   headLabel,
   numSelected,
   onRequestSort,
-  onSelectAllClick
+  onSelectAllClick,
 }) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -41,19 +48,19 @@ export default function UserListHead({
         {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.alignRight ? 'right' : 'left'}
+            align={headCell.alignRight ? "right" : "left"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               hideSortIcon
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box sx={{ ...visuallyHidden }}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>

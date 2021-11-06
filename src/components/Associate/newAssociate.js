@@ -17,6 +17,7 @@ import {
   Stepper,
   StepLabel,
   Button,
+  Select,
 } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -30,7 +31,6 @@ export default function NewAssociate() {
   const stepLabels = ["Personal details", "Emergency contact", "Documents"];
 
   const { associates, setAssciates } = useContext(associatesContext);
-  const { allOffices } = useContext(officesContext);
 
   const [newAssociate, setNewAssocaite] = useState({
     emergencyInfo: {
@@ -79,7 +79,11 @@ export default function NewAssociate() {
   };
 
   const steps = [
-    <StepOne next={handleNextStep} data={newAssociate} />,
+    <StepOne
+      next={handleNextStep}
+      data={newAssociate}
+      setNew={setNewAssocaite}
+    />,
     <StepTwo next={handleNextStep} prev={handlePrevStep} data={newAssociate} />,
   ];
 
@@ -113,11 +117,21 @@ export default function NewAssociate() {
 const stepOneValidationSchema = Yup.object({
   FirstName: Yup.string().required().label("First Name"),
   LastName: Yup.string().required().label("Last Name"),
+  Title: Yup.string().required().label("Title"),
+  Gender: Yup.string().required().label("Gender"),
+  Office: Yup.string().required().label("Office"),
+  Department: Yup.string().required().label("Department"),
+  EmplStatus: Yup.string().required().label("Employment Status"),
+  Manager: Yup.string().label("Manager"),
 });
 
 const StepOne = (props) => {
+  const { allOffices } = useContext(officesContext);
+  const { associates, setAssciates } = useContext(associatesContext);
   const handleSubmit = (values) => {
     props.next(values);
+    console.log(values);
+    console.log("new", props.data);
   };
 
   return (
@@ -129,7 +143,7 @@ const StepOne = (props) => {
       {() => (
         <Form>
           <Grid
-            sx={{ p: 1, pb: 2 }}
+            sx={{ p: 3, pb: 2, pt: 6 }}
             container
             columnSpacing={2}
             rowSpacing={2}
@@ -157,10 +171,116 @@ const StepOne = (props) => {
               />
               {/* <ErrorMessage name="LastName" /> */}
             </Grid>
+            <Grid item>
+              <Field
+                required
+                name="Title"
+                size="small"
+                label="Title"
+                as={TextField}
+              />
+              {/* <ErrorMessage name="FirstName" /> */}
+            </Grid>
+            <Grid item>
+              <Field
+                required
+                name="Department"
+                size="small"
+                label="Department"
+                as={TextField}
+              />
+              {/* <ErrorMessage name="FirstName" /> */}
+            </Grid>
+            <Grid item>
+              <Field
+                as={Select}
+                name="Gender"
+                sx={{ width: 195 }}
+                required
+                size="small"
+                label="Gender"
+              >
+                <MenuItem key={1} value="Female">
+                  Female
+                </MenuItem>
+                <MenuItem key={2} value="Male">
+                  Male
+                </MenuItem>
+              </Field>
+            </Grid>
+            <Grid item>
+              <Field
+                as={Select}
+                name="EmplStatus"
+                sx={{ width: 195 }}
+                required
+                size="small"
+                label="Employment Status"
+              >
+                <MenuItem key={1} value="Employed">
+                  Employed
+                </MenuItem>
+                <MenuItem key={2} value="Terminated">
+                  Terminated
+                </MenuItem>
+              </Field>
+            </Grid>
+            {allOffices && (
+              <Grid item>
+                <Field
+                  as={Select}
+                  name="Office"
+                  sx={{ width: 195 }}
+                  required
+                  size="small"
+                  label="Office"
+                >
+                  {allOffices.map((office, index) => (
+                    <MenuItem key={index} value={`${office}`}>
+                      {office}
+                    </MenuItem>
+                  ))}
+                </Field>
+              </Grid>
+            )}
+            <Grid item>
+              <Field
+                name="Manager"
+                component={Autocomplete}
+                options={associates}
+                getOptionLabel={
+                  (associates) => associates.FirstName
+                  //  + " " + associates.LastName
+                }
+                onChange={(selected) => (selected = selected.id)}
+                style={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Manager"
+                    required
+                    variant="outlined"
+                    value={"asfsdf"}
+                  />
+                )}
+              />
+            </Grid>
           </Grid>
-          <Button variant="contained" type="submit">
-            Next
-          </Button>
+          <Grid
+            sx={{ p: 3, pb: 2 }}
+            container
+            columnSpacing={2}
+            rowSpacing={2}
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="flex-end"
+          >
+            <Grid item>
+              <Button variant="contained" type="submit">
+                Next
+              </Button>
+            </Grid>
+          </Grid>
         </Form>
       )}
     </Formik>

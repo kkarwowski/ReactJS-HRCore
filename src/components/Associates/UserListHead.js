@@ -32,6 +32,7 @@ export default function UserListHead({
   onSelectAllClick,
 }) {
   const createSortHandler = (property) => (event) => {
+    console.log("sort", event.target, "sort", orderBy);
     onRequestSort(event, property);
   };
 
@@ -52,7 +53,7 @@ export default function UserListHead({
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
-              // hideSortIcon
+              //hideSortIcon
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import * as React from "react";
 import { Icon } from "@iconify/react";
 import searchFill from "@iconify/icons-eva/search-fill";
 import trash2Fill from "@iconify/icons-eva/trash-2-fill";
@@ -13,7 +14,11 @@ import {
   Typography,
   OutlinedInput,
   InputAdornment,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
+import { useState } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -43,12 +48,16 @@ UserListToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
+  setChecked: PropTypes.func,
+  checked: PropTypes.bool,
 };
 
 export default function UserListToolbar({
   numSelected,
   filterName,
   onFilterName,
+  setChecked,
+  checked,
 }) {
   return (
     <RootStyle
@@ -59,28 +68,39 @@ export default function UserListToolbar({
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Typography component="div" variant="subtitle1">
           {numSelected} selected
         </Typography>
-      ) : (
-        <SearchStyle
-          value={filterName}
-          onChange={onFilterName}
-          placeholder="Search associates..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Box
-                component={Icon}
-                icon={searchFill}
-                sx={{ color: "text.disabled" }}
-              />
-            </InputAdornment>
-          }
-        />
-      )}
+      ) : ( */}
+      <SearchStyle
+        value={filterName}
+        onChange={onFilterName}
+        placeholder="Search associates..."
+        startAdornment={
+          <InputAdornment position="start">
+            <Box
+              component={Icon}
+              icon={searchFill}
+              sx={{ color: "text.disabled" }}
+            />
+          </InputAdornment>
+        }
+      />
 
-      {numSelected > 0 ? (
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              defaultUnChecked
+              onChange={(event) => setChecked(event.target.checked)}
+              checked={checked}
+            />
+          }
+          label="Show Terminated"
+        />
+      </FormGroup>
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <Icon icon={trash2Fill} />
@@ -92,7 +112,7 @@ export default function UserListToolbar({
             <Icon icon={roundFilterList} />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </RootStyle>
   );
 }

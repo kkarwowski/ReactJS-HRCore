@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { filter } from "lodash";
 import { useState } from "react";
 import UserListHead from "../components/Associates/UserListHead";
 import UserListToolbar from "../components/Associates/UserListToolbar";
@@ -25,10 +26,10 @@ import { associatesContext } from "../utils/context/contexts";
 const TABLE_HEAD = [
   { id: "", label: "    ", alignRight: false },
   { id: "", label: "    ", alignRight: false },
-  { id: "firstname", label: "First Name", alignRight: false },
-  { id: "lastname", label: "Last Name", alignRight: false },
-  { id: "title", label: "Title", alignRight: false },
-  { id: "department", label: "Department", alignRight: false },
+  { id: "FirstName", label: "First Name", alignRight: false },
+  { id: "LastName", label: "Last Name", alignRight: false },
+  { id: "Title", label: "Title", alignRight: false },
+  { id: "Department", label: "Department", alignRight: false },
   { id: "emplStatus", label: "Status", alignRight: false },
   { id: "" },
 ];
@@ -38,11 +39,12 @@ const Associates = () => {
     useContext(associatesContext);
   // const [associatesData, setAssociatesData] = useState()
   const [filterName, setFilterName] = useState("");
-  const [selected, setSelected] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
+  const [checked, setChecked] = useState(false);
+  useState();
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - associatesData.length)
@@ -66,10 +68,62 @@ const Associates = () => {
     setPage(0);
   };
 
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  function applySortFilter(array, comparator, query, status) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    if (status && query) {
+      return filter(
+        array,
+        (_user) =>
+          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
+    } else if (query) {
+      return filter(
+        array,
+        (_user) =>
+          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
+          _user.EmplStatus.indexOf("Employed") !== -1
+        // _user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
+    } else if (!status) {
+      return filter(
+        array,
+        (_user) => _user.EmplStatus.indexOf("Employed") !== -1
+      );
+    }
+    return stabilizedThis.map((el) => el[0]);
+  }
+  const filteredAssociates = applySortFilter(
+    associatesData,
+    getComparator(order, orderBy),
+    filterName,
+    checked
+  );
+
   return (
     <>
       <Box>
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" sx={{ pb: 5 }}>
           <Stack
             direction="row"
             alignItems="center"
@@ -86,9 +140,10 @@ const Associates = () => {
           {associatesData && (
             <Card>
               <UserListToolbar
-                numSelected={selected.length}
                 filterName={filterName}
                 onFilterName={handleFilterByName}
+                setChecked={setChecked}
+                checked={checked}
               />
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
@@ -97,36 +152,33 @@ const Associates = () => {
                     orderBy={orderBy}
                     headLabel={TABLE_HEAD}
                     rowCount={associatesData.length}
-                    numSelected={selected.length}
                     onRequestSort={handleRequestSort}
                   />
                   <TableBody>
-                    {associatesData
-                      .filter((associate) => {
-                        if (
-                          associate.FirstName.toLowerCase().includes(
-                            filterName.toLowerCase()
-                          ) ||
-                          associate.LastName.toLowerCase().includes(
-                            filterName.toLowerCase()
-                          )
-                        ) {
-                          return { associate };
-                        }
-                      })
+                    {filteredAssociates
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .map((filteredassociate, index) => {
+                      .map((filteredassociate) => {
+                        const {
+                          id,
+                          FirstName,
+                          LastName,
+                          EmplStatus,
+                          Department,
+                          profilePicture,
+                          Title,
+                        } = filteredassociate;
+
                         return (
                           <TableRow
                             style={{ textDecoration: "none" }}
-                            key={index}
+                            key={id}
                             hover
                             sx={{ underline: "false" }}
                             component={Link}
-                            to={`/Associates/${filteredassociate.id}`}
+                            to={`/Associates/${id}`}
                           >
                             <TableCell align="left" />
                             <TableCell
@@ -140,7 +192,7 @@ const Associates = () => {
                                 spacing={0}
                               >
                                 <Avatar
-                                  src={filteredassociate.profilePicture}
+                                  src={profilePicture}
                                   alt="Profile Pic"
                                   sx={{ width: 40, height: 40 }}
                                 />
@@ -153,31 +205,25 @@ const Associates = () => {
                                 noWrap
                                 style={{ textDecoration: "none" }}
                               >
-                                {filteredassociate.FirstName}
+                                {FirstName}
                               </Typography>
                             </TableCell>
                             <TableCell align="left">
                               <Typography variant="subtitle2" noWrap>
-                                {filteredassociate.LastName}
+                                {LastName}
                               </Typography>
                             </TableCell>
-                            <TableCell align="left">
-                              {filteredassociate.Title}
-                            </TableCell>
-                            <TableCell align="left">
-                              {filteredassociate.Department}
-                            </TableCell>
+                            <TableCell align="left">{Title}</TableCell>
+                            <TableCell align="left">{Department}</TableCell>
                             <TableCell align="left">
                               <Label
                                 variant="ghost"
                                 color={
-                                  (filteredassociate.EmplStatus ===
-                                    "Terminated" &&
-                                    "error") ||
+                                  (EmplStatus === "Terminated" && "error") ||
                                   "success"
                                 }
                               >
-                                {sentenceCase(filteredassociate.EmplStatus)}
+                                {sentenceCase(EmplStatus)}
                               </Label>
                             </TableCell>
                             <TableCell align="right">
@@ -186,7 +232,6 @@ const Associates = () => {
                           </TableRow>
                         );
                       })}
-
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
@@ -198,7 +243,7 @@ const Associates = () => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={associatesData.length}
+                count={filteredAssociates.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

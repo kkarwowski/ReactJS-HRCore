@@ -15,7 +15,6 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Home from "../../pages/Home";
 import Associates from "../../pages/Associates";
-import Upload from "../../pages/Upload";
 import AssociateDetails from "../../pages/AssociateDetails";
 import logo from "../../logo.png";
 import NewAssociate from "../Associate/newAssociate";
@@ -48,7 +47,7 @@ export default function PermanentDrawerLeft() {
           {/* <Toolbar /> */}
 
           <List>
-            {["Dashboard", "Associates", "Upload"].map((text, index) => (
+            {["Dashboard", "Associates"].map((text, index) => (
               <ListItem
                 button
                 key={text}
@@ -90,9 +89,6 @@ export default function PermanentDrawerLeft() {
             </Route>
             <Route path={"/NewAssociate"}>
               <NewAssociate />
-            </Route>
-            <Route exact path="/Upload">
-              <Upload />
             </Route>
           </Switch>
         </Box>

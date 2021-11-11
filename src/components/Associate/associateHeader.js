@@ -1,9 +1,19 @@
-import { Grid, Card, CardContent, Box } from "@mui/material";
+import {
+  Grid,
+  Card,
+  CardContent,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
+} from "@mui/material";
 import { useState, useContext } from "react";
 import Label from "../Label";
 import { sentenceCase } from "change-case";
 import { useHistory } from "react-router-dom";
-
+import * as React from "react";
 import {
   Typography,
   Link,
@@ -71,6 +81,7 @@ const AssociateHeader = () => {
   const handleChangetoTab = (event, newValue) => {
     setValue(newValue);
   };
+  const [open, setOpen] = React.useState(false);
 
   const diffDates = require("diff-dates");
   const Todayy = new Date();
@@ -83,12 +94,43 @@ const AssociateHeader = () => {
   const DeleteAssociate = async (id) => {
     await deleteDoc(doc(db, "Associates", id));
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+    handleClose();
     history.push("/Associates");
   };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
   const dateDiffYears = diffDates(Todayy, otherDate, "years");
   return (
     <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Please confirm if you wish to Delete Associate. All Data will be
+            lost including any uploaded files. Please download files before
+            proceeding.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button
+            onClick={() => DeleteAssociate(associateData.id)}
+            color="error"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Grid
         container
         direction="row"
@@ -251,7 +293,7 @@ const AssociateHeader = () => {
               type="button"
               variant="contained"
               color="error"
-              onClick={() => DeleteAssociate(associateData.id)}
+              onClick={() => handleClickOpen()}
             >
               Delete Associate
             </Button>

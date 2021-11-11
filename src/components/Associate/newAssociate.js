@@ -4,6 +4,7 @@ import {
   officesContext,
 } from "../../utils/context/contexts";
 import {
+  InputLabel,
   Container,
   FormControl,
   MenuItem,
@@ -123,7 +124,14 @@ const stepOneValidationSchema = Yup.object({
   Office: Yup.string().required().label("Office"),
   Department: Yup.string().required().label("Department"),
   EmplStatus: Yup.string().required().label("Employment Status"),
-  // Manager: Yup.string().label("Manager"),
+  PhoneNumer: Yup.string().required().label("Phone Number"),
+  PrivateEmail: Yup.string()
+    .email("Invalid email")
+    .required()
+    .label("Private Email"),
+  WorkEmail: Yup.string().email("Invalid email").required().label("Work Email"),
+  StartDate: Yup.date().required().label("Start Date"),
+  Manager: Yup.string().label("Manager"),
 });
 
 const StepOne = (props) => {
@@ -131,7 +139,6 @@ const StepOne = (props) => {
   const { associates, setAssciates } = useContext(associatesContext);
   const handleSubmit = (values) => {
     props.next(values);
-    console.log(values);
     console.log("new", props.data);
   };
 
@@ -141,7 +148,7 @@ const StepOne = (props) => {
       initialValues={props.data}
       onSubmit={handleSubmit}
     >
-      {({ setFieldValue }) => (
+      {({ setFieldValue, values }) => (
         <Form>
           <Grid
             sx={{ p: 3, pb: 2, pt: 6 }}
@@ -190,64 +197,119 @@ const StepOne = (props) => {
                 label="Department"
                 as={TextField}
               />
-              {/* <ErrorMessage name="FirstName" /> */}
             </Grid>
             <Grid item sx={4}>
               <Field
-                as={Select}
-                name="Gender"
-                sx={{ width: 195 }}
                 required
+                name="City"
                 size="small"
-                label="Gender"
-              >
-                <MenuItem key={1} value="Female">
-                  Female
-                </MenuItem>
-                <MenuItem key={2} value="Male">
-                  Male
-                </MenuItem>
-              </Field>
+                label="City"
+                as={TextField}
+              />
             </Grid>
             <Grid item sx={4}>
               <Field
-                as={Select}
-                name="EmplStatus"
-                sx={{ width: 195 }}
                 required
+                name="WorkEmail"
                 size="small"
-                label="Employment Status"
-              >
-                <MenuItem key={1} value="Employed">
-                  Employed
-                </MenuItem>
-                <MenuItem key={2} value="Terminated">
-                  Terminated
-                </MenuItem>
-              </Field>
+                label="Work Email"
+                // type="email"
+                as={TextField}
+              />
             </Grid>
-            {allOffices && (
-              <Grid item>
+            <Grid item sx={4}>
+              <Field
+                // type="email"
+                required
+                name="PrivateEmail"
+                size="small"
+                label="Private Email"
+                as={TextField}
+              />
+            </Grid>
+            <Grid item sx={4}>
+              <Field
+                // type="email"
+                required
+                name="PhoneNumer"
+                size="small"
+                label="Phone Number"
+                as={TextField}
+              />
+            </Grid>
+            <Grid item sx={4}>
+              <FormControl>
+                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+
                 <Field
+                  labelId="demo-simple-select-label"
                   as={Select}
-                  name="Office"
+                  name="Gender"
                   sx={{ width: 195 }}
                   required
                   size="small"
-                  label="Office"
+                  label="Gender"
                 >
-                  {allOffices.map((office, index) => (
-                    <MenuItem key={index} value={`${office}`}>
-                      {office}
-                    </MenuItem>
-                  ))}
+                  <MenuItem key={1} value="Female">
+                    Female
+                  </MenuItem>
+                  <MenuItem key={2} value="Male">
+                    Male
+                  </MenuItem>
                 </Field>
+              </FormControl>
+            </Grid>
+            <Grid item sx={4}>
+              <FormControl>
+                <InputLabel id="demo-simple-select-label">
+                  Employment Status
+                </InputLabel>
+                <Field
+                  labelId="demo-simple-select-label"
+                  as={Select}
+                  name="EmplStatus"
+                  sx={{ width: 195 }}
+                  required
+                  size="small"
+                  // id="demo-simple-select"
+                  label="Employment Status"
+                  // label="Employment Status"
+                >
+                  <MenuItem key={1} value="Employed">
+                    Employed
+                  </MenuItem>
+                  <MenuItem key={2} value="Terminated">
+                    Terminated
+                  </MenuItem>
+                </Field>
+              </FormControl>
+            </Grid>
+            {allOffices && (
+              <Grid item>
+                <FormControl>
+                  <InputLabel id="demo-simple-select-label">Office</InputLabel>
+                  <Field
+                    as={Select}
+                    name="Office"
+                    sx={{ width: 195 }}
+                    required
+                    size="small"
+                    label="Office"
+                  >
+                    {allOffices.map((office, index) => (
+                      <MenuItem key={index} value={`${office}`}>
+                        {office}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                </FormControl>
               </Grid>
             )}
             <Grid item>
               <Field
                 name="Manager"
                 component={Autocomplete}
+                size="small"
                 options={associates}
                 getOptionLabel={(associates) =>
                   associates.FirstName + " " + associates.LastName
@@ -267,12 +329,16 @@ const StepOne = (props) => {
             </Grid>
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
+                <Field
+                  component={DatePicker}
                   label="Start Date"
+                  size="small"
                   name="StartDate"
-                  value={frLocale}
-                  format="DD-MM-YYYY"
-                  onChange={(e, value) => setFieldValue("StartDate", value)}
+                  value={values.StartDate}
+                  inputFormat="dd-MM-yyyy"
+                  onChange={(StartDate) => {
+                    setFieldValue("StartDate", StartDate);
+                  }}
                   // onChange={(newValue) => {
                   //   setValue(newValue);
                   // }}
@@ -303,8 +369,12 @@ const StepOne = (props) => {
 };
 
 const stepTwoValidationSchema = Yup.object({
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().label("Password"),
+  emergencyInfo: Yup.object().shape({
+    FirstName: Yup.string().required().label("First Name"),
+    LastName: Yup.string().required().label("Last Name"),
+    TelephoneNumber: Yup.string().required().label("Telephone Number"),
+    Relationship: Yup.string().required().label("Relationship"),
+  }),
 });
 
 const StepTwo = (props) => {
@@ -320,21 +390,82 @@ const StepTwo = (props) => {
     >
       {({ values }) => (
         <Form>
-          <p>Email</p>
-          <Field name="email" />
-          <ErrorMessage name="email" />
-
-          <p>Password</p>
-          <Field name="password" />
-          <ErrorMessage name="password" />
-
-          <button type="button" onClick={() => props.prev(values)}>
-            Back
-          </button>
-          <button type="button" onClick={() => console.log("valuess", values)}>
-            Log
-          </button>
-          <button type="submit">Submit</button>
+          <Grid
+            sx={{ p: 3, pb: 2, pt: 6 }}
+            container
+            columnSpacing={2}
+            rowSpacing={2}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Grid item sx={4}>
+              <Field
+                required
+                name="emergencyInfo.FirstName"
+                size="small"
+                label="First Name"
+                as={TextField}
+              />
+              {/* <ErrorMessage name="FirstName" /> */}
+            </Grid>
+            <Grid item sx={4}>
+              <Field
+                required
+                name="emergencyInfo.LastName"
+                size="small"
+                label="Last Name"
+                as={TextField}
+              />
+            </Grid>
+            <Grid item sx={4}>
+              <Field
+                required
+                name="emergencyInfo.TelephoneNumber"
+                size="small"
+                label="Telephone Number"
+                as={TextField}
+              />
+            </Grid>
+            <Grid item sx={4}>
+              <Field
+                required
+                name="emergencyInfo.Relationship"
+                size="small"
+                label="Relationship"
+                as={TextField}
+              />
+            </Grid>
+            <Grid
+              sx={{ p: 3, pb: 2 }}
+              container
+              columnSpacing={2}
+              rowSpacing={2}
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="flex-end"
+            >
+              <Grid item>
+                <Button
+                  variant="contained"
+                  type="button"
+                  onClick={() => props.prev(values)}
+                >
+                  Back
+                </Button>
+                <Button variant="contained" type="submit">
+                  Next
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => console.log("valuess", values)}
+                >
+                  Log
+                </button>
+              </Grid>
+            </Grid>
+          </Grid>
+          {/* <button type="submit">Submit</button> */}
         </Form>
       )}
     </Formik>

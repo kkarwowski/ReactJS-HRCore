@@ -25,6 +25,7 @@ import DatePicker from "@mui/lab/DatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import frLocale from "date-fns/locale/fr";
 
 export default function NewAssociate() {
   // const [currentStep, setCurrentStep] = useState(0);
@@ -48,7 +49,7 @@ export default function NewAssociate() {
     Office: "",
     LastName: "",
     EmplStatus: "",
-    StartDate: "",
+    StartDate: null,
     Gender: "",
     WorkEmail: "",
     City: "",
@@ -122,7 +123,7 @@ const stepOneValidationSchema = Yup.object({
   Office: Yup.string().required().label("Office"),
   Department: Yup.string().required().label("Department"),
   EmplStatus: Yup.string().required().label("Employment Status"),
-  Manager: Yup.string().label("Manager"),
+  // Manager: Yup.string().label("Manager"),
 });
 
 const StepOne = (props) => {
@@ -140,7 +141,7 @@ const StepOne = (props) => {
       initialValues={props.data}
       onSubmit={handleSubmit}
     >
-      {() => (
+      {({ setFieldValue }) => (
         <Form>
           <Grid
             sx={{ p: 3, pb: 2, pt: 6 }}
@@ -151,7 +152,7 @@ const StepOne = (props) => {
             justifyContent="flex-start"
             alignItems="flex-start"
           >
-            <Grid item>
+            <Grid item sx={4}>
               <Field
                 required
                 name="FirstName"
@@ -161,7 +162,7 @@ const StepOne = (props) => {
               />
               {/* <ErrorMessage name="FirstName" /> */}
             </Grid>
-            <Grid item>
+            <Grid item sx={4}>
               <Field
                 required
                 name="LastName"
@@ -171,7 +172,7 @@ const StepOne = (props) => {
               />
               {/* <ErrorMessage name="LastName" /> */}
             </Grid>
-            <Grid item>
+            <Grid item sx={4}>
               <Field
                 required
                 name="Title"
@@ -181,7 +182,7 @@ const StepOne = (props) => {
               />
               {/* <ErrorMessage name="FirstName" /> */}
             </Grid>
-            <Grid item>
+            <Grid item sx={4}>
               <Field
                 required
                 name="Department"
@@ -191,7 +192,7 @@ const StepOne = (props) => {
               />
               {/* <ErrorMessage name="FirstName" /> */}
             </Grid>
-            <Grid item>
+            <Grid item sx={4}>
               <Field
                 as={Select}
                 name="Gender"
@@ -208,7 +209,7 @@ const StepOne = (props) => {
                 </MenuItem>
               </Field>
             </Grid>
-            <Grid item>
+            <Grid item sx={4}>
               <Field
                 as={Select}
                 name="EmplStatus"
@@ -248,11 +249,11 @@ const StepOne = (props) => {
                 name="Manager"
                 component={Autocomplete}
                 options={associates}
-                getOptionLabel={
-                  (associates) => associates.FirstName
-                  //  + " " + associates.LastName
+                getOptionLabel={(associates) =>
+                  associates.FirstName + " " + associates.LastName
                 }
-                onChange={(selected) => (selected = selected.id)}
+                onChange={(e, value) => setFieldValue("Manager", value.id)}
+                // onChange={(selected) => (selected = selected.FirstName)}
                 style={{ width: 300 }}
                 renderInput={(params) => (
                   <TextField
@@ -260,10 +261,24 @@ const StepOne = (props) => {
                     label="Manager"
                     required
                     variant="outlined"
-                    value={"asfsdf"}
                   />
                 )}
               />
+            </Grid>
+            <Grid item>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Start Date"
+                  name="StartDate"
+                  value={frLocale}
+                  format="DD-MM-YYYY"
+                  onChange={(e, value) => setFieldValue("StartDate", value)}
+                  // onChange={(newValue) => {
+                  //   setValue(newValue);
+                  // }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
             </Grid>
           </Grid>
           <Grid
@@ -315,6 +330,9 @@ const StepTwo = (props) => {
 
           <button type="button" onClick={() => props.prev(values)}>
             Back
+          </button>
+          <button type="button" onClick={() => console.log("valuess", values)}>
+            Log
           </button>
           <button type="submit">Submit</button>
         </Form>

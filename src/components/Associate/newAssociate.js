@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
+  associateContext,
   associatesContext,
   officesContext,
   updateAssociatesContext,
@@ -28,8 +29,9 @@ import DatePicker from "@mui/lab/DatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc, doc } from "firebase/firestore";
 import db from "../../utils/firebase";
+import AssociateDocuments from "./subdetails/associateDocuments";
 
 export default function NewAssociate() {
   // const [currentStep, setCurrentStep] = useState(0);
@@ -38,7 +40,7 @@ export default function NewAssociate() {
     updateAssociatesContext
   );
   const { associates, setAssciates } = useContext(associatesContext);
-
+  const [associateID, setAssocuateID] = useState();
   const [newAssociate, setNewAssocaite] = useState({
     emergencyInfo: {
       TelephoneNumber: "",
@@ -66,13 +68,14 @@ export default function NewAssociate() {
 
   const uploadToFirebase = async (formData) => {
     const docRef = await addDoc(collection(db, "Associates"), formData);
+    setAssocuateID(docRef.id);
     console.log("ID of new user", docRef.id);
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
   };
 
-  const makeRequest = (formData) => {
-    uploadToFirebase(formData);
-    console.log("Form Submitted", formData);
+  const makeRequest = async (formData) => {
+    await uploadToFirebase(formData);
+    setCurrentStep((prev) => prev + 1);
   };
 
   const handleNextStep = (newData, final = false) => {
@@ -80,7 +83,6 @@ export default function NewAssociate() {
 
     if (final) {
       makeRequest(newData);
-      setCurrentStep((prev) => prev + 1);
       return;
     }
 
@@ -99,7 +101,7 @@ export default function NewAssociate() {
       setNew={setNewAssocaite}
     />,
     <StepTwo next={handleNextStep} prev={handlePrevStep} data={newAssociate} />,
-    <StepThree />,
+    <StepThree id={associateID} />,
   ];
 
   return (
@@ -242,7 +244,7 @@ const StepOne = (props) => {
               <Field
                 // type="email"
                 required
-                name="PhoneNumer"
+                name="PhoneNumber"
                 size="small"
                 label="Phone Number"
                 as={TextField}
@@ -482,6 +484,6 @@ const StepTwo = (props) => {
     </Formik>
   );
 };
-const StepThree = () => {
-  return <h1>Step3</h1>;
+const StepThree = ({ id }) => {
+  return <AssociateDocuments userID={id} />;
 };

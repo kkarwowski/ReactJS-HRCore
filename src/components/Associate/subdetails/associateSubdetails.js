@@ -79,8 +79,10 @@ const AssociateSubdetails = () => {
                   justifyContent="flex-start"
                   alignItems="center"
                 >
-                  <Grid item xs={12} sx={{ pr: 2, pl: 3, pb: 1 }}>
-                    <Typography variant="overline">Manager</Typography>
+                  <Grid item xs={12} sx={{ pr: 2, pb: 1, pl: 4 }}>
+                    <Typography variant="overline" sx={{ pl: 1, pt: 1 }}>
+                      Manager
+                    </Typography>
                   </Grid>
                   <Grid
                     container

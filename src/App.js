@@ -6,6 +6,7 @@ import {
   associatesContext,
   officesContext,
   updateAssociatesContext,
+  loadingContext,
 } from "./utils/context/contexts";
 import { useEffect, useState, useContext } from "react";
 import { collection, getDocs } from "firebase/firestore";
@@ -16,6 +17,7 @@ function App() {
   const [updateAssociates, setUpdateAssociates] = useState(1);
   const [associates, setAssociates] = useState([]);
   const [allOffices, setOffices] = useState([]);
+  const [loadingProgress, setLoadingProgress] = useState(null);
 
   useEffect(
     (associateCollectionRef) => {
@@ -45,13 +47,17 @@ function App() {
         <updateAssociatesContext.Provider
           value={{ updateAssociates, setUpdateAssociates }}
         >
-          <officesContext.Provider value={{ allOffices, setOffices }}>
-            <ThemeConfig>
-              <GlobalStyles />
-              <Typography variant="h2">Hello</Typography>
-              <PermanentDrawerLeft />
-            </ThemeConfig>
-          </officesContext.Provider>
+          <loadingContext.Provider
+            value={{ loadingProgress, setLoadingProgress }}
+          >
+            <officesContext.Provider value={{ allOffices, setOffices }}>
+              <ThemeConfig>
+                <GlobalStyles />
+                <Typography variant="h2">Hello</Typography>
+                <PermanentDrawerLeft />
+              </ThemeConfig>
+            </officesContext.Provider>
+          </loadingContext.Provider>
         </updateAssociatesContext.Provider>
       </associatesContext.Provider>
     </>

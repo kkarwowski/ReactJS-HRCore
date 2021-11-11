@@ -78,11 +78,6 @@ const AssociateInfo = () => {
           {/* <Grid item >
                         {edited && <Button variant="contained" type="submit">Save</Button>}
                         </Grid> */}
-          <Grid item>
-            <Button variant="contained" onClick={() => tt()}>
-              Log
-            </Button>
-          </Grid>
 
           <Grid item xs={2} xm={2}>
             <TextField

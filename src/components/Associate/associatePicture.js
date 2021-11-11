@@ -18,7 +18,10 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { updateDoc, doc } from "firebase/firestore";
-import { associateContext } from "../../utils/context/contexts";
+import {
+  associateContext,
+  updateAssociatesContext,
+} from "../../utils/context/contexts";
 import db from "../../utils/firebase";
 
 const style = {
@@ -35,6 +38,9 @@ const style = {
 };
 
 const AssociatePic = () => {
+  const { updateAssociates, setUpdateAssociates } = useContext(
+    updateAssociatesContext
+  );
   const { associateData, setAssociateData } = useContext(associateContext);
   const updateProfileURL = async (url) => {
     const associateCollectionRef = doc(db, "Associates", associateData.id);
@@ -51,6 +57,7 @@ const AssociatePic = () => {
       getDownloadURL(ref(storageRef)).then((url) => {
         setAssociateData({ ...associateData, profilePicture: url });
         updateProfileURL(url);
+        setUpdateAssociates((updateAssociates) => updateAssociates + 1);
       });
     });
   };

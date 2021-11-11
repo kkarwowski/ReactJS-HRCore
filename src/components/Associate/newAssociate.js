@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import {
   associatesContext,
   officesContext,
+  updateAssociatesContext,
 } from "../../utils/context/contexts";
 import {
   InputLabel,
@@ -20,18 +21,22 @@ import {
   Button,
   Select,
 } from "@mui/material";
+import * as moment from "moment";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import frLocale from "date-fns/locale/fr";
+import { collection, addDoc } from "firebase/firestore";
+import db from "../../utils/firebase";
 
 export default function NewAssociate() {
   // const [currentStep, setCurrentStep] = useState(0);
   const stepLabels = ["Personal details", "Emergency contact", "Documents"];
-
+  const { updateAssociates, setUpdateAssociates } = useContext(
+    updateAssociatesContext
+  );
   const { associates, setAssciates } = useContext(associatesContext);
 
   const [newAssociate, setNewAssocaite] = useState({
@@ -57,10 +62,16 @@ export default function NewAssociate() {
     PhoneNumber: "",
   });
 
-  const uploadToFirebase = () => {};
   const [currentStep, setCurrentStep] = useState(0);
 
+  const uploadToFirebase = async (formData) => {
+    const docRef = await addDoc(collection(db, "Associates"), formData);
+    console.log("ID of new user", docRef.id);
+    setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+  };
+
   const makeRequest = (formData) => {
+    uploadToFirebase(formData);
     console.log("Form Submitted", formData);
   };
 
@@ -69,6 +80,7 @@ export default function NewAssociate() {
 
     if (final) {
       makeRequest(newData);
+      setCurrentStep((prev) => prev + 1);
       return;
     }
 
@@ -87,9 +99,8 @@ export default function NewAssociate() {
       setNew={setNewAssocaite}
     />,
     <StepTwo next={handleNextStep} prev={handlePrevStep} data={newAssociate} />,
+    <StepThree />,
   ];
-
-  console.log("data", newAssociate);
 
   return (
     <div className="App">
@@ -334,10 +345,10 @@ const StepOne = (props) => {
                   label="Start Date"
                   size="small"
                   name="StartDate"
-                  value={values.StartDate}
+                  value={moment(values.StartDate).toISOString()}
                   inputFormat="dd-MM-yyyy"
                   onChange={(StartDate) => {
-                    setFieldValue("StartDate", StartDate);
+                    setFieldValue("StartDate", moment(StartDate).toISOString());
                   }}
                   // onChange={(newValue) => {
                   //   setValue(newValue);
@@ -470,4 +481,7 @@ const StepTwo = (props) => {
       )}
     </Formik>
   );
+};
+const StepThree = () => {
+  return <h1>Step3</h1>;
 };

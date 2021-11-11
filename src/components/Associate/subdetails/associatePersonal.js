@@ -58,7 +58,7 @@ const AssociateInfo = () => {
     event.preventDefault();
     SaveDetails(associateData.id);
   };
-  console.log(moment(associateData.StartDate).format("DD-MM-YYYY"));
+  console.log(moment(associateData.StartDate).toISOString());
 
   return (
     <Box sx={{ p: 0, pb: 1 }} dir="ltr">
@@ -220,8 +220,8 @@ const AssociateInfo = () => {
               <DatePicker
                 label="Start Date"
                 name="StartDate"
-                value={frLocale}
-                format="DD-MM-YYYY"
+                value={associateData.StartDate}
+                inputFormat="dd-MM-yyyy"
                 onChange={(e) => onUpdate(e)}
                 // onChange={(newValue) => {
                 //   setValue(newValue);

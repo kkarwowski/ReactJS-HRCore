@@ -1,6 +1,6 @@
-import { filter } from "lodash";
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
+import { filter } from "lodash";
 import {
   TableRow,
   TableBody,
@@ -22,14 +22,10 @@ import {
   listAll,
   getMetadata,
   getDownloadURL,
-  uploadBytes,
   deleteObject,
   uploadBytesResumable,
 } from "firebase/storage";
-import {
-  associateContext,
-  loadingContext,
-} from "../../../utils/context/contexts";
+import { loadingContext } from "../../../utils/context/contexts";
 import UserListToolbar from "./UserListToolbar";
 import UserListHead from "./UserListHead";
 import { Icon } from "@iconify/react";
@@ -78,13 +74,14 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const AssociateDocuments = () => {
+const AssociateDocuments = ({ userID }) => {
+  console.log("userID", userID);
   const [isLoading, setLoading] = useState(false);
-  const { associateData } = useContext(associateContext);
+  // const { associateData } = useContext(associateContext);
   const prettyBytes = require("pretty-bytes");
   const [fileList, setFileList] = useState([]);
   const storage = getStorage();
-  const listRef = ref(storage, `documents/${associateData.id}`);
+  const listRef = ref(storage, `documents/${userID}`);
   const [alert, setAlert] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -116,7 +113,7 @@ const AssociateDocuments = () => {
   };
 
   const deleteFileFromFirebase = (fileName) => {
-    const deleteRef = ref(storage, `documents/${associateData.id}/${fileName}`);
+    const deleteRef = ref(storage, `documents/${userID}/${fileName}`);
     deleteObject(deleteRef)
       .then(() => {})
       .catch((error) => {
@@ -175,7 +172,7 @@ const AssociateDocuments = () => {
   };
 
   const DownloadFile = (fileName) => {
-    getDownloadURL(ref(storage, `documents/${associateData.id}/${fileName}`))
+    getDownloadURL(ref(storage, `documents/${userID}/${fileName}`))
       .then((url) => {
         const xhr = new XMLHttpRequest();
         xhr.responseType = "blob";

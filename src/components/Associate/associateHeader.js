@@ -190,7 +190,8 @@ const AssociateHeader = () => {
                         {associateData.Title}
                       </Typography>
                       <br />
-                      {associateData.Department} | {associateData.City}
+                      {associateData.Department} |{" "}
+                      {associateData.PostalAddress.City}
                     </Grid>
                     <Grid item sx={{ pt: 3 }}>
                       <p>Started {dateDiffYears} years ago </p>

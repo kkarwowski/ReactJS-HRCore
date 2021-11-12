@@ -11,7 +11,7 @@ import {
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LoadingButton from "@mui/lab/LoadingButton";
 import frLocale from "date-fns/locale/fr";
-
+import Countries from "../../../utils/contries.json";
 import LocalizationProvider from "@mui/lab/LocalizationProvider/";
 import DatePicker from "@mui/lab/DatePicker";
 import {
@@ -35,6 +35,7 @@ const AssociateInfo = () => {
   const { updateAssociates, setUpdateAssociates } = useContext(
     updateAssociatesContext
   );
+  const CountriesArray = JSON.parse(JSON.stringify(Countries));
 
   useEffect(() => {
     const copyAssociate = async () => {
@@ -49,6 +50,18 @@ const AssociateInfo = () => {
       ...updatedAssociate,
       [event.target.name]: event.target.value,
     });
+    console.log(updatedAssociate);
+  };
+  const onUpdateNested = (event) => {
+    setEdited(true);
+    setUpdateAssociate({
+      ...updatedAssociate,
+      PostalAddress: {
+        ...updatedAssociate.PostalAddress,
+        [event.target.name]: event.target.value,
+      },
+    });
+    console.log(updatedAssociate);
   };
 
   const updateFirebaseAndState = async () => {
@@ -269,18 +282,20 @@ const AssociateInfo = () => {
             <TextField
               style={{ width: "100%" }}
               size="small"
-              name="1stline"
+              name="FirstLine"
               label="First line of the address"
-              defaultValue={""}
+              defaultValue={associateData.PostalAddress.FirstLine}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
           <Grid item xs={5} xm={5}>
             <TextField
               style={{ width: "100%" }}
               size="small"
-              name="2ndline"
+              name="SecondLine"
               label="Second line"
-              defaultValue={""}
+              defaultValue={associateData.PostalAddress.SecondtLine}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
           <Grid item xs={3} xm={3}>
@@ -289,7 +304,8 @@ const AssociateInfo = () => {
               size="small"
               name="Postcode"
               label="Postcode"
-              defaultValue={""}
+              defaultValue={associateData.PostalAddress.Postcode}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
           <Grid item xs={3} xm={3}>
@@ -298,18 +314,25 @@ const AssociateInfo = () => {
               size="small"
               name="City"
               label="City"
-              defaultValue={associateData.City}
-              onChange={(e) => onUpdate(e)}
+              defaultValue={associateData.PostalAddress.City}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
           <Grid item xs={3} xm={3}>
             <TextField
-              style={{ width: "100%" }}
+              defaultValue={associateData.PostalAddress.Country}
+              onChange={(e) => onUpdateNested(e)}
+              select // tell TextField to render select
               size="small"
-              name="Countryt"
+              name="Country"
               label="Country"
-              defaultValue={""}
-            />
+            >
+              {CountriesArray.map((country, index) => (
+                <MenuItem key={index} value={`${country.name}`}>
+                  {country.name}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
         </Grid>
       </FormControl>

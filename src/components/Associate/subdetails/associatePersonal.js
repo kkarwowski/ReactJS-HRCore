@@ -79,7 +79,7 @@ const AssociateInfo = () => {
                         {edited && <Button variant="contained" type="submit">Save</Button>}
                         </Grid> */}
 
-          <Grid item xs={2} xm={2}>
+          <Grid item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -89,7 +89,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -99,7 +99,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={4} xm={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -109,7 +109,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -119,7 +119,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -129,20 +129,19 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={5} xm={5}>
             <TextField
               style={{ width: "100%" }}
-              size="smal"
+              size="small"
               name="WorkEmail"
               label="Work Email"
               defaultValue={associateData.WorkEmail}
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={5} xm={5}>
             <TextField
-              // fullWidth
-              // style ={{width: '100%'}}
+              style={{ width: "100%" }}
               size="small"
               name="PrivateEmail"
               label="Private Email"
@@ -150,15 +149,23 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item>
+
+          <Grid item item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
-              size="small"
-              name="City"
-              label="City"
-              defaultValue={associateData.City}
+              value={associateData.EmplStatus}
               onChange={(e) => onUpdate(e)}
-            />
+              select // tell TextField to render select
+              name="EmplStatus"
+              label="Employment Status"
+            >
+              <MenuItem key={1} value="Employed">
+                Employed
+              </MenuItem>
+              <MenuItem key={2} value="Terminated">
+                Terminated
+              </MenuItem>
+            </TextField>
           </Grid>
           {allOffices && (
             <Grid item>
@@ -178,22 +185,6 @@ const AssociateInfo = () => {
               </TextField>
             </Grid>
           )}
-          <Grid item>
-            <TextField
-              value={associateData.EmplStatus}
-              onChange={(e) => onUpdate(e)}
-              select // tell TextField to render select
-              name="EmplStatus"
-              label="Employment Status"
-            >
-              <MenuItem key={1} value="Employed">
-                Employed
-              </MenuItem>
-              <MenuItem key={2} value="Terminated">
-                Terminated
-              </MenuItem>
-            </TextField>
-          </Grid>
           <Grid item>
             <TextField
               value={associateData.Gender}
@@ -230,6 +221,7 @@ const AssociateInfo = () => {
               <DatePicker
                 label="Termination Date"
                 name="TerminationDate"
+                disabled="true"
                 value={
                   associateData.TerminationtDate
                     ? associateData.TerminationDate
@@ -244,14 +236,11 @@ const AssociateInfo = () => {
               />
             </LocalizationProvider>
           </Grid>
-
-          {/* <Grid item xs={3}> */}
-          <br></br>
         </Grid>
-        <Divider variant="middle" sx={{ pb: 5 }} />
-        sdfsdf
+        <Typography variant="inherit">Postal Address</Typography>
+        <Divider variant="middle" sx={{ pb: 3 }} />
         <Grid
-          sx={{ p: 1, pt: 5 }}
+          sx={{ p: 1, pt: 4, pb: 3 }}
           container
           columnSpacing={2}
           rowSpacing={2}
@@ -259,40 +248,50 @@ const AssociateInfo = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item>
+          <Grid item xs={5} xm={5}>
             <TextField
               style={{ width: "100%" }}
               size="small"
-              name="Department"
-              label="Ddfg"
-              defaultValue={"sdf"}
+              name="1stline"
+              label="First line of the address"
+              defaultValue={""}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={5} xm={5}>
             <TextField
               style={{ width: "100%" }}
               size="small"
-              name="Department"
-              label="Ddfg"
-              defaultValue={"sdf"}
+              name="2ndline"
+              label="Second line"
+              defaultValue={""}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
-              name="Department"
-              label="Ddfg"
-              defaultValue={"sdf"}
+              name="Postcode"
+              label="Postcode"
+              defaultValue={""}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
-              name="Department"
-              label="Ddfg"
-              defaultValue={"sdf"}
+              name="City"
+              label="City"
+              defaultValue={associateData.City}
+              onChange={(e) => onUpdate(e)}
+            />
+          </Grid>
+          <Grid item xs={3} xm={3}>
+            <TextField
+              style={{ width: "100%" }}
+              size="small"
+              name="Countryt"
+              label="Country"
+              defaultValue={""}
             />
           </Grid>
         </Grid>

@@ -7,6 +7,7 @@ import {
   officesContext,
   updateAssociatesContext,
   loadingContext,
+  departmentsContext,
 } from "./utils/context/contexts";
 import { useEffect, useState, useContext } from "react";
 import { collection, getDocs } from "firebase/firestore";
@@ -17,6 +18,7 @@ function App() {
   const [updateAssociates, setUpdateAssociates] = useState(1);
   const [associates, setAssociates] = useState([]);
   const [allOffices, setOffices] = useState([]);
+  const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
 
   useEffect(
@@ -34,7 +36,16 @@ function App() {
           setOffices(data.docs.map((office) => [office.data().name]))
         );
       };
+      const getDepartments = async () => {
+        const data = await getDocs(collection(db, "Departments"));
+        data.docs.map((department) =>
+          setDepartments(
+            data.docs.map((department) => [department.data().name])
+          )
+        );
+      };
       getAssociates();
+      getDepartments();
       getOffices();
       console.log("useEffect");
     },
@@ -51,11 +62,15 @@ function App() {
             value={{ loadingProgress, setLoadingProgress }}
           >
             <officesContext.Provider value={{ allOffices, setOffices }}>
-              <ThemeConfig>
-                <GlobalStyles />
-                <Typography variant="h2">Hello</Typography>
-                <PermanentDrawerLeft />
-              </ThemeConfig>
+              <departmentsContext.Provider
+                value={{ allDepartments, setDepartments }}
+              >
+                <ThemeConfig>
+                  <GlobalStyles />
+                  <Typography variant="h2">Hello</Typography>
+                  <PermanentDrawerLeft />
+                </ThemeConfig>
+              </departmentsContext.Provider>
             </officesContext.Provider>
           </loadingContext.Provider>
         </updateAssociatesContext.Provider>

@@ -4,6 +4,7 @@ import {
   associatesContext,
   officesContext,
   updateAssociatesContext,
+  departmentsContext,
 } from "../../utils/context/contexts";
 import {
   InputLabel,
@@ -149,6 +150,7 @@ const stepOneValidationSchema = Yup.object({
 
 const StepOne = (props) => {
   const { allOffices } = useContext(officesContext);
+  const { allDepartments } = useContext(departmentsContext);
   const { associates, setAssciates } = useContext(associatesContext);
   const handleSubmit = (values) => {
     props.next(values);
@@ -202,15 +204,29 @@ const StepOne = (props) => {
               />
               {/* <ErrorMessage name="FirstName" /> */}
             </Grid>
-            <Grid item sx={4}>
-              <Field
-                required
-                name="Department"
-                size="small"
-                label="Department"
-                as={TextField}
-              />
-            </Grid>
+            {allDepartments && (
+              <Grid item sx={4}>
+                <FormControl>
+                  <InputLabel id="demo-simple-select-label">
+                    Department
+                  </InputLabel>
+                  <Field
+                    as={Select}
+                    name="Department"
+                    sx={{ width: 195 }}
+                    required
+                    size="small"
+                    label="Department"
+                  >
+                    {allDepartments.map((department, index) => (
+                      <MenuItem key={index} value={`${department}`}>
+                        {department}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                </FormControl>
+              </Grid>
+            )}
             <Grid item sx={4}>
               <Field
                 required

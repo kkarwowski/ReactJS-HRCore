@@ -30,14 +30,13 @@ const TABLE_HEAD = [
   { id: "LastName", label: "Last Name", alignRight: false },
   { id: "Title", label: "Title", alignRight: false },
   { id: "Department", label: "Department", alignRight: false },
-  { id: "emplStatus", label: "Status", alignRight: false },
+  { id: "EmplStatus", label: "Status", alignRight: false },
   { id: "" },
 ];
 
 const Associates = () => {
   const { associates: associatesData, setAssociates: setAssociatesData } =
     useContext(associatesContext);
-  // const [associatesData, setAssociatesData] = useState()
   const [filterName, setFilterName] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(7);
   const [page, setPage] = useState(0);
@@ -85,25 +84,20 @@ const Associates = () => {
   }
 
   function applySortFilter(array, comparator, query, status) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
     if (status && query) {
       return filter(
         array,
         (_user) =>
-          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+          _user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     } else if (query) {
       return filter(
         array,
         (_user) =>
-          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
-          _user.EmplStatus.indexOf("Employed") !== -1
-        // _user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+          (_user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
+            _user.EmplStatus.indexOf("Employed") !== -1)
       );
     } else if (!status) {
       return filter(
@@ -111,13 +105,18 @@ const Associates = () => {
         (_user) => _user.EmplStatus.indexOf("Employed") !== -1
       );
     }
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
     return stabilizedThis.map((el) => el[0]);
   }
   const filteredAssociates = applySortFilter(
     associatesData,
     getComparator(order, orderBy),
-    filterName,
-    checked
+    filterName
   );
 
   return (

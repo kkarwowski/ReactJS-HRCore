@@ -6,7 +6,13 @@ import {
   updateAssociatesContext,
   departmentsContext,
 } from "../../utils/context/contexts";
+import { useHistory } from "react-router-dom";
 import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
   InputLabel,
   Container,
   FormControl,
@@ -80,13 +86,14 @@ export default function NewAssociate() {
   };
 
   const handleNextStep = (newData, final = false) => {
+    console.log(newData);
     setNewAssocaite((prev) => ({ ...prev, ...newData }));
 
     if (final) {
       makeRequest(newData);
       return;
     }
-
+    console.log(currentStep);
     setCurrentStep((prev) => prev + 1);
   };
 
@@ -135,17 +142,18 @@ const stepOneValidationSchema = Yup.object({
   LastName: Yup.string().required().label("Last Name"),
   Title: Yup.string().required().label("Title"),
   Gender: Yup.string().required().label("Gender"),
+  City: Yup.string().required().label("City"),
+  EmplStatus: Yup.string().required().label("Employment Status"),
+  PhoneNumber: Yup.string().required().label("Phone Number"),
+  StartDate: Yup.date().required().label("Start Date"),
   Office: Yup.string().required().label("Office"),
   Department: Yup.string().required().label("Department"),
-  EmplStatus: Yup.string().required().label("Employment Status"),
-  PhoneNumer: Yup.string().required().label("Phone Number"),
+  Manager: Yup.string().label("Manager"),
   PrivateEmail: Yup.string()
     .email("Invalid email")
     .required()
     .label("Private Email"),
   WorkEmail: Yup.string().email("Invalid email").required().label("Work Email"),
-  StartDate: Yup.date().required().label("Start Date"),
-  Manager: Yup.string().label("Manager"),
 });
 
 const StepOne = (props) => {
@@ -153,6 +161,7 @@ const StepOne = (props) => {
   const { allDepartments } = useContext(departmentsContext);
   const { associates, setAssciates } = useContext(associatesContext);
   const handleSubmit = (values) => {
+    console.log("handle");
     props.next(values);
     console.log("new", props.data);
   };
@@ -182,7 +191,7 @@ const StepOne = (props) => {
                 label="First Name"
                 as={TextField}
               />
-              {/* <ErrorMessage name="FirstName" /> */}
+              <ErrorMessage name="FirstName" />
             </Grid>
             <Grid item sx={4}>
               <Field
@@ -192,7 +201,7 @@ const StepOne = (props) => {
                 label="Last Name"
                 as={TextField}
               />
-              {/* <ErrorMessage name="LastName" /> */}
+              <ErrorMessage name="LastName" />
             </Grid>
             <Grid item sx={4}>
               <Field
@@ -202,7 +211,7 @@ const StepOne = (props) => {
                 label="Title"
                 as={TextField}
               />
-              {/* <ErrorMessage name="FirstName" /> */}
+              <ErrorMessage name="Title" />
             </Grid>
             {allDepartments && (
               <Grid item sx={4}>
@@ -223,6 +232,7 @@ const StepOne = (props) => {
                         {department}
                       </MenuItem>
                     ))}
+                    <ErrorMessage name="Department" />
                   </Field>
                 </FormControl>
               </Grid>
@@ -235,6 +245,7 @@ const StepOne = (props) => {
                 label="City"
                 as={TextField}
               />
+              <ErrorMessage name="City" />
             </Grid>
             <Grid item sx={4}>
               <Field
@@ -245,6 +256,7 @@ const StepOne = (props) => {
                 // type="email"
                 as={TextField}
               />
+              <ErrorMessage name="WorkEmail" />
             </Grid>
             <Grid item sx={4}>
               <Field
@@ -255,6 +267,7 @@ const StepOne = (props) => {
                 label="Private Email"
                 as={TextField}
               />
+              <ErrorMessage name="PrivateEmail" />
             </Grid>
             <Grid item sx={4}>
               <Field
@@ -265,6 +278,7 @@ const StepOne = (props) => {
                 label="Phone Number"
                 as={TextField}
               />
+              <ErrorMessage name="PhoneNumber" />
             </Grid>
             <Grid item sx={4}>
               <FormControl>
@@ -287,6 +301,7 @@ const StepOne = (props) => {
                   </MenuItem>
                 </Field>
               </FormControl>
+              <ErrorMessage name="Gender" />
             </Grid>
             <Grid item sx={4}>
               <FormControl>
@@ -312,6 +327,7 @@ const StepOne = (props) => {
                   </MenuItem>
                 </Field>
               </FormControl>
+              <ErrorMessage name="EmplStatus" />
             </Grid>
             {allOffices && (
               <Grid item>
@@ -332,6 +348,7 @@ const StepOne = (props) => {
                     ))}
                   </Field>
                 </FormControl>
+                <ErrorMessage name="Office" />
               </Grid>
             )}
             <Grid item>
@@ -356,6 +373,8 @@ const StepOne = (props) => {
                 )}
               />
             </Grid>
+            <ErrorMessage name="Manager" />
+
             <Grid item>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Field
@@ -375,7 +394,9 @@ const StepOne = (props) => {
                 />
               </LocalizationProvider>
             </Grid>
+            <ErrorMessage name="StartDate" />
           </Grid>
+
           <Grid
             sx={{ p: 3, pb: 2 }}
             container
@@ -386,7 +407,11 @@ const StepOne = (props) => {
             alignItems="flex-end"
           >
             <Grid item>
-              <Button variant="contained" type="submit">
+              <Button
+                variant="contained"
+                type="submit"
+                onClick={(event) => console.log(event)}
+              >
                 Next
               </Button>
             </Grid>
@@ -436,7 +461,7 @@ const StepTwo = (props) => {
                 label="First Name"
                 as={TextField}
               />
-              {/* <ErrorMessage name="FirstName" /> */}
+              <ErrorMessage name="emergencyInfo.FirstName" />
             </Grid>
             <Grid item sx={4}>
               <Field
@@ -501,5 +526,65 @@ const StepTwo = (props) => {
   );
 };
 const StepThree = ({ id }) => {
-  return <AssociateDocuments userID={id} />;
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const [open, setOpen] = useState();
+  const history = useHistory();
+
+  return (
+    <div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"New Associate succesfully added!"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Please select where you wish to go:
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => history.push(`/Associates/`)}>
+            All Associates
+          </Button>
+          <Button
+            onClick={() => history.push(`/Associates/${id}`)}
+            color="success"
+          >
+            See new Associate profile
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <AssociateDocuments userID={id} />
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+        rowSpacing={2}
+        columnSpacing={2}
+        pt={3}
+        pb={4}
+      >
+        <Grid item>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={() => setOpen(true)}
+          >
+            Finish
+          </Button>
+        </Grid>
+      </Grid>
+    </div>
+  );
 };

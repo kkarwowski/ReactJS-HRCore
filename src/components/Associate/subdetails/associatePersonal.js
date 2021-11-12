@@ -9,63 +9,90 @@ import {
   Button,
 } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LoadingButton from "@mui/lab/LoadingButton";
 import frLocale from "date-fns/locale/fr";
 
 import LocalizationProvider from "@mui/lab/LocalizationProvider/";
 import DatePicker from "@mui/lab/DatePicker";
 import {
   associateContext,
+  editedContext,
   officesContext,
+  updateAssociatesContext,
 } from "../../../utils/context/contexts";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import db from "../../../utils/firebase";
 import * as moment from "moment";
+import SaveIcon from "@mui/icons-material/Save";
+
 const AssociateInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { allOffices } = useContext(officesContext);
+  const { edited, setEdited } = useContext(editedContext);
+  const [updatedAssociate, setUpdateAssociate] = useState();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const { updateAssociates, setUpdateAssociates } = useContext(
+    updateAssociatesContext
+  );
+
+  useEffect(() => {
+    const copyAssociate = async () => {
+      setUpdateAssociate(associateData);
+    };
+    copyAssociate();
+  }, []);
 
   const onUpdate = (event) => {
-    console.log("name ", event.target.name, " value ", event.target.value);
-    setAssociateData({
-      ...associateData,
+    setEdited(true);
+    setUpdateAssociate({
+      ...updatedAssociate,
       [event.target.name]: event.target.value,
     });
   };
-  const tt = () => {
-    console.log("offices", allOffices);
-  };
-  const SaveDetails = async () => {
-    const resutl = await setDoc(
-      doc(db, "Associates", associateData.id),
-      associateData
+
+  const updateFirebaseAndState = async () => {
+    setIsUpdating(true);
+    const result = await setDoc(
+      doc(db, "Associates", `${associateData.id}`),
+      updatedAssociate
     );
-    console.log("result after post data", resutl);
+    setAssociateData(updatedAssociate);
+    setEdited(false);
+    setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+    setIsUpdating(false);
   };
-
-  //   const SaveDetails = async (id) => {
-  //     const res = await fetch(`http://localhost:5000/associates/${id}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body:JSON.stringify(associateData)
-  //     })
-
-  //     console.log(res.status)
-  // }
-  const onSubmit = (event) => {
-    event.preventDefault();
-    SaveDetails(associateData.id);
-  };
-  console.log(moment(associateData.StartDate).toISOString());
 
   return (
     <Box sx={{ p: 0, pb: 1 }} dir="ltr">
+      <Grid
+        container
+        columnSpacing={2}
+        rowSpacing={2}
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+      >
+        <Grid Item>
+          {edited && (
+            <FormControl>
+              <LoadingButton
+                color="secondary"
+                onClick={() => updateFirebaseAndState()}
+                loading={isUpdating}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+              >
+                Save
+              </LoadingButton>
+            </FormControl>
+          )}
+        </Grid>
+      </Grid>
       <Typography variant="inherit">Personal</Typography>
       <Divider variant="middle" sx={{ pb: 2 }} />
       <FormControl>
-        {/* <form onSubmit={e =>onSubmit(e)}> */}
         <Grid
           sx={{ p: 1, pb: 5, pt: 5 }}
           container
@@ -75,10 +102,6 @@ const AssociateInfo = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          {/* <Grid item >
-                        {edited && <Button variant="contained" type="submit">Save</Button>}
-                        </Grid> */}
-
           <Grid item xs={3} xm={3}>
             <TextField
               style={{ width: "100%" }}
@@ -209,9 +232,6 @@ const AssociateInfo = () => {
                 value={associateData.StartDate}
                 inputFormat="dd-MM-yyyy"
                 onChange={(e) => onUpdate(e)}
-                // onChange={(newValue) => {
-                //   setValue(newValue);
-                // }}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
@@ -229,9 +249,6 @@ const AssociateInfo = () => {
                 }
                 format="DD-MM-YYYY"
                 onChange={(e) => onUpdate(e)}
-                // onChange={(newValue) => {
-                //   setValue(newValue);
-                // }}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
@@ -295,7 +312,6 @@ const AssociateInfo = () => {
             />
           </Grid>
         </Grid>
-        {/* </form> */}
       </FormControl>
     </Box>
   );

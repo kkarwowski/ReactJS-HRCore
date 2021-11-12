@@ -510,12 +510,6 @@ const StepTwo = (props) => {
                 <Button variant="contained" type="submit">
                   Next
                 </Button>
-                <button
-                  type="button"
-                  onClick={() => console.log("valuess", values)}
-                >
-                  Log
-                </button>
               </Grid>
             </Grid>
           </Grid>

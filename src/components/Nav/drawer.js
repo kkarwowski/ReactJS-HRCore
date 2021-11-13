@@ -18,6 +18,7 @@ import Associates from "../../pages/Associates";
 import AssociateDetails from "../../pages/AssociateDetails";
 import logo from "../../logo.png";
 import NewAssociate from "../Associate/newAssociate";
+import SignUp from "../../pages/SignUp";
 const drawerWidth = 250;
 
 export default function PermanentDrawerLeft() {
@@ -47,7 +48,7 @@ export default function PermanentDrawerLeft() {
           {/* <Toolbar /> */}
 
           <List>
-            {["Dashboard", "Associates"].map((text, index) => (
+            {["Dashboard", "Associates", "SignUp"].map((text, index) => (
               <ListItem
                 button
                 key={text}
@@ -89,6 +90,9 @@ export default function PermanentDrawerLeft() {
             </Route>
             <Route path={"/NewAssociate"}>
               <NewAssociate />
+            </Route>
+            <Route path={"/Signup"}>
+              <SignUp />
             </Route>
           </Switch>
         </Box>

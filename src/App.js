@@ -12,7 +12,6 @@ import {
 import { useEffect, useState, useContext } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import db from "./utils/firebase";
-
 function App() {
   const associatesCollectionRef = collection(db, "Associates");
   const [updateAssociates, setUpdateAssociates] = useState(1);
@@ -20,7 +19,7 @@ function App() {
   const [allOffices, setOffices] = useState([]);
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
-
+  const firebaseui = require("firebaseui");
   useEffect(
     (associateCollectionRef) => {
       document.title = "HR Core";

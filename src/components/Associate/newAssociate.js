@@ -161,9 +161,7 @@ const StepOne = (props) => {
   const { allDepartments } = useContext(departmentsContext);
   const { associates, setAssciates } = useContext(associatesContext);
   const handleSubmit = (values) => {
-    console.log("handle");
     props.next(values);
-    console.log("new", props.data);
   };
 
   return (

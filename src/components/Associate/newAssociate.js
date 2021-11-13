@@ -37,7 +37,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { collection, addDoc, getDoc, doc } from "firebase/firestore";
-import db from "../../utils/firebase";
+import { db } from "../../utils/firebase";
 import AssociateDocuments from "./subdetails/associateDocuments";
 
 export default function NewAssociate() {
@@ -405,11 +405,7 @@ const StepOne = (props) => {
             alignItems="flex-end"
           >
             <Grid item>
-              <Button
-                variant="contained"
-                type="submit"
-                onClick={(event) => console.log(event)}
-              >
+              <Button variant="contained" type="submit">
                 Next
               </Button>
             </Grid>

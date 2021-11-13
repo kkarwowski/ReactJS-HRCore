@@ -22,7 +22,7 @@ import {
 } from "../../../utils/context/contexts";
 import { useContext, useState, useEffect } from "react";
 import { doc, setDoc } from "firebase/firestore";
-import db from "../../../utils/firebase";
+import { db } from "../../../utils/firebase";
 import * as moment from "moment";
 import SaveIcon from "@mui/icons-material/Save";
 

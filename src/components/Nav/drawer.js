@@ -19,12 +19,12 @@ import AssociateDetails from "../../pages/AssociateDetails";
 import logo from "../../logo.png";
 import NewAssociate from "../Associate/newAssociate";
 import SignUp from "../../pages/SignUp";
+import Login from "../../pages/Login";
 const drawerWidth = 250;
 
 export default function PermanentDrawerLeft() {
   return (
     <Router>
-      {/* <associatesContext.Provider value={{associatesData, setAssociatesData}}> */}
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <DashboardNavbar />
@@ -48,7 +48,7 @@ export default function PermanentDrawerLeft() {
           {/* <Toolbar /> */}
 
           <List>
-            {["Dashboard", "Associates", "SignUp"].map((text, index) => (
+            {["Dashboard", "Associates", "Login"].map((text, index) => (
               <ListItem
                 button
                 key={text}
@@ -79,7 +79,7 @@ export default function PermanentDrawerLeft() {
           {/* 'background.default' */}
 
           <Switch>
-            <Route exact path="/">
+            <Route exact path="/Dashboard">
               <Home />
             </Route>
             <Route exact path="/Associates">
@@ -91,13 +91,17 @@ export default function PermanentDrawerLeft() {
             <Route path={"/NewAssociate"}>
               <NewAssociate />
             </Route>
-            <Route path={"/Signup"}>
+          </Switch>
+          <Switch>
+            <Route exact path={"/"}>
               <SignUp />
+            </Route>
+            <Route exact path={"/Login"}>
+              <Login />
             </Route>
           </Switch>
         </Box>
       </Box>
-      {/* </associatesContext.Provider> */}
     </Router>
   );
 }

@@ -10,7 +10,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import db from "../../../utils/firebase";
+import { db } from "../../../utils/firebase";
 import { associateContext } from "../../../utils/context/contexts";
 
 const AssociateSubdetails = () => {

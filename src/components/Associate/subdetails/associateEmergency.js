@@ -9,7 +9,7 @@ import {
 import { associateContext } from "../../../utils/context/contexts";
 import { useContext, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
-import db from "../../../utils/firebase";
+import { db } from "../../../utils/firebase";
 
 const AssociateEmergencyInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);

@@ -22,7 +22,7 @@ import {
   associateContext,
   updateAssociatesContext,
 } from "../../utils/context/contexts";
-import db from "../../utils/firebase";
+import { db } from "../../utils/firebase";
 
 const style = {
   position: "absolute",

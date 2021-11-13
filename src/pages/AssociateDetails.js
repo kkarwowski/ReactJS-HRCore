@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { associateContext, editedContext } from "../utils/context/contexts";
-import db from "../utils/firebase";
+import { db } from "../utils/firebase";
 import { getDoc, doc } from "firebase/firestore";
 
 const AssociateDetails = () => {

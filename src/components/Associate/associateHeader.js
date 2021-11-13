@@ -36,7 +36,7 @@ import AssociateInfo from "../Associate/subdetails/associatePersonal";
 import AssociatePic from "./associatePicture";
 import AssociateDocuments from "./subdetails/associateDocuments";
 import AssociateEmergencyInfo from "./subdetails/associateEmergency";
-import db from "../../utils/firebase";
+import { db } from "../../utils/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 
 function TabPanel(props) {

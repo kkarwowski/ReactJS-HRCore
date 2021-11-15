@@ -6,24 +6,40 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { associateContext } from "../../../utils/context/contexts";
+import {
+  associateContext,
+  updatedAssociateContext,
+} from "../../../utils/context/contexts";
 import { useContext, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 
 const AssociateEmergencyInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
+  const { updatedAssociate, setUpdateAssociate } = useContext(
+    updatedAssociateContext
+  );
+
   const [edited, setEdited] = useState(false);
 
   const onUpdate = (event) => {
-    console.log("name ", event.target.id, " value ", event.target.value);
     setAssociateData({
       ...associateData,
       [event.target.name]: event.target.value,
     });
     setEdited(true);
   };
-
+  const onUpdateNested = (event) => {
+    setEdited(true);
+    setUpdateAssociate({
+      ...updatedAssociate,
+      emergencyInfo: {
+        ...updatedAssociate.emergencyInfo,
+        [event.target.name]: event.target.value,
+      },
+    });
+    console.log(updatedAssociate);
+  };
   const SaveDetails = async () => {
     const resutl = await setDoc(
       doc(db, "Associates", associateData.id),
@@ -71,7 +87,7 @@ const AssociateEmergencyInfo = () => {
               name="FirstName"
               label="First Name"
               defaultValue={associateData.emergencyInfo.FirstName}
-              onChange={(e) => onUpdate(e)}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
           <Grid item>
@@ -81,7 +97,7 @@ const AssociateEmergencyInfo = () => {
               name="LastName"
               label="Last Name"
               defaultValue={associateData.emergencyInfo.LastName}
-              onChange={(e) => onUpdate(e)}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
           <Grid item>
@@ -91,7 +107,7 @@ const AssociateEmergencyInfo = () => {
               name="Relationship"
               label="Relationship"
               defaultValue={associateData.emergencyInfo.Relationship}
-              onChange={(e) => onUpdate(e)}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
           <Grid item>
@@ -101,7 +117,7 @@ const AssociateEmergencyInfo = () => {
               name="TelephoneNumber"
               label="Telephone Nummber"
               defaultValue={associateData.emergencyInfo.TelephoneNumber}
-              onChange={(e) => onUpdate(e)}
+              onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
         </Grid>

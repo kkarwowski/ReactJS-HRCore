@@ -132,7 +132,7 @@ const Associates = () => {
             <Typography variant="h3" gutterBottom>
               Associates
             </Typography>
-            <Button variant="contained" component={Link} to={"/NewAssociate"}>
+            <Button variant="contained" component={Link} to={"newassociate"}>
               New Associate
             </Button>
           </Stack>
@@ -177,7 +177,7 @@ const Associates = () => {
                             hover
                             sx={{ underline: "false" }}
                             component={Link}
-                            to={`/Associates/${id}`}
+                            to={`/dashboard/associates/${id}`}
                           >
                             <TableCell align="left" />
                             <TableCell

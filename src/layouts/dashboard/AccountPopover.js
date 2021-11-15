@@ -20,7 +20,7 @@ import {
   Avatar,
 } from "@mui/material";
 // components
-import MenuPopover from "./MenuPopover";
+import MenuPopover from "../../components/MenuPopover";
 //
 //import account from '../../_mocks_/account';
 

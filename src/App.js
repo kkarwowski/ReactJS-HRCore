@@ -1,8 +1,9 @@
 import ThemeConfig from "./theme";
 import GlobalStyles from "./theme/globalStyles";
 import { Typography } from "@mui/material";
-import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
-import PermanentDrawerLeft from "./components/Nav/drawer";
+import Router from './routes';
+// import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
+// import PermanentDrawerLeft from "./components/Nav/drawer";
 import {
   associatesContext,
   officesContext,
@@ -69,8 +70,8 @@ function App() {
                 >
                   <ThemeConfig>
                     <GlobalStyles />
-
-                    <PermanentDrawerLeft />
+                    <Router />
+                    {/* <PermanentDrawerLeft /> */}
                   </ThemeConfig>
                 </departmentsContext.Provider>
               </officesContext.Provider>

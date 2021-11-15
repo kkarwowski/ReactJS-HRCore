@@ -85,17 +85,19 @@ const Login = () => {
                           alignItems="Center"
                         >
                           <Grid item xs={12}>
-                            <TextField
+                            <Field
+                              as={TextField}
                               label="Email"
                               type="email"
                               name="Email"
-                              fullWidth
+                              fullWidth={true}
                             />
                             <ErrorMessage name="Email" />
                           </Grid>
                           <Grid item xs={12}>
-                            <TextField
+                            <Field
                               fullWidth
+                              as={TextField}
                               label="Password"
                               type="password"
                               name="Password"

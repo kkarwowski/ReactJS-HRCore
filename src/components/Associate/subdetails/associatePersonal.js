@@ -19,6 +19,7 @@ import {
   editedContext,
   officesContext,
   updateAssociatesContext,
+  updatedAssociateContext,
 } from "../../../utils/context/contexts";
 import { useContext, useState, useEffect } from "react";
 import { doc, setDoc } from "firebase/firestore";
@@ -30,7 +31,9 @@ const AssociateInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { allOffices } = useContext(officesContext);
   const { edited, setEdited } = useContext(editedContext);
-  const [updatedAssociate, setUpdateAssociate] = useState();
+  const { updatedAssociate, setUpdateAssociate } = useContext(
+    updatedAssociateContext
+  );
   const [isUpdating, setIsUpdating] = useState(false);
   const { updateAssociates, setUpdateAssociates } = useContext(
     updateAssociatesContext

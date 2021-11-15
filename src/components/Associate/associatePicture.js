@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, Grid } from "@mui/material";
 import * as React from "react";
 import { useContext, useState, useRef } from "react";
 import Backdrop from "@mui/material/Backdrop";
@@ -11,6 +11,7 @@ import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { generateCropFile } from "../../utils/cropImage";
 import { styled } from "@mui/material/styles";
+import ResponsiveAvatar from "./ResponsiveAvatar";
 import {
   getStorage,
   ref,
@@ -36,6 +37,14 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+const AvatarStyle = styled(".crop-container")(({ theme }) => ({
+  [theme.breakpoints.up("lg")]: {
+    sx: {
+      width: 200,
+      height: 200,
+    },
+  },
+}));
 
 const AssociatePic = () => {
   const { updateAssociates, setUpdateAssociates } = useContext(
@@ -101,106 +110,113 @@ const AssociatePic = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        "& > :not(style)": {
-          m: 1,
-          pr: 2,
-          pl: 3,
-          //   width: 400,
-          //   height: 400,
-        },
-      }}
+    <Grid
+      container
+      direction="column"
+      alignItems={{ sx: "center", lg: "flex-start" }}
+      justifyContent="center"
     >
-      <Box sx={{ p: 0, pr: 1 }} dir="ltr">
-        {/* <Avatar src={`data:image/png;base64,${props.UserPicture}`} alt="Profile Pic"  sx={{ width: 250, height: 250 }} />     */}
-        <label htmlFor="icon-button-file">
-          <Input
-            accept="image/*"
-            id="icon-button-file"
-            type="file"
-            ref={inputRef}
-            onChange={onSelectFile}
-          />
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="span"
-          >
-            <Avatar
-              src={associateData.profilePicture}
-              sx={{ width: 300, height: 300 }}
-              className=".crop-container"
+      <Box
+      // sx={{
+      //   display: "flex",
+      //   flexWrap: "wrap",
+      //   "& > :not(style)": {
+      //     // m: 1,
+      //     // pr: 2,
+      //     // pl: 3,
+      //     //   width: 400,
+      //     //   height: 400,
+      //   },
+      // }}
+      >
+        <Box sx={{ p: 0, pr: 1 }} dir="ltr">
+          <label htmlFor="icon-button-file">
+            <Input
+              accept="image/*"
+              id="icon-button-file"
+              type="file"
+              ref={inputRef}
+              onChange={onSelectFile}
             />
-          </IconButton>
-        </label>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <Box sx={style}>
-              <div className="styles.container">
-                <div className="styles.container-cropper">
-                  {image ? (
-                    <>
-                      <div className="styles.cropper">
-                        <Cropper
-                          image={image}
-                          crop={crop}
-                          zoom={zoom}
-                          aspect={1}
-                          onCropChange={setCrop}
-                          onZoomChange={setZoom}
-                          onCropComplete={onCropComplete}
-                        />
-                      </div>
-                    </>
-                  ) : null}
-                </div>
-                {image && (
-                  <div className="slider">
-                    <Slider
-                      min={1}
-                      max={3}
-                      step={0.1}
-                      value={zoom}
-                      onChange={(e, zoom) => setZoom(zoom)}
-                    />
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+            >
+              <ResponsiveAvatar
+                src={associateData.profilePicture}
+                class={".crop-container"}
+              />
+              {/* <Avatar
+              src={associateData.profilePicture}
+              // sx={{ width: 300, height: 300 }}
+              className=".crop-container"
+            /> */}
+            </IconButton>
+          </label>
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <Box sx={style}>
+                <div className="styles.container">
+                  <div className="styles.container-cropper">
+                    {image ? (
+                      <>
+                        <div className="styles.cropper">
+                          <Cropper
+                            image={image}
+                            crop={crop}
+                            zoom={zoom}
+                            aspect={1}
+                            onCropChange={setCrop}
+                            onZoomChange={setZoom}
+                            onCropComplete={onCropComplete}
+                          />
+                        </div>
+                      </>
+                    ) : null}
                   </div>
-                )}
-                <div className="container-buttons">
                   {image && (
-                    <Button variant="contained" onClick={onUpload}>
-                      Upload
-                    </Button>
+                    <div className="slider">
+                      <Slider
+                        min={1}
+                        max={3}
+                        step={0.1}
+                        value={zoom}
+                        onChange={(e, zoom) => setZoom(zoom)}
+                      />
+                    </div>
                   )}
+                  <div className="container-buttons">
+                    {image && (
+                      <Button variant="contained" onClick={onUpload}>
+                        Upload
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <Typography
-                id="transition-modal-title"
-                variant="h6"
-                component="h2"
-              >
-                Text in a modal
-              </Typography>
-            </Box>
-          </Fade>
-        </Modal>
-        {/* <div className='.crop-container'> */}
-        {/* <img src={`data:image/png;base64,${props.UserPicture}`} className='avatar-crop'/> */}
-        {/* </div> */}
+                <Typography
+                  id="transition-modal-title"
+                  variant="h6"
+                  component="h2"
+                >
+                  Text in a modal
+                </Typography>
+              </Box>
+            </Fade>
+          </Modal>
+        </Box>
       </Box>
-    </Box>
+    </Grid>
   );
 };
 

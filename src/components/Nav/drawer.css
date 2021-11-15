@@ -1,8 +1,0 @@
-.logo{
-    width: 50%;
-    height: auto;
-    display: flex;         /* NEW, Spec - Firefox, Chrome, Opera */
-  
-    justify-content: center;
-    align-items: center;
-}

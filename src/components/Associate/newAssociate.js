@@ -6,7 +6,7 @@ import {
   updateAssociatesContext,
   departmentsContext,
 } from "../../utils/context/contexts";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogActions,
@@ -522,7 +522,7 @@ const StepThree = ({ id }) => {
     setOpen(false);
   };
   const [open, setOpen] = useState();
-  const history = useHistory();
+  const history = useNavigate();
 
   return (
     <div>
@@ -541,11 +541,11 @@ const StepThree = ({ id }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => history.push(`/Associates/`)}>
+          <Button onClick={() => history(`/associates/`)}>
             All Associates
           </Button>
           <Button
-            onClick={() => history.push(`/Associates/${id}`)}
+            onClick={() => history(`/dashboard/associates/${id}`)}
             color="success"
           >
             See new Associate profile

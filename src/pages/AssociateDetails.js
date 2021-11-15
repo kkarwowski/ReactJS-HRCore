@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogContentText,
 } from "@mui/material";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { associateContext, editedContext } from "../utils/context/contexts";
 import { db } from "../utils/firebase";
 import { getDoc, doc } from "firebase/firestore";
@@ -17,7 +17,7 @@ import { getDoc, doc } from "firebase/firestore";
 const AssociateDetails = () => {
   const { id } = useParams();
   const [associateData, setAssociateData] = useState();
-  const history = useHistory();
+  const history = useNavigate();
   const [edited, setEdited] = useState(false);
   const [warn, setWarn] = useState(false);
   useEffect(() => {
@@ -38,7 +38,7 @@ const AssociateDetails = () => {
     if (edited) {
       setWarn(true);
     } else {
-      history.push("/Associates");
+      history("/dashboard/associates");
     }
   };
   const handleClickOpen = () => {
@@ -76,7 +76,10 @@ const AssociateDetails = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={() => handleClose()}>Stay and Save</Button>
-              <Button onClick={() => history.push(`/Associates`)} color="error">
+              <Button
+                onClick={() => history("/dashboard/associates")}
+                color="error"
+              >
                 Cancel Changes
               </Button>
             </DialogActions>

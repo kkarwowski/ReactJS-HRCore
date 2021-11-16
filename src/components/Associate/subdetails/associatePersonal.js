@@ -31,7 +31,7 @@ const AssociateInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { allOffices } = useContext(officesContext);
   const { edited, setEdited } = useContext(editedContext);
-  const { updatedAssociate, setUpdateAssociate } = useContext(
+  const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
   );
   const [isUpdating, setIsUpdating] = useState(false);
@@ -42,29 +42,27 @@ const AssociateInfo = () => {
 
   useEffect(() => {
     const copyAssociate = async () => {
-      setUpdateAssociate(associateData);
+      setUpdatedAssociate(associateData);
     };
     copyAssociate();
   }, []);
 
   const onUpdate = (event) => {
     setEdited(true);
-    setUpdateAssociate({
+    setUpdatedAssociate({
       ...updatedAssociate,
       [event.target.name]: event.target.value,
     });
-    console.log(updatedAssociate);
   };
   const onUpdateNested = (event) => {
     setEdited(true);
-    setUpdateAssociate({
+    setUpdatedAssociate({
       ...updatedAssociate,
       PostalAddress: {
         ...updatedAssociate.PostalAddress,
         [event.target.name]: event.target.value,
       },
     });
-    console.log(updatedAssociate);
   };
 
   const updateFirebaseAndState = async () => {
@@ -88,24 +86,7 @@ const AssociateInfo = () => {
         direction="row"
         justifyContent="flex-end"
         alignItems="flex-end"
-      >
-        <Grid Item>
-          {edited && (
-            <FormControl>
-              <LoadingButton
-                color="secondary"
-                onClick={() => updateFirebaseAndState()}
-                loading={isUpdating}
-                loadingPosition="start"
-                startIcon={<SaveIcon />}
-                variant="contained"
-              >
-                Save
-              </LoadingButton>
-            </FormControl>
-          )}
-        </Grid>
-      </Grid>
+      ></Grid>
       <Typography variant="inherit">Personal</Typography>
       <Divider variant="middle" sx={{ pb: 2 }} />
       <FormControl>

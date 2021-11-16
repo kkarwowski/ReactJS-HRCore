@@ -39,6 +39,7 @@ import AssociateDocuments from "./subdetails/associateDocuments";
 import AssociateEmergencyInfo from "./subdetails/associateEmergency";
 import { db } from "../../utils/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
+import AssociateNotes from "./subdetails/associateNotes";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,7 +78,6 @@ const AssociateHeader = () => {
   const { setUpdateAssociates } = useContext(updateAssociatesContext);
   const [value, setValue] = useState(0);
   const { associateData } = useContext(associateContext);
-  const [updatedAssociate, setUpdateAssociate] = useState({});
   const history = useNavigate();
 
   const handleChangetoTab = (event, newValue) => {
@@ -133,184 +133,176 @@ const AssociateHeader = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <updatedAssociateContext.Provider
-        value={{ updatedAssociate, setUpdateAssociate }}
+
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        rowSpacing={2}
+        columnSpacing={2}
+        p={2}
+        pt={3}
+        pb={4}
       >
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          rowSpacing={2}
-          columnSpacing={2}
-          p={2}
-          pt={3}
-          pb={4}
-        >
-          <Grid item xs={12} lg={12}>
-            <Card>
-              <Grid
-                container
-                columnSpacing={7}
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-              >
-                <Grid item xs={12} lg={2} sx={{ pl: 3 }}>
-                  <AssociatePic />
-                </Grid>
-                <Grid item xs={12} lg={10}>
-                  <CardContent>
-                    <Grid
-                      container
-                      direction="column"
-                      columnSpacing={1}
-                      justifyContent="space-between"
-                      alignItems="flex-start"
-                    >
-                      <Grid item>
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="flex-start"
-                          alignItems="flex-start"
-                        >
-                          <Grid item>
-                            <Typography variant="h3">
-                              {associateData.FirstName} {associateData.LastName}
-                            </Typography>
-                          </Grid>
-                          <Grid item sx={{ pl: 1 }}>
-                            <Label
-                              variant="ghost"
-                              color={
-                                (associateData.EmplStatus === "Terminated" &&
-                                  "error") ||
-                                "success"
-                              }
-                            >
-                              {sentenceCase(associateData.EmplStatus)}
-                            </Label>
-                          </Grid>
+        <Grid item xs={12} lg={12}>
+          <Card>
+            <Grid
+              container
+              columnSpacing={7}
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Grid item xs={12} lg={2} sx={{ pl: 3 }}>
+                <AssociatePic />
+              </Grid>
+              <Grid item xs={12} lg={10}>
+                <CardContent>
+                  <Grid
+                    container
+                    direction="column"
+                    columnSpacing={1}
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                  >
+                    <Grid item>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                      >
+                        <Grid item>
+                          <Typography variant="h3">
+                            {associateData.FirstName} {associateData.LastName}
+                          </Typography>
                         </Grid>
-                        <Typography variant="h6">
-                          {associateData.Title}
-                        </Typography>
-                        <br />
-                        {associateData.Department} |{" "}
-                        {associateData.PostalAddress.City}
-                      </Grid>
-                      <Grid item sx={{ pt: 3 }}>
-                        <p>Started {dateDiffYears} years ago </p>
-                      </Grid>
-                      {/* Icons */}
-                      <Grid item>
-                        <Grid
-                          container
-                          direction="rows"
-                          alignContent="center"
-                          justifyItems="center"
-                          sx={{ pt: 3 }}
-                        >
-                          <Grid item Item xs={6}>
-                            <Link
-                              target="_blank"
-                              href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}
-                            >
-                              <img
-                                src="https://img.icons8.com/fluency/30/000000/microsoft-teams-2019.png"
-                                sx={{ pr: 2 }}
-                              />
-                            </Link>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <Link href={`mailto:${associateData.WorkEmail}`}>
-                              <EmailIcon fontSize="large" />
-                            </Link>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                      {/* Tab Menu*/}
-                      <Grid item>
-                        <Box
-                          sx={{
-                            borderBottom: 1,
-                            borderColor: "divider",
-                            pt: 3,
-                          }}
-                        >
-                          <Tabs
-                            value={value}
-                            onChange={handleChangetoTab}
-                            aria-label="basic tabs example"
+                        <Grid item sx={{ pl: 1 }}>
+                          <Label
+                            variant="ghost"
+                            color={
+                              (associateData.EmplStatus === "Terminated" &&
+                                "error") ||
+                              "success"
+                            }
                           >
-                            <Tab label="Personal" {...a11yProps(0)} />
-                            <Tab label="Emergency Info" {...a11yProps(1)} />
-                            <Tab label="Notes" {...a11yProps(2)} />
-                            <Tab label="Documents" {...a11yProps(3)} />
-                          </Tabs>
-                        </Box>
+                            {sentenceCase(associateData.EmplStatus)}
+                          </Label>
+                        </Grid>
+                      </Grid>
+                      <Typography variant="h6">
+                        {associateData.Title}
+                      </Typography>
+                      <br />
+                      {associateData.Department} |{" "}
+                      {associateData.PostalAddress.City}
+                    </Grid>
+                    <Grid item sx={{ pt: 3 }}>
+                      <p>Started {dateDiffYears} years ago </p>
+                    </Grid>
+                    {/* Icons */}
+                    <Grid item>
+                      <Grid
+                        container
+                        direction="rows"
+                        alignContent="center"
+                        justifyItems="center"
+                        sx={{ pt: 3 }}
+                      >
+                        <Grid item Item xs={6}>
+                          <Link
+                            target="_blank"
+                            href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}
+                          >
+                            <img
+                              src="https://img.icons8.com/fluency/30/000000/microsoft-teams-2019.png"
+                              sx={{ pr: 2 }}
+                            />
+                          </Link>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Link href={`mailto:${associateData.WorkEmail}`}>
+                            <EmailIcon fontSize="large" />
+                          </Link>
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </CardContent>
-                </Grid>
+                    {/* Tab Menu*/}
+                    <Grid item>
+                      <Box
+                        sx={{
+                          borderBottom: 1,
+                          borderColor: "divider",
+                          pt: 3,
+                        }}
+                      >
+                        <Tabs
+                          value={value}
+                          onChange={handleChangetoTab}
+                          aria-label="basic tabs example"
+                          variant="scrollable"
+                          scrollButtons="auto"
+                          scrollButtons={true}
+                          allowScrollButtonsMobile
+                          aria-label="scrollable auto tabs example"
+                        >
+                          <Tab label="Personal" {...a11yProps(0)} />
+                          <Tab label="Emergency Info" {...a11yProps(1)} />
+                          <Tab label="Notes" {...a11yProps(2)} />
+                          <Tab label="Documents" {...a11yProps(3)} />
+                        </Tabs>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </CardContent>
               </Grid>
-            </Card>
-          </Grid>
-
-          {/* Tab Panels in seperate card*/}
-
-          <Grid item xs={12} md={6} lg={2.5}>
-            <Card>{associateData && <AssociateSubdetails />}</Card>
-          </Grid>
-          <Grid item xs={12} md={6} lg={9.5}>
-            <Card>
-              <TabPanel value={value} index={0}>
-                <AssociateInfo />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <AssociateEmergencyInfo />
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                <div>
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="Notes"
-                    multiline
-                    defaultValue={"sdfsdfdf"}
-                    maxRows={8}
-                    rows={8}
-                    fullWidth
-                    // onChange={handleChange}
-                  />
-                </div>
-              </TabPanel>
-              <TabPanel value={value} index={3}>
-                <AssociateDocuments userID={associateData.id} />
-              </TabPanel>
-            </Card>
-          </Grid>
-          <Grid
-            container
-            direction="column"
-            justifyContent="flex-end"
-            alignItems="flex-end"
-            pt={4}
-            pb={5}
-          >
-            <Grid item sx={12}>
-              <Button
-                type="button"
-                variant="contained"
-                color="error"
-                onClick={() => handleClickOpen()}
-              >
-                Delete Associate
-              </Button>
             </Grid>
+          </Card>
+        </Grid>
+
+        {/* Tab Panels in seperate card*/}
+
+        <Grid item xs={12} md={6} lg={2.5}>
+          <Card>{associateData && <AssociateSubdetails />}</Card>
+        </Grid>
+        <Grid item xs={12} md={6} lg={9.5}>
+          <Card>
+            <TabPanel value={value} index={0}>
+              <AssociateInfo />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <AssociateEmergencyInfo />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              <AssociateNotes />
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+              <AssociateDocuments userID={associateData.id} />
+            </TabPanel>
+          </Card>
+        </Grid>
+        <Grid
+          container
+          direction="column"
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          pt={4}
+          pb={5}
+        >
+          <Grid item sx={12}>
+            <Button
+              type="button"
+              variant="contained"
+              color="error"
+              onClick={() => handleClickOpen()}
+            >
+              Delete Associate
+            </Button>
           </Grid>
         </Grid>
-      </updatedAssociateContext.Provider>
+      </Grid>
+      {/* </updatedAssociateContext.Provider> */}
     </>
   );
 };

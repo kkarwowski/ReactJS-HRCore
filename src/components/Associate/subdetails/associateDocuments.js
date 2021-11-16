@@ -33,7 +33,7 @@ import filePdfBox from "@iconify/icons-mdi/file-pdf-box";
 import fileExcelBox from "@iconify/icons-mdi/file-excel-box";
 import fileWordBox from "@iconify/icons-mdi/file-word-box";
 import imageIcon from "@iconify/icons-mdi/image";
-
+import Scrollbar from "../../Scrollbar";
 const TABLE_HEAD = [
   { id: "fileName", label: "Name", alignRight: false },
   { id: "size", label: "Size", alignRight: false },
@@ -291,7 +291,7 @@ const AssociateDocuments = ({ userID }) => {
           onClose={() => setAlert(false)}
           sx={{ width: "100%", mt: 7 }}
         >
-          File of this name detected. Please rename your file and upload again!
+          File of this name already exists. Please rename your file and upload again!
         </Alert>
       </Snackbar>
       <Snackbar
@@ -333,6 +333,7 @@ const AssociateDocuments = ({ userID }) => {
             onSelectFile={onSelectFile}
             onDeleteFiles={onDeleteFiles}
           />
+          <Scrollbar>
           <TableContainer sx={{ minWidth: 800 }}>
             {fileList && (
               <Table>
@@ -349,7 +350,7 @@ const AssociateDocuments = ({ userID }) => {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { fullPath, fileName, size, type, uploadDate } =
+                      const { fileName, size, type, uploadDate } =
                         row;
                       const isItemSelected = selected.indexOf(fileName) !== -1;
                       const formattedDate = new Date(uploadDate);
@@ -427,6 +428,7 @@ const AssociateDocuments = ({ userID }) => {
               </Table>
             )}
           </TableContainer>
+          </Scrollbar>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"

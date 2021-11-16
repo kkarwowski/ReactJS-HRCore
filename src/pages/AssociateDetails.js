@@ -16,9 +16,11 @@ import {
   associateContext,
   editedContext,
   loadingContext,
+  updatedAssociateContext,
+  updateAssociatesContext,
 } from "../utils/context/contexts";
 import { db } from "../utils/firebase";
-import { getDoc, doc, onSnapshot } from "firebase/firestore";
+import { getDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
 
 const AssociateDetails = () => {
   const { loadingProgress, setLoadingProgress } = useContext(loadingContext);
@@ -28,6 +30,10 @@ const AssociateDetails = () => {
   const [edited, setEdited] = useState(false);
   const [warn, setWarn] = useState(false);
 
+  const [updatedAssociate, setUpdatedAssociate] = useState({});
+  const { updateAssociates, setUpdateAssociates } = useContext(
+    updateAssociatesContext
+  );
   useEffect(() => {
     const getAssociate = async () => {
       const associateFromServer = await fetchDetails();
@@ -57,48 +63,70 @@ const AssociateDetails = () => {
   const handleClose = () => {
     setWarn(false);
   };
+
+  const updateFirebaseAndState = async () => {
+    // setIsUpdating(true);
+    const result = await setDoc(
+      doc(db, "Associates", `${associateData.id}`),
+      updatedAssociate
+    );
+    setAssociateData(updatedAssociate);
+    setEdited(false);
+    setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+    // setIsUpdating(false);
+  };
   return (
     <>
-      <associateContext.Provider value={{ associateData, setAssociateData }}>
-        <editedContext.Provider value={{ edited, setEdited }}>
-          <Fab color="primary" aria-label="add">
-            <SaveIcon />
-          </Fab>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={handleBack}
-            size="medium"
-          >
-            Back
-          </Button>
-          <Dialog
-            open={warn}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"You have unsaved data!"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Please save your data or it will be lost.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => handleClose()}>Stay and Save</Button>
-              <Button
-                onClick={() => history("/dashboard/associates")}
-                color="error"
+      <updatedAssociateContext.Provider
+        value={{ updatedAssociate, setUpdatedAssociate }}
+      >
+        <associateContext.Provider value={{ associateData, setAssociateData }}>
+          <editedContext.Provider value={{ edited, setEdited }}>
+            {edited && (
+              <Fab
+                color="primary"
+                aria-label="add"
+                onClick={() => updateFirebaseAndState()}
               >
-                Cancel Changes
-              </Button>
-            </DialogActions>
-          </Dialog>
-          {associateData && <AssociateHeader />}
-        </editedContext.Provider>
-      </associateContext.Provider>
+                <SaveIcon />
+              </Fab>
+            )}
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleBack}
+              size="medium"
+            >
+              Back
+            </Button>
+            <Dialog
+              open={warn}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"You have unsaved data!"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Please save your data or it will be lost.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => handleClose()}>Stay and Save</Button>
+                <Button
+                  onClick={() => history("/dashboard/associates")}
+                  color="error"
+                >
+                  Cancel Changes
+                </Button>
+              </DialogActions>
+            </Dialog>
+            {associateData && <AssociateHeader />}
+          </editedContext.Provider>
+        </associateContext.Provider>
+      </updatedAssociateContext.Provider>
     </>
   );
 };

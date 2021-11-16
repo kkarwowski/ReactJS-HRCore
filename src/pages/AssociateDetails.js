@@ -1,5 +1,5 @@
 import AssociateHeader from "../components/Associate/associateHeader";
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
   Button,
@@ -8,18 +8,26 @@ import {
   DialogContent,
   DialogTitle,
   DialogContentText,
+  Fab,
 } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
 import { useNavigate } from "react-router-dom";
-import { associateContext, editedContext } from "../utils/context/contexts";
+import {
+  associateContext,
+  editedContext,
+  loadingContext,
+} from "../utils/context/contexts";
 import { db } from "../utils/firebase";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, onSnapshot } from "firebase/firestore";
 
 const AssociateDetails = () => {
+  const { loadingProgress, setLoadingProgress } = useContext(loadingContext);
   const { id } = useParams();
   const [associateData, setAssociateData] = useState();
   const history = useNavigate();
   const [edited, setEdited] = useState(false);
   const [warn, setWarn] = useState(false);
+
   useEffect(() => {
     const getAssociate = async () => {
       const associateFromServer = await fetchDetails();
@@ -30,6 +38,7 @@ const AssociateDetails = () => {
 
   const fetchDetails = async () => {
     const associateCollectionRef = doc(db, "Associates", id);
+    setLoadingProgress(true);
     const data = await getDoc(associateCollectionRef);
     return data.data();
   };
@@ -52,6 +61,9 @@ const AssociateDetails = () => {
     <>
       <associateContext.Provider value={{ associateData, setAssociateData }}>
         <editedContext.Provider value={{ edited, setEdited }}>
+          <Fab color="primary" aria-label="add">
+            <SaveIcon />
+          </Fab>
           <Button
             variant="contained"
             size="large"

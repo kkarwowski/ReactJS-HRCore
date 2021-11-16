@@ -5,6 +5,7 @@ import UserListHead from "../components/Associates/UserListHead";
 import UserListToolbar from "../components/Associates/UserListToolbar";
 import Label from "../components/Label";
 import { Link } from "react-router-dom";
+import Scrollbar from "../components/Scrollbar";
 import { sentenceCase } from "change-case";
 import {
   Card,
@@ -144,6 +145,7 @@ const Associates = () => {
                 setChecked={setChecked}
                 checked={checked}
               />
+              <Scrollbar>
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
                   <UserListHead
@@ -239,6 +241,7 @@ const Associates = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              </Scrollbar>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"

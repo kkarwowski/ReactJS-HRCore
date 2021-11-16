@@ -29,6 +29,7 @@ import {
   Button,
   Select,
 } from "@mui/material";
+
 import * as moment from "moment";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -70,6 +71,7 @@ export default function NewAssociate() {
     City: "",
     PhoneNumber: "",
   });
+  const history = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -118,7 +120,16 @@ export default function NewAssociate() {
         <Typography variant="h3" sx={{ pb: 5 }}>
           Add new Associate
         </Typography>
-        <Card>
+        <Button
+            variant="contained"
+            size="large"
+            onClick={()=>history("/dashboard/associates")}
+            size="medium"
+            
+          >
+            Back
+          </Button>
+        <Card  sx={{  mt:2 }}>
           <Stepper
             activeStep={currentStep}
             alternativeLabel

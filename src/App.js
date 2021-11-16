@@ -1,9 +1,6 @@
 import ThemeConfig from "./theme";
 import GlobalStyles from "./theme/globalStyles";
-import { Typography } from "@mui/material";
 import Router from './routes';
-// import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
-// import PermanentDrawerLeft from "./components/Nav/drawer";
 import {
   associatesContext,
   officesContext,
@@ -22,7 +19,7 @@ function App() {
   const [allOffices, setOffices] = useState([]);
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
-  // const firebaseui = require("firebaseui");
+
   useEffect(
     (associateCollectionRef) => {
       document.title = "HR Core";
@@ -71,7 +68,6 @@ function App() {
                   <ThemeConfig>
                     <GlobalStyles />
                     <Router />
-                    {/* <PermanentDrawerLeft /> */}
                   </ThemeConfig>
                 </departmentsContext.Provider>
               </officesContext.Provider>

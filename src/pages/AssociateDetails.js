@@ -64,6 +64,22 @@ const AssociateDetails = () => {
     setWarn(false);
   };
 
+  useEffect(() => {
+    matchUpdatedAndCurrent();
+  }, [updatedAssociate]);
+
+  const matchUpdatedAndCurrent = () => {
+    console.log("updated",updatedAssociate);
+    console.log("associate",associateData);
+
+    if (associateData !== updatedAssociate) {
+      console.log("different");
+      setEdited(true);
+    } else {
+      console.log("same");
+      setEdited(false);
+    }
+  };
   const updateFirebaseAndState = async () => {
     // setIsUpdating(true);
     const result = await setDoc(
@@ -82,6 +98,18 @@ const AssociateDetails = () => {
       >
         <associateContext.Provider value={{ associateData, setAssociateData }}>
           <editedContext.Provider value={{ edited, setEdited }}>
+            <Button
+              onClick={() =>
+                console.log(
+                  "updated",
+                  updatedAssociate,
+                  "associateData",
+                  associateData
+                )
+              }
+            >
+              Log
+            </Button>
             {edited && (
               <Fab
                 color="primary"

@@ -22,10 +22,6 @@ import {
   updatedAssociateContext,
 } from "../../../utils/context/contexts";
 import { useContext, useState, useEffect } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../utils/firebase";
-import * as moment from "moment";
-import SaveIcon from "@mui/icons-material/Save";
 
 const AssociateInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
@@ -47,8 +43,8 @@ const AssociateInfo = () => {
     copyAssociate();
   }, []);
 
-  const onUpdate = (event) => {
-    setEdited(true);
+  const onUpdate = async (event) => {
+    console.log(event.target.value);
     setUpdatedAssociate({
       ...updatedAssociate,
       [event.target.name]: event.target.value,
@@ -63,18 +59,6 @@ const AssociateInfo = () => {
         [event.target.name]: event.target.value,
       },
     });
-  };
-
-  const updateFirebaseAndState = async () => {
-    setIsUpdating(true);
-    const result = await setDoc(
-      doc(db, "Associates", `${associateData.id}`),
-      updatedAssociate
-    );
-    setAssociateData(updatedAssociate);
-    setEdited(false);
-    setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-    setIsUpdating(false);
   };
 
   return (
@@ -172,6 +156,7 @@ const AssociateInfo = () => {
 
           <Grid item item xs={3} xm={3}>
             <TextField
+              size="small"
               style={{ width: "100%" }}
               value={associateData.EmplStatus}
               onChange={(e) => onUpdate(e)}
@@ -190,6 +175,7 @@ const AssociateInfo = () => {
           {allOffices && (
             <Grid item>
               <TextField
+                size="small"
                 value={associateData.Office}
                 onChange={(e) => onUpdate(e)}
                 select // tell TextField to render select
@@ -212,6 +198,7 @@ const AssociateInfo = () => {
               select // tell TextField to render select
               name="Gender"
               label="Gender"
+              size="small"
             >
               <MenuItem key={1} value="Male">
                 Male
@@ -224,6 +211,7 @@ const AssociateInfo = () => {
           <Grid item>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                size="small"
                 label="Start Date"
                 name="StartDate"
                 value={associateData.StartDate}

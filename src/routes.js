@@ -42,9 +42,9 @@ export default function Router() {
       children: [
         { path: "login", element: <Login /> },
         // { path: 'register', element: <Register /> },
-        { path: "error", element: <NotFound /> },
+        // { path: "error", element: <NotFound /> },
         { path: "/", element: <Navigate to="/login" /> },
-        { path: "*", element: <Navigate to="/error" /> },
+        // { path: "*", element: <Navigate to="/error" /> },
       ],
     },
     { path: "*", element: <Navigate to="/error" replace /> },

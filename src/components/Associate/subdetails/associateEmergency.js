@@ -16,7 +16,7 @@ import { db } from "../../../utils/firebase";
 
 const AssociateEmergencyInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
-  const { updatedAssociate, setUpdateAssociate } = useContext(
+  const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
   );
 
@@ -31,7 +31,7 @@ const AssociateEmergencyInfo = () => {
   };
   const onUpdateNested = (event) => {
     setEdited(true);
-    setUpdateAssociate({
+    setUpdatedAssociate({
       ...updatedAssociate,
       emergencyInfo: {
         ...updatedAssociate.emergencyInfo,

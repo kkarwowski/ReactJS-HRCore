@@ -75,7 +75,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 const AssociateDocuments = ({ userID }) => {
-  console.log("userID", userID);
   const [isLoading, setLoading] = useState(false);
   // const { associateData } = useContext(associateContext);
   const prettyBytes = require("pretty-bytes");
@@ -104,7 +103,6 @@ const AssociateDocuments = ({ userID }) => {
 
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
-      console.log("deleting file =", filename);
       setFileList(fileList.filter((file) => file.fileName !== filename));
       deleteFileFromFirebase(filename);
     });
@@ -146,7 +144,7 @@ const AssociateDocuments = ({ userID }) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setLoadingProgress(progress);
-        console.log("Upload is " + progress + "% done");
+        // console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case "paused":
             console.log("Upload is paused");
@@ -163,7 +161,6 @@ const AssociateDocuments = ({ userID }) => {
         // Handle successful uploads on complete
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setLoadingProgress(null);
-          console.log("File available at", downloadURL);
           GetMetadata(uploadTask.snapshot.ref);
           setUploadSuccess(true);
         });
@@ -244,7 +241,6 @@ const AssociateDocuments = ({ userID }) => {
 
   const handleSelectFile = (event, name) => {
     const selectedIndex = selected.indexOf(name);
-    console.log("selected", name);
     let newSelected = [];
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
@@ -259,7 +255,6 @@ const AssociateDocuments = ({ userID }) => {
       );
     }
     setSelected(newSelected);
-    console.log(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -291,7 +286,8 @@ const AssociateDocuments = ({ userID }) => {
           onClose={() => setAlert(false)}
           sx={{ width: "100%", mt: 7 }}
         >
-          File of this name already exists. Please rename your file and upload again!
+          File of this name already exists. Please rename your file and upload
+          again!
         </Alert>
       </Snackbar>
       <Snackbar
@@ -334,100 +330,104 @@ const AssociateDocuments = ({ userID }) => {
             onDeleteFiles={onDeleteFiles}
           />
           <Scrollbar>
-          <TableContainer sx={{ minWidth: 800 }}>
-            {fileList && (
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={fileList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { fileName, size, type, uploadDate } =
-                        row;
-                      const isItemSelected = selected.indexOf(fileName) !== -1;
-                      const formattedDate = new Date(uploadDate);
-                      return (
-                        <TableRow
-                          hover
-                          key={fileName}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) =>
-                                handleSelectFile(event, fileName)
-                              }
-                            />
-                          </TableCell>
-                          <TableCell align="left">{fileName}</TableCell>
-                          <TableCell align="left">{size}</TableCell>
-                          <TableCell align="left">
-                            {type == "application/pdf" ? (
-                              <Icon
-                                icon={filePdfBox}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : type == "image/png" || type == "image/jpeg" ? (
-                              <Icon
-                                icon={imageIcon}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : type ==
-                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
-                              <Icon
-                                icon={fileExcelBox}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : type ==
-                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
-                              <Icon
-                                icon={fileWordBox}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : (
-                              type
-                            )}
-                          </TableCell>
-                          <TableCell align="left">
-                            {formattedDate.toLocaleDateString()}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
+            <TableContainer sx={{ minWidth: 800 }}>
+              {fileList && (
+                <Table>
+                  <UserListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={fileList.length}
+                    numSelected={selected.length}
+                    onRequestSort={handleRequestSort}
+                    onSelectAllClick={handleSelectAllClick}
+                  />
                   <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        {/* <SearchNotFound searchQuery={filterName} /> */}
-                      </TableCell>
-                    </TableRow>
+                    {filteredUsers
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => {
+                        const { fileName, size, type, uploadDate } = row;
+                        const isItemSelected =
+                          selected.indexOf(fileName) !== -1;
+                        const formattedDate = new Date(uploadDate);
+                        return (
+                          <TableRow
+                            hover
+                            key={fileName}
+                            tabIndex={-1}
+                            role="checkbox"
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={isItemSelected}
+                                onChange={(event) =>
+                                  handleSelectFile(event, fileName)
+                                }
+                              />
+                            </TableCell>
+                            <TableCell align="left">{fileName}</TableCell>
+                            <TableCell align="left">{size}</TableCell>
+                            <TableCell align="left">
+                              {type == "application/pdf" ? (
+                                <Icon
+                                  icon={filePdfBox}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : type == "image/png" ||
+                                type == "image/jpeg" ? (
+                                <Icon
+                                  icon={imageIcon}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : type ==
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                                <Icon
+                                  icon={fileExcelBox}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : type ==
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
+                                <Icon
+                                  icon={fileWordBox}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : (
+                                type
+                              )}
+                            </TableCell>
+                            <TableCell align="left">
+                              {formattedDate.toLocaleDateString()}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
                   </TableBody>
-                )}
-              </Table>
-            )}
-          </TableContainer>
+                  {isUserNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          {/* <SearchNotFound searchQuery={filterName} /> */}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              )}
+            </TableContainer>
           </Scrollbar>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}

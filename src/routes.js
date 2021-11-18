@@ -4,7 +4,7 @@ import DashboardLayout from "./layouts/dashboard";
 import LogoOnlyLayout from "./layouts/LogoOnlyLayout";
 //
 import Login from "./pages/Login";
-// import Register from './pages/Register';
+import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import { useAuth } from "./utils/context/AuthContext";
 
@@ -27,6 +27,8 @@ export default function Router() {
         { path: "associates", element: <Associates /> },
         { path: "associates/:id", element: <AssociateDetails /> },
         { path: "associates/newassociate", element: <NewAssociate /> },
+        { path: "register", element: <SignUp /> },
+
         { path: "*", element: <Navigate to="/error" /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> }

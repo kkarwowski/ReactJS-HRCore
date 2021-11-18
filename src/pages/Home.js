@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Container, Typography, Button } from "@mui/material";
 import { useQuery } from "react-query";
-
+import DepartmentGraph from "../components/Graphs/departmentGraph";
 // import associatesjson from "../Offices.json"
 // import { AssociatesService } from "../utils/DatabseServices";
 import { DataUsageRounded } from "@mui/icons-material";
@@ -19,21 +19,21 @@ const Home = () => {
         Hi, Welcome back
       </Typography>
       <Grid container spacing={3}>
-        {/* <Grid Grid item xs={12} sm={6} md={3}>
-          <TotalEmployed/>
+        {/* {/* <Grid Grid item xs={12} sm={6} md={3}> */}
+        {/* <TotalEmployed/>
         </Grid>
         <Grid Grid item xs={12} sm={6} md={3}>
           <TotalEmployed/>
         </Grid>
         <Grid Grid item xs={12} sm={6} md={3}>
           <TotalEmployed/>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <OfficeGraph/>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <DepartmentGraph/>
         </Grid> */}
+        {/* <Grid item xs={12} md={6} lg={4}>
+          <OfficeGraph />
+        </Grid> */}
+        <Grid item xs={12} md={6} lg={4}>
+          <DepartmentGraph />
+        </Grid>
       </Grid>
     </Container>
   );

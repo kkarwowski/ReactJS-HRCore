@@ -100,7 +100,7 @@ export default function UserListToolbar({
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={onDeleteFiles}>
-            <Icon icon={trash2Fill} />
+            <Icon icon={trash2Fill} color="red" />
           </IconButton>
         </Tooltip>
       ) : (

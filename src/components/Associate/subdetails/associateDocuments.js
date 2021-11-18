@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import { filter } from "lodash";
 import {
@@ -68,7 +68,8 @@ function applySortFilter(array, comparator, query) {
   if (query) {
     return filter(
       array,
-      (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      (_user) =>
+        _user.fileName.toLowerCase().indexOf(query.toLowerCase()) !== -1
     );
   }
   return stabilizedThis.map((el) => el[0]);
@@ -329,106 +330,101 @@ const AssociateDocuments = ({ userID }) => {
             onSelectFile={onSelectFile}
             onDeleteFiles={onDeleteFiles}
           />
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              {fileList && (
-                <Table>
-                  <UserListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={fileList.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                    onSelectAllClick={handleSelectAllClick}
-                  />
-                  <TableBody>
-                    {filteredUsers
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row) => {
-                        const { fileName, size, type, uploadDate } = row;
-                        const isItemSelected =
-                          selected.indexOf(fileName) !== -1;
-                        const formattedDate = new Date(uploadDate);
-                        return (
-                          <TableRow
-                            hover
-                            key={fileName}
-                            tabIndex={-1}
-                            role="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) =>
-                                  handleSelectFile(event, fileName)
-                                }
+          {/* <Scrollbar> */}
+          <TableContainer sx={{ minWidth: 800, minHeight: 100 }}>
+            {fileList && (
+              <Table>
+                <UserListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={fileList.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
+                />
+                <TableBody>
+                  {filteredUsers
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      const { fileName, size, type, uploadDate } = row;
+                      const isItemSelected = selected.indexOf(fileName) !== -1;
+                      const formattedDate = new Date(uploadDate);
+                      return (
+                        <TableRow
+                          hover
+                          key={fileName}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onChange={(event) =>
+                                handleSelectFile(event, fileName)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell align="left">{fileName}</TableCell>
+                          <TableCell align="left">{size}</TableCell>
+                          <TableCell align="left">
+                            {type == "application/pdf" ? (
+                              <Icon
+                                icon={filePdfBox}
+                                width={iconSize.width}
+                                height={iconSize.height}
                               />
-                            </TableCell>
-                            <TableCell align="left">{fileName}</TableCell>
-                            <TableCell align="left">{size}</TableCell>
-                            <TableCell align="left">
-                              {type == "application/pdf" ? (
-                                <Icon
-                                  icon={filePdfBox}
-                                  width={iconSize.width}
-                                  height={iconSize.height}
-                                />
-                              ) : type == "image/png" ||
-                                type == "image/jpeg" ? (
-                                <Icon
-                                  icon={imageIcon}
-                                  width={iconSize.width}
-                                  height={iconSize.height}
-                                />
-                              ) : type ==
-                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
-                                <Icon
-                                  icon={fileExcelBox}
-                                  width={iconSize.width}
-                                  height={iconSize.height}
-                                />
-                              ) : type ==
-                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
-                                <Icon
-                                  icon={fileWordBox}
-                                  width={iconSize.width}
-                                  height={iconSize.height}
-                                />
-                              ) : (
-                                type
-                              )}
-                            </TableCell>
-                            <TableCell align="left">
-                              {formattedDate.toLocaleDateString()}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-                  {isUserNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          {/* <SearchNotFound searchQuery={filterName} /> */}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
+                            ) : type == "image/png" || type == "image/jpeg" ? (
+                              <Icon
+                                icon={imageIcon}
+                                width={iconSize.width}
+                                height={iconSize.height}
+                              />
+                            ) : type ==
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                              <Icon
+                                icon={fileExcelBox}
+                                width={iconSize.width}
+                                height={iconSize.height}
+                              />
+                            ) : type ==
+                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
+                              <Icon
+                                icon={fileWordBox}
+                                width={iconSize.width}
+                                height={iconSize.height}
+                              />
+                            ) : (
+                              type
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {formattedDate.toLocaleDateString()}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
                   )}
-                </Table>
-              )}
-            </TableContainer>
-          </Scrollbar>
+                </TableBody>
+                {isUserNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        {/* <SearchNotFound searchQuery={filterName} /> */}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            )}
+          </TableContainer>
+          {/* </Scrollbar> */}
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"

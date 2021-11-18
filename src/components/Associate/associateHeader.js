@@ -152,8 +152,9 @@ const AssociateHeader = () => {
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        // justifyContent="flex-start"
+        // alignItems="flex-start"
+        // alignContent="center"
         rowSpacing={2}
         columnSpacing={2}
         p={2}
@@ -166,10 +167,12 @@ const AssociateHeader = () => {
               container
               columnSpacing={7}
               direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
+              justifyContent="center"
+              alignItems="center"
+              alignContent="center"
+              p={2}
             >
-              <Grid item xs={12} lg={2} sx={{ pl: 3 }}>
+              <Grid item xs={12} lg={2} sx={{ pl: 10 }}>
                 <AssociatePic />
               </Grid>
               <Grid item xs={12} lg={10}>

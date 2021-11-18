@@ -110,25 +110,8 @@ const AssociatePic = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems={{ sx: "center", lg: "flex-start" }}
-      justifyContent="center"
-    >
-      <Box
-      // sx={{
-      //   display: "flex",
-      //   flexWrap: "wrap",
-      //   "& > :not(style)": {
-      //     // m: 1,
-      //     // pr: 2,
-      //     // pl: 3,
-      //     //   width: 400,
-      //     //   height: 400,
-      //   },
-      // }}
-      >
+    <Grid container direction="row" alignItems="center" justifyContent="center">
+      <Grid item xs={12} lg={12}>
         <Box sx={{ p: 0, pr: 1 }} dir="ltr">
           <label htmlFor="icon-button-file">
             <Input
@@ -215,7 +198,7 @@ const AssociatePic = () => {
             </Fade>
           </Modal>
         </Box>
-      </Box>
+      </Grid>
     </Grid>
   );
 };

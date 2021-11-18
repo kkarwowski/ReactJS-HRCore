@@ -4,14 +4,10 @@ import {
   Box,
   Grid,
   Container,
-  FormControl,
-  OutlinedInput,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  Paper,
   Card,
   TextField,
+  CardContent,
+  CardMedia,
 } from "@mui/material";
 import * as Yup from "yup";
 import { useAuth } from "../utils/context/AuthContext";
@@ -43,12 +39,12 @@ const Login = () => {
   const handleSubmit = async (values) => {
     console.log("submit", values);
     await login(values.Email, values.Password);
-    // resetForm();
   };
   const handleReset = async (values) => {
     console.log("reseting password");
     await resetUserPassword(values.Email);
   };
+
   return (
     <div>
       {isLoginScreen && (
@@ -72,79 +68,117 @@ const Login = () => {
             {({ values, validateOnMount }) => (
               <Form>
                 <Grid>
-                  <Box sx={{ p: 1, pb: 5, pt: 6 }}>
-                    <Card>
-                      <Grid>
+                  <Container>
+                    <Box
+                      sx={{
+                        p: 1,
+                        pb: 5,
+                        pt: 6,
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Card>
                         <Grid
-                          sx={{ p: 1, pb: 5, pt: 6 }}
                           container
-                          columnSpacing={1}
-                          rowSpacing={1}
                           direction="column"
-                          justifyItems="Center"
-                          alignItems="Center"
+                          justifyItems="center"
                         >
-                          <Grid item xs={12}>
-                            <Field
-                              as={TextField}
-                              label="Email"
-                              type="email"
-                              name="Email"
-                              fullWidth={true}
+                          <Grid item xs={12} xl={12}>
+                            <CardMedia
+                              component="img"
+                              sx={{ width: 400 }}
+                              image="/images/Data Arranging_Isometric.png"
+                              alt="Logo"
                             />
-                            <ErrorMessage name="Email" />
                           </Grid>
-                          <Grid item xs={12}>
-                            <Field
-                              fullWidth
-                              as={TextField}
-                              label="Password"
-                              type="password"
-                              name="Password"
-                            />
-                            <ErrorMessage name="Password" />
+                          <Grid item xs={12} xl={12}>
+                            <Box>
+                              {/* sx={{ display: "flex", flexDirection: "column" }} */}
+                              {/* sx={{ flex: "0 1 auto" }} */}
+                              <CardContent alignItems="center">
+                                <Grid>
+                                  <Grid
+                                    sx={{ p: 1, pb: 5, pt: 1 }}
+                                    container
+                                    columnSpacing={1}
+                                    rowSpacing={1}
+                                    direction="column"
+                                    justifyItems="Center"
+                                    alignItems="Center"
+                                  >
+                                    <Grid item xs={12}>
+                                      <Field
+                                        as={TextField}
+                                        label="Email"
+                                        type="email"
+                                        name="Email"
+                                        // fullWidth={true}
+                                      />
+                                      <Grid item xs={12}>
+                                        <ErrorMessage name="Email" />
+                                      </Grid>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                      <Field
+                                        // fullWidth
+                                        as={TextField}
+                                        label="Password"
+                                        type="password"
+                                        name="Password"
+                                      />
+                                      <Grid item xs={12}>
+                                        <ErrorMessage name="Password" />
+                                      </Grid>
+                                    </Grid>
+                                  </Grid>
+                                  <Grid
+                                    sx={{ p: 1, pb: 3 }}
+                                    container
+                                    columnSpacing={1}
+                                    rowSpacing={1}
+                                    direction="column"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                  >
+                                    <Grid item xs={12}>
+                                      <Button
+                                        type="button"
+                                        onClick={() =>
+                                          setIsLoginScreen(!isLoginScreen)
+                                        }
+                                      >
+                                        Forgot Password?
+                                      </Button>
+                                    </Grid>
+                                  </Grid>
+                                  <Grid
+                                    sx={{ p: 1, pb: 3 }}
+                                    container
+                                    columnSpacing={1}
+                                    rowSpacing={1}
+                                    direction="column"
+                                    justifyContent="Center"
+                                    alignItems="Center"
+                                  >
+                                    <Grid item xs={12} sm={12} lg={12}>
+                                      <Button
+                                        type="submit"
+                                        variant="contained"
+                                        // fullWidth={true}
+                                      >
+                                        Login
+                                      </Button>
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
+                              </CardContent>
+                            </Box>
                           </Grid>
                         </Grid>
-                        <Grid
-                          sx={{ p: 1, pb: 3 }}
-                          container
-                          columnSpacing={1}
-                          rowSpacing={1}
-                          direction="column"
-                          justifyContent="flex-end"
-                          alignItems="flex-end"
-                        >
-                          <Grid item xs={12}>
-                            <Button
-                              type="button"
-                              onClick={() => setIsLoginScreen(!isLoginScreen)}
-                            >
-                              Forgot Password?
-                            </Button>
-                          </Grid>
-                        </Grid>
-                        <Grid
-                          sx={{ p: 1, pb: 3 }}
-                          container
-                          columnSpacing={1}
-                          rowSpacing={1}
-                          direction="column"
-                          justifyContent="Center"
-                          alignItems="Center"
-                        >
-                          <Grid item xs={12} sm={12} lg={12}>
-                            <Button
-                              type="submit"
-                              variant="contained"
-                              fullWidth={true}
-                            >
-                              Login
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Card>
-                  </Box>
+                      </Card>
+                    </Box>
+                  </Container>
                 </Grid>
               </Form>
             )}

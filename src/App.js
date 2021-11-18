@@ -20,7 +20,7 @@ function App() {
   const [allOffices, setOffices] = useState([]);
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
-  const [rowsPerPage, setRowsPerPage] = useState(7);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   useEffect(
     (associateCollectionRef) => {
       document.title = "HR Core";

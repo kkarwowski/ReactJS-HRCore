@@ -74,6 +74,7 @@ export default function UserListToolbar({
         </Typography>
       ) : ( */}
       <SearchStyle
+        size="small"
         value={filterName}
         onChange={onFilterName}
         placeholder="Search associates..."

@@ -40,6 +40,7 @@ import AssociateEmergencyInfo from "./subdetails/associateEmergency";
 import { db } from "../../utils/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import AssociateNotes from "./subdetails/associateNotes";
+import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -88,10 +89,12 @@ const AssociateHeader = () => {
   const diffDates = require("diff-dates");
   const Todayy = new Date();
   const otherDate = new Date(associateData.StartDate);
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  const dateDiffYears = Date();
+
+  // const formatDate = (dateString) => {
+  //   const options = { year: "numeric", month: "long", day: "numeric" };
+  //   return new Date(dateString).toLocaleDateString(undefined, options);
+  // };
 
   const DeleteAssociate = async (id) => {
     await deleteDoc(doc(db, "Associates", id));
@@ -106,7 +109,19 @@ const AssociateHeader = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const dateDiffYears = diffDates(Todayy, otherDate, "years");
+  const DateDifferenceCheck = () => {
+    const dateDiffYears = Date();
+    const difference = diffDates(Todayy, otherDate);
+    if (difference > 0) {
+      const dateDiffYears = diffDates(Todayy, otherDate, "years");
+      return dateDiffYears;
+    }
+    if (difference < 0) {
+      const dateDiffYears = diffDates(Todayy, otherDate, "days");
+      return dateDiffYears;
+    }
+  };
+  DateDifferenceCheck();
   return (
     <>
       <Dialog
@@ -199,7 +214,13 @@ const AssociateHeader = () => {
                       {associateData.PostalAddress.City}
                     </Grid>
                     <Grid item sx={{ pt: 3 }}>
-                      <p>Started {dateDiffYears} years ago </p>
+                      {DateDifferenceCheck() > 0 ? (
+                        <p>Started {DateDifferenceCheck()} years ago </p>
+                      ) : (
+                        <p>
+                          Starting in {Math.abs(DateDifferenceCheck())} days
+                        </p>
+                      )}
                     </Grid>
                     {/* Icons */}
                     <Grid item>

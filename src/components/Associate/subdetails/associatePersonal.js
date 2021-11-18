@@ -20,13 +20,16 @@ import {
   officesContext,
   updateAssociatesContext,
   updatedAssociateContext,
+  departmentsContext,
 } from "../../../utils/context/contexts";
 import { useContext, useState, useEffect } from "react";
+import * as moment from "moment";
 
 const AssociateInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { allOffices } = useContext(officesContext);
   const { edited, setEdited } = useContext(editedContext);
+  const { allDepartments } = useContext(departmentsContext);
   const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
   );
@@ -44,7 +47,7 @@ const AssociateInfo = () => {
   }, []);
 
   const onUpdate = async (event) => {
-    console.log(event.target.value);
+    console.log(event);
     setUpdatedAssociate({
       ...updatedAssociate,
       [event.target.name]: event.target.value,
@@ -83,7 +86,7 @@ const AssociateInfo = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={3} xm={3}>
+          <Grid item xs={8} xl={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -93,7 +96,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item xs={3} xm={3}>
+          <Grid item xs={8} xl={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -103,7 +106,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item xs={4} xm={4}>
+          <Grid item xs={12} xl={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -113,17 +116,27 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item xs={3} xm={3}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="Department"
-              label="Department"
-              defaultValue={associateData.Department}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item xs={3} xm={3}>
+          {allDepartments && (
+            <Grid item sx={8} xm={3}>
+              <TextField
+                select
+                style={{ width: "100%" }}
+                name="Department"
+                size="small"
+                label="Department"
+                defaultValue={associateData.Department}
+                onChange={(e) => onUpdate(e)}
+              >
+                {allDepartments.map((department, index) => (
+                  <MenuItem key={index} value={`${department}`}>
+                    {department}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          )}
+
+          <Grid item xs={8} xl={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -133,28 +146,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item xs={5} xm={5}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="WorkEmail"
-              label="Work Email"
-              defaultValue={associateData.WorkEmail}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item xs={5} xm={5}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="PrivateEmail"
-              label="Private Email"
-              defaultValue={associateData.PrivateEmail}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-
-          <Grid item item xs={3} xm={3}>
+          <Grid item xs={7} xl={2}>
             <TextField
               size="small"
               style={{ width: "100%" }}
@@ -173,7 +165,7 @@ const AssociateInfo = () => {
             </TextField>
           </Grid>
           {allOffices && (
-            <Grid item>
+            <Grid item xs={5} xl={1}>
               <TextField
                 size="small"
                 value={associateData.Office}
@@ -191,7 +183,7 @@ const AssociateInfo = () => {
               </TextField>
             </Grid>
           )}
-          <Grid item>
+          <Grid item xs={5} xl={3}>
             <TextField
               value={associateData.Gender}
               onChange={(e) => onUpdate(e)}
@@ -208,15 +200,41 @@ const AssociateInfo = () => {
               </MenuItem>
             </TextField>
           </Grid>
+          <Grid item xs={12} xl={5}>
+            <TextField
+              style={{ width: "100%" }}
+              size="small"
+              name="WorkEmail"
+              label="Work Email"
+              defaultValue={associateData.WorkEmail}
+              onChange={(e) => onUpdate(e)}
+            />
+          </Grid>
+          <Grid item xs={12} xl={5}>
+            <TextField
+              style={{ width: "100%" }}
+              size="small"
+              name="PrivateEmail"
+              label="Private Email"
+              defaultValue={associateData.PrivateEmail}
+              onChange={(e) => onUpdate(e)}
+            />
+          </Grid>
+
           <Grid item>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 size="small"
                 label="Start Date"
                 name="StartDate"
-                value={associateData.StartDate}
+                value={moment(updatedAssociate.StartDate).toISOString()}
                 inputFormat="dd-MM-yyyy"
-                onChange={(e) => onUpdate(e)}
+                onChange={(newDate) => {
+                  setUpdatedAssociate({
+                    ...updatedAssociate,
+                    ["StartDate"]: moment(newDate).toISOString(),
+                  });
+                }}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
@@ -250,7 +268,7 @@ const AssociateInfo = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={5} xm={5}>
+          <Grid item xs={12} xl={5}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -260,7 +278,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
-          <Grid item xs={5} xm={5}>
+          <Grid item xs={12} xl={5}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -270,7 +288,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
-          <Grid item xs={3} xm={3}>
+          <Grid item xs={7} xl={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -280,7 +298,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
-          <Grid item xs={3} xm={3}>
+          <Grid item xs={8} xl={3}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -290,7 +308,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
-          <Grid item xs={3} xm={3}>
+          <Grid item xs={12} xl={4}>
             <TextField
               defaultValue={associateData.PostalAddress.Country}
               onChange={(e) => onUpdateNested(e)}

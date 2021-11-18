@@ -1,12 +1,13 @@
 import ThemeConfig from "./theme";
 import GlobalStyles from "./theme/globalStyles";
-import Router from './routes';
+import Router from "./routes";
 import {
   associatesContext,
   officesContext,
   updateAssociatesContext,
   loadingContext,
   departmentsContext,
+  resultsPerPageContext,
 } from "./utils/context/contexts";
 import { useEffect, useState, useContext } from "react";
 import { collection, getDocs } from "firebase/firestore";
@@ -19,7 +20,7 @@ function App() {
   const [allOffices, setOffices] = useState([]);
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
-
+  const [rowsPerPage, setRowsPerPage] = useState(7);
   useEffect(
     (associateCollectionRef) => {
       document.title = "HR Core";
@@ -54,26 +55,28 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <associatesContext.Provider value={{ associates, setAssociates }}>
-          <updateAssociatesContext.Provider
-            value={{ updateAssociates, setUpdateAssociates }}
-          >
-            <loadingContext.Provider
-              value={{ loadingProgress, setLoadingProgress }}
+        <resultsPerPageContext.Provider value={{ rowsPerPage, setRowsPerPage }}>
+          <associatesContext.Provider value={{ associates, setAssociates }}>
+            <updateAssociatesContext.Provider
+              value={{ updateAssociates, setUpdateAssociates }}
             >
-              <officesContext.Provider value={{ allOffices, setOffices }}>
-                <departmentsContext.Provider
-                  value={{ allDepartments, setDepartments }}
-                >
-                  <ThemeConfig>
-                    <GlobalStyles />
-                    <Router />
-                  </ThemeConfig>
-                </departmentsContext.Provider>
-              </officesContext.Provider>
-            </loadingContext.Provider>
-          </updateAssociatesContext.Provider>
-        </associatesContext.Provider>
+              <loadingContext.Provider
+                value={{ loadingProgress, setLoadingProgress }}
+              >
+                <officesContext.Provider value={{ allOffices, setOffices }}>
+                  <departmentsContext.Provider
+                    value={{ allDepartments, setDepartments }}
+                  >
+                    <ThemeConfig>
+                      <GlobalStyles />
+                      <Router />
+                    </ThemeConfig>
+                  </departmentsContext.Provider>
+                </officesContext.Provider>
+              </loadingContext.Provider>
+            </updateAssociatesContext.Provider>
+          </associatesContext.Provider>
+        </resultsPerPageContext.Provider>
       </AuthProvider>
     </>
   );

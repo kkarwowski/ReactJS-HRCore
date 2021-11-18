@@ -22,7 +22,10 @@ import {
   TablePagination,
   Box,
 } from "@mui/material";
-import { associatesContext } from "../utils/context/contexts";
+import {
+  associatesContext,
+  resultsPerPageContext,
+} from "../utils/context/contexts";
 
 const TABLE_HEAD = [
   { id: "", label: "    ", alignRight: false },
@@ -39,7 +42,7 @@ const Associates = () => {
   const { associates: associatesData, setAssociates: setAssociatesData } =
     useContext(associatesContext);
   const [filterName, setFilterName] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(7);
+  const { rowsPerPage, setRowsPerPage } = useContext(resultsPerPageContext);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
@@ -145,7 +148,7 @@ const Associates = () => {
                 setChecked={setChecked}
                 checked={checked}
               />
-              <Scrollbar>
+              {/* <Scrollbar> */}
               <TableContainer sx={{ minWidth: 800 }}>
                 <Table>
                   <UserListHead
@@ -241,7 +244,7 @@ const Associates = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              </Scrollbar>
+              {/* </Scrollbar> */}
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"

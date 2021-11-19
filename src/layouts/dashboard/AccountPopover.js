@@ -1,13 +1,12 @@
 import { Icon } from "@iconify/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import homeFill from "@iconify/icons-eva/home-fill";
 import personFill from "@iconify/icons-eva/person-fill";
 import settings2Fill from "@iconify/icons-eva/settings-2-fill";
 import { Link as RouterLink } from "react-router-dom";
-import { auth } from "../../utils/firebase";
 import { useAuth } from "../../utils/context/AuthContext";
-
-// import { Avatar } from 'react-native-elements';
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../../utils/firebase";
 // material
 import { alpha } from "@mui/material/styles";
 import {
@@ -22,7 +21,6 @@ import {
 // components
 import MenuPopover from "../../components/MenuPopover";
 //
-//import account from '../../_mocks_/account';
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +46,8 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const { currentUser, logout } = useAuth();
+  const [userData, setUserData] = useState();
+
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -57,7 +57,15 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  useEffect(() => {
+    const getUserData = async () => {
+      const associateCollectionRef = doc(db, "Users", currentUser.uid);
+      const data = await getDoc(associateCollectionRef);
+      console.log("userData", data.data());
+      setUserData(data.data());
+    };
+    getUserData();
+  }, []);
   return (
     <>
       <IconButton
@@ -91,7 +99,8 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {"Mark Smith"}
+            {userData ? userData.FirstName : null}{" "}
+            {userData ? userData.LastName : null}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {currentUser ? currentUser.email : null}

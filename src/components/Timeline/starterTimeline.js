@@ -29,7 +29,6 @@ export default function StarterTimeline() {
   today.setDate(today.getDate() - 30);
   // const today = "20201-11-15T12:30:00";
   // const today = "20201-11-15T12:30:00";
-  console.log("today", today);
 
   const { associates, setAssociates } = React.useContext(associatesContext);
 

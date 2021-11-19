@@ -10,7 +10,7 @@ import {
   resultsPerPageContext,
 } from "./utils/context/contexts";
 import { useEffect, useState, useContext } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import { db } from "./utils/firebase";
 import { AuthProvider } from "./utils/context/AuthContext";
 function App() {
@@ -44,6 +44,7 @@ function App() {
           )
         );
       };
+
       getAssociates();
       getDepartments();
       getOffices();

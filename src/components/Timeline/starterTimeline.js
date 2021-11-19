@@ -61,17 +61,21 @@ export default function StarterTimeline() {
                 starter;
               return (
                 <TimelineItem>
-                  <TimelineOppositeContent color="text.secondary">
+                  <TimelineOppositeContent
+                    color="text.secondary"
+                    sx={{ m: "auto 0" }}
+                  >
                     {StartDate && moment(StartDate.toDate()).format("MMMM Do")}
                   </TimelineOppositeContent>
                   <TimelineSeparator>
                     <TimelineConnector />
                     <TimelineDot color="primary" variant="filled">
-                      <CheckCircleOutlineIcon fontSize="small" />
+                      {/* <CheckCircleOutlineIcon fontSize="small" /> */}
                     </TimelineDot>
                     <TimelineConnector />
                   </TimelineSeparator>
-                  <TimelineContent>
+
+                  <TimelineContent sx={{ m: "auto 0" }}>
                     <Grid
                       container
                       direction="row"

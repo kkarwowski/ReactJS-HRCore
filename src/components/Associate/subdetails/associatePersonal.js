@@ -218,6 +218,8 @@ const AssociateInfo = () => {
             />
           </Grid>
           <Grid item>
+            {console.log(associateData.StartDate)}
+
             {updatedAssociate && (
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker

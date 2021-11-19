@@ -66,7 +66,7 @@ export default function NewAssociate() {
     Office: "",
     LastName: "",
     EmplStatus: "",
-    StartDate: null,
+    StartDate: new Date(),
     Gender: "",
     WorkEmail: "",
     City: "",
@@ -391,7 +391,7 @@ const StepOne = (props) => {
                   label="Start Date"
                   size="small"
                   name="StartDate"
-                  value={moment(values.StartDate)}
+                  value={values.StartDate.toDate()}
                   inputFormat="dd-MM-yyyy"
                   onChange={(StartDate) => {
                     setFieldValue(
@@ -399,9 +399,6 @@ const StepOne = (props) => {
                       Timestamp.fromDate(new Date(StartDate))
                     );
                   }}
-                  // onChange={(newValue) => {
-                  //   setValue(newValue);
-                  // }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>

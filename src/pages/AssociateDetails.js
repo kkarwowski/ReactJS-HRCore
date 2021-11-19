@@ -66,9 +66,9 @@ const AssociateDetails = () => {
     setWarn(false);
   };
 
-  // useEffect(() => {
-  //   matchUpdatedAndCurrent();
-  // }, [updatedAssociate]);
+  useEffect(() => {
+    matchUpdatedAndCurrent();
+  }, [updatedAssociate]);
 
   const matchUpdatedAndCurrent = () => {
     console.log("updated", updatedAssociate);

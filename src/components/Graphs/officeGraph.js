@@ -1,17 +1,15 @@
-import { forEach, merge } from "lodash";
+import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
 import { useTheme, styled } from "@mui/material/styles";
 import { Card, CardHeader, Stack } from "@mui/material";
 // utils
-import { fNumber } from "../../utils/formatNumber.js";
+import { fNumber } from "../../utils/formatNumber";
 //
 import BaseOptionChart from "../charts/BaseOptionChart";
-import { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useContext } from "react";
-
-import { departmentsContext } from "../../utils/context/contexts.js";
+import { useState, useEffect, useContext } from "react";
+import { officesContext } from "../../utils/context/contexts";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
@@ -37,27 +35,30 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DepartmentGraph() {
-  const { allDepartments } = useContext(departmentsContext);
+export default function OfficeGraph() {
+  const { allOffices } = useContext(officesContext);
+  const OFFICES = allOffices.flat(2);
 
-  const [chartData, setChartData] = useState();
-  const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const [loadingOffice, setLoadingOffice] = useState(true);
+  const [officesData, setOfficeData] = useState();
+
   useEffect(() => {
-    const getDepartment = async () => {
-      const CHART_DATA1 = [];
-      for (const dep of allDepartments.flat(2)) {
-        const ress = await fetchDetails(dep);
-        CHART_DATA1.push(ress.docs.length);
+    const getOffice = async () => {
+      const officeData = [];
+      for (const off of OFFICES) {
+        const ress = await fetchDetails(off);
+        officeData.push(ress.docs.length);
       }
-      setChartData(CHART_DATA1);
-      setLoading(false);
+      setOfficeData(officeData);
+      setLoadingOffice(false);
     };
-    getDepartment();
+    getOffice();
   }, []);
 
-  const fetchDetails = async (dep) => {
+  const fetchDetails = async (off) => {
     const citiesRef = collection(db, "Associates");
-    const q = query(citiesRef, where("Department", "==", dep));
+    const q = query(citiesRef, where("Office", "==", off));
     const querySnapshot = await getDocs(q);
     // querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
@@ -65,9 +66,6 @@ export default function DepartmentGraph() {
     // });
     return querySnapshot;
   };
-
-  const theme = useTheme();
-
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
       theme.palette.primary.main,
@@ -75,7 +73,7 @@ export default function DepartmentGraph() {
       theme.palette.warning.main,
       theme.palette.error.main,
     ],
-    labels: allDepartments.flat(2),
+    labels: OFFICES,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: "center" },
     dataLabels: { enabled: true, dropShadow: { enabled: false } },
@@ -95,8 +93,8 @@ export default function DepartmentGraph() {
 
   return (
     <Card>
-      <CardHeader title="Associates per Department" />
-      {loading && (
+      <CardHeader title="Associates per Office" />
+      {loadingOffice && (
         <Stack
           direction="row"
           alignItems="center"
@@ -106,11 +104,11 @@ export default function DepartmentGraph() {
           <CircularProgress />
         </Stack>
       )}
-      {chartData && (
+      {officesData && (
         <ChartWrapperStyle dir="ltr">
           <ReactApexChart
             type="pie"
-            series={chartData}
+            series={officesData}
             options={chartOptions}
             height={280}
           />

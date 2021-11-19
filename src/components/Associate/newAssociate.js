@@ -121,15 +121,14 @@ export default function NewAssociate() {
           Add new Associate
         </Typography>
         <Button
-            variant="contained"
-            size="large"
-            onClick={()=>history("/dashboard/associates")}
-            size="medium"
-            
-          >
-            Back
-          </Button>
-        <Card  sx={{  mt:2 }}>
+          variant="contained"
+          size="large"
+          onClick={() => history("/dashboard/associates")}
+          size="medium"
+        >
+          Back
+        </Button>
+        <Card sx={{ mt: 2 }}>
           <Stepper
             activeStep={currentStep}
             alternativeLabel

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, Container, Typography, Button } from "@mui/material";
 import { useQuery } from "react-query";
 import DepartmentGraph from "../components/Graphs/departmentGraph";
+import OfficeGraph from "../components/Graphs/officeGraph";
 // import associatesjson from "../Offices.json"
 // import { AssociatesService } from "../utils/DatabseServices";
 import { DataUsageRounded } from "@mui/icons-material";
@@ -28,9 +29,9 @@ const Home = () => {
         <Grid Grid item xs={12} sm={6} md={3}>
           <TotalEmployed/>
         </Grid> */}
-        {/* <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={4}>
           <OfficeGraph />
-        </Grid> */}
+        </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <DepartmentGraph />
         </Grid>

@@ -61,7 +61,6 @@ export default function AccountPopover() {
     const getUserData = async () => {
       const associateCollectionRef = doc(db, "Users", currentUser.uid);
       const data = await getDoc(associateCollectionRef);
-      console.log("userData", data.data());
       setUserData(data.data());
     };
     getUserData();

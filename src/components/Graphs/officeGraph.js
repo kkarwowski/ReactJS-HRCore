@@ -2,7 +2,7 @@ import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
 import { useTheme, styled } from "@mui/material/styles";
-import { Card, CardHeader, Stack } from "@mui/material";
+import { Card, CardHeader, Stack, Typography } from "@mui/material";
 // utils
 import { fNumber } from "../../utils/formatNumber";
 //
@@ -93,7 +93,9 @@ export default function OfficeGraph() {
 
   return (
     <Card>
-      <CardHeader title="Associates per Office" />
+      <Typography component="div">
+        <CardHeader title="Associates per Office" sx={{ fontWeight: "bold" }} />
+      </Typography>
       {loadingOffice && (
         <Stack
           direction="row"

@@ -126,7 +126,6 @@ const AssociateHeader = () => {
       return dateDiffYears;
     }
   };
-  DateDifferenceCheck();
   return (
     <>
       <Dialog

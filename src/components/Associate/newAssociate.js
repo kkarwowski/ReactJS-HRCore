@@ -391,7 +391,7 @@ const StepOne = (props) => {
                   label="Start Date"
                   size="small"
                   name="StartDate"
-                  value={values.StartDate.toDate()}
+                  value={values.StartDate}
                   inputFormat="dd-MM-yyyy"
                   onChange={(StartDate) => {
                     setFieldValue(

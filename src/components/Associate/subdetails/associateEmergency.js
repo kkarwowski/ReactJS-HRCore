@@ -11,7 +11,7 @@ import {
   updatedAssociateContext,
 } from "../../../utils/context/contexts";
 import { useContext, useState } from "react";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 
 const AssociateEmergencyInfo = () => {
@@ -41,7 +41,7 @@ const AssociateEmergencyInfo = () => {
     console.log(updatedAssociate);
   };
   const SaveDetails = async () => {
-    const resutl = await setDoc(
+    const resutl = await updateDoc(
       doc(db, "Associates", associateData.id),
       associateData
     );

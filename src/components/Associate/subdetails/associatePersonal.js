@@ -24,7 +24,7 @@ import {
 } from "../../../utils/context/contexts";
 import { useContext, useState, useEffect } from "react";
 import * as moment from "moment";
-
+import { Timestamp } from "firebase/firestore";
 const AssociateInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { allOffices } = useContext(officesContext);
@@ -39,15 +39,8 @@ const AssociateInfo = () => {
   );
   const CountriesArray = JSON.parse(JSON.stringify(Countries));
 
-  useEffect(() => {
-    const copyAssociate = async () => {
-      setUpdatedAssociate(associateData);
-    };
-    copyAssociate();
-  }, []);
-
   const onUpdate = async (event) => {
-    console.log(event);
+    console.log(event.target.value);
     setUpdatedAssociate({
       ...updatedAssociate,
       [event.target.name]: event.target.value,
@@ -63,7 +56,11 @@ const AssociateInfo = () => {
       },
     });
   };
-
+  // const ConvertTimestampToDate = (tstamp) => {
+  //   console.log("t", tstamp);
+  //   const newDate = tstamp.toDate();
+  //   return newDate;
+  // };
   return (
     <Box sx={{ p: 0, pb: 1 }} dir="ltr">
       <Grid
@@ -220,24 +217,27 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-
           <Grid item>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                size="small"
-                label="Start Date"
-                name="StartDate"
-                value={moment(updatedAssociate.StartDate).toISOString()}
-                inputFormat="dd-MM-yyyy"
-                onChange={(newDate) => {
-                  setUpdatedAssociate({
-                    ...updatedAssociate,
-                    ["StartDate"]: moment(newDate).toISOString(),
-                  });
-                }}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
+            {updatedAssociate && (
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  size="small"
+                  label="Start Date"
+                  name="StartDate"
+                  // value={moment(updatedAssociate.StartDate).toISOString()}
+                  value={updatedAssociate.StartDate.toDate()}
+                  inputFormat="dd-MM-yyyy"
+                  onChange={(newDate) => {
+                    console.log("newdate", newDate);
+                    setUpdatedAssociate({
+                      ...updatedAssociate,
+                      ["StartDate"]: Timestamp.fromDate(new Date(newDate)),
+                    });
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            )}
           </Grid>
           <Grid item>
             <LocalizationProvider dateAdapter={AdapterDateFns}>

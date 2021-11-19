@@ -39,6 +39,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { collection, addDoc, getDoc, doc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
+import { Timestamp } from "firebase/firestore";
 import AssociateDocuments from "./subdetails/associateDocuments";
 
 export default function NewAssociate() {
@@ -390,10 +391,13 @@ const StepOne = (props) => {
                   label="Start Date"
                   size="small"
                   name="StartDate"
-                  value={moment(values.StartDate).toISOString()}
+                  value={moment(values.StartDate)}
                   inputFormat="dd-MM-yyyy"
                   onChange={(StartDate) => {
-                    setFieldValue("StartDate", moment(StartDate).toISOString());
+                    setFieldValue(
+                      "StartDate",
+                      Timestamp.fromDate(new Date(StartDate))
+                    );
                   }}
                   // onChange={(newValue) => {
                   //   setValue(newValue);

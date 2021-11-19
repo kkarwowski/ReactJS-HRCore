@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogContentText,
 } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Label from "../Label";
 import { sentenceCase } from "change-case";
 import { useNavigate } from "react-router-dom";
@@ -77,6 +77,7 @@ function a11yProps(index) {
 
 const AssociateHeader = () => {
   const { setUpdateAssociates } = useContext(updateAssociatesContext);
+
   const [value, setValue] = useState(0);
   const { associateData } = useContext(associateContext);
   const history = useNavigate();
@@ -113,7 +114,11 @@ const AssociateHeader = () => {
     const dateDiffYears = Date();
     const difference = diffDates(Todayy, otherDate);
     if (difference > 0) {
-      const dateDiffYears = diffDates(Todayy, otherDate, "years");
+      if (difference > 31556952000) {
+        const dateDiffYears = diffDates(Todayy, otherDate, "years");
+        return dateDiffYears;
+      }
+      const dateDiffYears = diffDates(Todayy, otherDate, "days");
       return dateDiffYears;
     }
     if (difference < 0) {
@@ -217,8 +222,12 @@ const AssociateHeader = () => {
                       {associateData.PostalAddress.City}
                     </Grid>
                     <Grid item sx={{ pt: 3 }}>
-                      {DateDifferenceCheck() > 0 ? (
-                        <p>Started {DateDifferenceCheck()} years ago </p>
+                      {DateDifferenceCheck() >= 0 ? (
+                        DateDifferenceCheck() > 0 ? (
+                          <p>Started {DateDifferenceCheck()} years ago </p>
+                        ) : (
+                          <p>Started {DateDifferenceCheck()} days ago </p>
+                        )
                       ) : (
                         <p>
                           Starting in {Math.abs(DateDifferenceCheck())} days
@@ -326,7 +335,6 @@ const AssociateHeader = () => {
           </Grid>
         </Grid>
       </Grid>
-      {/* </updatedAssociateContext.Provider> */}
     </>
   );
 };

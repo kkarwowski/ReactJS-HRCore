@@ -20,7 +20,7 @@ import {
   updateAssociatesContext,
 } from "../utils/context/contexts";
 import { db } from "../utils/firebase";
-import { getDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
+import { getDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
 
 const AssociateDetails = () => {
   const { loadingProgress, setLoadingProgress } = useContext(loadingContext);
@@ -30,7 +30,7 @@ const AssociateDetails = () => {
   const [edited, setEdited] = useState(false);
   const [warn, setWarn] = useState(false);
 
-  const [updatedAssociate, setUpdatedAssociate] = useState({});
+  const [updatedAssociate, setUpdatedAssociate] = useState();
   const { updateAssociates, setUpdateAssociates } = useContext(
     updateAssociatesContext
   );
@@ -38,7 +38,9 @@ const AssociateDetails = () => {
     const getAssociate = async () => {
       const associateFromServer = await fetchDetails();
       setAssociateData({ ...associateFromServer, id: id });
+      setUpdatedAssociate({ ...associateFromServer, id: id });
     };
+
     getAssociate();
   }, []);
 
@@ -64,13 +66,13 @@ const AssociateDetails = () => {
     setWarn(false);
   };
 
-  useEffect(() => {
-    matchUpdatedAndCurrent();
-  }, [updatedAssociate]);
+  // useEffect(() => {
+  //   matchUpdatedAndCurrent();
+  // }, [updatedAssociate]);
 
   const matchUpdatedAndCurrent = () => {
-    console.log("updated",updatedAssociate);
-    console.log("associate",associateData);
+    console.log("updated", updatedAssociate);
+    console.log("associate", associateData);
 
     if (associateData !== updatedAssociate) {
       console.log("different");
@@ -82,7 +84,7 @@ const AssociateDetails = () => {
   };
   const updateFirebaseAndState = async () => {
     // setIsUpdating(true);
-    const result = await setDoc(
+    const result = await updateDoc(
       doc(db, "Associates", `${associateData.id}`),
       updatedAssociate
     );

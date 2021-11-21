@@ -89,9 +89,10 @@ const Associates = () => {
   }
 
   function applySortFilter(array, comparator, query, status) {
-    console.log(query.length);
+    const stabilizedThis = array.map((el, index) => [el, index]);
+
     if (status && query.length > 0) {
-      console.log("status && query.length > 0)");
+      console.log("aaaa");
       return filter(
         array,
         (_user) =>
@@ -99,38 +100,55 @@ const Associates = () => {
           _user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     } else if (!status && query.length > 0) {
-      console.log("!status && query.length > 0)");
-
+      console.log("dfdf");
       return filter(
         array,
         (_user) =>
-          _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+          (_user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
+            _user.EmplStatus.indexOf("Employed") !== -1) ||
           (_user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
             _user.EmplStatus.indexOf("Employed") !== -1)
       );
     } else if (status && query.length === 0) {
-      return array;
+      stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+      });
+      return stabilizedThis.map((el) => el[0]);
     } else if (!status && query.length === 0) {
-      return filter(
-        array,
-        (_user) => _user.EmplStatus.indexOf("Employed") !== -1
-      );
+      // return filter(
+      //   array,
+      //   (_user) => _user.EmplStatus.indexOf("Employed") !== -1
+      // );
+      array.filter((_user) => _user.EmplStatus.indexOf("Employed") !== -1);
+      stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+      });
+      return stabilizedThis.map((el) => el[0]);
     } else {
-      console.log("else");
-      console.log("q lenght", query.length);
+      stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+      });
+      return stabilizedThis.map((el) => el[0]);
     }
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
+    // const stabilizedThis = array.map((el, index) => [el, index]);
+    // stabilizedThis.sort((a, b) => {
+    //   const order = comparator(a[0], b[0]);
+    //   if (order !== 0) return order;
+    //   return a[1] - b[1];
+    // });
     return stabilizedThis.map((el) => el[0]);
   }
   const filteredAssociates = applySortFilter(
     associatesData,
     getComparator(order, orderBy),
-    filterName
+    filterName,
+    checked
   );
   const newArray = [{}];
   const exportArray = () => {

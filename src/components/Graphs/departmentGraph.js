@@ -11,7 +11,10 @@ import { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useContext } from "react";
 
-import { departmentsContext } from "../../utils/context/contexts.js";
+import {
+  departmentsContext,
+  associatesContext,
+} from "../../utils/context/contexts.js";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
@@ -39,31 +42,40 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 
 export default function DepartmentGraph() {
   const { allDepartments } = useContext(departmentsContext);
+  const { associates, setAssociates } = useContext(associatesContext);
 
   const [chartData, setChartData] = useState();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const getDepartment = async () => {
-      const CHART_DATA1 = [];
+    const getDepartment = () => {
+      const CHART_DATA = [];
       for (const dep of allDepartments.flat(2)) {
-        const ress = await fetchDetails(dep);
-        CHART_DATA1.push(ress.docs.length);
+        // const ress = await fetchDetails(dep);
+        // CHART_DATA1.push(ress.docs.length);
+        CHART_DATA.push(fetchDetails(dep));
       }
-      setChartData(CHART_DATA1);
+      setChartData(CHART_DATA);
       setLoading(false);
     };
     getDepartment();
   }, []);
 
-  const fetchDetails = async (dep) => {
-    const citiesRef = collection(db, "Associates");
-    const q = query(citiesRef, where("Department", "==", dep));
-    const querySnapshot = await getDocs(q);
+  const fetchDetails = (dep) => {
+    const filtered = associates.filter(
+      (associate) => associate.Department == dep
+    );
+
+    // const citiesRef = collection(db, "Associates");
+    // const q = query(citiesRef, where("Department", "==", dep));
+
+    // const querySnapshot = await getDocs(q);
     // querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
     // console.log(doc.id, " => ", doc.data());
     // });
-    return querySnapshot;
+
+    // return querySnapshot;
+    return filtered.length;
   };
 
   const theme = useTheme();

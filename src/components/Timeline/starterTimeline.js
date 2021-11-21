@@ -17,12 +17,6 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import { associatesContext } from "../../utils/context/contexts.js";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db, app } from "../../utils/firebase.js";
-import { useEffect, useState } from "react";
-import { gridColumnsTotalWidthSelector } from "@mui/x-data-grid";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CircularProgress from "@mui/material/CircularProgress";
 
 export default function StarterTimeline() {
   const today = new Date();
@@ -31,19 +25,9 @@ export default function StarterTimeline() {
   // const today = "20201-11-15T12:30:00";
 
   const { associates, setAssociates } = React.useContext(associatesContext);
-
-  // const fetchDetails = async () => {
-  //   const associatesRef = collection(db, "Associates");
-  //   const q = query(
-  //     associatesRef,
-  //     // where("StartDate", ">=", Timestamp.fromDate(new Date(today)))
-  //     where("StartDate", ">", today)
-  //   );
-  //   const querySnapshot = await getDocs(q);
-  //   setStarters(
-  //     querySnapshot.docs.map((user) => ({ ...user.data(), id: user.id }))
-  //   );
-  // };
+  const GetInitial = (name) => {
+    return name.slice(0, 1) + ".";
+  };
 
   return (
     <Card>
@@ -89,7 +73,9 @@ export default function StarterTimeline() {
                         />
                       </Grid>
                       <Grid sx={{ pl: 3 }}>
-                        <Typography>{FirstName}</Typography>
+                        <Typography>
+                          {FirstName} {GetInitial(FirstName)}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </TimelineContent>

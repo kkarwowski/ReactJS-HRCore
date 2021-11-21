@@ -16,8 +16,11 @@ const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",
   textAlign: "center",
   padding: theme.spacing(5, 0),
-  color: theme.palette.primary.darker,
-  backgroundColor: theme.palette.primary.lighter,
+  // color: theme.palette.primary.darker,
+  // color: theme.palette.background.paper,
+  color: "#095b80",
+  // backgroundColor: theme.palette.primary.lighter,
+  backgroundColor: "#8cd7f7",
 }));
 
 const IconWrapperStyle = styled("div")(({ theme }) => ({
@@ -29,11 +32,14 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
   height: theme.spacing(8),
   justifyContent: "center",
   marginBottom: theme.spacing(2),
-  color: theme.palette.warning.dark, // color: theme.palette.warning.dark,
-  backgroundImage: `linear-gradient(135deg, ${alpha(
-    theme.palette.primary.light,
-    0
-  )} 0%, ${alpha(theme.palette.secondary.light, 0.24)} 100%)`,
+  color: "#000000", // color: theme.palette.warning.dark,
+  // color: theme.palette.error.dark, // color: theme.palette.warning.dark,
+  //   backgroundImage: `linear-gradient(135deg, ${alpha(
+  //     theme.palette.primary.light,
+  //     0.24
+  //   )} 50%, ${alpha(theme.palette.secondary.light, 0.24)} 50%)`,
+  // }));
+  backgroundColor: theme.palette.grey[200],
 }));
 
 // ----------------------------------------------------------------------

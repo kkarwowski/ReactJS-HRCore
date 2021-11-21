@@ -6,6 +6,7 @@ import UserListToolbar from "../components/Associates/UserListToolbar";
 import Label from "../components/Label";
 import { Link } from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
+import { CSVLink } from "react-csv";
 import { sentenceCase } from "change-case";
 import {
   Card,
@@ -131,6 +132,12 @@ const Associates = () => {
     getComparator(order, orderBy),
     filterName
   );
+  const newArray = [{}];
+  const exportArray = () => {
+    const newArray = filteredAssociates.forEach((item) => {
+      delete item.profilePicture;
+    });
+  };
 
   return (
     <>
@@ -145,6 +152,7 @@ const Associates = () => {
             <Typography variant="h3" gutterBottom>
               Associates
             </Typography>
+            <CSVLink data={newArray}>Export to CSV </CSVLink>;
             <Button variant="contained" component={Link} to={"newassociate"}>
               New Associate
             </Button>

@@ -16,7 +16,8 @@ import React from "react";
 import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import Logo from "../components/Logo";
+import { width } from "@mui/system";
 const Login = () => {
   const [isLoginScreen, setIsLoginScreen] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -83,15 +84,20 @@ const Login = () => {
                           container
                           direction="column"
                           justifyItems="center"
+                          justifyContent="center"
+                          alignItems="center"
                         >
                           <Grid item xs={12} xl={12}>
+                            <Logo sx={{ width: 200 }} />
+                          </Grid>
+                          {/* <Grid item xs={12} xl={12}>
                             <CardMedia
                               component="img"
-                              sx={{ width: 400 }}
+                              sx={{ width: 300 }}
                               image="/images/Data Arranging_Isometric.png"
                               alt="Logo"
                             />
-                          </Grid>
+                          </Grid> */}
                           <Grid item xs={12} xl={12}>
                             <Box>
                               {/* sx={{ display: "flex", flexDirection: "column" }} */}

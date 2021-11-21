@@ -88,14 +88,18 @@ const Associates = () => {
   }
 
   function applySortFilter(array, comparator, query, status) {
-    if (status && query) {
+    console.log(query.length);
+    if (status && query.length > 0) {
+      console.log("status && query.length > 0)");
       return filter(
         array,
         (_user) =>
           _user.FirstName.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
           _user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
-    } else if (query) {
+    } else if (!status && query.length > 0) {
+      console.log("!status && query.length > 0)");
+
       return filter(
         array,
         (_user) =>
@@ -103,11 +107,16 @@ const Associates = () => {
           (_user.LastName.toLowerCase().indexOf(query.toLowerCase()) !== -1 &&
             _user.EmplStatus.indexOf("Employed") !== -1)
       );
-    } else if (!status) {
+    } else if (status && query.length === 0) {
+      return array;
+    } else if (!status && query.length === 0) {
       return filter(
         array,
         (_user) => _user.EmplStatus.indexOf("Employed") !== -1
       );
+    } else {
+      console.log("else");
+      console.log("q lenght", query.length);
     }
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {

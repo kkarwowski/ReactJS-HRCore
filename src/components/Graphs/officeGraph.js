@@ -9,7 +9,10 @@ import { fNumber } from "../../utils/formatNumber";
 import BaseOptionChart from "../charts/BaseOptionChart";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState, useEffect, useContext } from "react";
-import { officesContext } from "../../utils/context/contexts";
+import {
+  officesContext,
+  associatesContext,
+} from "../../utils/context/contexts";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
@@ -38,7 +41,7 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 export default function OfficeGraph() {
   const { allOffices } = useContext(officesContext);
   const OFFICES = allOffices.flat(2);
-
+  const { associates, setAssociates } = useContext(associatesContext);
   const theme = useTheme();
   const [loadingOffice, setLoadingOffice] = useState(true);
   const [officesData, setOfficeData] = useState();
@@ -47,8 +50,9 @@ export default function OfficeGraph() {
     const getOffice = async () => {
       const officeData = [];
       for (const off of OFFICES) {
-        const ress = await fetchDetails(off);
-        officeData.push(ress.docs.length);
+        // const ress = await fetchDetails(off);
+        // officeData.push(ress.docs.length);
+        officeData.push(fetchDetails(off));
       }
       setOfficeData(officeData);
       setLoadingOffice(false);
@@ -56,15 +60,17 @@ export default function OfficeGraph() {
     getOffice();
   }, []);
 
-  const fetchDetails = async (off) => {
-    const citiesRef = collection(db, "Associates");
-    const q = query(citiesRef, where("Office", "==", off));
-    const querySnapshot = await getDocs(q);
+  const fetchDetails = (off) => {
+    const filtered = associates.filter((associate) => associate.Office == off);
+    // const citiesRef = collection(db, "Associates");
+    // const q = query(citiesRef, where("Office", "==", off));
+    // const querySnapshot = await getDocs(q);
     // querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
     // console.log(doc.id, " => ", doc.data());
     // });
-    return querySnapshot;
+    // return querySnapshot;
+    return filtered.length;
   };
   const chartOptions = merge(BaseOptionChart(), {
     colors: [

@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import { filter } from "lodash";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserListHead from "../components/Associates/UserListHead";
 import UserListToolbar from "../components/Associates/UserListToolbar";
 import Label from "../components/Label";
 import { Link } from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
-import { CSVLink } from "react-csv";
+import { ExportToCsv } from "export-to-csv";
+import CsvDownloader from "react-csv-downloader";
+import { CSVLink, CSVDownload } from "react-csv";
 import { sentenceCase } from "change-case";
+import DownloadIcon from "@mui/icons-material/Download";
 import {
   Card,
   Table,
@@ -27,6 +30,7 @@ import {
   associatesContext,
   resultsPerPageContext,
 } from "../utils/context/contexts";
+import { concat } from "lodash-es";
 
 const TABLE_HEAD = [
   { id: "", label: "    ", alignRight: false },
@@ -48,12 +52,24 @@ const Associates = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
   const [checked, setChecked] = useState(false);
-  useState();
+  const [toExport, setToExport] = useState([]);
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - associatesData.length)
       : 0;
 
+  const options = {
+    fieldSeparator: ",",
+    quoteStrings: '"',
+    decimalSeparator: ".",
+    showLabels: true,
+    filename: "Exporded HR Core",
+    useTextFile: false,
+    useBom: true,
+    useKeysAsHeaders: true,
+    // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+  };
+  const csvExporter = new ExportToCsv(options);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -168,11 +184,10 @@ const Associates = () => {
     filterName,
     checked
   );
-  const newArray = [{}];
-  const exportArray = () => {
-    const newArray = filteredAssociates.forEach((item) => {
-      delete item.profilePicture;
-    });
+  const Export = () => {
+    const nnArray = Array.from(filteredAssociates);
+    nnArray.forEach((item) => delete item.profilePicture);
+    return nnArray;
   };
 
   return (
@@ -188,7 +203,12 @@ const Associates = () => {
             <Typography variant="h3" gutterBottom>
               Associates
             </Typography>
-            <CSVLink data={newArray}>Export to CSV </CSVLink>;
+            <CSVLink data={toExport}>
+              <Button variant="contained" startIcon={<DownloadIcon />}>
+                Downalod
+              </Button>
+            </CSVLink>
+
             <Button variant="contained" component={Link} to={"newassociate"}>
               New Associate
             </Button>

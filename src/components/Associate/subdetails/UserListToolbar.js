@@ -5,6 +5,8 @@ import trash2Fill from "@iconify/icons-eva/trash-2-fill";
 import roundFilterList from "@iconify/icons-ic/round-filter-list";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useContext } from "react";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+
 import { loadingContext } from "../../../utils/context/contexts";
 // material
 import { styled } from "@mui/material/styles";
@@ -112,7 +114,11 @@ export default function UserListToolbar({
               id="contained-button-file"
               onChange={onSelectFile}
             />
-            <Button variant="contained" component="span">
+            <Button
+              variant="contained"
+              component="span"
+              startIcon={<FileUploadIcon />}
+            >
               Upload
             </Button>
           </label>

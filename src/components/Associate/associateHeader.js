@@ -9,28 +9,19 @@ import {
   DialogTitle,
   DialogContentText,
 } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import Label from "../Label";
 import { sentenceCase } from "change-case";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-import {
-  Typography,
-  Link,
-  TextField,
-  Button,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Typography, Link, Button } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PropTypes from "prop-types";
 import EmailIcon from "@mui/icons-material/Email";
 import {
   associateContext,
-  loadingContext,
   updateAssociatesContext,
-  updatedAssociateContext,
 } from "../../utils/context/contexts";
 import AssociateSubdetails from "./subdetails/associateSubdetails";
 import AssociateInfo from "../Associate/subdetails/associatePersonal";
@@ -40,7 +31,6 @@ import AssociateEmergencyInfo from "./subdetails/associateEmergency";
 import { db } from "../../utils/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import AssociateNotes from "./subdetails/associateNotes";
-import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

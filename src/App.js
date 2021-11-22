@@ -9,8 +9,8 @@ import {
   departmentsContext,
   resultsPerPageContext,
 } from "./utils/context/contexts";
-import { useEffect, useState, useContext } from "react";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "./utils/firebase";
 import { AuthProvider } from "./utils/context/AuthContext";
 function App() {
@@ -21,37 +21,30 @@ function App() {
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  useEffect(
-    (associateCollectionRef) => {
-      document.title = "HR Core";
-      const getAssociates = async () => {
-        const data = await getDocs(associatesCollectionRef);
-        setAssociates(
-          data.docs.map((user) => ({ ...user.data(), id: user.id }))
-        );
-      };
-      const getOffices = async () => {
-        const data = await getDocs(collection(db, "Offices"));
-        data.docs.map((office) =>
-          setOffices(data.docs.map((office) => [office.data().name]))
-        );
-      };
-      const getDepartments = async () => {
-        const data = await getDocs(collection(db, "Departments"));
-        data.docs.map((department) =>
-          setDepartments(
-            data.docs.map((department) => [department.data().name])
-          )
-        );
-      };
+  useEffect(() => {
+    document.title = "HR Core";
+    const getAssociates = async () => {
+      const data = await getDocs(associatesCollectionRef);
+      setAssociates(data.docs.map((user) => ({ ...user.data(), id: user.id })));
+    };
+    const getOffices = async () => {
+      const data = await getDocs(collection(db, "Offices"));
+      data.docs.map((office) =>
+        setOffices(data.docs.map((office) => [office.data().name]))
+      );
+    };
+    const getDepartments = async () => {
+      const data = await getDocs(collection(db, "Departments"));
+      data.docs.map((department) =>
+        setDepartments(data.docs.map((department) => [department.data().name]))
+      );
+    };
 
-      getAssociates();
-      getDepartments();
-      getOffices();
-      console.log("useEffect");
-    },
-    [updateAssociates]
-  );
+    getAssociates();
+    getDepartments();
+    getOffices();
+    console.log("useEffect");
+  }, [updateAssociates]);
 
   return (
     <>

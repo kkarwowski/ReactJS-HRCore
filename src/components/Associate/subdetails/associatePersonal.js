@@ -83,7 +83,7 @@ const AssociateInfo = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={8} xl={3}>
+          <Grid item xs={8} xl={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -93,7 +93,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item xs={8} xl={3}>
+          <Grid item xs={8} xl={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -114,7 +114,7 @@ const AssociateInfo = () => {
             />
           </Grid>
           {allDepartments && (
-            <Grid item sx={8} xm={3}>
+            <Grid item sx={8} xm={4} xl={4}>
               <TextField
                 select
                 style={{ width: "100%" }}
@@ -133,7 +133,7 @@ const AssociateInfo = () => {
             </Grid>
           )}
 
-          <Grid item xs={8} xl={3}>
+          <Grid item xs={8} xl={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -143,7 +143,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdate(e)}
             />
           </Grid>
-          <Grid item xs={7} xl={2}>
+          <Grid item xs={7} xl={4}>
             <TextField
               size="small"
               style={{ width: "100%" }}
@@ -160,6 +160,26 @@ const AssociateInfo = () => {
                 Terminated
               </MenuItem>
             </TextField>
+          </Grid>
+          <Grid item xs={12} xl={4}>
+            <TextField
+              style={{ width: "100%" }}
+              size="small"
+              name="WorkEmail"
+              label="Work Email"
+              defaultValue={associateData.WorkEmail}
+              onChange={(e) => onUpdate(e)}
+            />
+          </Grid>
+          <Grid item xs={12} xl={4}>
+            <TextField
+              style={{ width: "100%" }}
+              size="small"
+              name="PrivateEmail"
+              label="Private Email"
+              defaultValue={associateData.PrivateEmail}
+              onChange={(e) => onUpdate(e)}
+            />
           </Grid>
           {allOffices && (
             <Grid item xs={5} xl={1}>
@@ -197,29 +217,8 @@ const AssociateInfo = () => {
               </MenuItem>
             </TextField>
           </Grid>
-          <Grid item xs={12} xl={5}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="WorkEmail"
-              label="Work Email"
-              defaultValue={associateData.WorkEmail}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item xs={12} xl={5}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="PrivateEmail"
-              label="Private Email"
-              defaultValue={associateData.PrivateEmail}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item>
-            {console.log(associateData.StartDate)}
 
+          <Grid item>
             {updatedAssociate && (
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -230,7 +229,6 @@ const AssociateInfo = () => {
                   value={updatedAssociate.StartDate.toDate()}
                   inputFormat="dd-MM-yyyy"
                   onChange={(newDate) => {
-                    console.log("newdate", newDate);
                     setUpdatedAssociate({
                       ...updatedAssociate,
                       ["StartDate"]: Timestamp.fromDate(new Date(newDate)),
@@ -270,7 +268,7 @@ const AssociateInfo = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={12} xl={5}>
+          <Grid item xs={12} xl={6}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -280,7 +278,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
-          <Grid item xs={12} xl={5}>
+          <Grid item xs={12} xl={6}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -290,7 +288,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
-          <Grid item xs={7} xl={3}>
+          <Grid item xs={7} xl={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -300,7 +298,7 @@ const AssociateInfo = () => {
               onChange={(e) => onUpdateNested(e)}
             />
           </Grid>
-          <Grid item xs={8} xl={3}>
+          <Grid item xs={8} xl={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"

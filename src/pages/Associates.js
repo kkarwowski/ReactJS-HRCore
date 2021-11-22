@@ -289,7 +289,10 @@ const Associates = () => {
                         );
                       })}
                     {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableRow
+                        style={{ height: 53 * emptyRows }}
+                        key={Math.random}
+                      >
                         <TableCell colSpan={6} />
                       </TableRow>
                     )}

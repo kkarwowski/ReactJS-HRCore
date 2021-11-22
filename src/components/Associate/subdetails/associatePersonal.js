@@ -25,14 +25,14 @@ import {
 import { useContext, useState, useEffect } from "react";
 import * as moment from "moment";
 import { Timestamp } from "firebase/firestore";
+
 const AssociateInfo = () => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { allOffices } = useContext(officesContext);
   const { edited, setEdited } = useContext(editedContext);
   const { allDepartments } = useContext(departmentsContext);
-  const { updatedAssociate, setUpdatedAssociate } = useContext(
-    updatedAssociateContext
-  );
+  const { updatedAssociate, setUpdatedAssociate, matchUpdatedAndCurrent } =
+    useContext(updatedAssociateContext);
   const [isUpdating, setIsUpdating] = useState(false);
   const { updateAssociates, setUpdateAssociates } = useContext(
     updateAssociatesContext
@@ -47,7 +47,7 @@ const AssociateInfo = () => {
     });
   };
   const onUpdateNested = (event) => {
-    setEdited(true);
+    // setEdited(true);
     setUpdatedAssociate({
       ...updatedAssociate,
       PostalAddress: {

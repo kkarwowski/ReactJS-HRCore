@@ -21,6 +21,7 @@ import {
 } from "../utils/context/contexts";
 import { db } from "../utils/firebase";
 import { getDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { isEqual } from "lodash";
 
 const AssociateDetails = () => {
   const { loadingProgress, setLoadingProgress } = useContext(loadingContext);
@@ -65,22 +66,8 @@ const AssociateDetails = () => {
   const handleClose = () => {
     setWarn(false);
   };
-
-  useEffect(() => {
-    matchUpdatedAndCurrent();
-  }, [updatedAssociate]);
-
-  const matchUpdatedAndCurrent = () => {
-    console.log("updated", updatedAssociate);
-    console.log("associate", associateData);
-
-    if (associateData !== updatedAssociate) {
-      console.log("different");
-      setEdited(true);
-    } else {
-      console.log("same");
-      setEdited(false);
-    }
+  const matchUpdatedAndCurrent = (obj1, obj2) => {
+    return isEqual(obj1, obj2);
   };
   const updateFirebaseAndState = async () => {
     // setIsUpdating(true);
@@ -93,10 +80,24 @@ const AssociateDetails = () => {
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
     // setIsUpdating(false);
   };
+
+  useEffect(() => {
+    if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
+      console.log("no match");
+      setEdited(true);
+    } else {
+      console.log("match");
+      setEdited(false);
+    }
+  }, [updatedAssociate]);
   return (
     <>
       <updatedAssociateContext.Provider
-        value={{ updatedAssociate, setUpdatedAssociate }}
+        value={{
+          updatedAssociate,
+          setUpdatedAssociate,
+          matchUpdatedAndCurrent,
+        }}
       >
         <associateContext.Provider value={{ associateData, setAssociateData }}>
           <editedContext.Provider value={{ edited, setEdited }}>

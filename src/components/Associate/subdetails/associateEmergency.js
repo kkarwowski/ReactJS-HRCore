@@ -20,17 +20,7 @@ const AssociateEmergencyInfo = () => {
     updatedAssociateContext
   );
 
-  const [edited, setEdited] = useState(false);
-
-  const onUpdate = (event) => {
-    setAssociateData({
-      ...associateData,
-      [event.target.name]: event.target.value,
-    });
-    setEdited(true);
-  };
   const onUpdateNested = (event) => {
-    setEdited(true);
     setUpdatedAssociate({
       ...updatedAssociate,
       emergencyInfo: {
@@ -38,7 +28,6 @@ const AssociateEmergencyInfo = () => {
         [event.target.name]: event.target.value,
       },
     });
-    console.log(updatedAssociate);
   };
   const SaveDetails = async () => {
     const resutl = await updateDoc(
@@ -62,7 +51,6 @@ const AssociateEmergencyInfo = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     SaveDetails(associateData.id);
-    setEdited(false);
   };
 
   return (

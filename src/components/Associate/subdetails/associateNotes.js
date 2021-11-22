@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import {
   updatedAssociateContext,
-  editedContext,
   associateContext,
 } from "../../../utils/context/contexts";
 import { TextField, Button } from "@mui/material";
@@ -12,10 +11,7 @@ const AssociateNotes = () => {
   );
   const { associateData, setAssociateData } = useContext(associateContext);
 
-  const { setEdited } = useContext(editedContext);
-
   const onUpdate = (event) => {
-    setEdited(true);
     setUpdatedAssociate({
       ...updatedAssociate,
       [event.target.name]: event.target.value,

@@ -9,6 +9,8 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -42,10 +44,15 @@ export function AuthProvider({ children }) {
   function updateUserPassword(password) {
     return updatePassword(currentUser, password);
   }
-
+  const [isAdmin, setIsAdmin] = useState();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      const associateCollectionRef = doc(db, "Users", user.uid);
+      getDoc(associateCollectionRef).then((result) => {
+        setUserData(result.data());
+        setIsAdmin(result.data().Role === "Admin");
+      });
     });
 
     return unsubscribe;
@@ -54,6 +61,7 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     userData,
+    isAdmin,
     setUserData,
     login,
     signup,

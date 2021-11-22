@@ -10,6 +10,8 @@ import {
   DialogContentText,
   Fab,
   Grid,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +33,8 @@ const AssociateDetails = () => {
   const history = useNavigate();
   const [edited, setEdited] = useState(false);
   const [warn, setWarn] = useState(false);
-
+  const [alert, setAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
   const [updatedAssociate, setUpdatedAssociate] = useState();
   const { updateAssociates, setUpdateAssociates } = useContext(
     updateAssociatesContext
@@ -72,14 +75,17 @@ const AssociateDetails = () => {
   };
   const updateFirebaseAndState = async () => {
     // setIsUpdating(true);
-    const result = await updateDoc(
-      doc(db, "Associates", `${associateData.id}`),
-      updatedAssociate
-    );
-    setAssociateData(updatedAssociate);
-    setEdited(false);
-    setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-    // setIsUpdating(false);
+    updateDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
+      .then(() => {
+        setAssociateData(updatedAssociate);
+        setEdited(false);
+        setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+        setAlert(true);
+        setEdited(false);
+      });
   };
 
   useEffect(() => {
@@ -116,6 +122,20 @@ const AssociateDetails = () => {
                 >
                   Back
                 </Button>
+                <Snackbar
+                  open={alert}
+                  autoHideDuration={5000}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                >
+                  <Alert
+                    variant="filled"
+                    severity="error"
+                    onClose={() => setAlert(false)}
+                    sx={{ width: "100%", mt: 7 }}
+                  >
+                    {errorMessage}
+                  </Alert>
+                </Snackbar>
               </Grid>
               <Grid item>
                 {edited && (

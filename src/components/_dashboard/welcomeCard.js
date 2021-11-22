@@ -32,14 +32,13 @@ export default function WelcomeCard() {
               <Typography variant="h4">HR Core!</Typography>
             </Grid>
 
-            <Grid item sx={{ pt: 2, pb: 2 }}>
+            <Grid item sx={{ pt: 1, pb: 1 }}>
               <Typography variant="h6">
-                Start managing your employees from anywhere! Easy to use,
-                intiutive interface with automation in mind.
+                Start managing your employees from anywhere!
               </Typography>
             </Grid>
 
-            <Grid item sx={{ p: 2 }}>
+            <Grid item sx={{ p: 1 }}>
               <Button variant="contained">Discover</Button>
             </Grid>
           </Grid>
@@ -49,7 +48,7 @@ export default function WelcomeCard() {
           <Grid container direction="rows" justifyContent="flex-end">
             <CardMedia
               component="img"
-              sx={{ width: 250 }}
+              sx={{ width: 200 }}
               image="/images/Online presentation_Monochromatic.png"
               alt="Logo"
             />

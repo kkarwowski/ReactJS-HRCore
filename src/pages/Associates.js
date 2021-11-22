@@ -6,6 +6,8 @@ import UserListToolbar from "../components/Associates/UserListToolbar";
 import Label from "../components/Label";
 import { Link } from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
+import { useAuth } from "../utils/context/AuthContext";
+
 // import { CSVLink, CSVDownload } from "react-csv";
 import CsvDownloader from "react-csv-downloader";
 import { sentenceCase } from "change-case";
@@ -49,6 +51,7 @@ const Associates = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
   const [checked, setChecked] = useState(false);
+
   // const [toExport, setToExport] = useState([]);
   const emptyRows =
     page > 0

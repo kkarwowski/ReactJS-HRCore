@@ -9,10 +9,20 @@ import {
   departmentsContext,
   resultsPerPageContext,
 } from "./utils/context/contexts";
-import { useEffect, useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  updateEmail,
+  signOut,
+  signInWithEmailAndPassword,
+  updatePassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+} from "firebase/auth";
+import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./utils/firebase";
 import { AuthProvider } from "./utils/context/AuthContext";
+import { auth } from "./utils/firebase";
 function App() {
   const associatesCollectionRef = collection(db, "Associates");
   const [updateAssociates, setUpdateAssociates] = useState(1);
@@ -21,6 +31,8 @@ function App() {
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const AuthContext = React.createContext();
+
   useEffect(() => {
     document.title = "HR Core";
     const getAssociates = async () => {

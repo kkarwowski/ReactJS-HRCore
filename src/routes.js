@@ -12,11 +12,14 @@ import NotFound from "./pages/Page404";
 import Associates from "./pages/Associates";
 import NewAssociate from "./components/Associate/newAssociate";
 import AssociateDetails from "./pages/AssociateDetails";
+import Admin from "./pages/Admin";
+import { useContext } from "react";
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const { currentUser } = useAuth();
+
   return useRoutes([
     {
       path: "/dashboard",
@@ -28,6 +31,7 @@ export default function Router() {
         { path: "associates/:id", element: <AssociateDetails /> },
         { path: "associates/newassociate", element: <NewAssociate /> },
         { path: "register", element: <SignUp /> },
+        { path: "admin", element: <Admin /> },
 
         { path: "*", element: <Navigate to="/error" /> },
         // { path: 'products', element: <Products /> },

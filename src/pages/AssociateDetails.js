@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogContentText,
   Fab,
+  Grid,
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { useNavigate } from "react-router-dom";
@@ -83,10 +84,8 @@ const AssociateDetails = () => {
 
   useEffect(() => {
     if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
-      console.log("no match");
       setEdited(true);
     } else {
-      console.log("match");
       setEdited(false);
     }
   }, [updatedAssociate]);
@@ -101,35 +100,36 @@ const AssociateDetails = () => {
       >
         <associateContext.Provider value={{ associateData, setAssociateData }}>
           <editedContext.Provider value={{ edited, setEdited }}>
-            <Button
-              onClick={() =>
-                console.log(
-                  "updated",
-                  updatedAssociate,
-                  "associateData",
-                  associateData
-                )
-              }
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mb={2}
             >
-              Log
-            </Button>
-            {edited && (
-              <Fab
-                color="primary"
-                aria-label="add"
-                onClick={() => updateFirebaseAndState()}
-              >
-                <SaveIcon />
-              </Fab>
-            )}
-            <Button
-              variant="contained"
-              size="large"
-              onClick={handleBack}
-              size="medium"
-            >
-              Back
-            </Button>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={handleBack}
+                  size="medium"
+                >
+                  Back
+                </Button>
+              </Grid>
+              <Grid item>
+                {edited && (
+                  <Fab
+                    color="primary"
+                    aria-label="add"
+                    size="medium"
+                    onClick={() => updateFirebaseAndState()}
+                  >
+                    <SaveIcon />
+                  </Fab>
+                )}
+              </Grid>
+            </Grid>
             <Dialog
               open={warn}
               onClose={handleClose}

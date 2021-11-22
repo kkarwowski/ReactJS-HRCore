@@ -89,7 +89,7 @@ const AssociateHeader = () => {
 
   const diffDates = require("diff-dates");
   const Todayy = new Date();
-  const otherDate = new Date(associateData.StartDate);
+
   const dateDiffYears = Date();
 
   // const formatDate = (dateString) => {
@@ -112,17 +112,42 @@ const AssociateHeader = () => {
   };
   const DateDifferenceCheck = () => {
     const dateDiffYears = Date();
-    const difference = diffDates(Todayy, otherDate);
+    const difference = diffDates(Todayy, associateData.StartDate.toDate());
+
     if (difference > 0) {
-      if (difference > 31556952000) {
-        const dateDiffYears = diffDates(Todayy, otherDate, "years");
-        return dateDiffYears;
+      //if difference in years is more than 1 return in years
+      if (diffDates(Todayy, associateData.StartDate.toDate(), "years") > 1) {
+        return (
+          "Started " +
+          diffDates(Todayy, associateData.StartDate.toDate(), "years") +
+          " years ago"
+        );
+      } else if (
+        diffDates(Todayy, associateData.StartDate.toDate(), "months") < 12 &&
+        diffDates(Todayy, associateData.StartDate.toDate(), "months") >= 2
+      ) {
+        return (
+          "Started " +
+          diffDates(Todayy, associateData.StartDate.toDate(), "months") +
+          " months ago"
+        );
+      } else if (
+        diffDates(Todayy, associateData.StartDate.toDate(), "days") < 62 &&
+        diffDates(Todayy, associateData.StartDate.toDate(), "days") > 1
+      ) {
+        return (
+          "Started " +
+          diffDates(Todayy, associateData.StartDate.toDate(), "days") +
+          " days ago"
+        );
       }
-      const dateDiffYears = diffDates(Todayy, otherDate, "days");
-      return dateDiffYears;
     }
     if (difference < 0) {
-      const dateDiffYears = diffDates(Todayy, otherDate, "days");
+      const dateDiffYears = diffDates(
+        Todayy,
+        associateData.StartDate.toDate(),
+        "days"
+      );
       return dateDiffYears;
     }
   };
@@ -221,17 +246,7 @@ const AssociateHeader = () => {
                       {associateData.PostalAddress.City}
                     </Grid>
                     <Grid item sx={{ pt: 3 }}>
-                      {DateDifferenceCheck() >= 0 ? (
-                        DateDifferenceCheck() > 0 ? (
-                          <p>Started {DateDifferenceCheck()} years ago </p>
-                        ) : (
-                          <p>Started {DateDifferenceCheck()} days ago </p>
-                        )
-                      ) : (
-                        <p>
-                          Starting in {Math.abs(DateDifferenceCheck())} days
-                        </p>
-                      )}
+                      <p>{DateDifferenceCheck()}</p>
                     </Grid>
                     {/* Icons */}
                     <Grid item>
@@ -280,7 +295,7 @@ const AssociateHeader = () => {
                           aria-label="scrollable auto tabs example"
                         >
                           <Tab label="Personal" {...a11yProps(0)} />
-                          <Tab label="Emergency Info" {...a11yProps(1)} />
+                          <Tab label="Emergency" {...a11yProps(1)} />
                           <Tab label="Notes" {...a11yProps(2)} />
                           <Tab label="Documents" {...a11yProps(3)} />
                         </Tabs>

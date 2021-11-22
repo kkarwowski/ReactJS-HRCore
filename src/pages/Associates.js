@@ -6,11 +6,9 @@ import UserListToolbar from "../components/Associates/UserListToolbar";
 import Label from "../components/Label";
 import { Link } from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
-import { ExportToCsv } from "export-to-csv";
+// import { CSVLink, CSVDownload } from "react-csv";
 import CsvDownloader from "react-csv-downloader";
-import { CSVLink, CSVDownload } from "react-csv";
 import { sentenceCase } from "change-case";
-import DownloadIcon from "@mui/icons-material/Download";
 import {
   Card,
   Table,
@@ -30,7 +28,6 @@ import {
   associatesContext,
   resultsPerPageContext,
 } from "../utils/context/contexts";
-import { concat } from "lodash-es";
 
 const TABLE_HEAD = [
   { id: "", label: "    ", alignRight: false },
@@ -52,24 +49,12 @@ const Associates = () => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("name");
   const [checked, setChecked] = useState(false);
-  const [toExport, setToExport] = useState([]);
+  // const [toExport, setToExport] = useState([]);
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - associatesData.length)
       : 0;
 
-  const options = {
-    fieldSeparator: ",",
-    quoteStrings: '"',
-    decimalSeparator: ".",
-    showLabels: true,
-    filename: "Exporded HR Core",
-    useTextFile: false,
-    useBom: true,
-    useKeysAsHeaders: true,
-    // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
-  };
-  const csvExporter = new ExportToCsv(options);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -184,12 +169,11 @@ const Associates = () => {
     filterName,
     checked
   );
-  const Export = () => {
-    const nnArray = Array.from(filteredAssociates);
-    nnArray.forEach((item) => delete item.profilePicture);
-    return nnArray;
-  };
-
+  // const toExport = Array.from(filteredAssociates);
+  // const Export = (toExport) => {
+  //   toExport.forEach((item) => delete item.profilePicture);
+  //   return toExport;
+  // };
   return (
     <>
       <Box>
@@ -203,11 +187,6 @@ const Associates = () => {
             <Typography variant="h3" gutterBottom>
               Associates
             </Typography>
-            <CSVLink data={toExport}>
-              <Button variant="contained" startIcon={<DownloadIcon />}>
-                Downalod
-              </Button>
-            </CSVLink>
 
             <Button variant="contained" component={Link} to={"newassociate"}>
               New Associate

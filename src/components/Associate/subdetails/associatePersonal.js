@@ -217,7 +217,27 @@ const AssociateInfo = () => {
               </MenuItem>
             </TextField>
           </Grid>
-
+          <Grid item>
+            {updatedAssociate && (
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  size="small"
+                  label="Date of Birth"
+                  name="DOB"
+                  // value={moment(updatedAssociate.StartDate).toISOString()}
+                  value={updatedAssociate.DOB.toDate()}
+                  inputFormat="dd-MM-yyyy"
+                  onChange={(newDate) => {
+                    setUpdatedAssociate({
+                      ...updatedAssociate,
+                      ["DOB"]: Timestamp.fromDate(new Date(newDate)),
+                    });
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            )}
+          </Grid>
           <Grid item>
             {updatedAssociate && (
               <LocalizationProvider dateAdapter={AdapterDateFns}>

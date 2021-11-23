@@ -71,6 +71,7 @@ export default function NewAssociate() {
     WorkEmail: "",
     City: "",
     PhoneNumber: "",
+    DOB: new Date(),
   });
   const history = useNavigate();
 
@@ -157,6 +158,7 @@ const stepOneValidationSchema = Yup.object({
   EmplStatus: Yup.string().required().label("Employment Status"),
   PhoneNumber: Yup.string().required().label("Phone Number"),
   StartDate: Yup.date().required().label("Start Date"),
+  DOB: Yup.date().required().label("Birth Date"),
   Office: Yup.string().required().label("Office"),
   Department: Yup.string().required().label("Department"),
   Manager: Yup.string().label("Manager"),
@@ -404,6 +406,23 @@ const StepOne = (props) => {
               </LocalizationProvider>
             </Grid>
             <ErrorMessage name="StartDate" />
+            <Grid item>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Field
+                  component={DatePicker}
+                  label="Birth Date"
+                  size="small"
+                  name="DOB"
+                  value={values.DOB}
+                  inputFormat="dd-MM-yyyy"
+                  onChange={(DOB) => {
+                    setFieldValue("DOB", Timestamp.fromDate(new Date(DOB)));
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Grid>
+            <ErrorMessage name="DOB" />
           </Grid>
 
           <Grid

@@ -72,7 +72,7 @@ export default function StarterTimeline() {
                           sx={{ width: 30, height: 30 }}
                         />
                       </Grid>
-                      <Grid sx={{ pl: 3 }}>
+                      <Grid sx={{ pl: 1 }}>
                         <Typography>
                           {FirstName} {GetInitial(FirstName)}
                         </Typography>

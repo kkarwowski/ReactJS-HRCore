@@ -6,6 +6,7 @@ import TotalEmployed from "../components/Graphs/TotalEmployed";
 import StarterTimeline from "../components/Timeline/starterTimeline";
 import WelcomeCard from "../components/_dashboard/welcomeCard";
 import BirthdayTimeline from "../components/Timeline/birthdayTimeline";
+import TotalEmployedHistory from "../components/Graphs/TotalEmployedHistory";
 const Home = () => {
   return (
     <Container maxWidth="xl">
@@ -21,6 +22,7 @@ const Home = () => {
         <Grid Grid item xs={12} sm={5} md={3}>
           <TotalEmployed />
         </Grid>
+
         <Grid Grid item xs={12} sm={6} md={3}>
           <TotalEmployed />
         </Grid>
@@ -38,6 +40,9 @@ const Home = () => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <BirthdayTimeline />
+        </Grid>
+        <Grid Grid item xs={12} sm={5} md={7}>
+          <TotalEmployedHistory />
         </Grid>
       </Grid>
     </Container>

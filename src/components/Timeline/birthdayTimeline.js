@@ -23,9 +23,7 @@ import { associatesContext } from "../../utils/context/contexts.js";
 export default function BirthdayTimeline() {
   const todayDate = new Date();
   const now = moment(todayDate);
-  console.log("now", now);
-  // const today = "20201-11-15T12:30:00";
-  // const today = "20201-11-15T12:30:00";
+
   const { associates, setAssociates } = React.useContext(associatesContext);
   const GetInitial = (name) => {
     return name.slice(0, 1) + ".";
@@ -48,7 +46,6 @@ export default function BirthdayTimeline() {
         });
       }
     });
-    console.log("soon", haveBirthdaySoon);
     return haveBirthdaySoon.sort(function (a, b) {
       return a.daysRemaining - b.daysRemaining;
     });

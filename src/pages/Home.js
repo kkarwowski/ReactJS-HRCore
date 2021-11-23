@@ -3,9 +3,9 @@ import { Grid, Container, Typography, Button } from "@mui/material";
 import DepartmentGraph from "../components/Graphs/departmentGraph";
 import OfficeGraph from "../components/Graphs/officeGraph";
 import TotalEmployed from "../components/Graphs/TotalEmployed";
-import starterTimeline from "../components/Timeline/starterTimeline";
 import StarterTimeline from "../components/Timeline/starterTimeline";
 import WelcomeCard from "../components/_dashboard/welcomeCard";
+import BirthdayTimeline from "../components/Timeline/birthdayTimeline";
 const Home = () => {
   return (
     <Container maxWidth="xl">
@@ -35,6 +35,9 @@ const Home = () => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <StarterTimeline />
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <BirthdayTimeline />
         </Grid>
       </Grid>
     </Container>

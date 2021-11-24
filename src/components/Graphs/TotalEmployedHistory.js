@@ -7,7 +7,6 @@ import { BaseOptionChart } from "../../components/charts/";
 import { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
-import moment from "moment";
 // ----------------------------------------------------------------------
 
 export default function TotalEmployedHistory() {
@@ -44,7 +43,7 @@ export default function TotalEmployedHistory() {
             title="Employed over time"
             subheader={`(+${GetPercentageChange().toString()}%) than last year`}
           />
-          <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+          <Box sx={{ p: 2, pb: 1 }} dir="ltr">
             <ReactApexChart
               type="area"
               series={[
@@ -81,7 +80,7 @@ export default function TotalEmployedHistory() {
                   },
                 },
               })}
-              height={364}
+              height={150}
             />
           </Box>
         </Card>

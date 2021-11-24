@@ -10,19 +10,16 @@ import TotalEmployedHistory from "../components/Graphs/TotalEmployedHistory";
 const Home = () => {
   return (
     <Container maxWidth="xl">
-      {/* <Typography variant="h3" pt={8} pb={5}>
-        Hi, Welcome back
-      </Typography> */}
       <Grid container spacing={3}>
         <Grid Grid item xs={12} sm={7} md={7}>
           <WelcomeCard />
         </Grid>
-        <Grid Grid item xs={12} sm={5} md={2}></Grid>
-        <Grid Grid item xs={12} sm={5} md={2}></Grid>
+        <Grid Grid item xs={12} sm={5} md={5}>
+          <TotalEmployedHistory />
+        </Grid>
         <Grid Grid item xs={12} sm={5} md={3}>
           <TotalEmployed />
         </Grid>
-
         <Grid Grid item xs={12} sm={6} md={3}>
           <TotalEmployed />
         </Grid>
@@ -40,9 +37,6 @@ const Home = () => {
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <BirthdayTimeline />
-        </Grid>
-        <Grid Grid item xs={12} sm={5} md={7}>
-          <TotalEmployedHistory />
         </Grid>
       </Grid>
     </Container>

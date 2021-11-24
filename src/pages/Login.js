@@ -8,16 +8,18 @@ import {
   TextField,
   CardContent,
   CardMedia,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import * as Yup from "yup";
 import { useAuth } from "../utils/context/AuthContext";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import React, { useContext, useState } from "react";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Logo from "../components/Logo";
-import { width } from "@mui/system";
+
 const Login = () => {
+  const [alert, setAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
   const [isLoginScreen, setIsLoginScreen] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const { login, currentUser, resetUserPassword } = useAuth();
@@ -37,8 +39,11 @@ const Login = () => {
     Email: Yup.string().email().required().label("Email"),
   });
   const handleSubmit = async (values) => {
-    console.log("submit", values);
-    await login(values.Email, values.Password);
+    await login(values.Email, values.Password).catch(
+      (error) => (
+        setErrorMessage(error.message), console.log(error), setAlert(true)
+      )
+    );
   };
   const handleReset = async (values) => {
     console.log("reseting password");
@@ -57,6 +62,20 @@ const Login = () => {
           justifyContent="Center"
           alignItems="Center"
         >
+          <Snackbar
+            open={alert}
+            autoHideDuration={5000}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert
+              variant="filled"
+              severity="error"
+              onClose={() => setAlert(false)}
+              sx={{ width: "100%", mt: 7 }}
+            >
+              {errorMessage}
+            </Alert>
+          </Snackbar>
           <Formik
             validationSchema={stepOneValidationSchema}
             onSubmit={handleSubmit}
@@ -65,7 +84,7 @@ const Login = () => {
               Password: "",
             }}
           >
-            {({ values, validateOnMount }) => (
+            {({ values, validateOnMount, resetForm }) => (
               <Form>
                 <Grid>
                   <Container>

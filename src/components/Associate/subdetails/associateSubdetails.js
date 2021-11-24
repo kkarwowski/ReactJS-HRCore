@@ -114,7 +114,7 @@ const AssociateSubdetails = () => {
                   <Grid item>
                     <AvatarGroup sx={{ pb: 1, pt: 2 }} max={6}>
                       {TeamMembers.map((FilteredMember) => {
-                        if (!(FilteredMember.id == associateData.id))
+                        if (!(FilteredMember.id === associateData.id))
                           return (
                             <Avatar
                               name={FilteredMember.FirstName}

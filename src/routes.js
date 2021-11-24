@@ -17,7 +17,7 @@ import Admin from "./pages/Admin";
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const { currentUser, userData, isAdmin } = useAuth();
+  const { currentUser, isAdmin } = useAuth();
   return useRoutes([
     {
       path: "/dashboard",

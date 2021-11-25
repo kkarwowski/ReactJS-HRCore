@@ -2,7 +2,7 @@ import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
 import { useTheme, styled } from "@mui/material/styles";
-import { Card, CardHeader, Stack, Typography } from "@mui/material";
+import { Card, CardHeader, Stack, Typography, Button } from "@mui/material";
 // utils
 import { fNumber } from "../../utils/formatNumber";
 //
@@ -13,16 +13,14 @@ import {
   officesContext,
   associatesContext,
 } from "../../utils/context/contexts";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
 
-const CHART_HEIGHT = 372;
-const LEGEND_HEIGHT = 72;
+const CHART_HEIGHT = 330;
+const LEGEND_HEIGHT = 60;
 
 const ChartWrapperStyle = styled("div")(({ theme }) => ({
   height: CHART_HEIGHT,
-  marginTop: theme.spacing(5),
+  marginTop: theme.spacing(1),
   "& .apexcharts-canvas svg": { height: CHART_HEIGHT },
   "& .apexcharts-canvas svg,.apexcharts-canvas foreignObject": {
     overflow: "visible",
@@ -44,24 +42,29 @@ export default function OfficeGraph() {
   const { associates, setAssociates } = useContext(associatesContext);
   const theme = useTheme();
   const [loadingOffice, setLoadingOffice] = useState(true);
-  const [officesData, setOfficeData] = useState();
+  const [officesData, setOfficesData] = useState();
 
   useEffect(() => {
     const getOffice = async () => {
+      setLoadingOffice(true);
+      console.log("effect OFFICE");
       const officeData = [];
       for (const off of OFFICES) {
         // const ress = await fetchDetails(off);
         // officeData.push(ress.docs.length);
         officeData.push(fetchDetails(off));
       }
-      setOfficeData(officeData);
+      setOfficesData(officeData);
       setLoadingOffice(false);
     };
     getOffice();
-  }, []);
+  }, [allOffices]);
 
   const fetchDetails = (off) => {
-    const filtered = associates.filter((associate) => associate.Office == off);
+    const filtered = associates.filter(
+      (associate) =>
+        associate.Office == off && associate.EmplStatus == "Employed"
+    );
     // const citiesRef = collection(db, "Associates");
     // const q = query(citiesRef, where("Office", "==", off));
     // const querySnapshot = await getDocs(q);
@@ -82,13 +85,13 @@ export default function OfficeGraph() {
     labels: OFFICES,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: "center" },
-    dataLabels: { enabled: true, dropShadow: { enabled: false } },
+    dataLabels: { enabled: true, dropShadow: { enabled: true } },
     tooltip: {
       fillSeriesColor: false,
       y: {
-        formatter: (seriesName) => fNumber(seriesName),
+        formatter: (seriesName) => fNumber(seriesName) + " associates",
         title: {
-          formatter: (seriesName) => `#${seriesName}`,
+          formatter: (seriesName) => `${seriesName} -`,
         },
       },
     },

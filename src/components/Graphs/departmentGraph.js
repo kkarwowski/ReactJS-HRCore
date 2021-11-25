@@ -2,7 +2,7 @@ import { forEach, merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
 import { useTheme, styled } from "@mui/material/styles";
-import { Card, CardHeader, Stack } from "@mui/material";
+import { Card, CardHeader, Stack, Button } from "@mui/material";
 // utils
 import { fNumber } from "../../utils/formatNumber.js";
 //
@@ -19,12 +19,12 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
 
-const CHART_HEIGHT = 372;
-const LEGEND_HEIGHT = 72;
+const CHART_HEIGHT = 330;
+const LEGEND_HEIGHT = 60;
 
 const ChartWrapperStyle = styled("div")(({ theme }) => ({
   height: CHART_HEIGHT,
-  marginTop: theme.spacing(5),
+  marginTop: theme.spacing(1),
   "& .apexcharts-canvas svg": { height: CHART_HEIGHT },
   "& .apexcharts-canvas svg,.apexcharts-canvas foreignObject": {
     overflow: "visible",
@@ -46,8 +46,10 @@ export default function DepartmentGraph() {
 
   const [chartData, setChartData] = useState();
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const getDepartment = () => {
+      setLoading(false);
       const CHART_DATA = [];
       for (const dep of allDepartments.flat(2)) {
         // const ress = await fetchDetails(dep);
@@ -58,7 +60,7 @@ export default function DepartmentGraph() {
       setLoading(false);
     };
     getDepartment();
-  }, []);
+  }, [allDepartments]);
 
   const fetchDetails = (dep) => {
     const filtered = associates.filter(

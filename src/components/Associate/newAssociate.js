@@ -194,8 +194,9 @@ const StepOne = (props) => {
             justifyContent="flex-start"
             alignItems="flex-start"
           >
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
+                fullWidth
                 required
                 name="FirstName"
                 size="small"
@@ -204,8 +205,9 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="FirstName" />
             </Grid>
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
+                fullWidth
                 required
                 name="LastName"
                 size="small"
@@ -214,8 +216,9 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="LastName" />
             </Grid>
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
+                fullWidth
                 required
                 name="Title"
                 size="small"
@@ -225,15 +228,16 @@ const StepOne = (props) => {
               <ErrorMessage name="Title" />
             </Grid>
             {allDepartments && (
-              <Grid item sx={4}>
+              <Grid item sx={4} sm={4} xl={4}>
                 <FormControl>
                   <InputLabel id="demo-simple-select-label">
                     Department
                   </InputLabel>
                   <Field
+                    fullWidth
                     as={Select}
                     name="Department"
-                    sx={{ width: 195 }}
+                    sx={{ minWidth: 195 }}
                     required
                     size="small"
                     label="Department"
@@ -248,8 +252,9 @@ const StepOne = (props) => {
                 </FormControl>
               </Grid>
             )}
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
+                fullWidth
                 required
                 name="City"
                 size="small"
@@ -258,9 +263,10 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="City" />
             </Grid>
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
                 required
+                fullWidth
                 name="WorkEmail"
                 size="small"
                 label="Work Email"
@@ -269,10 +275,11 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="WorkEmail" />
             </Grid>
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
                 // type="email"
                 required
+                fullWidth
                 name="PrivateEmail"
                 size="small"
                 label="Private Email"
@@ -280,10 +287,11 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="PrivateEmail" />
             </Grid>
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
                 // type="email"
                 required
+                fullWidth
                 name="PhoneNumber"
                 size="small"
                 label="Phone Number"
@@ -291,11 +299,12 @@ const StepOne = (props) => {
               />
               <ErrorMessage name="PhoneNumber" />
             </Grid>
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <FormControl>
                 <InputLabel id="demo-simple-select-label">Gender</InputLabel>
 
                 <Field
+                  fullWidth
                   labelId="demo-simple-select-label"
                   as={Select}
                   name="Gender"
@@ -314,7 +323,7 @@ const StepOne = (props) => {
               </FormControl>
               <ErrorMessage name="Gender" />
             </Grid>
-            <Grid item sx={4}>
+            <Grid item sx={4} sm={4} xl={4}>
               <FormControl>
                 <InputLabel id="demo-simple-select-label">
                   Employment Status
@@ -341,7 +350,7 @@ const StepOne = (props) => {
               <ErrorMessage name="EmplStatus" />
             </Grid>
             {allOffices && (
-              <Grid item>
+              <Grid item sx={4} sm={4} xl={4}>
                 <FormControl>
                   <InputLabel id="demo-simple-select-label">Office</InputLabel>
                   <Field
@@ -351,6 +360,7 @@ const StepOne = (props) => {
                     required
                     size="small"
                     label="Office"
+                    fullWidth={true}
                   >
                     {allOffices.map((office, index) => (
                       <MenuItem key={index} value={`${office}`}>
@@ -362,7 +372,7 @@ const StepOne = (props) => {
                 <ErrorMessage name="Office" />
               </Grid>
             )}
-            <Grid item>
+            <Grid item sx={4} sm={4} xl={4}>
               <Field
                 name="Manager"
                 component={Autocomplete}
@@ -380,15 +390,17 @@ const StepOne = (props) => {
                     label="Manager"
                     required
                     variant="outlined"
+                    fullWidth={true}
                   />
                 )}
               />
             </Grid>
             <ErrorMessage name="Manager" />
 
-            <Grid item>
+            <Grid item sx={4} sm={4} xl={4}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Field
+                  fullWidth
                   component={DatePicker}
                   label="Start Date"
                   size="small"
@@ -406,7 +418,7 @@ const StepOne = (props) => {
               </LocalizationProvider>
             </Grid>
             <ErrorMessage name="StartDate" />
-            <Grid item>
+            <Grid item sx={4} sm={4} xl={4}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Field
                   component={DatePicker}

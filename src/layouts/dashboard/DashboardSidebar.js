@@ -69,14 +69,14 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     >
       <Box sx={{ px: 2.5, py: 3 }}>
         <Box component={RouterLink} to="/" sx={{ display: "inline-flex" }}>
-          <Logo sx={{ width: 80 }} />
+          <Logo sx={{ width: 60 }} />
         </Box>
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none" component={RouterLink} to="#">
-          <AccountStyle>
-            {/* <Avatar src={account.photoURL} alt="photoURL" />
+      {/* <Box sx={{ mb: 1, mx: 1.5 }}> */}
+      {/* <Link underline="none" component={RouterLink} to="#"> */}
+      {/* <AccountStyle> */}
+      {/* <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                 {account.displayName}
@@ -85,9 +85,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
                 {account.role}
               </Typography>
             </Box> */}
-          </AccountStyle>
-        </Link>
-      </Box>
+      {/* </AccountStyle> */}
+      {/* </Link> */}
+      {/* </Box> */}
 
       <NavSection navConfig={sidebarConfig} />
 

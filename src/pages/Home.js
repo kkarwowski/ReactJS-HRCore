@@ -26,10 +26,11 @@ const Home = () => {
         <Grid Grid item xs={12} sm={6} md={3}>
           <TotalEmployed />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={3}></Grid>
+        <Grid item xs={12} md={6} lg={3}>
           <OfficeGraph />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={3}>
           <DepartmentGraph />
         </Grid>
         <Grid item xs={12} md={6} lg={4}>

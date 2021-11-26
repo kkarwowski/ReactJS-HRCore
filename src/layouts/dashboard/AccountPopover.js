@@ -67,31 +67,33 @@ export default function AccountPopover() {
   }, []);
   return (
     <>
-      <IconButton
-        ref={anchorRef}
-        onClick={handleOpen}
-        sx={{
-          padding: 0,
-          width: 44,
-          height: 44,
-          ...(open && {
-            "&:before": {
-              zIndex: 1,
-              content: "''",
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              position: "absolute",
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-            },
-          }),
-        }}
-      >
-        <Avatar>
-          {userData.FirstName.slice(0, 1)}
-          {userData.LastName.slice(0, 1)}
-        </Avatar>
-      </IconButton>
+      {userData && (
+        <IconButton
+          ref={anchorRef}
+          onClick={handleOpen}
+          sx={{
+            padding: 0,
+            width: 44,
+            height: 44,
+            ...(open && {
+              "&:before": {
+                zIndex: 1,
+                content: "''",
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                position: "absolute",
+                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
+              },
+            }),
+          }}
+        >
+          <Avatar>
+            {userData.FirstName.slice(0, 1)}
+            {userData.LastName.slice(0, 1)}
+          </Avatar>
+        </IconButton>
+      )}
 
       <MenuPopover
         open={open}

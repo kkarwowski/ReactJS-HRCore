@@ -31,6 +31,7 @@ import AssociateEmergencyInfo from "./subdetails/associateEmergency";
 import { db } from "../../utils/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import AssociateNotes from "./subdetails/associateNotes";
+import AssociateChanges from "./subdetails/associateChanges";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -288,6 +289,7 @@ const AssociateHeader = () => {
                           <Tab label="Emergency" {...a11yProps(1)} />
                           <Tab label="Notes" {...a11yProps(2)} />
                           <Tab label="Documents" {...a11yProps(3)} />
+                          <Tab label="Changes" {...a11yProps(4)} />
                         </Tabs>
                       </Box>
                     </Grid>
@@ -316,6 +318,9 @@ const AssociateHeader = () => {
             </TabPanel>
             <TabPanel value={value} index={3}>
               <AssociateDocuments userID={associateData.id} />
+            </TabPanel>
+            <TabPanel value={value} index={4}>
+              <AssociateChanges userID={associateData.id} />
             </TabPanel>
           </Card>
         </Grid>

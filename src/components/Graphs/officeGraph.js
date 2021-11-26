@@ -47,7 +47,6 @@ export default function OfficeGraph() {
   useEffect(() => {
     const getOffice = async () => {
       setLoadingOffice(true);
-      console.log("effect OFFICE");
       const officeData = [];
       for (const off of OFFICES) {
         // const ress = await fetchDetails(off);

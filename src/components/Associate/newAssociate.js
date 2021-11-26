@@ -6,6 +6,8 @@ import {
   updateAssociatesContext,
   departmentsContext,
 } from "../../utils/context/contexts";
+import InputAdornment from "@mui/material/InputAdornment";
+
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -72,6 +74,7 @@ export default function NewAssociate() {
     City: "",
     PhoneNumber: "",
     DOB: new Date(),
+    Salary: "",
   });
   const history = useNavigate();
 
@@ -167,6 +170,7 @@ const stepOneValidationSchema = Yup.object({
     .required()
     .label("Private Email"),
   WorkEmail: Yup.string().email("Invalid email").required().label("Work Email"),
+  Salary: Yup.string().required().label("Salary"),
 });
 
 const StepOne = (props) => {
@@ -296,6 +300,23 @@ const StepOne = (props) => {
                 as={TextField}
               />
               <ErrorMessage name="PhoneNumber" />
+            </Grid>
+            <Grid item sx={4} sm={4} xl={4}>
+              <Field
+                // type="email"
+                required
+                fullWidth
+                name="Salary"
+                size="small"
+                label="Salary"
+                as={TextField}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">£</InputAdornment>
+                  ),
+                }}
+              />
+              <ErrorMessage name="Salary" />
             </Grid>
             <Grid item sx={4} sm={4} xl={4}>
               <FormControl>
@@ -434,7 +455,6 @@ const StepOne = (props) => {
             </Grid>
             <ErrorMessage name="DOB" />
           </Grid>
-
           <Grid
             sx={{ p: 3, pb: 2 }}
             container

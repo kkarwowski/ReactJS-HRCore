@@ -1,6 +1,9 @@
 import AssociateHeader from "../components/Associate/associateHeader";
 import { useEffect, useState, React, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { transform, isEqual, isObject } from "lodash";
+import { Timestamp } from "firebase/firestore";
+
 import {
   Button,
   Dialog,
@@ -23,10 +26,20 @@ import {
   updateAssociatesContext,
 } from "../utils/context/contexts";
 import { db } from "../utils/firebase";
-import { getDoc, doc, onSnapshot, updateDoc, setDoc } from "firebase/firestore";
-import { isEqual } from "lodash";
+import {
+  getDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+  setDoc,
+  addDoc,
+  collection,
+} from "firebase/firestore";
+import { useAuth } from "../utils/context/AuthContext";
 
 const AssociateDetails = () => {
+  const { userData } = useAuth();
+
   const { loadingProgress, setLoadingProgress } = useContext(loadingContext);
   const { id } = useParams();
   const [associateData, setAssociateData] = useState();
@@ -73,8 +86,46 @@ const AssociateDetails = () => {
   const matchUpdatedAndCurrent = (obj1, obj2) => {
     return isEqual(obj1, obj2);
   };
+
+  const GetDifferences = (object, base) => {
+    return transform(object, (result, value, key) => {
+      if (!isEqual(value, base[key])) {
+        result[key] =
+          isObject(value) && isObject(base[key])
+            ? GetDifferences(value, base[key])
+            : value;
+      }
+    });
+  };
+
+  const RecordChanges = async (Data) => {
+    for (const [key, value] of Object.entries(Data)) {
+      const changesObject = {
+        ChangedBy: userData.FirstName + " " + userData.LastName,
+        Timestamp: Timestamp.fromDate(new Date()),
+        Category: key,
+        Value: value,
+        AssociateID: updatedAssociate.id,
+      };
+      console.log(changesObject);
+      const docRef = await addDoc(collection(db, "Changes"), changesObject);
+    }
+  };
+  // const docRef = await addDoc(collection(db, "Changes"), Data);
+
   const updateFirebaseAndState = async () => {
     // setIsUpdating(true);
+    const Differences = GetDifferences(updatedAssociate, associateData);
+    if (Differences) {
+      if (
+        "Salary" in Differences ||
+        "Title" in Differences ||
+        "Department" in Differences
+      ) {
+        RecordChanges(Differences);
+        console.log("yes");
+      }
+    }
     setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
       .then(() => {
         setAssociateData(updatedAssociate);

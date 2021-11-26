@@ -87,7 +87,10 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar alt="photoURL" />
+        <Avatar>
+          {userData.FirstName.slice(0, 1)}
+          {userData.LastName.slice(0, 1)}
+        </Avatar>
       </IconButton>
 
       <MenuPopover

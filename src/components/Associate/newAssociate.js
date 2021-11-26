@@ -230,14 +230,12 @@ const StepOne = (props) => {
             {allDepartments && (
               <Grid item sx={4} sm={4} xl={4}>
                 <FormControl>
-                  <InputLabel id="demo-simple-select-label">
-                    Department
-                  </InputLabel>
+                  <InputLabel>Department</InputLabel>
                   <Field
                     fullWidth
                     as={Select}
                     name="Department"
-                    sx={{ minWidth: 195 }}
+                    // sx={{ minWidth: 350 }}
                     required
                     size="small"
                     label="Department"

@@ -302,10 +302,19 @@ const AssociateHeader = () => {
 
         {/* Tab Panels in seperate card*/}
 
-        <Grid item xs={12} md={6} lg={2.5}>
-          <Card>{associateData && <AssociateSubdetails />}</Card>
+        <Grid item xs={12} md={6} lg={3}>
+          <Grid container direction="column" rowSpacing={2}>
+            <Grid item>
+              <Card>{associateData && <AssociateSubdetails />}</Card>
+            </Grid>
+            <Grid item>
+              <Card>
+                <AssociateChanges userID={associateData.id} />
+              </Card>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6} lg={9.5}>
+        <Grid item xs={12} md={6} lg={9}>
           <Card>
             <TabPanel value={value} index={0}>
               <AssociateInfo />

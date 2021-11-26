@@ -14,14 +14,11 @@ const AssociateChanges = ({ userID }) => {
   const [associateChanges, setAssociateChanges] = useState();
   const [loading, setLoading] = useState(false);
 
-  useEffect((associateChanges) => {
+  useEffect(() => {
     const getChanges = async (userID) => {
       setLoading(true);
       const ress = await fetchDetails(userID);
       setAssociateChanges(ress);
-      // ress.forEach((doc) => ({
-      //   setAssociateChanges(doc => [...doc, ...doc.data()]);
-      // });
       setLoading(false);
     };
     getChanges();
@@ -38,12 +35,8 @@ const AssociateChanges = ({ userID }) => {
     <Grid container direction="column">
       <Grid item>
         <Grid container direction="rows" justifyContent="space-between">
-          <Grid item pt={3} pl={2}>
+          <Grid item pt={2} pl={2}>
             <Typography variant="h6">Changes</Typography>
-            {/* <CardHeader title="Upcoming Birthdays" />
-      <CardMedia>
-        <CakeIcon color="primary" />
-      </CardMedia> */}
           </Grid>
         </Grid>
       </Grid>
@@ -52,7 +45,7 @@ const AssociateChanges = ({ userID }) => {
           {associateChanges && (
             <Timeline
               position="left"
-              sx={{ p: 3, pt: 4 }}
+              sx={{ p: 1, pt: 2 }}
               style={{ maxHeight: 400, overflow: "auto" }}
             >
               <TimelineSeparator />
@@ -63,15 +56,13 @@ const AssociateChanges = ({ userID }) => {
                   <TimelineItem>
                     <TimelineOppositeContent
                       color="text.secondary"
-                      sx={{ m: "auto 0" }}
+                      // sx={{ m: "auto 0" }}
                     >
-                      <Typography>
+                      <Typography variant="h7">
                         <strong>{Category}</strong> changed to{" "}
                         <strong>{Value}</strong>
                       </Typography>
-                      <Typography>
-                        by <strong>{ChangedBy}</strong>
-                      </Typography>
+                      <Typography variant="h7"> by {ChangedBy}</Typography>
                     </TimelineOppositeContent>
                     <TimelineSeparator>
                       <TimelineConnector />
@@ -80,7 +71,6 @@ const AssociateChanges = ({ userID }) => {
                       </TimelineDot>
                       <TimelineConnector />
                     </TimelineSeparator>
-
                     <TimelineContent sx={{ m: "auto 0" }}>
                       <Grid
                         container
@@ -88,9 +78,10 @@ const AssociateChanges = ({ userID }) => {
                         alignItems="center"
                         justifyContent="flex-end"
                       >
-                        <Grid sx={{ pl: 2 }}>
-                          <Typography>
+                        <Grid sx={{ pl: 0 }}>
+                          <Typography variant="h7">
                             {moment(Timestamp.toDate()).format("MMMM Do Y")}
+                            {/* {moment(Timestamp.toDate()).format("DD/MM/yyyy")} */}
                           </Typography>
                         </Grid>
                       </Grid>

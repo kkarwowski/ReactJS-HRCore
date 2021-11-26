@@ -8,6 +8,7 @@ import {
   Box,
   Button,
 } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LoadingButton from "@mui/lab/LoadingButton";
 import frLocale from "date-fns/locale/fr";
@@ -46,8 +47,13 @@ const AssociateInfo = () => {
       [event.target.name]: event.target.value,
     });
   };
+  const formatter = new Intl.NumberFormat(undefined, {
+    // style: "amount",
+    // currency: "GBP",
+    maximumSignificantDigits: 3,
+  });
   const onUpdateNested = (event) => {
-    // setEdited(true);
+    setEdited(true);
     setUpdatedAssociate({
       ...updatedAssociate,
       PostalAddress: {
@@ -262,6 +268,7 @@ const AssociateInfo = () => {
           <Grid item>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                adisabled={associateData.TerminationtDate ? false : true}
                 label="Termination Date"
                 name="TerminationDate"
                 disabled="true"
@@ -275,6 +282,25 @@ const AssociateInfo = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+          </Grid>
+          <Grid item xs={8} xl={4}>
+            <TextField
+              style={{ width: "100%" }}
+              size="small"
+              name="Salary"
+              label="Salary"
+              defaultValue={
+                associateData.Salary
+                  ? formatter.format(associateData.Salary)
+                  : null
+              }
+              onChange={(e) => onUpdate(e)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">£</InputAdornment>
+                ),
+              }}
+            />
           </Grid>
         </Grid>
         <Typography variant="inherit">Postal Address</Typography>

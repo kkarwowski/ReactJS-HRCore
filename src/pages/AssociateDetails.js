@@ -23,7 +23,7 @@ import {
   updateAssociatesContext,
 } from "../utils/context/contexts";
 import { db } from "../utils/firebase";
-import { getDoc, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { getDoc, doc, onSnapshot, updateDoc, setDoc } from "firebase/firestore";
 import { isEqual } from "lodash";
 
 const AssociateDetails = () => {
@@ -75,7 +75,7 @@ const AssociateDetails = () => {
   };
   const updateFirebaseAndState = async () => {
     // setIsUpdating(true);
-    updateDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
+    setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
       .then(() => {
         setAssociateData(updatedAssociate);
         setEdited(false);

@@ -1,15 +1,15 @@
 import { Icon } from "@iconify/react";
-import androidFilled from "@iconify/icons-ant-design/team-outlined";
+import poundOutlined from "@iconify/icons-ant-design/pound-outlined";
+import poundCircleFilled from "@iconify/icons-ant-design/pound-circle-filled";
 // material
 import { alpha, styled } from "@mui/material/styles";
 import { Card, Typography } from "@mui/material";
 // utils
-import { fShortenNumber } from "../../utils/formatNumber";
 import { useState, useEffect, useContext } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { associatesContext } from "../../utils/context/contexts.js";
-
-// ----------------------------------------------------------------------
+// ---------------------------------------------------------------------
+import _, { sum } from "lodash";
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",
@@ -43,31 +43,41 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function TotalEmployed() {
-  const [totalEMPL, setTotal] = useState();
-  const { associates, setAssociates } = useContext(associatesContext);
-
+export default function AverageSalary() {
   const [loading, setLoading] = useState(true);
+  const { associates, setAssociates } = useContext(associatesContext);
+  const [chartData, setChartData] = useState();
+
   useEffect(() => {
+    const salaries = [];
     const filtered = associates.filter(
       (associate) => associate.EmplStatus == "Employed"
     );
-    setTotal(filtered.length);
+    filtered.forEach((associate) => {
+      salaries.push(parseInt(associate.Salary));
+    });
+    setChartData(_.sum(salaries) / salaries.length);
     setLoading(false);
   }, [associates]);
-
+  const formatter = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: "GBP",
+    maximumSignificantDigits: 3,
+  });
   return (
     <>
       <RootStyle>
         {loading && <CircularProgress />}
-        {totalEMPL > 0 && (
+        {chartData > 0 && (
           <div>
             <IconWrapperStyle>
-              <Icon icon={androidFilled} width={35} height={35} />
+              <Icon icon={poundOutlined} width={35} height={35} />
             </IconWrapperStyle>
-            <Typography variant="h3">{fShortenNumber(totalEMPL)}</Typography>
+            <Typography variant="h3">
+              {chartData ? formatter.format(chartData) : null}
+            </Typography>
             <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-              Employed Associates
+              Average Salary
             </Typography>
           </div>
         )}

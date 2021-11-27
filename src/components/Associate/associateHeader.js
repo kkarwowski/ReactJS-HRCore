@@ -29,7 +29,15 @@ import AssociatePic from "./associatePicture";
 import AssociateDocuments from "./subdetails/associateDocuments";
 import AssociateEmergencyInfo from "./subdetails/associateEmergency";
 import { db } from "../../utils/firebase";
-import { doc, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  deleteDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { getStorage, ref, deleteObject } from "firebase/storage";
 import AssociateNotes from "./subdetails/associateNotes";
 import AssociateChanges from "./subdetails/associateChanges";
 
@@ -89,7 +97,25 @@ const AssociateHeader = () => {
   // };
 
   const DeleteAssociate = async (id) => {
+    // delete from Associates
     await deleteDoc(doc(db, "Associates", id));
+    // delete from Changes
+    const q = query(collection(db, "Changes"), where("AssociateID", "==", id));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (document) => {
+      await deleteDoc(doc(db, "Changes", document.id));
+      console.log("Deleted from Changes DB");
+    });
+    // delete associate picture
+    const storage = getStorage();
+    const storageRef = ref(storage, `associateImages/${id}.jpg`);
+    deleteObject(storageRef)
+      .then(() => {
+        console.log("Deleted Associate picture!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
     handleClose();
     history("/dashboard/associates");

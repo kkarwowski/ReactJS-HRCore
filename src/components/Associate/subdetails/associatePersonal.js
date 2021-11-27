@@ -42,10 +42,17 @@ const AssociateInfo = () => {
 
   const onUpdate = async (event) => {
     console.log(event.target.value);
-    setUpdatedAssociate({
-      ...updatedAssociate,
-      [event.target.name]: event.target.value,
-    });
+    if (event.target.name === "Salary") {
+      setUpdatedAssociate({
+        ...updatedAssociate,
+        [event.target.name]: event.target.value.replaceAll(",", ""),
+      });
+    } else {
+      setUpdatedAssociate({
+        ...updatedAssociate,
+        [event.target.name]: event.target.value,
+      });
+    }
   };
   const formatter = new Intl.NumberFormat(undefined, {
     // style: "amount",

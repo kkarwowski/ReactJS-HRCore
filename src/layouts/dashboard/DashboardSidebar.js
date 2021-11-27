@@ -99,7 +99,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           spacing={3}
           sx={{
             p: 2.5,
-            pt: 5,
+            pt: 2,
             borderRadius: 2,
             position: "relative",
             bgcolor: "grey.200",

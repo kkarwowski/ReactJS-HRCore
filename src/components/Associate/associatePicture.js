@@ -58,7 +58,7 @@ const AssociatePic = () => {
     });
   };
 
-  const UploadToFirebase = (mage) => {
+  const UploadToFirebase = (image) => {
     const storage = getStorage();
     const storageRef = ref(storage, `associateImages/${associateData.id}.jpg`);
     uploadString(storageRef, image.split(",")[1], "base64").then(() => {
@@ -192,7 +192,7 @@ const AssociatePic = () => {
                   variant="h6"
                   component="h2"
                 >
-                  Text in a modal
+                  {/* Text in a modal */}
                 </Typography>
               </Box>
             </Fade>

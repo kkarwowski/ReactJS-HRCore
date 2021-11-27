@@ -29,7 +29,6 @@ import { db } from "../utils/firebase";
 import {
   getDoc,
   doc,
-  onSnapshot,
   updateDoc,
   setDoc,
   addDoc,
@@ -107,23 +106,25 @@ const AssociateDetails = () => {
         Value: value,
         AssociateID: updatedAssociate.id,
       };
-      console.log(changesObject);
       const docRef = await addDoc(collection(db, "Changes"), changesObject);
     }
   };
-  // const docRef = await addDoc(collection(db, "Changes"), Data);
 
   const updateFirebaseAndState = async () => {
     // setIsUpdating(true);
     const Differences = GetDifferences(updatedAssociate, associateData);
     if (Differences) {
-      if (
-        "Salary" in Differences ||
-        "Title" in Differences ||
-        "Department" in Differences
-      ) {
-        RecordChanges(Differences);
-        console.log("yes");
+      if ("Salary" in Differences) {
+        const picked = (({ Salary }) => ({ Salary }))(Differences);
+        RecordChanges(picked);
+      }
+      if ("Title" in Differences) {
+        const picked = (({ Title }) => ({ Title }))(Differences);
+        RecordChanges(picked);
+      }
+      if ("Department" in Differences) {
+        const picked = (({ Department }) => ({ Department }))(Differences);
+        RecordChanges(picked);
       }
     }
     setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)

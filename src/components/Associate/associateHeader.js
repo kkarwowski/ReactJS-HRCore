@@ -177,8 +177,8 @@ const AssociateHeader = () => {
         // alignContent="center"
         rowSpacing={2}
         columnSpacing={2}
-        p={2}
-        pt={3}
+        // p={2}
+        // pt={3}
         pb={4}
       >
         <Grid item xs={12} lg={12}>
@@ -190,7 +190,7 @@ const AssociateHeader = () => {
               justifyContent="center"
               alignItems="center"
               alignContent="center"
-              p={2}
+              p={1}
             >
               <Grid item xs={12} lg={2} sx={{ pl: 10 }}>
                 <AssociatePic />
@@ -212,7 +212,7 @@ const AssociateHeader = () => {
                         alignItems="flex-start"
                       >
                         <Grid item>
-                          <Typography variant="h3">
+                          <Typography variant="h4">
                             {associateData.FirstName} {associateData.LastName}
                           </Typography>
                         </Grid>
@@ -229,14 +229,13 @@ const AssociateHeader = () => {
                           </Label>
                         </Grid>
                       </Grid>
-                      <Typography variant="h6">
+                      <Typography variant="h6" sx={{ pb: 2 }}>
                         {associateData.Title}
                       </Typography>
-                      <br />
                       {associateData.Department} |{" "}
                       {associateData.PostalAddress.City}
                     </Grid>
-                    <Grid item sx={{ pt: 3 }}>
+                    <Grid item sx={{ pt: 2 }}>
                       <p>{DateDifferenceCheck()}</p>
                     </Grid>
                     {/* Icons */}
@@ -246,7 +245,7 @@ const AssociateHeader = () => {
                         direction="rows"
                         alignContent="center"
                         justifyItems="center"
-                        sx={{ pt: 3 }}
+                        sx={{ pt: 1 }}
                       >
                         <Grid item Item xs={6}>
                           <Link
@@ -306,11 +305,6 @@ const AssociateHeader = () => {
           <Grid container direction="column" rowSpacing={2}>
             <Grid item>
               <Card>{associateData && <AssociateSubdetails />}</Card>
-            </Grid>
-            <Grid item>
-              <Card>
-                <AssociateChanges userID={associateData.id} />
-              </Card>
             </Grid>
           </Grid>
         </Grid>

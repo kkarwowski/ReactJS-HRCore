@@ -59,6 +59,13 @@ export default function NewAssociate() {
       FirstName: "",
       Relationship: "",
     },
+    PostalAddress: {
+      City: "",
+      FirstLime: "",
+      SecondLine: "",
+      Postcode: "",
+      Country: "",
+    },
     profilePicture: "",
     FirstName: "",
     Title: "",
@@ -75,6 +82,7 @@ export default function NewAssociate() {
     PhoneNumber: "",
     DOB: new Date(),
     Salary: "",
+    Notes: "",
   });
   const history = useNavigate();
 
@@ -94,10 +102,18 @@ export default function NewAssociate() {
 
   const handleNextStep = (newData, final = false) => {
     console.log(newData);
-    setNewAssocaite((prev) => ({ ...prev, ...newData }));
+    setNewAssocaite((prev) => ({
+      ...prev,
+      ...newData,
+    }));
 
     if (final) {
-      makeRequest(newData);
+      const newObject = Object.assign({}, newData, {
+        StartDate: Timestamp.fromDate(newData.StartDate),
+        DOB: Timestamp.fromDate(newData.DOB),
+      });
+      console.log("new", newObject);
+      makeRequest(newObject);
       return;
     }
     console.log(currentStep);
@@ -429,7 +445,8 @@ const StepOne = (props) => {
                   onChange={(StartDate) => {
                     setFieldValue(
                       "StartDate",
-                      Timestamp.fromDate(new Date(StartDate))
+                      new Date(StartDate)
+                      // Timestamp.fromDate(new Date(StartDate))
                     );
                   }}
                   renderInput={(params) => <TextField {...params} />}
@@ -447,7 +464,8 @@ const StepOne = (props) => {
                   value={values.DOB}
                   inputFormat="dd-MM-yyyy"
                   onChange={(DOB) => {
-                    setFieldValue("DOB", Timestamp.fromDate(new Date(DOB)));
+                    setFieldValue("DOB", new Date(DOB));
+                    // setFieldValue("DOB", Timestamp.fromDate(new Date(DOB)));
                   }}
                   renderInput={(params) => <TextField {...params} />}
                 />

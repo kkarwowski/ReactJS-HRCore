@@ -40,7 +40,7 @@ import {
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import AssociateNotes from "./subdetails/associateNotes";
 import AssociateChanges from "./subdetails/associateChanges";
-
+import LoadingButton from "@mui/lab/LoadingButton";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -85,7 +85,7 @@ const AssociateHeader = () => {
     setValue(newValue);
   };
   const [open, setOpen] = React.useState(false);
-
+  const [loading, setLoading] = useState(false);
   const diffDates = require("diff-dates");
   const Todayy = new Date();
 
@@ -97,26 +97,39 @@ const AssociateHeader = () => {
   // };
 
   const DeleteAssociate = async (id) => {
+    setLoading(true);
     // delete from Associates
     await deleteDoc(doc(db, "Associates", id));
     // delete from Changes
-    const q = query(collection(db, "Changes"), where("AssociateID", "==", id));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (document) => {
-      await deleteDoc(doc(db, "Changes", document.id));
-      console.log("Deleted from Changes DB");
-    });
-    // delete associate picture
-    const storage = getStorage();
-    const storageRef = ref(storage, `associateImages/${id}.jpg`);
-    deleteObject(storageRef)
-      .then(() => {
-        console.log("Deleted Associate picture!");
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      const q = query(
+        collection(db, "Changes"),
+        where("AssociateID", "==", id)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (document) => {
+        await deleteDoc(doc(db, "Changes", document.id));
+        console.log("Deleted from Changes DB");
       });
+    } catch (e) {
+      console.log("Error");
+    }
+    // delete associate picture
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `associateImages/${id}.jpg`);
+      deleteObject(storageRef)
+        .then(() => {
+          console.log("Deleted Associate picture!");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (e) {
+      console.log("Error");
+    }
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+    setLoading(false);
     handleClose();
     history("/dashboard/associates");
   };
@@ -186,12 +199,20 @@ const AssociateHeader = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
+          <LoadingButton
+            loading={loading}
+            loadingIndicator="Deleting..."
             onClick={() => DeleteAssociate(associateData.id)}
             color="error"
           >
             Delete
-          </Button>
+          </LoadingButton>
+          {/* <Button
+            onClick={() => DeleteAssociate(associateData.id)}
+            color="error"
+          >
+            Delete
+          </Button> */}
         </DialogActions>
       </Dialog>
 

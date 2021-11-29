@@ -112,7 +112,6 @@ export default function NewAssociate() {
         StartDate: Timestamp.fromDate(newData.StartDate),
         DOB: Timestamp.fromDate(newData.DOB),
       });
-      console.log("new", newObject);
       makeRequest(newObject);
       return;
     }

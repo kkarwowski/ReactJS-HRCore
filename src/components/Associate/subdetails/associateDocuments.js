@@ -12,9 +12,14 @@ import {
   Checkbox,
   TablePagination,
   Snackbar,
+  Grid,
   Alert,
   Divider,
   Card,
+  TextField,
+  MenuItem,
+  Button,
+  Select,
 } from "@mui/material";
 import {
   getStorage,
@@ -33,12 +38,19 @@ import filePdfBox from "@iconify/icons-mdi/file-pdf-box";
 import fileExcelBox from "@iconify/icons-mdi/file-excel-box";
 import fileWordBox from "@iconify/icons-mdi/file-word-box";
 import imageIcon from "@iconify/icons-mdi/image";
+import Backdrop from "@mui/material/Backdrop";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import { Controller, useForm } from "react-hook-form";
 import Scrollbar from "../../Scrollbar";
+import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import { db } from "../../../utils/firebase";
 const TABLE_HEAD = [
   { id: "fileName", label: "Name", alignRight: false },
   { id: "size", label: "Size", alignRight: false },
   { id: "type", label: "Type", alignRight: false },
   { id: "uploadDate", label: "Upload Date", alignRight: false },
+  { id: "category", label: "Category", alignRight: false },
   { id: "" },
 ];
 
@@ -92,7 +104,13 @@ const AssociateDocuments = ({ userID }) => {
   const [filterName, setFilterName] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const { setLoadingProgress } = useContext(loadingContext);
+  const [additionalMeta, setAdditionalMeta] = useState();
   const iconSize = { width: 30, height: 30 };
+  const [PopupOpen, setPopupOpen] = useState(false);
+  const { handleSubmit, reset, control } = useForm();
+  const [file, setFile] = useState(null);
+  const [uploadName, setUploadName] = useState();
+  const onSubmit = (data: any) => uploadFile(data);
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
   const filteredUsers = applySortFilter(
@@ -101,7 +119,61 @@ const AssociateDocuments = ({ userID }) => {
     filterName
   );
   const isUserNotFound = filteredUsers.length === 0;
+  const style = {
+    position: "absolute",
+    top: "30%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "16vw",
+    height: "20vh",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 20,
+    p: 4,
+  };
 
+  const options = [
+    {
+      label: "Passport",
+      value: "Passport",
+    },
+    {
+      label: "EU ID",
+      value: "EU ID",
+    },
+    {
+      label: "Contract",
+      value: "Contract",
+    },
+    {
+      label: "Offer Letter",
+      value: "Offer Letter",
+    },
+    {
+      label: "CV",
+      value: "CV",
+    },
+    {
+      label: "Resignation",
+      value: "Resignation",
+    },
+    {
+      label: "Promotion",
+      value: "Promotion",
+    },
+    {
+      label: "Misconduct",
+      value: "Misconduct",
+    },
+    {
+      label: "Written Warning",
+      value: "Written Warning",
+    },
+    {
+      label: "Other",
+      value: "Other",
+    },
+  ];
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
       setFileList(fileList.filter((file) => file.fileName !== filename));
@@ -109,6 +181,9 @@ const AssociateDocuments = ({ userID }) => {
     });
     setDeleteSuccess(true);
     setSelected([]);
+  };
+  const handleClose = () => {
+    setPopupOpen(false);
   };
 
   const deleteFileFromFirebase = (fileName) => {
@@ -126,17 +201,50 @@ const AssociateDocuments = ({ userID }) => {
         if (fileList.some((e) => e.fileName === uploadName)) {
           setAlert(true);
         } else {
-          uploadFile(event.target.files[0], uploadName);
+          setPopupOpen(true);
+          setFile(event.target.files[0]);
+          setUploadName(uploadName);
         }
       } else {
-        uploadFile(event.target.files[0], uploadName);
+        setPopupOpen(true);
+        setFile(event.target.files[0]);
+        setUploadName(uploadName);
       }
     }
   };
 
-  const uploadFile = (file, uploadName) => {
+  const generateSelectOptions = () => {
+    return options
+      .sort((a, b) => (a.label > b.label ? 1 : -1))
+      .map((option) => {
+        return (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        );
+      });
+  };
+
+  const UploadDocumentMetadata = async (Meta) => {
+    const dataToUpload = {
+      AssociateID: userID,
+      Category: Meta.Metadata,
+      FileName: uploadName,
+    };
+    console.log(Meta);
+    const docRef = await addDoc(
+      collection(db, "Associate_Document_Metadata"),
+      dataToUpload
+    );
+
+    setPopupOpen(false);
+    reset();
+  };
+
+  const uploadFile = (data) => {
     const storageRef = ref(listRef, `${uploadName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
+    UploadDocumentMetadata(data);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -187,25 +295,65 @@ const AssociateDocuments = ({ userID }) => {
 
   useEffect(() => {
     setLoading(true);
+
     const getFiles = async () => {
       ListFiles();
     };
-    getFiles();
+    Promise.all([GetDocMetadata(userID), getFiles()]);
+
     setLoading(false);
   }, []);
 
-  const GetMetadata = (theRef) => {
-    getMetadata(theRef).then((metadata) => {
-      setFileList((fileList) => [
-        ...fileList,
+  const GetDocMetadata = async (userID) => {
+    const q = query(
+      collection(db, "Associate_Document_Metadata"),
+      where("AssociateID", "==", userID)
+    );
+    const querySnapshot = await getDocs(q);
+    const all = [];
+    querySnapshot.forEach(async (document) => {
+      setAdditionalMeta((prev) => [
         {
-          fileName: metadata.name,
-          size: prettyBytes(metadata.size),
-          uploadDate: metadata.timeCreated,
-          fullPath: metadata.fullPath,
-          type: metadata.contentType,
+          ...prev,
+          ...document.data(),
         },
       ]);
+    });
+  };
+
+  const GetMetadata = (theRef) => {
+    getMetadata(theRef).then((metadata) => {
+      console.log("meta", metadata);
+      if (additionalMeta && additionalMeta.length > 0) {
+        additionalMeta.map((meta) => {
+          if (metadata.name === meta.FileName) {
+            setFileList((fileList) => [
+              ...fileList,
+              {
+                fileName: metadata.name,
+                size: prettyBytes(metadata.size),
+                uploadDate: metadata.timeCreated,
+                fullPath: metadata.fullPath,
+                type: metadata.contentType,
+                category: meta.Category,
+              },
+            ]);
+          }
+        });
+      }
+      // } else {
+      //   setFileList((fileList) => [
+      //     ...fileList,
+      //     {
+      //       fileName: metadata.name,
+      //       size: prettyBytes(metadata.size),
+      //       uploadDate: metadata.timeCreated,
+      //       fullPath: metadata.fullPath,
+      //       type: metadata.contentType,
+      //       category: "",
+      //     },
+      //   ]);
+      // }
     });
   };
 
@@ -273,7 +421,65 @@ const AssociateDocuments = ({ userID }) => {
 
   return (
     <Box>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={PopupOpen}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={PopupOpen}>
+          <Box sx={style}>
+            <form>
+              <Grid
+                container
+                direction="column"
+                alignContent="center"
+                rowSpacing={3}
+              >
+                <Grid item>
+                  <Typography>
+                    Please select category of uploaded file:
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <Controller
+                    name={"Metadata"}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        onChange={onChange}
+                        value={value}
+                        size="small"
+                        sx={{ minWidth: 300 }}
+                      >
+                        {generateSelectOptions()}
+                      </Select>
+                    )}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <Button onClick={handleSubmit(onSubmit)} variant="contained">
+                    Submit
+                  </Button>
+                </Grid>
+
+                {/* <Button onClick={() => reset()} variant={"outlined"}> */}
+                {/* Reset */}
+                {/* </Button> */}
+              </Grid>
+            </form>
+          </Box>
+        </Fade>
+      </Modal>
       <Typography variant="inherit">Documents</Typography>
+      <Button onClick={() => console.log(fileList)}>Log</Button>
       <Divider variant="middle" sx={{ pb: 2 }} />
 
       <Snackbar
@@ -326,7 +532,6 @@ const AssociateDocuments = ({ userID }) => {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
-            upload={uploadFile}
             onSelectFile={onSelectFile}
             onDeleteFiles={onDeleteFiles}
           />
@@ -347,7 +552,8 @@ const AssociateDocuments = ({ userID }) => {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { fileName, size, type, uploadDate } = row;
+                      const { fileName, size, type, uploadDate, category } =
+                        row;
                       const isItemSelected = selected.indexOf(fileName) !== -1;
                       const formattedDate = new Date(uploadDate);
                       return (
@@ -402,6 +608,14 @@ const AssociateDocuments = ({ userID }) => {
                           </TableCell>
                           <TableCell align="left">
                             {formattedDate.toLocaleDateString()}
+                          </TableCell>
+
+                          <TableCell align="left">
+                            <TextField select size="small">
+                              <MenuItem key={"1"} value={category}>
+                                {category}
+                              </MenuItem>
+                            </TextField>
                           </TableCell>
                         </TableRow>
                       );

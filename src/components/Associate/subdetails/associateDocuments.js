@@ -295,11 +295,13 @@ const AssociateDocuments = ({ userID }) => {
 
   useEffect(() => {
     setLoading(true);
-
+    const getMeta = async () => {
+      await GetDocMetadata(userID);
+    };
     const getFiles = async () => {
       ListFiles();
     };
-    Promise.all([GetDocMetadata(userID), getFiles()]);
+    Promise.all([getMeta(), getFiles()]);
 
     setLoading(false);
   }, []);
@@ -310,7 +312,6 @@ const AssociateDocuments = ({ userID }) => {
       where("AssociateID", "==", userID)
     );
     const querySnapshot = await getDocs(q);
-    const all = [];
     querySnapshot.forEach(async (document) => {
       setAdditionalMeta((prev) => [
         {
@@ -323,37 +324,18 @@ const AssociateDocuments = ({ userID }) => {
 
   const GetMetadata = (theRef) => {
     getMetadata(theRef).then((metadata) => {
-      console.log("meta", metadata);
-      if (additionalMeta && additionalMeta.length > 0) {
-        additionalMeta.map((meta) => {
-          if (metadata.name === meta.FileName) {
-            setFileList((fileList) => [
-              ...fileList,
-              {
-                fileName: metadata.name,
-                size: prettyBytes(metadata.size),
-                uploadDate: metadata.timeCreated,
-                fullPath: metadata.fullPath,
-                type: metadata.contentType,
-                category: meta.Category,
-              },
-            ]);
-          }
-        });
-      }
-      // } else {
-      //   setFileList((fileList) => [
-      //     ...fileList,
-      //     {
-      //       fileName: metadata.name,
-      //       size: prettyBytes(metadata.size),
-      //       uploadDate: metadata.timeCreated,
-      //       fullPath: metadata.fullPath,
-      //       type: metadata.contentType,
-      //       category: "",
-      //     },
-      //   ]);
-      // }
+      console.log("meta", additionalMeta);
+
+      setFileList((fileList) => [
+        ...fileList,
+        {
+          fileName: metadata.name,
+          size: prettyBytes(metadata.size),
+          uploadDate: metadata.timeCreated,
+          fullPath: metadata.fullPath,
+          type: metadata.contentType,
+        },
+      ]);
     });
   };
 
@@ -479,7 +461,7 @@ const AssociateDocuments = ({ userID }) => {
         </Fade>
       </Modal>
       <Typography variant="inherit">Documents</Typography>
-      <Button onClick={() => console.log(fileList)}>Log</Button>
+      <Button onClick={() => console.log(fileList, additionalMeta)}>Log</Button>
       <Divider variant="middle" sx={{ pb: 2 }} />
 
       <Snackbar
@@ -609,14 +591,16 @@ const AssociateDocuments = ({ userID }) => {
                           <TableCell align="left">
                             {formattedDate.toLocaleDateString()}
                           </TableCell>
-
-                          <TableCell align="left">
-                            <TextField select size="small">
-                              <MenuItem key={"1"} value={category}>
-                                {category}
-                              </MenuItem>
-                            </TextField>
-                          </TableCell>
+                          {additionalMeta &&
+                            additionalMeta.map((meta) => {
+                              const { Category, FileName } = meta;
+                              if (fileName === FileName) {
+                                console.log(fileName, FileName);
+                                return (
+                                  <TableCell align="left">{Category}</TableCell>
+                                );
+                              }
+                            })}
                         </TableRow>
                       );
                     })}

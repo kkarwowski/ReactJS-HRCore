@@ -253,7 +253,6 @@ const AssociateDocuments = ({ userID }) => {
       Category: Meta.Metadata,
       FileName: uploadName,
     };
-    console.log(Meta);
     const docRef = await addDoc(
       collection(db, "Associate_Document_Metadata"),
       dataToUpload
@@ -346,8 +345,6 @@ const AssociateDocuments = ({ userID }) => {
 
   const GetMetadata = (theRef) => {
     getMetadata(theRef).then((metadata) => {
-      console.log("meta", additionalMeta);
-
       setFileList((fileList) => [
         ...fileList,
         {
@@ -568,6 +565,7 @@ const AssociateDocuments = ({ userID }) => {
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+                          onClick={() => console.log(fileName)}
                         >
                           <TableCell padding="checkbox">
                             <Checkbox
@@ -618,9 +616,24 @@ const AssociateDocuments = ({ userID }) => {
                               const { Category, FileName } = meta;
 
                               if (fileName === FileName) {
-                                console.log(fileName, FileName, Category);
                                 return (
-                                  <TableCell align="left">{Category}</TableCell>
+                                  <TextField
+                                    size="small"
+                                    style={{ minWidth: 150 }}
+                                    value={Category}
+                                    // onChange={(e) => onUpdate(e)}
+                                    select // tell TextField to render select
+                                    name="EmplStatus"
+                                    // label="Employment Status"
+                                  >
+                                    <MenuItem key={1} value="Passport">
+                                      Passport
+                                    </MenuItem>
+                                    <MenuItem key={2} value="Terminated">
+                                      Terminated
+                                    </MenuItem>
+                                  </TextField>
+                                  // <TableCell align="left">{Category}</TableCell>
                                 );
                               }
                             })}

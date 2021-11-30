@@ -26,8 +26,8 @@ const AssociateNotes = () => {
         name="Notes"
         multiline
         defaultValue={associateData.Notes}
-        maxRows={8}
-        rows={8}
+        // maxRows={30}
+        rows={15}
         fullWidth
         onChange={(e) => onUpdate(e)}
       />

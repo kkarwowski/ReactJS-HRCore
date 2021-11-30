@@ -86,299 +86,304 @@ const AssociateInfo = () => {
       ></Grid>
       <Typography variant="inherit">Personal</Typography>
       <Divider variant="middle" sx={{ pb: 2 }} />
-      <FormControl>
-        <Grid
-          sx={{ p: 1, pb: 5, pt: 5 }}
-          container
-          columnSpacing={2}
-          rowSpacing={2}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item xs={8} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="FirstName"
-              label="First Name"
-              defaultValue={associateData.FirstName}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item xs={8} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="LastName"
-              label="Last Name"
-              defaultValue={associateData.LastName}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item xs={12} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="Title"
-              label="Title"
-              defaultValue={associateData.Title}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          {allDepartments && (
-            <Grid item sx={8} xm={4} xl={4}>
-              <TextField
-                select
-                style={{ width: "100%" }}
-                name="Department"
-                size="small"
-                label="Department"
-                defaultValue={associateData.Department}
-                onChange={(e) => onUpdate(e)}
-              >
-                {allDepartments.map((department, index) => (
-                  <MenuItem key={index} value={`${department}`}>
-                    {department}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          )}
-
-          <Grid item xs={8} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="PhoneNumber"
-              label="Phone Number"
-              defaultValue={associateData.PhoneNumber}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item xs={7} xl={4}>
-            <TextField
-              size="small"
-              style={{ width: "100%" }}
-              value={associateData.EmplStatus}
-              onChange={(e) => onUpdate(e)}
-              select // tell TextField to render select
-              name="EmplStatus"
-              label="Employment Status"
-            >
-              <MenuItem key={1} value="Employed">
-                Employed
-              </MenuItem>
-              <MenuItem key={2} value="Terminated">
-                Terminated
-              </MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item xs={12} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="WorkEmail"
-              label="Work Email"
-              defaultValue={associateData.WorkEmail}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          <Grid item xs={12} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="PrivateEmail"
-              label="Private Email"
-              defaultValue={associateData.PrivateEmail}
-              onChange={(e) => onUpdate(e)}
-            />
-          </Grid>
-          {allOffices && (
-            <Grid item xs={5} xl={1}>
-              <TextField
-                size="small"
-                value={associateData.Office}
-                onChange={(e) => onUpdate(e)}
-                select // tell TextField to render select
-                name="Office"
-                id="Office1"
-                label="Office"
-              >
-                {allOffices.map((office, index) => (
-                  <MenuItem key={index} value={`${office}`}>
-                    {office}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          )}
-          <Grid item xs={5} xl={3}>
-            <TextField
-              value={associateData.Gender}
-              onChange={(e) => onUpdate(e)}
-              select // tell TextField to render select
-              name="Gender"
-              label="Gender"
-              size="small"
-            >
-              <MenuItem key={1} value="Male">
-                Male
-              </MenuItem>
-              <MenuItem key={2} value="Female">
-                Female
-              </MenuItem>
-            </TextField>
-          </Grid>
-          <Grid item>
-            {updatedAssociate && (
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  size="small"
-                  label="Date of Birth"
-                  name="DOB"
-                  // value={moment(updatedAssociate.StartDate).toISOString()}
-                  value={updatedAssociate.DOB.toDate()}
-                  inputFormat="dd-MM-yyyy"
-                  onChange={(newDate) => {
-                    setUpdatedAssociate({
-                      ...updatedAssociate,
-                      ["DOB"]: Timestamp.fromDate(new Date(newDate)),
-                    });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            )}
-          </Grid>
-          <Grid item>
-            {updatedAssociate && (
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  size="small"
-                  label="Start Date"
-                  name="StartDate"
-                  // value={moment(updatedAssociate.StartDate).toISOString()}
-                  value={updatedAssociate.StartDate.toDate()}
-                  inputFormat="dd-MM-yyyy"
-                  onChange={(newDate) => {
-                    setUpdatedAssociate({
-                      ...updatedAssociate,
-                      ["StartDate"]: Timestamp.fromDate(new Date(newDate)),
-                    });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            )}
-          </Grid>
-          <Grid item>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                adisabled={associateData.TerminationtDate ? false : true}
-                label="Termination Date"
-                name="TerminationDate"
-                disabled="true"
-                value={
-                  associateData.TerminationtDate
-                    ? associateData.TerminationDate
-                    : null
-                }
-                format="DD-MM-YYYY"
-                onChange={(e) => onUpdate(e)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </Grid>
-          <Grid item xs={8} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="Salary"
-              label="Salary"
-              defaultValue={
-                associateData.Salary
-                  ? formatter.format(associateData.Salary)
-                  : null
-              }
-              onChange={(e) => onUpdate(e)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">£</InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
+      {/* <FormControl> */}
+      <Grid
+        sx={{ p: 1, pb: 5, pt: 5 }}
+        container
+        columnSpacing={2}
+        rowSpacing={2}
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid item xs={8} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            variant="standard"
+            size="small"
+            name="FirstName"
+            label="First Name"
+            defaultValue={associateData.FirstName}
+            onChange={(e) => onUpdate(e)}
+          />
         </Grid>
-        <Typography variant="inherit">Postal Address</Typography>
-        <Divider variant="middle" sx={{ pb: 3 }} />
-        <Grid
-          sx={{ p: 1, pt: 4, pb: 3 }}
-          container
-          columnSpacing={2}
-          rowSpacing={2}
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item xs={12} xl={6}>
+        <Grid item xs={8} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            variant="standard"
+            name="LastName"
+            label="Last Name"
+            defaultValue={associateData.LastName}
+            onChange={(e) => onUpdate(e)}
+          />
+        </Grid>
+        <Grid item xs={12} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="Title"
+            label="Title"
+            defaultValue={associateData.Title}
+            onChange={(e) => onUpdate(e)}
+          />
+        </Grid>
+        {allDepartments && (
+          <Grid item sx={8} xm={4} xl={4}>
             <TextField
+              select
               style={{ width: "100%" }}
+              name="Department"
               size="small"
-              name="FirstLine"
-              label="First line of the address"
-              defaultValue={associateData.PostalAddress.FirstLine}
-              onChange={(e) => onUpdateNested(e)}
-            />
-          </Grid>
-          <Grid item xs={12} xl={6}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="SecondLine"
-              label="Second line"
-              defaultValue={associateData.PostalAddress.SecondtLine}
-              onChange={(e) => onUpdateNested(e)}
-            />
-          </Grid>
-          <Grid item xs={7} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="Postcode"
-              label="Postcode"
-              defaultValue={associateData.PostalAddress.Postcode}
-              onChange={(e) => onUpdateNested(e)}
-            />
-          </Grid>
-          <Grid item xs={8} xl={4}>
-            <TextField
-              style={{ width: "100%" }}
-              size="small"
-              name="City"
-              label="City"
-              defaultValue={associateData.PostalAddress.City}
-              onChange={(e) => onUpdateNested(e)}
-            />
-          </Grid>
-          <Grid item xs={12} xl={4}>
-            <TextField
-              defaultValue={associateData.PostalAddress.Country}
-              onChange={(e) => onUpdateNested(e)}
-              select // tell TextField to render select
-              size="small"
-              name="Country"
-              label="Country"
+              label="Department"
+              defaultValue={associateData.Department}
+              onChange={(e) => onUpdate(e)}
             >
-              {CountriesArray.map((country, index) => (
-                <MenuItem key={index} value={`${country.name}`}>
-                  {country.name}
+              {allDepartments.map((department, index) => (
+                <MenuItem key={department} value={`${department}`}>
+                  {department}
                 </MenuItem>
               ))}
             </TextField>
           </Grid>
+        )}
+
+        <Grid item xs={8} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="PhoneNumber"
+            label="Phone Number"
+            defaultValue={associateData.PhoneNumber}
+            onChange={(e) => onUpdate(e)}
+          />
         </Grid>
-      </FormControl>
+        <Grid item xs={7} xl={4}>
+          <TextField
+            size="small"
+            style={{ width: "100%" }}
+            defaultValue={associateData.EmplStatus}
+            onChange={(e) => onUpdate(e)}
+            select // tell TextField to render select
+            name="EmplStatus"
+            label="Employment Status"
+          >
+            <MenuItem key={"Employed"} value="Employed">
+              Employed
+            </MenuItem>
+            <MenuItem key={"Terminated"} value="Terminated">
+              Terminated
+            </MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="WorkEmail"
+            label="Work Email"
+            defaultValue={associateData.WorkEmail}
+            onChange={(e) => onUpdate(e)}
+          />
+        </Grid>
+        <Grid item xs={12} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="PrivateEmail"
+            label="Private Email"
+            defaultValue={associateData.PrivateEmail}
+            onChange={(e) => onUpdate(e)}
+          />
+        </Grid>
+        {allOffices && (
+          <Grid item xs={5} xl={1}>
+            <TextField
+              size="small"
+              defaultValue={associateData.Office}
+              onChange={(e) => onUpdate(e)}
+              select // tell TextField to render select
+              name="Office"
+              // id="Office1"
+              label="Office"
+            >
+              {allOffices.map((office, index) => (
+                // <MenuItem key={`${office}`} value={`${office}`}>
+                //   {`${office}`}
+                // </MenuItem>
+                <MenuItem key={office} value={office}>
+                  {office}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+        )}
+        <Grid item xs={5} xl={3}>
+          <TextField
+            defaultValue={associateData.Gender}
+            onChange={(e) => onUpdate(e)}
+            select // tell TextField to render select
+            name="Gender"
+            label="Gender"
+            size="small"
+          >
+            <MenuItem key={"Male"} value="Male">
+              Male
+            </MenuItem>
+            <MenuItem key={"Female"} value="Female">
+              Female
+            </MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item>
+          {updatedAssociate && (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                size="small"
+                label="Date of Birth"
+                name="DOB"
+                // value={moment(updatedAssociate.StartDate).toISOString()}
+                value={updatedAssociate.DOB.toDate()}
+                inputFormat="dd-MM-yyyy"
+                onChange={(newDate) => {
+                  setUpdatedAssociate({
+                    ...updatedAssociate,
+                    ["DOB"]: Timestamp.fromDate(new Date(newDate)),
+                  });
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          )}
+        </Grid>
+        <Grid item>
+          {updatedAssociate && (
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                size="small"
+                label="Start Date"
+                name="StartDate"
+                // value={moment(updatedAssociate.StartDate).toISOString()}
+                value={updatedAssociate.StartDate.toDate()}
+                inputFormat="dd-MM-yyyy"
+                onChange={(newDate) => {
+                  setUpdatedAssociate({
+                    ...updatedAssociate,
+                    ["StartDate"]: Timestamp.fromDate(new Date(newDate)),
+                  });
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          )}
+        </Grid>
+        <Grid item>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              adisabled={associateData.TerminationtDate ? false : true}
+              label="Termination Date"
+              name="TerminationDate"
+              disabled="true"
+              value={
+                associateData.TerminationtDate
+                  ? associateData.TerminationDate
+                  : null
+              }
+              format="DD-MM-YYYY"
+              onChange={(e) => onUpdate(e)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={8} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="Salary"
+            label="Salary"
+            defaultValue={
+              associateData.Salary
+                ? formatter.format(associateData.Salary)
+                : null
+            }
+            onChange={(e) => onUpdate(e)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">£</InputAdornment>
+              ),
+            }}
+          />
+        </Grid>
+      </Grid>
+      <Typography variant="inherit">Postal Address</Typography>
+      <Divider variant="middle" sx={{ pb: 3 }} />
+      <Grid
+        sx={{ p: 1, pt: 4, pb: 3 }}
+        container
+        columnSpacing={2}
+        rowSpacing={2}
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid item xs={12} xl={6}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="FirstLine"
+            label="First line of the address"
+            defaultValue={associateData.PostalAddress.FirstLine}
+            onChange={(e) => onUpdateNested(e)}
+          />
+        </Grid>
+        <Grid item xs={12} xl={6}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="SecondLine"
+            label="Second line"
+            defaultValue={associateData.PostalAddress.SecondtLine}
+            onChange={(e) => onUpdateNested(e)}
+          />
+        </Grid>
+        <Grid item xs={7} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="Postcode"
+            label="Postcode"
+            defaultValue={associateData.PostalAddress.Postcode}
+            onChange={(e) => onUpdateNested(e)}
+          />
+        </Grid>
+        <Grid item xs={8} xl={4}>
+          <TextField
+            style={{ width: "100%" }}
+            size="small"
+            name="City"
+            label="City"
+            defaultValue={associateData.PostalAddress.City}
+            onChange={(e) => onUpdateNested(e)}
+          />
+        </Grid>
+        <Grid item xs={12} xl={4}>
+          <TextField
+            defaultValue={associateData.PostalAddress.Country}
+            onChange={(e) => onUpdateNested(e)}
+            select // tell TextField to render select
+            size="small"
+            name="Country"
+            label="Country"
+          >
+            {CountriesArray.map((country, index) => (
+              <MenuItem key={country.name} value={`${country.name}`}>
+                {country.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+      </Grid>
+      {/* </FormControl> */}
     </Box>
   );
 };

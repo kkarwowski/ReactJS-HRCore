@@ -42,13 +42,13 @@ function App() {
     const getOffices = async () => {
       const data = await getDocs(collection(db, "Offices"));
       data.docs.map((office) =>
-        setOffices(data.docs.map((office) => [office.data().name]))
+        setOffices(data.docs.map((office) => office.data().name))
       );
     };
     const getDepartments = async () => {
       const data = await getDocs(collection(db, "Departments"));
       data.docs.map((department) =>
-        setDepartments(data.docs.map((department) => [department.data().name]))
+        setDepartments(data.docs.map((department) => department.data().name))
       );
     };
 

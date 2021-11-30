@@ -99,7 +99,6 @@ function applySortFilter(array, comparator, query) {
 
 const AssociateDocuments = ({ userID }) => {
   const [isLoading, setLoading] = useState(false);
-  // const { associateData } = useContext(associateContext);
   const prettyBytes = require("pretty-bytes");
   const [fileList, setFileList] = useState([]);
   const storage = getStorage();
@@ -233,8 +232,6 @@ const AssociateDocuments = ({ userID }) => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        // Observe state change events such as progress, pause, and resume
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setLoadingProgress(progress);
@@ -394,10 +391,6 @@ const AssociateDocuments = ({ userID }) => {
     setWorking(false);
   };
 
-  // const updateDocCategory = (e, docID) => {
-  //   console.log(e.target.value, docID);
-  // };
-
   return (
     <Box>
       <Modal
@@ -458,9 +451,7 @@ const AssociateDocuments = ({ userID }) => {
         </Fade>
       </Modal>
       <Typography variant="inherit">Documents</Typography>
-      <Button onClick={() => console.log(fileList, additionalMeta)}>Log</Button>
       <Divider variant="middle" sx={{ pb: 2 }} />
-
       <Snackbar
         open={alert}
         autoHideDuration={5000}
@@ -604,17 +595,9 @@ const AssociateDocuments = ({ userID }) => {
                                       onChange={(e, id) =>
                                         updateDocCategory(e, docID)
                                       }
-                                      select // tell TextField to render select
-                                      name="EmplStatus"
-                                      // label="Employment Status"
+                                      select
                                     >
                                       {generateSelectOptions()}
-                                      {/* <MenuItem key={1} value="Passport">
-                                        Passport
-                                      </MenuItem>
-                                      <MenuItem key={2} value="Terminated">
-                                        Terminated
-                                      </MenuItem> */}
                                     </TextField>
                                   </TableCell>
                                 );

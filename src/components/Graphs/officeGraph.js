@@ -64,14 +64,6 @@ export default function OfficeGraph() {
       (associate) =>
         associate.Office == off && associate.EmplStatus == "Employed"
     );
-    // const citiesRef = collection(db, "Associates");
-    // const q = query(citiesRef, where("Office", "==", off));
-    // const querySnapshot = await getDocs(q);
-    // querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    // console.log(doc.id, " => ", doc.data());
-    // });
-    // return querySnapshot;
     return filtered.length;
   };
   const chartOptions = merge(BaseOptionChart(), {

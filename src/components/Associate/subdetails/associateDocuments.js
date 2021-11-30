@@ -121,6 +121,7 @@ const AssociateDocuments = ({ userID }) => {
   const [file, setFile] = useState(null);
   const [uploadName, setUploadName] = useState();
   const [working, setWorking] = useState(false);
+  const [allCategories, setAllCategories] = useState();
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
 
@@ -144,48 +145,11 @@ const AssociateDocuments = ({ userID }) => {
   };
   const onSubmit = (data: any) => uploadFile(data);
 
-  const options = [
-    {
-      label: "Passport",
-      value: "Passport",
-    },
-    {
-      label: "EU ID",
-      value: "EU ID",
-    },
-    {
-      label: "Contract",
-      value: "Contract",
-    },
-    {
-      label: "Offer Letter",
-      value: "Offer Letter",
-    },
-    {
-      label: "CV",
-      value: "CV",
-    },
-    {
-      label: "Resignation",
-      value: "Resignation",
-    },
-    {
-      label: "Promotion",
-      value: "Promotion",
-    },
-    {
-      label: "Misconduct",
-      value: "Misconduct",
-    },
-    {
-      label: "Written Warning",
-      value: "Written Warning",
-    },
-    {
-      label: "Other",
-      value: "Other",
-    },
-  ];
+  const getAllCategories = async () => {
+    const querySnapshot = await getDocs(collection(db, "DocumentCategories"));
+    const all = querySnapshot.docs.map((doc) => doc.data().Name);
+    setAllCategories(all);
+  };
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
       setFileList(fileList.filter((file) => file.fileName !== filename));
@@ -237,12 +201,12 @@ const AssociateDocuments = ({ userID }) => {
   };
 
   const generateSelectOptions = () => {
-    return options
-      .sort((a, b) => (a.label > b.label ? 1 : -1))
+    return allCategories
+      .sort((a, b) => (a > b ? 1 : -1))
       .map((option) => {
         return (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
+          <MenuItem key={option} value={option}>
+            {option}
           </MenuItem>
         );
       });
@@ -324,7 +288,10 @@ const AssociateDocuments = ({ userID }) => {
     const getFiles = async () => {
       ListFiles();
     };
-    Promise.all([getMeta(), getFiles()]);
+    const getCategories = async () => {
+      await getAllCategories();
+    };
+    Promise.all([getMeta(), getFiles(), getCategories()]);
     setLoading(false);
   }, []);
 
@@ -641,12 +608,13 @@ const AssociateDocuments = ({ userID }) => {
                                       name="EmplStatus"
                                       // label="Employment Status"
                                     >
-                                      <MenuItem key={1} value="Passport">
+                                      {generateSelectOptions()}
+                                      {/* <MenuItem key={1} value="Passport">
                                         Passport
                                       </MenuItem>
                                       <MenuItem key={2} value="Terminated">
                                         Terminated
-                                      </MenuItem>
+                                      </MenuItem> */}
                                     </TextField>
                                   </TableCell>
                                 );

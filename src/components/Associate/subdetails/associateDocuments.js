@@ -52,6 +52,7 @@ import {
   getDoc,
   doc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 const TABLE_HEAD = [
@@ -119,7 +120,7 @@ const AssociateDocuments = ({ userID }) => {
   const { handleSubmit, reset, control } = useForm();
   const [file, setFile] = useState(null);
   const [uploadName, setUploadName] = useState();
-
+  const [working, setWorking] = useState(false);
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
 
@@ -333,14 +334,11 @@ const AssociateDocuments = ({ userID }) => {
       where("AssociateID", "==", userID)
     );
     const querySnapshot = await getDocs(q);
-    const all = querySnapshot.docs.map((doc) => doc.data());
+    const all = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      docID: doc.id,
+    }));
     setAdditionalMeta(all);
-    // querySnapshot.forEach(async (document) => {
-    //   setAdditionalMeta((additionalMeta) => [
-    //     ...additionalMeta,
-    //     document.data(),
-    //   ]);
-    // });
   };
 
   const GetMetadata = (theRef) => {
@@ -419,6 +417,19 @@ const AssociateDocuments = ({ userID }) => {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
+
+  const updateDocCategory = async (e, docID) => {
+    setWorking(true);
+    const documentRef = doc(db, "Associate_Document_Metadata", docID);
+    await updateDoc(documentRef, {
+      Category: e.target.value,
+    });
+    setWorking(false);
+  };
+
+  // const updateDocCategory = (e, docID) => {
+  //   console.log(e.target.value, docID);
+  // };
 
   return (
     <Box>
@@ -565,7 +576,6 @@ const AssociateDocuments = ({ userID }) => {
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
-                          onClick={() => console.log(fileName)}
                         >
                           <TableCell padding="checkbox">
                             <Checkbox
@@ -613,27 +623,32 @@ const AssociateDocuments = ({ userID }) => {
                           </TableCell>
                           {additionalMeta &&
                             additionalMeta.map((meta) => {
-                              const { Category, FileName } = meta;
+                              const { Category, FileName, docID } = meta;
 
                               if (fileName === FileName) {
                                 return (
-                                  <TextField
-                                    size="small"
-                                    style={{ minWidth: 150 }}
-                                    value={Category}
-                                    // onChange={(e) => onUpdate(e)}
-                                    select // tell TextField to render select
-                                    name="EmplStatus"
-                                    // label="Employment Status"
-                                  >
-                                    <MenuItem key={1} value="Passport">
-                                      Passport
-                                    </MenuItem>
-                                    <MenuItem key={2} value="Terminated">
-                                      Terminated
-                                    </MenuItem>
-                                  </TextField>
-                                  // <TableCell align="left">{Category}</TableCell>
+                                  <TableCell align="left">
+                                    <TextField
+                                      disabled={working}
+                                      size="small"
+                                      id={docID}
+                                      style={{ minWidth: 150 }}
+                                      defaultValue={Category}
+                                      onChange={(e, id) =>
+                                        updateDocCategory(e, docID)
+                                      }
+                                      select // tell TextField to render select
+                                      name="EmplStatus"
+                                      // label="Employment Status"
+                                    >
+                                      <MenuItem key={1} value="Passport">
+                                        Passport
+                                      </MenuItem>
+                                      <MenuItem key={2} value="Terminated">
+                                        Terminated
+                                      </MenuItem>
+                                    </TextField>
+                                  </TableCell>
                                 );
                               }
                             })}

@@ -43,7 +43,16 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { Controller, useForm } from "react-hook-form";
 import Scrollbar from "../../Scrollbar";
-import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  getDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 const TABLE_HEAD = [
   { id: "fileName", label: "Name", alignRight: false },
@@ -110,9 +119,10 @@ const AssociateDocuments = ({ userID }) => {
   const { handleSubmit, reset, control } = useForm();
   const [file, setFile] = useState(null);
   const [uploadName, setUploadName] = useState();
-  const onSubmit = (data: any) => uploadFile(data);
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
+
   const filteredUsers = applySortFilter(
     fileList,
     getComparator(order, orderBy),
@@ -131,6 +141,7 @@ const AssociateDocuments = ({ userID }) => {
     boxShadow: 20,
     p: 4,
   };
+  const onSubmit = (data: any) => uploadFile(data);
 
   const options = [
     {
@@ -186,13 +197,24 @@ const AssociateDocuments = ({ userID }) => {
     setPopupOpen(false);
   };
 
-  const deleteFileFromFirebase = (fileName) => {
+  const deleteFileFromFirebase = async (fileName) => {
     const deleteRef = ref(storage, `documents/${userID}/${fileName}`);
     deleteObject(deleteRef)
       .then(() => {})
       .catch((error) => {
         // Uh-oh, an error occurred!
       });
+    // Delete from Associate_Document_Metadata
+    const q = query(
+      collection(db, "Associate_Document_Metadata"),
+      where("AssociateID", "==", userID)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((Doc) => {
+      if (Doc.data().FileName === fileName) {
+        deleteDoc(doc(db, "Associate_Document_Metadata", Doc.id));
+      }
+    });
   };
   const onSelectFile = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -236,7 +258,6 @@ const AssociateDocuments = ({ userID }) => {
       collection(db, "Associate_Document_Metadata"),
       dataToUpload
     );
-
     setPopupOpen(false);
     reset();
   };
@@ -271,7 +292,9 @@ const AssociateDocuments = ({ userID }) => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setLoadingProgress(null);
           GetMetadata(uploadTask.snapshot.ref);
+          GetDocMetadata(userID);
           setUploadSuccess(true);
+          setFile(null);
         });
       }
     );
@@ -302,7 +325,6 @@ const AssociateDocuments = ({ userID }) => {
       ListFiles();
     };
     Promise.all([getMeta(), getFiles()]);
-
     setLoading(false);
   }, []);
 
@@ -312,14 +334,14 @@ const AssociateDocuments = ({ userID }) => {
       where("AssociateID", "==", userID)
     );
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (document) => {
-      setAdditionalMeta((prev) => [
-        {
-          ...prev,
-          ...document.data(),
-        },
-      ]);
-    });
+    const all = querySnapshot.docs.map((doc) => doc.data());
+    setAdditionalMeta(all);
+    // querySnapshot.forEach(async (document) => {
+    //   setAdditionalMeta((additionalMeta) => [
+    //     ...additionalMeta,
+    //     document.data(),
+    //   ]);
+    // });
   };
 
   const GetMetadata = (theRef) => {
@@ -594,8 +616,9 @@ const AssociateDocuments = ({ userID }) => {
                           {additionalMeta &&
                             additionalMeta.map((meta) => {
                               const { Category, FileName } = meta;
+
                               if (fileName === FileName) {
-                                console.log(fileName, FileName);
+                                console.log(fileName, FileName, Category);
                                 return (
                                   <TableCell align="left">{Category}</TableCell>
                                 );

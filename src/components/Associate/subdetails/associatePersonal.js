@@ -17,6 +17,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LoadingButton from "@mui/lab/LoadingButton";
 import frLocale from "date-fns/locale/fr";
+import EditIcon from "@mui/icons-material/Edit";
 import Countries from "../../../utils/contries.json";
 import LocalizationProvider from "@mui/lab/LocalizationProvider/";
 import DatePicker from "@mui/lab/DatePicker";
@@ -43,6 +44,7 @@ const AssociateInfo = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [openPersonal, setOpenPersonal] = useState(true);
   const [openPostal, setOpenPostal] = useState(false);
+  const [personalDisabled, setPersonalDisabled] = useState(true);
   const { updateAssociates, setUpdateAssociates } = useContext(
     updateAssociatesContext
   );
@@ -100,15 +102,31 @@ const AssociateInfo = () => {
         justifyContent="flex-end"
         alignItems="flex-end"
       ></Grid>
-      <Button
-        variant="standard"
-        endIcon={
-          openPersonal ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-        }
-        onClick={handleOpenPersonal}
-      >
-        Personal
-      </Button>
+      <Grid container direction="rows" justifyContent="space-between">
+        <Grid item>
+          <Button
+            sx={{ mt: 2 }}
+            variant="standard"
+            endIcon={
+              openPersonal ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
+            }
+            onClick={handleOpenPersonal}
+          >
+            Personal
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            sx={{ mt: 2 }}
+            variant="contained"
+            color="primary"
+            endIcon={<EditIcon />}
+            onClick={() => setPersonalDisabled((prev) => !prev)}
+          >
+            Edit
+          </Button>
+        </Grid>
+      </Grid>
       {/* <Typography variant="inherit">Personal</Typography> */}
 
       {/* <Divider variant="middle" sx={{ pb: 2 }} /> */}
@@ -131,7 +149,7 @@ const AssociateInfo = () => {
               size="small"
               name="FirstName"
               label="First Name"
-              disabled="true"
+              disabled={personalDisabled}
               InputProps={{ disableUnderline: true, color: "#ff0000" }}
               sx={{ color: "secondary" }}
               defaultValue={associateData.FirstName}

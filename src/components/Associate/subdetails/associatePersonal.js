@@ -89,8 +89,16 @@ const AssociateInfo = () => {
     setOpenPersonal((prev) => !prev);
   };
 
-  const TextFieldStyled = {
-    color: "rgba(0, 0, 0, 0.6)", // (default alpha is 0.38)
+  const EditButtonStyles = {
+    mt: 2,
+    bgcolor: "grey.200",
+    border: "2px solid",
+    color: "#abb2b9",
+    boxShadow: "none",
+    "&:hover": {
+      backgroundColor: "#e6ebf0",
+      color: "#4782da",
+    },
   };
   return (
     <Box sx={{ p: 0, pb: 1 }} dir="ltr">
@@ -117,7 +125,7 @@ const AssociateInfo = () => {
         </Grid>
         <Grid item>
           <Button
-            sx={{ mt: 2 }}
+            sx={EditButtonStyles}
             variant="contained"
             color="primary"
             endIcon={<EditIcon />}
@@ -143,7 +151,6 @@ const AssociateInfo = () => {
         >
           <Grid item xs={8} xl={4}>
             <TextField
-              className={TextFieldStyled}
               style={{ width: "100%" }}
               variant="standard"
               size="small"

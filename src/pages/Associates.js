@@ -7,6 +7,7 @@ import Label from "../components/Label";
 import { Link } from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
 import { useAuth } from "../utils/context/AuthContext";
+import * as moment from "moment";
 
 // import { CSVLink, CSVDownload } from "react-csv";
 import CsvDownloader from "react-csv-downloader";
@@ -38,6 +39,7 @@ const TABLE_HEAD = [
   { id: "LastName", label: "Last Name", alignRight: false },
   { id: "Title", label: "Title", alignRight: false },
   { id: "Department", label: "Department", alignRight: false },
+  { id: "StartDate", label: "Start Date", alignRight: false },
   { id: "EmplStatus", label: "Status", alignRight: false },
   { id: "" },
 ];
@@ -228,6 +230,7 @@ const Associates = () => {
                           Department,
                           profilePicture,
                           Title,
+                          StartDate,
                         } = filteredassociate;
 
                         return (
@@ -274,6 +277,9 @@ const Associates = () => {
                             </TableCell>
                             <TableCell align="left">{Title}</TableCell>
                             <TableCell align="left">{Department}</TableCell>
+                            <TableCell align="left">
+                              {moment(StartDate.toDate()).format("DD/MM/yyyy")}
+                            </TableCell>
                             <TableCell align="left">
                               <Label
                                 variant="ghost"

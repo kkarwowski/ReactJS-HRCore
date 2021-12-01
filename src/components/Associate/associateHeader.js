@@ -8,6 +8,8 @@ import {
   DialogContent,
   DialogTitle,
   DialogContentText,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { useState, useContext } from "react";
 import Label from "../Label";
@@ -19,6 +21,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PropTypes from "prop-types";
 import EmailIcon from "@mui/icons-material/Email";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   associateContext,
   updateAssociatesContext,
@@ -41,6 +44,9 @@ import { getStorage, ref, deleteObject } from "firebase/storage";
 import AssociateNotes from "./subdetails/associateNotes";
 import AssociateChanges from "./subdetails/associateChanges";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { styled, alpha } from "@mui/material/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -76,26 +82,31 @@ function a11yProps(index) {
 
 const AssociateHeader = () => {
   const { setUpdateAssociates } = useContext(updateAssociatesContext);
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
   const [value, setValue] = useState(0);
   const { associateData } = useContext(associateContext);
   const history = useNavigate();
-
   const handleChangetoTab = (event, newValue) => {
     setValue(newValue);
   };
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const diffDates = require("diff-dates");
   const Todayy = new Date();
 
-  const dateDiffYears = Date();
+  // const dateDiffYears = Date();
 
   // const formatDate = (dateString) => {
   //   const options = { year: "numeric", month: "long", day: "numeric" };
   //   return new Date(dateString).toLocaleDateString(undefined, options);
   // };
-
+  const handleClickAction = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseAction = () => {
+    setAnchorEl(null);
+  };
   const DeleteAssociate = async (id) => {
     setLoading(true);
     // delete from Associates
@@ -135,6 +146,7 @@ const AssociateHeader = () => {
   };
   const handleClickOpen = () => {
     setOpen(true);
+    handleCloseAction();
   };
 
   const handleClose = () => {
@@ -181,6 +193,49 @@ const AssociateHeader = () => {
       return dateDiffYears;
     }
   };
+
+  const StyledMenu = styled((props) => (
+    <Menu
+      elevation={0}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    "& .MuiPaper-root": {
+      borderRadius: 6,
+      marginTop: theme.spacing(1),
+      minWidth: 180,
+      color:
+        theme.palette.mode === "light"
+          ? "rgb(55, 65, 81)"
+          : theme.palette.grey[300],
+      boxShadow:
+        "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+      "& .MuiMenu-list": {
+        padding: "4px 0",
+      },
+      "& .MuiMenuItem-root": {
+        "& .MuiSvgIcon-root": {
+          fontSize: 18,
+          color: theme.palette.text.secondary,
+          marginRight: theme.spacing(1.5),
+        },
+        "&:active": {
+          backgroundColor: alpha(
+            theme.palette.primary.main,
+            theme.palette.action.selectedOpacity
+          ),
+        },
+      },
+    },
+  }));
   return (
     <>
       <Dialog
@@ -230,117 +285,157 @@ const AssociateHeader = () => {
       >
         <Grid item xs={12} lg={12}>
           <Card>
-            <Grid
-              container
-              columnSpacing={7}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              alignContent="center"
-              p={1}
-            >
-              <Grid item xs={12} lg={2} sx={{ pl: 10 }}>
-                <AssociatePic />
-              </Grid>
-              <Grid item xs={12} lg={10}>
-                <CardContent>
-                  <Grid
-                    container
-                    direction="column"
-                    columnSpacing={1}
-                    justifyContent="space-between"
-                    alignItems="flex-start"
-                  >
-                    <Grid item>
+            <Grid container direction="row">
+              <Grid
+                item
+                xs={11}
+                lg={11}
+                alignItems="flex-start"
+                justifyContent="flex-start"
+              >
+                <Grid
+                  container
+                  columnSpacing={7}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  alignContent="center"
+                  p={1}
+                >
+                  <Grid item xs={12} lg={2} sx={{ pl: 10 }}>
+                    <AssociatePic />
+                  </Grid>
+                  <Grid item xs={11} lg={10}>
+                    <CardContent>
                       <Grid
                         container
-                        direction="row"
-                        justifyContent="flex-start"
+                        direction="column"
+                        columnSpacing={1}
+                        justifyContent="space-between"
                         alignItems="flex-start"
                       >
                         <Grid item>
-                          <Typography variant="h4">
-                            {associateData.FirstName} {associateData.LastName}
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="flex-start"
+                            alignItems="flex-start"
+                          >
+                            <Grid item>
+                              <Typography variant="h4">
+                                {associateData.FirstName}{" "}
+                                {associateData.LastName}
+                              </Typography>
+                            </Grid>
+                            <Grid item sx={{ pl: 1 }}>
+                              <Label
+                                variant="ghost"
+                                color={
+                                  (associateData.EmplStatus === "Terminated" &&
+                                    "error") ||
+                                  "success"
+                                }
+                              >
+                                {sentenceCase(associateData.EmplStatus)}
+                              </Label>
+                            </Grid>
+                          </Grid>
+                          <Typography variant="h6" sx={{ pb: 2 }}>
+                            {associateData.Title}
                           </Typography>
+                          {associateData.Department} |{" "}
+                          {associateData.PostalAddress.City}
                         </Grid>
-                        <Grid item sx={{ pl: 1 }}>
-                          <Label
-                            variant="ghost"
-                            color={
-                              (associateData.EmplStatus === "Terminated" &&
-                                "error") ||
-                              "success"
-                            }
+                        <Grid item sx={{ pt: 2 }}>
+                          <p>{DateDifferenceCheck()}</p>
+                        </Grid>
+                        {/* Icons */}
+                        <Grid item>
+                          <Grid
+                            container
+                            direction="rows"
+                            alignContent="center"
+                            justifyItems="center"
+                            sx={{ pt: 1 }}
                           >
-                            {sentenceCase(associateData.EmplStatus)}
-                          </Label>
+                            <Grid item Item xs={6}>
+                              <Link
+                                target="_blank"
+                                href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}
+                              >
+                                <img
+                                  src="https://img.icons8.com/fluency/30/000000/microsoft-teams-2019.png"
+                                  sx={{ pr: 2 }}
+                                />
+                              </Link>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <Link href={`mailto:${associateData.WorkEmail}`}>
+                                <EmailIcon fontSize="large" />
+                              </Link>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        {/* Tab Menu*/}
+                        <Grid item>
+                          <Box
+                            sx={{
+                              borderBottom: 1,
+                              borderColor: "divider",
+                              pt: 3,
+                            }}
+                          >
+                            <Tabs
+                              value={value}
+                              onChange={handleChangetoTab}
+                              aria-label="basic tabs example"
+                              variant="scrollable"
+                              scrollButtons="auto"
+                              scrollButtons={true}
+                              allowScrollButtonsMobile
+                              aria-label="scrollable auto tabs example"
+                            >
+                              <Tab label="Personal" {...a11yProps(0)} />
+                              <Tab label="Emergency" {...a11yProps(1)} />
+                              <Tab label="Notes" {...a11yProps(2)} />
+                              <Tab label="Documents" {...a11yProps(3)} />
+                              <Tab label="Changes" {...a11yProps(4)} />
+                            </Tabs>
+                          </Box>
                         </Grid>
                       </Grid>
-                      <Typography variant="h6" sx={{ pb: 2 }}>
-                        {associateData.Title}
-                      </Typography>
-                      {associateData.Department} |{" "}
-                      {associateData.PostalAddress.City}
-                    </Grid>
-                    <Grid item sx={{ pt: 2 }}>
-                      <p>{DateDifferenceCheck()}</p>
-                    </Grid>
-                    {/* Icons */}
-                    <Grid item>
-                      <Grid
-                        container
-                        direction="rows"
-                        alignContent="center"
-                        justifyItems="center"
-                        sx={{ pt: 1 }}
-                      >
-                        <Grid item Item xs={6}>
-                          <Link
-                            target="_blank"
-                            href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}
-                          >
-                            <img
-                              src="https://img.icons8.com/fluency/30/000000/microsoft-teams-2019.png"
-                              sx={{ pr: 2 }}
-                            />
-                          </Link>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Link href={`mailto:${associateData.WorkEmail}`}>
-                            <EmailIcon fontSize="large" />
-                          </Link>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    {/* Tab Menu*/}
-                    <Grid item>
-                      <Box
-                        sx={{
-                          borderBottom: 1,
-                          borderColor: "divider",
-                          pt: 3,
-                        }}
-                      >
-                        <Tabs
-                          value={value}
-                          onChange={handleChangetoTab}
-                          aria-label="basic tabs example"
-                          variant="scrollable"
-                          scrollButtons="auto"
-                          scrollButtons={true}
-                          allowScrollButtonsMobile
-                          aria-label="scrollable auto tabs example"
-                        >
-                          <Tab label="Personal" {...a11yProps(0)} />
-                          <Tab label="Emergency" {...a11yProps(1)} />
-                          <Tab label="Notes" {...a11yProps(2)} />
-                          <Tab label="Documents" {...a11yProps(3)} />
-                          <Tab label="Changes" {...a11yProps(4)} />
-                        </Tabs>
-                      </Box>
-                    </Grid>
+                    </CardContent>
                   </Grid>
-                </CardContent>
+                </Grid>
+              </Grid>
+              <Grid item xs={1} lg={1} pt={4}>
+                <Button
+                  variant="contained"
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClickAction}
+                  endIcon={<KeyboardArrowDownIcon />}
+                >
+                  Actions
+                </Button>
+                <StyledMenu
+                  id="demo-customized-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "demo-customized-button",
+                  }}
+                  anchorEl={anchorEl}
+                  open={openMenu}
+                  onClose={handleCloseAction}
+                >
+                  <MenuItem onClick={handleCloseAction} disableRipple>
+                    <PersonOffIcon sx={{ color: "#ff0000" }} />
+                    Terminate
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClickOpen()} disableRipple>
+                    <DeleteIcon color={"#ff0000"} />
+                    Delete
+                  </MenuItem>
+                </StyledMenu>
               </Grid>
             </Grid>
           </Card>
@@ -373,25 +468,6 @@ const AssociateHeader = () => {
               <AssociateChanges userID={associateData.id} />
             </TabPanel>
           </Card>
-        </Grid>
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-end"
-          alignItems="flex-end"
-          pt={4}
-          pb={5}
-        >
-          <Grid item sx={12}>
-            <Button
-              type="button"
-              variant="contained"
-              color="error"
-              onClick={() => handleClickOpen()}
-            >
-              Delete Associate
-            </Button>
-          </Grid>
         </Grid>
       </Grid>
     </>

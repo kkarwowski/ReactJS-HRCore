@@ -163,6 +163,7 @@ const AssociatePic = () => {
                             onCropChange={setCrop}
                             onZoomChange={setZoom}
                             onCropComplete={onCropComplete}
+                            cropShape="round"
                           />
                         </div>
                       </>

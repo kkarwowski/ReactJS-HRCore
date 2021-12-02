@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Container, Typography, Button, Card } from "@mui/material";
+import { Grid, Container, Typography, Button, Card, Box } from "@mui/material";
 import ModifyDatabase from "../components/Associate/Admin/DatabaseModify";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -14,34 +14,58 @@ const Admin = () => {
   };
   return (
     <>
-      {/* <Container maxWidth="xl"> */}
-      {/* <Typography variant="h3" pt={8} pb={5}>
+      <Container maxWidth="md">
+        {/* <Typography variant="h3" pt={8} pb={5}>
         Hi, Welcome back
       </Typography> */}
-      <h1>Admin</h1>
-      <Card>
-        <Accordion
-          expanded={expanded === "panel1"}
-          onChange={handleChange("panel1")}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
-          >
-            <Typography sx={{ width: "33%", flexShrink: 0 }}>
-              Document descriptions...
-            </Typography>
-            <Typography sx={{ color: "text.secondary" }}>
-              Add, rename, delete
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ModifyDatabase />
-          </AccordionDetails>
-        </Accordion>
-      </Card>
-      {/* </Container> */}
+        <h1>Admin</h1>
+        <Card>
+          <Box p={2}>
+            <Accordion
+              expanded={expanded === "panel1"}
+              onChange={handleChange("panel1")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-header"
+                sx={{ backgroundColor: "#E8E8E8" }}
+              >
+                <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                  Departments...
+                </Typography>
+                <Typography sx={{ color: "text.secondary" }}>
+                  Add, rename, delete
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <ModifyDatabase />
+              </AccordionDetails>
+            </Accordion>
+            <Accordion
+              expanded={expanded === "panel2"}
+              onChange={handleChange("panel2")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-header"
+                sx={{ backgroundColor: "#E8E8E8" }}
+              >
+                <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                  Departments...
+                </Typography>
+                <Typography sx={{ color: "text.secondary" }}>
+                  Add, rename, delete
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <ModifyDatabase />
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        </Card>
+      </Container>
     </>
   );
 };

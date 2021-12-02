@@ -282,6 +282,7 @@ const AssociateHeader = () => {
         // p={2}
         // pt={3}
         pb={4}
+        sx={{ p: { xs: 1, lg: 2 } }}
       >
         <Grid item xs={12} lg={12}>
           <Card>
@@ -297,145 +298,159 @@ const AssociateHeader = () => {
                   container
                   columnSpacing={7}
                   direction="row"
-                  justifyContent="center"
+                  justifyContent="space-around"
                   alignItems="center"
                   alignContent="center"
                   p={1}
                 >
-                  <Grid item xs={12} lg={2} sx={{ pl: 10 }}>
+                  <Grid item xs={12} lg={2}>
                     <AssociatePic />
                   </Grid>
-                  <Grid item xs={11} lg={10}>
-                    <CardContent>
-                      <Grid
-                        container
-                        direction="column"
-                        columnSpacing={1}
-                        justifyContent="space-between"
-                        alignItems="flex-start"
-                      >
-                        <Grid item>
+                  <Grid item xs={12} lg={10}>
+                    <Grid
+                      container
+                      direction="rows"
+                      justifyContent="space-between"
+                    >
+                      <Grid item xs={11} md={11} lg={11}>
+                        <CardContent>
                           <Grid
                             container
-                            direction="row"
-                            justifyContent="flex-start"
+                            direction="column"
+                            columnSpacing={1}
+                            justify="space-between"
                             alignItems="flex-start"
                           >
                             <Grid item>
-                              <Typography variant="h4">
-                                {associateData.FirstName}{" "}
-                                {associateData.LastName}
+                              <Grid
+                                container
+                                direction="row"
+                                justify="flex-start"
+                                alignItems="flex-start"
+                              >
+                                <Grid item>
+                                  <Typography variant="h4">
+                                    {associateData.FirstName}{" "}
+                                    {associateData.LastName}
+                                  </Typography>
+                                </Grid>
+                                <Grid item sx={{ pl: 1 }}>
+                                  <Label
+                                    variant="ghost"
+                                    color={
+                                      (associateData.EmplStatus ===
+                                        "Terminated" &&
+                                        "error") ||
+                                      "success"
+                                    }
+                                  >
+                                    {sentenceCase(associateData.EmplStatus)}
+                                  </Label>
+                                </Grid>
+                              </Grid>
+                              <Typography variant="h6" sx={{ pb: 2 }}>
+                                {associateData.Title}
                               </Typography>
+                              {associateData.Department} |{" "}
+                              {associateData.PostalAddress.City}
                             </Grid>
-                            <Grid item sx={{ pl: 1 }}>
-                              <Label
-                                variant="ghost"
-                                color={
-                                  (associateData.EmplStatus === "Terminated" &&
-                                    "error") ||
-                                  "success"
-                                }
+                            <Grid item sx={{ pt: 2 }}>
+                              <p>{DateDifferenceCheck()}</p>
+                            </Grid>
+                            {/* Icons */}
+                            <Grid item>
+                              <Grid
+                                container
+                                direction="rows"
+                                alignContent="center"
+                                justifyItems="center"
+                                sx={{ pt: 1 }}
                               >
-                                {sentenceCase(associateData.EmplStatus)}
-                              </Label>
+                                <Grid item Item xs={6}>
+                                  <Link
+                                    target="_blank"
+                                    href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}
+                                  >
+                                    <img
+                                      src="https://img.icons8.com/fluency/30/000000/microsoft-teams-2019.png"
+                                      sx={{ pr: 2 }}
+                                    />
+                                  </Link>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <Link
+                                    href={`mailto:${associateData.WorkEmail}`}
+                                  >
+                                    <EmailIcon fontSize="large" />
+                                  </Link>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            {/* Tab Menu*/}
+                            <Grid item>
+                              <Box
+                                sx={{
+                                  borderBottom: 1,
+                                  borderColor: "divider",
+                                  pt: 3,
+                                }}
+                              >
+                                <Tabs
+                                  value={value}
+                                  onChange={handleChangetoTab}
+                                  aria-label="basic tabs example"
+                                  variant="scrollable"
+                                  scrollButtons="auto"
+                                  scrollButtons={true}
+                                  allowScrollButtonsMobile
+                                  aria-label="scrollable auto tabs example"
+                                >
+                                  <Tab label="Personal" {...a11yProps(0)} />
+                                  <Tab label="Emergency" {...a11yProps(1)} />
+                                  <Tab label="Notes" {...a11yProps(2)} />
+                                  <Tab label="Documents" {...a11yProps(3)} />
+                                  <Tab label="Changes" {...a11yProps(4)} />
+                                </Tabs>
+                              </Box>
                             </Grid>
                           </Grid>
-                          <Typography variant="h6" sx={{ pb: 2 }}>
-                            {associateData.Title}
-                          </Typography>
-                          {associateData.Department} |{" "}
-                          {associateData.PostalAddress.City}
-                        </Grid>
-                        <Grid item sx={{ pt: 2 }}>
-                          <p>{DateDifferenceCheck()}</p>
-                        </Grid>
-                        {/* Icons */}
-                        <Grid item>
-                          <Grid
-                            container
-                            direction="rows"
-                            alignContent="center"
-                            justifyItems="center"
-                            sx={{ pt: 1 }}
-                          >
-                            <Grid item Item xs={6}>
-                              <Link
-                                target="_blank"
-                                href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}
-                              >
-                                <img
-                                  src="https://img.icons8.com/fluency/30/000000/microsoft-teams-2019.png"
-                                  sx={{ pr: 2 }}
-                                />
-                              </Link>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <Link href={`mailto:${associateData.WorkEmail}`}>
-                                <EmailIcon fontSize="large" />
-                              </Link>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        {/* Tab Menu*/}
-                        <Grid item>
-                          <Box
-                            sx={{
-                              borderBottom: 1,
-                              borderColor: "divider",
-                              pt: 3,
-                            }}
-                          >
-                            <Tabs
-                              value={value}
-                              onChange={handleChangetoTab}
-                              aria-label="basic tabs example"
-                              variant="scrollable"
-                              scrollButtons="auto"
-                              scrollButtons={true}
-                              allowScrollButtonsMobile
-                              aria-label="scrollable auto tabs example"
-                            >
-                              <Tab label="Personal" {...a11yProps(0)} />
-                              <Tab label="Emergency" {...a11yProps(1)} />
-                              <Tab label="Notes" {...a11yProps(2)} />
-                              <Tab label="Documents" {...a11yProps(3)} />
-                              <Tab label="Changes" {...a11yProps(4)} />
-                            </Tabs>
-                          </Box>
-                        </Grid>
+                        </CardContent>
                       </Grid>
-                    </CardContent>
+                      <Grid item xs={1} md={1} lg={1} mt={2}>
+                        <Button
+                          variant="contained"
+                          aria-haspopup="true"
+                          aria-expanded={open ? "true" : undefined}
+                          onClick={handleClickAction}
+                          endIcon={<KeyboardArrowDownIcon />}
+                        >
+                          Actions
+                        </Button>
+                        <StyledMenu
+                          id="demo-customized-menu"
+                          MenuListProps={{
+                            "aria-labelledby": "demo-customized-button",
+                          }}
+                          anchorEl={anchorEl}
+                          open={openMenu}
+                          onClose={handleCloseAction}
+                        >
+                          <MenuItem onClick={handleCloseAction} disableRipple>
+                            <PersonOffIcon sx={{ color: "#ff0000" }} />
+                            Terminate
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() => handleClickOpen()}
+                            disableRipple
+                          >
+                            <DeleteIcon color={"#ff0000"} />
+                            Delete
+                          </MenuItem>
+                        </StyledMenu>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item xs={1} lg={1} pt={4}>
-                <Button
-                  variant="contained"
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClickAction}
-                  endIcon={<KeyboardArrowDownIcon />}
-                >
-                  Actions
-                </Button>
-                <StyledMenu
-                  id="demo-customized-menu"
-                  MenuListProps={{
-                    "aria-labelledby": "demo-customized-button",
-                  }}
-                  anchorEl={anchorEl}
-                  open={openMenu}
-                  onClose={handleCloseAction}
-                >
-                  <MenuItem onClick={handleCloseAction} disableRipple>
-                    <PersonOffIcon sx={{ color: "#ff0000" }} />
-                    Terminate
-                  </MenuItem>
-                  <MenuItem onClick={() => handleClickOpen()} disableRipple>
-                    <DeleteIcon color={"#ff0000"} />
-                    Delete
-                  </MenuItem>
-                </StyledMenu>
               </Grid>
             </Grid>
           </Card>

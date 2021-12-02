@@ -1,6 +1,7 @@
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Avatar } from "@mui/material";
+import { maxHeight } from "@mui/system";
 const ResponsiveAvatar = (props) => {
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("lg"));
@@ -9,7 +10,8 @@ const ResponsiveAvatar = (props) => {
 
   const sizes = () => {
     if (desktop) return { width: 200, height: 200 };
-    if (tablet) return { width: 200, height: 200 };
+
+    if (tablet) return { width: 150, height: 150 };
     if (mobile) return { width: 150, height: 150 };
   };
 

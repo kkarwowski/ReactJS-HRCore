@@ -124,18 +124,19 @@ const AssociateInfo = () => {
           </Button>
         </Grid>
         <Grid item>
-          <Button
-            sx={EditButtonStyles}
-            variant="contained"
-            color="primary"
-            endIcon={<EditIcon />}
-            onClick={() => setPersonalDisabled((prev) => !prev)}
-          >
-            Edit
-          </Button>
+          {openPersonal && (
+            <Button
+              sx={EditButtonStyles}
+              variant="contained"
+              color="primary"
+              endIcon={<EditIcon />}
+              onClick={() => setPersonalDisabled((prev) => !prev)}
+            >
+              Edit
+            </Button>
+          )}
         </Grid>
       </Grid>
-      {/* <Typography variant="inherit">Personal</Typography> */}
 
       {/* <Divider variant="middle" sx={{ pb: 2 }} /> */}
       <Collapse in={openPersonal} timeout="auto" unmountOnExit>
@@ -157,7 +158,10 @@ const AssociateInfo = () => {
               name="FirstName"
               label="First Name"
               disabled={personalDisabled}
-              InputProps={{ disableUnderline: true, color: "#ff0000" }}
+              InputProps={{
+                disableUnderline: `${personalDisabled}`,
+                color: "#ff0000",
+              }}
               sx={{ color: "secondary" }}
               defaultValue={associateData.FirstName}
               onChange={(e) => onUpdate(e)}

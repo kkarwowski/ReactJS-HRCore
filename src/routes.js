@@ -29,9 +29,12 @@ export default function Router() {
         { path: "associates/:id", element: <AssociateDetails /> },
         { path: "associates/newassociate", element: <NewAssociate /> },
         { path: "register", element: <SignUp /> },
-        { path: "admin", element: isAdmin ? <Admin /> : <NewAssociate /> },
+        {
+          path: "admin/database",
+          element: isAdmin ? <Admin /> : <NewAssociate />,
+        },
 
-        { path: "*", element: <Navigate to="/error" /> },
+        { path: "error", element: <NotFound /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> }
       ],
@@ -51,6 +54,7 @@ export default function Router() {
         // { path: "*", element: <Navigate to="/error" /> },
       ],
     },
+    { path: "*", element: <Navigate to="/error" replace /> },
     { path: "*", element: <Navigate to="/error" replace /> },
   ]);
 }

@@ -168,10 +168,10 @@ const AssociateInfo = () => {
               name="FirstName"
               label="First Name"
               disabled={personalDisabled}
-              InputProps={{
-                disableUnderline: `${personalDisabled}`,
-                // color: "#ff0000",
-              }}
+              // InputProps={{
+              //   disableUnderline: `${personalDisabled}`,
+              //   // color: "#ff0000",
+              // }}
               sx={DisabledTextBox}
               defaultValue={associateData.FirstName}
               onChange={(e) => onUpdate(e)}

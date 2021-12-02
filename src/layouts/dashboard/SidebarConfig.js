@@ -48,10 +48,17 @@ const sidebarConfig = [
     title: "admin",
     path: "/dashboard/admin",
     icon: getIcon(settingsFill),
+    children: [
+      {
+        title: "Database",
+        path: "/dashboard/admin/database",
+        icon: getIcon(peopleFill),
+      },
+    ],
   },
   {
     title: "Not found",
-    path: "/404",
+    path: "/dashboard/error",
     icon: getIcon(alertTriangleFill),
   },
 ];

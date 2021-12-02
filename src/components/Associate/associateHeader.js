@@ -262,25 +262,14 @@ const AssociateHeader = () => {
           >
             Delete
           </LoadingButton>
-          {/* <Button
-            onClick={() => DeleteAssociate(associateData.id)}
-            color="error"
-          >
-            Delete
-          </Button> */}
         </DialogActions>
       </Dialog>
 
       <Grid
         container
         direction="row"
-        // justifyContent="flex-start"
-        // alignItems="flex-start"
-        // alignContent="center"
         rowSpacing={2}
         columnSpacing={2}
-        // p={2}
-        // pt={3}
         pb={4}
         sx={{ p: { xs: 1, lg: 2 } }}
       >

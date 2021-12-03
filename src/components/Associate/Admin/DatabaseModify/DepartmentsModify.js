@@ -18,7 +18,7 @@ const DepartmentsModify = () => {
                 <ListItem key={Dep}>
                   <TextField
                     name={Dep}
-                    sx={{ pr: 2 }}
+                    sx={{ pr: 2, minWidth: 300 }}
                     size="small"
                     defaultValue={Dep}
                     onChange={(e) => {
@@ -40,7 +40,7 @@ const DepartmentsModify = () => {
             <ListItem key={"Add"}>
               <TextField
                 name="Add"
-                sx={{ pr: 2 }}
+                sx={{ pr: 2, minWidth: 300 }}
                 size="small"
                 defaultValue={""}
                 onChange={(e) => {

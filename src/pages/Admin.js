@@ -5,6 +5,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DocCategoriesModify from "../components/Associate/Admin/DatabaseModify/DocCategoriessModify";
 
 const Admin = () => {
   const [expanded, setExpanded] = React.useState(false);
@@ -53,14 +54,14 @@ const Admin = () => {
                 sx={{ backgroundColor: "#E8E8E8" }}
               >
                 <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                  Departments...
+                  Document categories...
                 </Typography>
                 <Typography sx={{ color: "text.secondary" }}>
                   Add, rename, delete
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <ModifyDatabase />
+                <DocCategoriesModify />
               </AccordionDetails>
             </Accordion>
           </Box>

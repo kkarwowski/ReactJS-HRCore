@@ -6,6 +6,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DocCategoriesModify from "../components/Associate/Admin/DatabaseModify/DocCategoriessModify";
+import OfficesModify from "../components/Associate/Admin/DatabaseModify/OfficesModify";
 
 const Admin = () => {
   const [expanded, setExpanded] = React.useState(false);
@@ -62,6 +63,27 @@ const Admin = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <DocCategoriesModify />
+              </AccordionDetails>
+            </Accordion>
+            <Accordion
+              expanded={expanded === "panel3"}
+              onChange={handleChange("panel3")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-header"
+                sx={{ backgroundColor: "#E8E8E8" }}
+              >
+                <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                  Offices...
+                </Typography>
+                <Typography sx={{ color: "text.secondary" }}>
+                  Add, rename, delete
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <OfficesModify />
               </AccordionDetails>
             </Accordion>
           </Box>

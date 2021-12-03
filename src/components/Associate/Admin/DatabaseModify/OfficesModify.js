@@ -1,0 +1,64 @@
+import { useContext } from "react";
+import { Box, Button, Grid } from "@mui/material";
+import List from "@mui/material/List";
+import { ListItem, TextField } from "@mui/material";
+
+import { officesContext } from "../../../../utils/context/contexts";
+
+const OfficesModify = () => {
+  const { allOffices } = useContext(officesContext);
+
+  return (
+    <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <Grid container direction="rows" justify="flex-start">
+        <Grid item xs={6} lg={6}>
+          <List component="nav">
+            {allOffices.map((Office) => {
+              return (
+                <ListItem key={Office}>
+                  <TextField
+                    name={Office}
+                    sx={{ pr: 2, minWidth: 300 }}
+                    size="small"
+                    defaultValue={Office}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                    }}
+                  />
+                  <Button
+                    color="error"
+                    variant="contained"
+                    size="small"
+                    onClick={() => console.log(Office)}
+                  >
+                    Delete
+                  </Button>
+                  {/* <ListItemButton>ss</ListItemButton> */}
+                </ListItem>
+              );
+            })}
+            <ListItem key={"Add"}>
+              <TextField
+                name="Add"
+                sx={{ pr: 2, minWidth: 300 }}
+                size="small"
+                defaultValue={""}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => console.log("Added")}
+              >
+                Add
+              </Button>
+            </ListItem>
+          </List>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+export default OfficesModify;

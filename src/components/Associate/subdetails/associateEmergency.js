@@ -55,7 +55,7 @@ const AssociateEmergencyInfo = () => {
 
   return (
     <Box sx={{ p: 0, pb: 1 }} dir="ltr">
-      <Typography variant="inherit">Emergency Information</Typography>
+      <Typography variant="overline">Emergency Information</Typography>
       <Divider variant="middle" sx={{ pb: 2 }} />
       <FormControl sx={{ pt: 3 }}>
         {/* <form onSubmit={e =>onSubmit(e)}> */}

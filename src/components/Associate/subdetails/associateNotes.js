@@ -3,7 +3,7 @@ import {
   updatedAssociateContext,
   associateContext,
 } from "../../../utils/context/contexts";
-import { TextField, Button } from "@mui/material";
+import { TextField, Grid, Box, Typography } from "@mui/material";
 
 const AssociateNotes = () => {
   const { updatedAssociate, setUpdatedAssociate } = useContext(
@@ -20,17 +20,21 @@ const AssociateNotes = () => {
 
   return (
     <div>
-      <TextField
-        id="outlined-multiline-flexible"
-        label="Notes"
-        name="Notes"
-        multiline
-        defaultValue={associateData.Notes}
-        // maxRows={30}
-        rows={15}
-        fullWidth
-        onChange={(e) => onUpdate(e)}
-      />
+      <Box sx={{ p: 0, pb: 1 }} dir="ltr">
+        <Typography variant="overline">Changes</Typography>
+        <TextField
+          id="outlined-multiline-flexible"
+          label="Notes"
+          name="Notes"
+          multiline
+          defaultValue={associateData.Notes}
+          // maxRows={30}
+          rows={15}
+          fullWidth
+          onChange={(e) => onUpdate(e)}
+          sx={{ mt: 2 }}
+        />
+      </Box>
     </div>
   );
 };

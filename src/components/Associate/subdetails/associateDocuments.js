@@ -450,7 +450,7 @@ const AssociateDocuments = ({ userID }) => {
           </Box>
         </Fade>
       </Modal>
-      <Typography variant="inherit">Documents</Typography>
+      <Typography variant="overline">Documents</Typography>
       <Divider variant="middle" sx={{ pb: 2 }} />
       <Snackbar
         open={alert}

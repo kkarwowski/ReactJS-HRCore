@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useState, useContext } from "react";
 import Label from "../Label";
 import { sentenceCase } from "change-case";
@@ -80,7 +81,7 @@ function a11yProps(index) {
   };
 }
 
-const AssociateHeader = () => {
+const AssociateHeader = ({ handleBack }) => {
   const { setUpdateAssociates } = useContext(updateAssociatesContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -288,11 +289,20 @@ const AssociateHeader = () => {
                   columnSpacing={7}
                   direction="row"
                   justifyContent="space-around"
-                  alignItems="center"
-                  alignContent="center"
+                  alignItems="flex-start"
+                  alignContent="flex-start"
                   p={1}
                 >
                   <Grid item xs={12} lg={2}>
+                    <Button
+                      variant="text"
+                      sx={{ color: "#000000" }}
+                      disableRipple="true"
+                      startIcon={<KeyboardArrowLeftIcon />}
+                      onClick={() => handleBack()}
+                    >
+                      Back
+                    </Button>
                     <AssociatePic />
                   </Grid>
                   <Grid item xs={12} lg={10}>

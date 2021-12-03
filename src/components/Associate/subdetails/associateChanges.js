@@ -35,8 +35,8 @@ const AssociateChanges = ({ userID }) => {
     <Grid container direction="column">
       <Grid item>
         <Grid container direction="rows" justifyContent="space-between">
-          <Grid item pt={2} pl={2}>
-            <Typography variant="h6">Changes</Typography>
+          <Grid item>
+            <Typography variant="overline">Changes</Typography>
           </Grid>
         </Grid>
       </Grid>

@@ -38,11 +38,11 @@ import { useAuth } from "../utils/context/AuthContext";
 
 const AssociateDetails = () => {
   const { userData } = useAuth();
+  const history = useNavigate();
 
   const { loadingProgress, setLoadingProgress } = useContext(loadingContext);
   const { id } = useParams();
   const [associateData, setAssociateData] = useState();
-  const history = useNavigate();
   const [edited, setEdited] = useState(false);
   const [warn, setWarn] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -66,17 +66,6 @@ const AssociateDetails = () => {
     setLoadingProgress(true);
     const data = await getDoc(associateCollectionRef);
     return data.data();
-  };
-
-  const handleBack = () => {
-    if (edited) {
-      setWarn(true);
-    } else {
-      history("/dashboard/associates");
-    }
-  };
-  const handleClickOpen = () => {
-    setWarn(true);
   };
 
   const handleClose = () => {
@@ -147,6 +136,14 @@ const AssociateDetails = () => {
       setEdited(false);
     }
   }, [updatedAssociate]);
+
+  const handleBack = () => {
+    if (edited) {
+      setWarn(true);
+    } else {
+      history("/dashboard/associates");
+    }
+  };
   return (
     <>
       <updatedAssociateContext.Provider
@@ -166,14 +163,6 @@ const AssociateDetails = () => {
               mb={2}
             >
               <Grid item>
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={handleBack}
-                  size="medium"
-                >
-                  Back
-                </Button>
                 <Snackbar
                   open={alert}
                   autoHideDuration={5000}
@@ -226,7 +215,7 @@ const AssociateDetails = () => {
                 </Button>
               </DialogActions>
             </Dialog>
-            {associateData && <AssociateHeader />}
+            {associateData && <AssociateHeader handleBack={handleBack} />}
           </editedContext.Provider>
         </associateContext.Provider>
       </updatedAssociateContext.Provider>

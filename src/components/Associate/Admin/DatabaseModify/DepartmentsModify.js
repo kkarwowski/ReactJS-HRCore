@@ -17,9 +17,9 @@ const DepartmentsModify = () => {
               return (
                 <ListItem key={Dep}>
                   <TextField
+                    name={Dep}
                     sx={{ pr: 2 }}
                     size="small"
-                    sx={{ minWidth: "450" }}
                     defaultValue={Dep}
                     onChange={(e) => {
                       console.log(e.target.value);
@@ -37,10 +37,25 @@ const DepartmentsModify = () => {
                 </ListItem>
               );
             })}
+            <ListItem key={"Add"}>
+              <TextField
+                name="Add"
+                sx={{ pr: 2 }}
+                size="small"
+                defaultValue={""}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                }}
+              />
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => console.log("Added")}
+              >
+                Add
+              </Button>
+            </ListItem>
           </List>
-        </Grid>
-        <Grid item xs={6} lg={6}>
-          <TextField size="small" label="Add" />
         </Grid>
       </Grid>
     </Box>

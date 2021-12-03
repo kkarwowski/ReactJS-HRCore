@@ -3,6 +3,7 @@ import SimpleBarReact from "simplebar-react";
 // material
 import { alpha, styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled("div")({
@@ -22,7 +23,7 @@ const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
     },
   },
   "& .simplebar-track.simplebar-vertical": {
-    width: 17,
+    width: 10,
   },
   "& .simplebar-track.simplebar-horizontal .simplebar-scrollbar": {
     height: 6,

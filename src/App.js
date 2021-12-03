@@ -31,7 +31,6 @@ function App() {
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const AuthContext = React.createContext();
 
   useEffect(() => {
     document.title = "HR Core";

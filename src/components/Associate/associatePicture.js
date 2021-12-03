@@ -130,11 +130,6 @@ const AssociatePic = () => {
                 src={associateData.profilePicture}
                 class={".crop-container"}
               />
-              {/* <Avatar
-              src={associateData.profilePicture}
-              // sx={{ width: 300, height: 300 }}
-              className=".crop-container"
-            /> */}
             </IconButton>
           </label>
           <Modal

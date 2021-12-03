@@ -35,7 +35,7 @@ import MenuPopover from "../../components/MenuPopover";
 
 const NOTIFICATIONS = [
   {
-    id: "sdfsdg324dfg",
+    id: 1,
     title: "Your order is placed",
     description: "waiting for shipping",
     avatar: null,
@@ -44,7 +44,7 @@ const NOTIFICATIONS = [
     isUnRead: true,
   },
   {
-    id: "sdfs234dg324dfg",
+    id: 2,
     title: "Mark Geenking",
     description: "answered to your comment on the Minimal",
     // avatar: mockImgAvatar(2),
@@ -53,7 +53,7 @@ const NOTIFICATIONS = [
     isUnRead: true,
   },
   {
-    id: "sdfs234dg32224dfg",
+    id: 3,
     title: "You have new message",
     description: "5 unread messages",
     avatar: null,
@@ -62,7 +62,7 @@ const NOTIFICATIONS = [
     isUnRead: false,
   },
   {
-    id: "sdfs234d7g324dfg",
+    id: 4,
     title: "You have new mail",
     description: "sent from Guido Padberg",
     avatar: null,
@@ -71,7 +71,16 @@ const NOTIFICATIONS = [
     isUnRead: false,
   },
   {
-    id: "sdf2s234dg324dfg",
+    id: 5,
+    title: "Delivery processing",
+    description: "Your order is being shipped",
+    avatar: null,
+    type: "order_shipped",
+    createdAt: sub(new Date(), { days: 3, hours: 3, minutes: 30 }),
+    isUnRead: false,
+  },
+  {
+    id: 6,
     title: "Delivery processing",
     description: "Your order is being shipped",
     avatar: null,
@@ -100,7 +109,7 @@ function renderContent(notification) {
       avatar: (
         <img
           alt={notification.title}
-          src="/static/icons/ic_notification_package.svg"
+          src="/images/icons/ic_notification_package.svg"
         />
       ),
       title,
@@ -111,7 +120,7 @@ function renderContent(notification) {
       avatar: (
         <img
           alt={notification.title}
-          src="/static/icons/ic_notification_shipping.svg"
+          src="/images/icons/ic_notification_shipping.svg"
         />
       ),
       title,
@@ -122,7 +131,7 @@ function renderContent(notification) {
       avatar: (
         <img
           alt={notification.title}
-          src="/static/icons/ic_notification_mail.svg"
+          src="/images/icons/ic_notification_mail.svg"
         />
       ),
       title,
@@ -133,7 +142,7 @@ function renderContent(notification) {
       avatar: (
         <img
           alt={notification.title}
-          src="/static/icons/ic_notification_chat.svg"
+          src="/images/icons/ic_notification_chat.svg"
         />
       ),
       title,
@@ -263,10 +272,9 @@ export default function NotificationsPopover() {
             </Tooltip>
           )}
         </Box>
-
         <Divider />
-
-        <Scrollbar sx={{ height: { xs: 340, sm: "auto" } }}>
+        <Scrollbar sx={{ height: { xs: 340, sm: 400, lg: 400 } }}>
+          {/* { xs: 340, sm: 340, lg: 340 } */}
           <List
             disablePadding
             subheader={
@@ -285,7 +293,6 @@ export default function NotificationsPopover() {
               />
             ))}
           </List>
-
           <List
             disablePadding
             subheader={
@@ -297,7 +304,7 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(2, 5).map((notification) => (
+            {notifications.slice(1, 6).map((notification) => (
               <NotificationItem
                 key={notification.id}
                 notification={notification}

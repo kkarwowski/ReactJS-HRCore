@@ -505,7 +505,7 @@ const AssociateDocuments = ({ userID }) => {
             onSelectFile={onSelectFile}
             onDeleteFiles={onDeleteFiles}
           />
-          {/* <Scrollbar> */}
+          {/* <Scrollbar sx={{ height: 100 }}> */}
           <TableContainer sx={{ minWidth: 800, minHeight: 100 }}>
             {fileList && (
               <Table>

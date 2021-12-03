@@ -35,11 +35,13 @@ export default function BirthdayTimeline() {
       const birthDayNextYear = moment(associate.DOB.toDate()).year(
         now.year() + 1
       );
+
       const daysRemaining = Math.min(
-        Math.abs(birthDay.diff(now, "days")),
-        Math.abs(birthDayNextYear.diff(now, "days"))
+        birthDay.diff(now, "days"),
+        birthDayNextYear.diff(now, "days")
       );
-      if (daysRemaining >= 0 && daysRemaining <= 30) {
+
+      if (daysRemaining >= 0 && daysRemaining <= 32) {
         haveBirthdaySoon.push({
           ...associate,
           daysRemaining: daysRemaining,
@@ -75,7 +77,7 @@ export default function BirthdayTimeline() {
               {BirthdayFunc(associates)
                 .filter((associate) => associate.emplStatus != "Terminated")
                 .map((starter) => {
-                  const { FirstName, LastName, profilePicture, DOB } = starter;
+                  const { FirstName, profilePicture, DOB } = starter;
 
                   return (
                     <TimelineItem>

@@ -9,7 +9,6 @@
     "@iconify/icons-eva": "^1.1.0",
     "@iconify/icons-ic": "^1.1.10",
     "@iconify/icons-mdi": "^1.1.37",
-    "@iconify/react": "^3.0.1",
     "@mui/icons-material": "^5.0.4",
     "@mui/lab": "^5.0.0-alpha.47",
     "@mui/material": "^5.0.6",
@@ -67,5 +66,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@iconify/icons-fluent": "^1.1.33",
+    "@iconify/react": "^3.1.0"
   }
 }

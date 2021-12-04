@@ -7,6 +7,7 @@ import lockFill from "@iconify/icons-eva/lock-fill";
 import personAddFill from "@iconify/icons-eva/person-add-fill";
 import alertTriangleFill from "@iconify/icons-eva/alert-triangle-fill";
 import settingsFill from "@iconify/icons-eva/settings-fill";
+import clipboardTaskListLtr20Filled from "@iconify/icons-fluent/clipboard-task-list-ltr-20-filled";
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
@@ -38,6 +39,11 @@ const sidebarConfig = [
     title: "login",
     path: "/login",
     icon: getIcon(lockFill),
+  },
+  {
+    title: "My Tasks",
+    path: "/dashboard/tasks",
+    icon: getIcon(clipboardTaskListLtr20Filled),
   },
   {
     title: "register",

@@ -8,11 +8,12 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import { useAuth } from "./utils/context/AuthContext";
 
-import NotFound from "./pages/Page404";
+import Page404 from "./pages/Page404";
 import Associates from "./pages/Associates";
 import NewAssociate from "./components/Associate/newAssociate";
 import AssociateDetails from "./pages/AssociateDetails";
 import Admin from "./pages/Admin";
+import MyTasks from "./pages/Tasks";
 
 // ----------------------------------------------------------------------
 
@@ -29,12 +30,13 @@ export default function Router() {
         { path: "associates/:id", element: <AssociateDetails /> },
         { path: "associates/newassociate", element: <NewAssociate /> },
         { path: "register", element: <SignUp /> },
+        { path: "tasks", element: <MyTasks /> },
         {
           path: "admin/database",
           element: isAdmin ? <Admin /> : <NewAssociate />,
         },
 
-        { path: "error", element: <NotFound /> },
+        { path: "/dashboard/*", element: <Page404 /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> }
       ],

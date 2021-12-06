@@ -42,13 +42,13 @@ const AssociateDetails = () => {
   const [errorMessage, setErrorMessage] = useState();
   const [updatedAssociate, setUpdatedAssociate] = useState();
   const { setUpdateAssociates } = useContext(updateAssociatesContext);
+
   useEffect(() => {
     const getAssociate = async () => {
       const associateFromServer = await fetchDetails();
       setAssociateData({ ...associateFromServer, id: id });
       setUpdatedAssociate({ ...associateFromServer, id: id });
     };
-
     getAssociate();
   }, []);
 
@@ -61,6 +61,14 @@ const AssociateDetails = () => {
 
   const handleClose = () => {
     setWarn(false);
+  };
+
+  const CheckIfChanged = (updateAssociates, associateData) => {
+    if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
+      setEdited(true);
+    } else {
+      setEdited(false);
+    }
   };
   const matchUpdatedAndCurrent = (obj1, obj2) => {
     return isEqual(obj1, obj2);
@@ -140,11 +148,17 @@ const AssociateDetails = () => {
   };
   return (
     <>
+      <Button
+        onClick={() =>
+          console.log(GetDifferences(updatedAssociate, associateData))
+        }
+      >
+        Log
+      </Button>
       <updatedAssociateContext.Provider
         value={{
           updatedAssociate,
           setUpdatedAssociate,
-          matchUpdatedAndCurrent,
         }}
       >
         <associateContext.Provider value={{ associateData, setAssociateData }}>

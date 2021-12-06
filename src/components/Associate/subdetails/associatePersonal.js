@@ -39,8 +39,9 @@ const AssociateInfo = () => {
   const { allOffices } = useContext(officesContext);
   const { edited, setEdited } = useContext(editedContext);
   const { allDepartments } = useContext(departmentsContext);
-  const { updatedAssociate, setUpdatedAssociate, matchUpdatedAndCurrent } =
-    useContext(updatedAssociateContext);
+  const { updatedAssociate, setUpdatedAssociate } = useContext(
+    updatedAssociateContext
+  );
   const [isUpdating, setIsUpdating] = useState(false);
   const [openPersonal, setOpenPersonal] = useState(true);
   const [openPostal, setOpenPostal] = useState(false);
@@ -66,8 +67,6 @@ const AssociateInfo = () => {
     }
   };
   const formatter = new Intl.NumberFormat(undefined, {
-    // style: "amount",
-    // currency: "GBP",
     maximumSignificantDigits: 3,
   });
   const onUpdateNested = (event) => {

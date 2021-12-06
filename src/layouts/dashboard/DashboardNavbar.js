@@ -54,7 +54,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
             <Icon icon={menu2Fill} />
           </IconButton>
         </MHidden>
-        <Grid container direction="row" justifyContent="space-between">
+        <Grid container direction="rows" justifyContent="space-between">
           <Grid item>
             <Searchbar />
           </Grid>

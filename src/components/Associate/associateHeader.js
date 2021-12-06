@@ -26,6 +26,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   associateContext,
   updateAssociatesContext,
+  editedContext,
 } from "../../utils/context/contexts";
 import AssociateSubdetails from "./subdetails/associateSubdetails";
 import AssociateInfo from "../Associate/subdetails/associatePersonal";
@@ -82,7 +83,9 @@ function a11yProps(index) {
 }
 
 const AssociateHeader = ({ handleBack }) => {
-  const { setUpdateAssociates } = useContext(updateAssociatesContext);
+  const { updatedAssociate, setUpdateAssociates } = useContext(
+    updateAssociatesContext
+  );
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
   const [value, setValue] = useState(0);
@@ -95,6 +98,7 @@ const AssociateHeader = ({ handleBack }) => {
   const [loading, setLoading] = useState(false);
   const diffDates = require("diff-dates");
   const Todayy = new Date();
+  const { edited, setEdited } = useContext(editedContext);
 
   // const dateDiffYears = Date();
 
@@ -425,6 +429,7 @@ const AssociateHeader = ({ handleBack }) => {
                         >
                           Actions
                         </Button>
+
                         <StyledMenu
                           id="demo-customized-menu"
                           MenuListProps={{

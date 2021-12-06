@@ -1,12 +1,14 @@
 import { Icon } from "@iconify/react";
 import "./SearchBar.css";
-import { useState } from "react";
+import { useState, useContext, useRef } from "react";
 import BookData from "./data.json";
 import searchFill from "@iconify/icons-eva/search-fill";
 // material
 import { styled, alpha } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 import {
   Box,
+  Avatar,
   Input,
   Slide,
   Button,
@@ -17,13 +19,13 @@ import {
   ListItem,
   TextField,
 } from "@mui/material";
-
+import { associatesContext } from "../../utils/context/contexts";
 // ----------------------------------------------------------------------
 
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
 const TvShowContainer = styled("div")(({ theme }) => ({
-  width: "100%",
+  minWidth: "100%",
   "min-height": "4em",
   display: "flex",
   "border-bottom": "2px solid #d8d8d852",
@@ -58,8 +60,8 @@ const SearchbarStyle = styled("div")(({ theme }) => ({
   },
 }));
 const SearchContent = styled("div")(({ theme }) => ({
-  width: "100%",
-  height: "70%",
+  minWidth: "100%",
+  height: "30%",
   display: "flex",
   "flex-direction": "column",
   padding: "1em",
@@ -68,10 +70,13 @@ const SearchContent = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Searchbar() {
+  const { associates: associatesData, setAssociates: setAssociatesData } =
+    useContext(associatesContext);
   const data = BookData;
   const [wordEntered, setWordEntered] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
+  const inputRef = useRef(null);
   const handleOpen = () => {
     setOpen((prev) => !prev);
   };
@@ -80,11 +85,15 @@ export default function Searchbar() {
     setOpen(false);
   };
 
+  const HandleClear = (props) => {
+    inputRef.current.value = "";
+  };
+
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
-      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+    const newFilter = associatesData.filter((value) => {
+      return value.FirstName.toLowerCase().includes(searchWord.toLowerCase());
     });
 
     if (searchWord === "") {
@@ -105,6 +114,7 @@ export default function Searchbar() {
         {/* <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit> */}
         <SearchbarStyle>
           <Input
+            ref={inputRef}
             autoFocus
             fullWidth
             disableUnderline
@@ -130,9 +140,17 @@ export default function Searchbar() {
           {(filteredData.length != 0) & (wordEntered.length > 0) &&
             filteredData.slice(0, 5).map((value, key) => {
               return (
-                <TvShowContainer>
-                  <Name>{value.title}</Name>
-                </TvShowContainer>
+                <Link to={`/dashboard/associates/${value.id}`} key={value.id}>
+                  <TvShowContainer>
+                    <Avatar
+                      src={value.profilePicture}
+                      sx={{ width: 24, height: 24 }}
+                    />
+                    <Name>
+                      {value.FirstName} {value.LastName}
+                    </Name>
+                  </TvShowContainer>
+                </Link>
                 // <a className="dataItem" href={value.link} target="_blank">
                 //   {value.title}
                 // </a>

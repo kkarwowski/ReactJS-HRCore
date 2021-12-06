@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
-import { filter } from "lodash";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import UserListHead from "../components/Associates/UserListHead";
 import UserListToolbar from "../components/Associates/UserListToolbar";
 import Label from "../components/Label";
 import { Link } from "react-router-dom";
 import Scrollbar from "../components/Scrollbar";
-import { useAuth } from "../utils/context/AuthContext";
 import * as moment from "moment";
 
 // import { CSVLink, CSVDownload } from "react-csv";
-import CsvDownloader from "react-csv-downloader";
 import { sentenceCase } from "change-case";
 import {
   Card,

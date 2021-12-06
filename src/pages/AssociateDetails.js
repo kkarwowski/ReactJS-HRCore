@@ -26,21 +26,14 @@ import {
   updateAssociatesContext,
 } from "../utils/context/contexts";
 import { db } from "../utils/firebase";
-import {
-  getDoc,
-  doc,
-  updateDoc,
-  setDoc,
-  addDoc,
-  collection,
-} from "firebase/firestore";
+import { getDoc, doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useAuth } from "../utils/context/AuthContext";
 
 const AssociateDetails = () => {
   const { userData } = useAuth();
   const history = useNavigate();
 
-  const { loadingProgress, setLoadingProgress } = useContext(loadingContext);
+  const { setLoadingProgress } = useContext(loadingContext);
   const { id } = useParams();
   const [associateData, setAssociateData] = useState();
   const [edited, setEdited] = useState(false);
@@ -48,9 +41,7 @@ const AssociateDetails = () => {
   const [alert, setAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [updatedAssociate, setUpdatedAssociate] = useState();
-  const { updateAssociates, setUpdateAssociates } = useContext(
-    updateAssociatesContext
-  );
+  const { setUpdateAssociates } = useContext(updateAssociatesContext);
   useEffect(() => {
     const getAssociate = async () => {
       const associateFromServer = await fetchDetails();
@@ -95,7 +86,7 @@ const AssociateDetails = () => {
         Value: value,
         AssociateID: updatedAssociate.id,
       };
-      const docRef = await addDoc(collection(db, "Changes"), changesObject);
+      await addDoc(collection(db, "Changes"), changesObject);
     }
   };
 
@@ -129,13 +120,16 @@ const AssociateDetails = () => {
       });
   };
 
-  useEffect(() => {
-    if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
-      setEdited(true);
-    } else {
-      setEdited(false);
-    }
-  }, [updatedAssociate]);
+  useEffect(
+    (associateData) => {
+      if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
+        setEdited(true);
+      } else {
+        setEdited(false);
+      }
+    },
+    [updatedAssociate]
+  );
 
   const handleBack = () => {
     if (edited) {

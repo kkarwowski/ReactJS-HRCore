@@ -1,22 +1,19 @@
 import {
   Button,
-  Input,
   Box,
   Grid,
-  Container,
   FormControl,
   OutlinedInput,
   IconButton,
   InputAdornment,
   InputLabel,
-  Paper,
-  Card,
   TextField,
+  Card,
 } from "@mui/material";
 import * as Yup from "yup";
 import { useAuth } from "../utils/context/AuthContext";
-import { Formik, Form, ErrorMessage } from "formik";
-import React, { useContext } from "react";
+import { Formik, Form } from "formik";
+import React from "react";
 import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -62,7 +59,7 @@ const SignUp = () => {
       initialValues={newUser}
       onSubmit={handleSubmit}
     >
-      {({}) => (
+      {() => (
         <Form>
           <Box sx={{ p: 4, pb: 5, pt: 8 }}>
             <Grid

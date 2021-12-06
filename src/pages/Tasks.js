@@ -1,4 +1,4 @@
 const MyTasks = () => {
-  return <h1>My Taskts</h1>;
+  return <h1>My Tasks</h1>;
 };
 export default MyTasks;

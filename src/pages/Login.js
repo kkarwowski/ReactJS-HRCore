@@ -1,20 +1,18 @@
 import {
   Button,
-  Input,
   Box,
   Grid,
   Container,
   Card,
   TextField,
   CardContent,
-  CardMedia,
   Snackbar,
   Alert,
 } from "@mui/material";
 import * as Yup from "yup";
 import { useAuth } from "../utils/context/AuthContext";
 import { Formik, Form, ErrorMessage, Field } from "formik";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Logo from "../components/Logo";
 
 const Login = () => {
@@ -22,7 +20,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState();
   const [isLoginScreen, setIsLoginScreen] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const { login, currentUser, resetUserPassword } = useAuth();
+  const { login, resetUserPassword } = useAuth();
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -40,11 +38,10 @@ const Login = () => {
   });
   const handleSubmit = async (values) => {
     await login(values.Email, values.Password).catch(
-      (error) => (
-        setErrorMessage(error.message), console.log(error), setAlert(true)
-      )
+      (error) => (setErrorMessage(error.message), setAlert(true))
     );
   };
+
   const handleReset = async (values) => {
     console.log("reseting password");
     await resetUserPassword(values.Email);

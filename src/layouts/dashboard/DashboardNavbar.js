@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import menu2Fill from "@iconify/icons-eva/menu-2-fill";
 // material
 import { alpha, styled } from "@mui/material/styles";
-import { Box, Stack, AppBar, Toolbar, IconButton } from "@mui/material";
+import { Box, Stack, AppBar, Toolbar, IconButton, Grid } from "@mui/material";
 // components
 import { MHidden } from "../../components/@material-extend";
 //
@@ -54,18 +54,31 @@ export default function DashboardNavbar({ onOpenSidebar }) {
             <Icon icon={menu2Fill} />
           </IconButton>
         </MHidden>
+        <Grid container direction="row" justifyContent="space-between">
+          <Grid item>
+            <Searchbar />
+          </Grid>
 
-        <Searchbar />
-        <Box sx={{ flexGrow: 1 }} />
+          {/* <Box sx={{ flexGrow: 1 }} /> */}
 
-        <Stack
+          {/* <Stack
           direction="row"
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
-        >
-          <NotificationsPopover />
-          <AccountPopover />
-        </Stack>
+        > */}
+          <Grid item>
+            <Grid container direction="rows" justifyContent="flex-end">
+              <Grid item>
+                <NotificationsPopover />
+              </Grid>
+
+              <Grid item>
+                <AccountPopover />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        {/* </Stack> */}
       </ToolbarStyle>
     </RootStyle>
   );

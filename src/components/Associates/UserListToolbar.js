@@ -11,6 +11,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 
 import {
   Box,
+  Switch,
   Toolbar,
   Tooltip,
   IconButton,
@@ -95,13 +96,18 @@ export default function UserListToolbar({
       <FormGroup>
         <FormControlLabel
           control={
-            <Checkbox
+            <Switch
               defaultUnChecked
               onChange={(event) => setChecked(event.target.checked)}
               checked={checked}
             />
+            // <Checkbox
+            //   defaultUnChecked
+            //   onChange={(event) => setChecked(event.target.checked)}
+            //   checked={checked}
+            // />
           }
-          label="Show Terminated"
+          label="Terminated"
         />
       </FormGroup>
       {/* {numSelected > 0 ? (

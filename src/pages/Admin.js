@@ -16,7 +16,7 @@ const Admin = () => {
   };
   return (
     <>
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         {/* <Typography variant="h3" pt={8} pb={5}>
         Hi, Welcome back
       </Typography> */}
@@ -31,7 +31,7 @@ const Admin = () => {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
-                sx={{ backgroundColor: "#E8E8E8" }}
+                sx={{ backgroundColor: "#eef0f2" }}
               >
                 <Typography sx={{ width: "33%", flexShrink: 0 }}>
                   Departments...
@@ -52,7 +52,7 @@ const Admin = () => {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
-                sx={{ backgroundColor: "#E8E8E8" }}
+                sx={{ backgroundColor: "#eef0f2" }}
               >
                 <Typography sx={{ width: "33%", flexShrink: 0 }}>
                   Document categories...
@@ -73,7 +73,7 @@ const Admin = () => {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
-                sx={{ backgroundColor: "#E8E8E8" }}
+                sx={{ backgroundColor: "#eef0f2" }}
               >
                 <Typography sx={{ width: "33%", flexShrink: 0 }}>
                   Offices...

@@ -16,6 +16,7 @@ import {
   ClickAwayListener,
   IconButton,
   List,
+  Grid,
   ListItem,
   TextField,
 } from "@mui/material";
@@ -25,7 +26,7 @@ import { associatesContext } from "../../utils/context/contexts";
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
 const TvShowContainer = styled("div")(({ theme }) => ({
-  minWidth: "100%",
+  width: "800px",
   "min-height": "4em",
   display: "flex",
   "border-bottom": "2px solid #d8d8d852",
@@ -43,7 +44,7 @@ const SearchbarStyle = styled("div")(({ theme }) => ({
   top: 0,
   left: 0,
   zIndex: 99,
-  width: "80%",
+  width: "90%",
   height: "30%",
   display: "flex",
   position: "absolute",
@@ -60,8 +61,8 @@ const SearchbarStyle = styled("div")(({ theme }) => ({
   },
 }));
 const SearchContent = styled("div")(({ theme }) => ({
-  minWidth: "100%",
-  height: "30%",
+  width: "100%",
+  height: "100%",
   display: "flex",
   "flex-direction": "column",
   padding: "1em",
@@ -136,21 +137,37 @@ export default function Searchbar() {
             </Button> */}
         </SearchbarStyle>
         {/* </Slide> */}
+
         <SearchContent>
           {(filteredData.length != 0) & (wordEntered.length > 0) &&
             filteredData.slice(0, 5).map((value, key) => {
               return (
                 <Link to={`/dashboard/associates/${value.id}`} key={value.id}>
                   <TvShowContainer>
-                    <Avatar
-                      src={value.profilePicture}
-                      sx={{ width: 24, height: 24 }}
-                    />
-                    <Name>
-                      {value.FirstName} {value.LastName}
-                    </Name>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      alignContent="space-between"
+                    >
+                      <Grid item>
+                        <Avatar
+                          src={value.profilePicture}
+                          sx={{ width: 24, height: 24 }}
+                        />
+
+                        <Name>
+                          {value.FirstName} {value.LastName}
+                        </Name>
+                      </Grid>
+                      <Grid item>
+                        <div alignItems="flex-end">Profile</div>
+                      </Grid>
+                    </Grid>
                   </TvShowContainer>
                 </Link>
+
                 // <a className="dataItem" href={value.link} target="_blank">
                 //   {value.title}
                 // </a>

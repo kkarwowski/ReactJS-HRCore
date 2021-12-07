@@ -48,7 +48,7 @@ const Associates = () => {
   const { rowsPerPage, setRowsPerPage } = useContext(resultsPerPageContext);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState("LastName");
   const [checked, setChecked] = useState(false);
 
   // const [toExport, setToExport] = useState([]);

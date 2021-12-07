@@ -275,7 +275,7 @@ const Associates = () => {
                             <TableCell align="left">{Title}</TableCell>
                             <TableCell align="left">{Department}</TableCell>
                             <TableCell align="left">
-                              {moment(StartDate.toDate()).format("DD/MM/yyyy")}
+                              {moment(StartDate.toDate()).format("DD-MM-yyyy")}
                             </TableCell>
                             <TableCell align="left">
                               <Label

@@ -73,11 +73,6 @@ export default function UserListToolbar({
         }),
       }}
     >
-      {/* {numSelected > 0 ? (
-        <Typography component="div" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : ( */}
       <SearchStyle
         size="small"
         value={filterName}
@@ -101,28 +96,10 @@ export default function UserListToolbar({
               onChange={(event) => setChecked(event.target.checked)}
               checked={checked}
             />
-            // <Checkbox
-            //   defaultUnChecked
-            //   onChange={(event) => setChecked(event.target.checked)}
-            //   checked={checked}
-            // />
           }
           label="Terminated"
         />
       </FormGroup>
-      {/* {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <Icon icon={trash2Fill} />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Icon icon={roundFilterList} />
-          </IconButton>
-        </Tooltip>
-      )} */}
     </RootStyle>
   );
 }

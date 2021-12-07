@@ -134,6 +134,7 @@ const Login = () => {
                                         label="Email"
                                         type="email"
                                         name="Email"
+                                        sx={{ width: 350 }}
                                         // fullWidth={true}
                                       />
                                       <Grid item xs={12}>
@@ -147,6 +148,7 @@ const Login = () => {
                                         label="Password"
                                         type="password"
                                         name="Password"
+                                        sx={{ width: 350 }}
                                       />
                                       <Grid item xs={12}>
                                         <ErrorMessage name="Password" />
@@ -205,69 +207,6 @@ const Login = () => {
             )}
           </Formik>
         </Grid>
-      )}
-      {!isLoginScreen && (
-        <Box sx={{ width: "100%" }}>
-          <Grid
-            sx={{ p: 1, pb: 5, pt: 6 }}
-            container
-            alignItems="center"
-            justifyContent="Center"
-            direction="column"
-          >
-            <Grid item xs={12} sm={12} lg={12}>
-              <Formik
-                validationSchema={stepTwoValidationSchema}
-                onSubmit={handleReset}
-                initialValues={{
-                  Email: "",
-                }}
-              >
-                {({ values, validateOnMount }) => (
-                  <Form>
-                    <Box sx={{ p: 1, pb: 5, pt: 6, width: "1" }}>
-                      <Card sx={{ minWidth: 400 }}>
-                        <Grid
-                          sx={{ p: 1, pb: 5, pt: 6 }}
-                          container
-                          columnSpacing={1}
-                          rowSpacing={1}
-                          direction="column"
-                          justifyItems="Center"
-                          alignItems="Center"
-                        >
-                          <Grid item xs={12} sm={12} lg={12}>
-                            <TextField
-                              // style={{ width: "100%" }}
-                              label="Email"
-                              type="email"
-                              name="Email"
-                              fullWidth={true}
-                            />
-                            <ErrorMessage name="Email" />
-                          </Grid>
-                          <Grid item xs={12} sm={12} lg={12}>
-                            <Button type="submit" variant="contained">
-                              Reset
-                            </Button>
-                          </Grid>
-                          <Grid item xs={12} sm={12} lg={12}>
-                            <Button
-                              type="button"
-                              onClick={() => setIsLoginScreen(!isLoginScreen)}
-                            >
-                              Back
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Card>
-                    </Box>
-                  </Form>
-                )}
-              </Formik>
-            </Grid>
-          </Grid>
-        </Box>
       )}
     </div>
   );

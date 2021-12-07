@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import "./SearchBar.css";
 import { useState, useContext, useRef } from "react";
-import BookData from "./data.json";
 import searchFill from "@iconify/icons-eva/search-fill";
 // material
 import { styled, alpha } from "@mui/material/styles";
@@ -73,7 +72,6 @@ const SearchContent = styled("div")(({ theme }) => ({
 export default function Searchbar() {
   const { associates: associatesData, setAssociates: setAssociatesData } =
     useContext(associatesContext);
-  const data = BookData;
   const [wordEntered, setWordEntered] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [filteredData, setFilteredData] = useState([]);

@@ -92,6 +92,7 @@ export default function UserListToolbar({
         <FormControlLabel
           control={
             <Switch
+              sx={{ ml: 1 }}
               defaultUnChecked
               onChange={(event) => setChecked(event.target.checked)}
               checked={checked}

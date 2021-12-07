@@ -54,31 +54,31 @@ export default function DashboardNavbar({ onOpenSidebar }) {
             <Icon icon={menu2Fill} />
           </IconButton>
         </MHidden>
-        <Grid container direction="rows" justifyContent="space-between">
-          <Grid item>
-            <Searchbar />
-          </Grid>
+        {/* <Grid container direction="rows" justifyContent="space-between"> */}
+        {/* <Grid item> */}
+        <Searchbar />
+        {/* </Grid> */}
 
-          {/* <Box sx={{ flexGrow: 1 }} /> */}
+        <Box sx={{ flexGrow: 1 }} />
 
-          {/* <Stack
+        <Stack
           direction="row"
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
-        > */}
-          <Grid item>
+        >
+          {/* <Grid item>
             <Grid container direction="rows" justifyContent="flex-end">
-              <Grid item>
-                <NotificationsPopover />
-              </Grid>
+              <Grid item> */}
+          <NotificationsPopover />
+          {/* </Grid>
 
-              <Grid item>
-                <AccountPopover />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-        {/* </Stack> */}
+              <Grid item> */}
+          <AccountPopover />
+          {/* </Grid>
+            </Grid> */}
+          {/* </Grid> */}
+          {/* </Grid> */}
+        </Stack>
       </ToolbarStyle>
     </RootStyle>
   );

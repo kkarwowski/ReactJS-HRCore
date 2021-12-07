@@ -84,7 +84,7 @@ const Login = () => {
             {({ values, validateOnMount, resetForm }) => (
               <Form>
                 <Grid>
-                  <Container>
+                  <Container maxWidth="md">
                     <Box
                       sx={{
                         p: 1,
@@ -134,7 +134,7 @@ const Login = () => {
                                         label="Email"
                                         type="email"
                                         name="Email"
-                                        sx={{ width: 350 }}
+                                        sx={{ width: 270 }}
                                         // fullWidth={true}
                                       />
                                       <Grid item xs={12}>
@@ -148,7 +148,7 @@ const Login = () => {
                                         label="Password"
                                         type="password"
                                         name="Password"
-                                        sx={{ width: 350 }}
+                                        sx={{ width: 270 }}
                                       />
                                       <Grid item xs={12}>
                                         <ErrorMessage name="Password" />

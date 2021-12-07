@@ -43,8 +43,7 @@ const SearchbarStyle = styled("div")(({ theme }) => ({
   top: 0,
   left: 0,
   zIndex: 99,
-  width: "90%",
-  height: "30%",
+  width: "100%",
   display: "flex",
   position: "absolute",
   alignItems: "center",
@@ -52,7 +51,7 @@ const SearchbarStyle = styled("div")(({ theme }) => ({
   backdropFilter: "blur(6px)",
   WebkitBackdropFilter: "blur(6px)", // Fix on Mobile
   padding: theme.spacing(0, 3),
-  // boxShadow: theme.customShadows.z8,
+  boxShadow: theme.customShadows.z8,
   backgroundColor: `${alpha(theme.palette.background.default, 0.72)}`,
   [theme.breakpoints.up("md")]: {
     height: APPBAR_DESKTOP,
@@ -104,39 +103,39 @@ export default function Searchbar() {
   return (
     <ClickAwayListener onClickAway={handleClose}>
       <div>
-        {/* {!isOpen && (
+        {!isOpen && (
           <IconButton onClick={handleOpen}>
             <Icon icon={searchFill} width={20} height={20} />
           </IconButton>
-        )} */}
+        )}
 
-        {/* <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit> */}
-        <SearchbarStyle>
-          <Input
-            ref={inputRef}
-            autoFocus
-            fullWidth
-            disableUnderline
-            placeholder="Search…"
-            onChange={handleFilter}
-            startAdornment={
-              <InputAdornment position="start">
-                <Box
-                  component={Icon}
-                  icon={searchFill}
-                  sx={{ color: "text.disabled", width: 20, height: 20 }}
-                />
-              </InputAdornment>
-            }
-            sx={{ mr: 1, fontWeight: "fontWeightBold" }}
-          />
-          {/* <Button variant="contained" onClick={handleClose}>
+        <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit>
+          <SearchbarStyle>
+            <Input
+              ref={inputRef}
+              autoFocus
+              fullWidth
+              disableUnderline
+              placeholder="Search…"
+              onChange={handleFilter}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Box
+                    component={Icon}
+                    icon={searchFill}
+                    sx={{ color: "text.disabled", width: 20, height: 20 }}
+                  />
+                </InputAdornment>
+              }
+              sx={{ mr: 1, fontWeight: "fontWeightBold" }}
+            />
+            {/* <Button variant="contained" onClick={handleClose}>
               Search
             </Button> */}
-        </SearchbarStyle>
-        {/* </Slide> */}
+          </SearchbarStyle>
+        </Slide>
 
-        <SearchContent>
+        {/* <SearchContent>
           {(filteredData.length != 0) & (wordEntered.length > 0) &&
             filteredData.slice(0, 5).map((value, key) => {
               return (
@@ -171,7 +170,7 @@ export default function Searchbar() {
                 // </a>
               );
             })}
-        </SearchContent>
+        </SearchContent> */}
 
         {/* {isOpen && (
           <List component="nav">

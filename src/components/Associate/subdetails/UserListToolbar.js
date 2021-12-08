@@ -6,7 +6,7 @@ import roundFilterList from "@iconify/icons-ic/round-filter-list";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useContext } from "react";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-
+import { useAuth } from "../../../utils/context/AuthContext";
 import { loadingContext } from "../../../utils/context/contexts";
 // material
 import { styled } from "@mui/material/styles";
@@ -62,7 +62,8 @@ export default function UserListToolbar({
   onDeleteFiles,
 }) {
   const { loadingProgress } = useContext(loadingContext);
-
+  const { isDemo } = useAuth();
+  console.log(isDemo);
   return (
     <RootStyle
       sx={{
@@ -118,6 +119,7 @@ export default function UserListToolbar({
               variant="contained"
               component="span"
               startIcon={<FileUploadIcon />}
+              disabled={isDemo}
             >
               Upload
             </Button>

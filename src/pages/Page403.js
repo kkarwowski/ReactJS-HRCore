@@ -6,7 +6,7 @@ import { Box, Button, Typography, Container } from "@mui/material";
 // components
 import { MotionContainer, varBounceIn } from "../components/animate";
 import Page from "../components/Page";
-
+import { Icon } from "@iconify/react";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -33,18 +33,19 @@ export default function Page403() {
             <Typography sx={{ color: "text.secondary" }}>
               I'm sorry buddy...
             </Typography>
-
             <motion.div variants={varBounceIn}>
-              <Box
+              <Box sx={{ pt: 8 }}>
+                <Icon icon="bx:bxs-lock" color="#315B98" fontSize="12em" />
+              </Box>
+              {/* <Box
                 component="img"
                 src="/images/403.jpg"
                 sx={{ height: "430px", mx: "auto", my: { xs: 2, sm: 5 } }}
-              />
+              /> */}
             </motion.div>
-
-            <Button to="/" size="large" variant="text" component={RouterLink}>
+            {/* <Button to="/" size="large" variant="text" component={RouterLink}>
               Go to Home
-            </Button>
+            </Button> */}
           </Box>
         </MotionContainer>
       </Container>

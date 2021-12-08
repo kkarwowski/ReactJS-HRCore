@@ -203,112 +203,113 @@ const Associates = () => {
                   setChecked={setChecked}
                   checked={checked}
                 />
-                {/* <Scrollbar> */}
-                <TableContainer sx={{ minWidth: 800 }}>
-                  <Table>
-                    <UserListHead
-                      order={order}
-                      orderBy={orderBy}
-                      headLabel={TABLE_HEAD}
-                      rowCount={associatesData.length}
-                      onRequestSort={handleRequestSort}
-                    />
-                    <TableBody>
-                      {filteredAssociates
-                        .slice(
-                          page * rowsPerPage,
-                          page * rowsPerPage + rowsPerPage
-                        )
-                        .map((filteredassociate) => {
-                          const {
-                            id,
-                            FirstName,
-                            LastName,
-                            EmplStatus,
-                            Department,
-                            profilePicture,
-                            Title,
-                            StartDate,
-                          } = filteredassociate;
+                <Scrollbar>
+                  <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                      <UserListHead
+                        order={order}
+                        orderBy={orderBy}
+                        headLabel={TABLE_HEAD}
+                        rowCount={associatesData.length}
+                        onRequestSort={handleRequestSort}
+                      />
+                      <TableBody>
+                        {filteredAssociates
+                          .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                          )
+                          .map((filteredassociate) => {
+                            const {
+                              id,
+                              FirstName,
+                              LastName,
+                              EmplStatus,
+                              Department,
+                              profilePicture,
+                              Title,
+                              StartDate,
+                            } = filteredassociate;
 
-                          return (
-                            <TableRow
-                              style={{ textDecoration: "none" }}
-                              key={id}
-                              hover
-                              sx={{ underline: "false" }}
-                              component={Link}
-                              to={`/dashboard/associates/${id}`}
-                            >
-                              <TableCell align="left" />
-                              <TableCell
-                                component="th"
-                                scope="row"
-                                padding="none"
+                            return (
+                              <TableRow
+                                style={{ textDecoration: "none" }}
+                                key={id}
+                                hover
+                                sx={{ underline: "false" }}
+                                component={Link}
+                                to={`/dashboard/associates/${id}`}
                               >
-                                <Stack
-                                  direction="row"
-                                  alignItems="center"
-                                  spacing={0}
+                                <TableCell align="left" />
+                                <TableCell
+                                  component="th"
+                                  scope="row"
+                                  padding="none"
                                 >
-                                  <Avatar
-                                    src={profilePicture}
-                                    alt="Profile Pic"
-                                    sx={{ width: 40, height: 40 }}
-                                  />
-                                  {/* <Avatar src={filteredassociate.FirstName} />                                          */}
-                                </Stack>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Typography
-                                  variant="subtitle2"
-                                  noWrap
-                                  style={{ textDecoration: "none" }}
-                                >
-                                  {FirstName}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Typography variant="subtitle2" noWrap>
-                                  {LastName}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="left">{Title}</TableCell>
-                              <TableCell align="left">{Department}</TableCell>
-                              <TableCell align="left">
-                                {moment(StartDate.toDate()).format(
-                                  "DD-MM-yyyy"
-                                )}
-                              </TableCell>
-                              <TableCell align="left">
-                                <Label
-                                  variant="ghost"
-                                  color={
-                                    (EmplStatus === "Terminated" && "error") ||
-                                    "success"
-                                  }
-                                >
-                                  {sentenceCase(EmplStatus)}
-                                </Label>
-                              </TableCell>
-                              <TableCell align="right">
-                                {/* <UserMoreMenu /> */}
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      {emptyRows > 0 && (
-                        <TableRow
-                          style={{ height: 53 * emptyRows }}
-                          key={Math.random}
-                        >
-                          <TableCell colSpan={6} />
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                {/* </Scrollbar> */}
+                                  <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    spacing={0}
+                                  >
+                                    <Avatar
+                                      src={profilePicture}
+                                      alt="Profile Pic"
+                                      sx={{ width: 40, height: 40 }}
+                                    />
+                                    {/* <Avatar src={filteredassociate.FirstName} />                                          */}
+                                  </Stack>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography
+                                    variant="subtitle2"
+                                    noWrap
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    {FirstName}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography variant="subtitle2" noWrap>
+                                    {LastName}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">{Title}</TableCell>
+                                <TableCell align="left">{Department}</TableCell>
+                                <TableCell align="left">
+                                  {moment(StartDate.toDate()).format(
+                                    "DD-MM-yyyy"
+                                  )}
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Label
+                                    variant="ghost"
+                                    color={
+                                      (EmplStatus === "Terminated" &&
+                                        "error") ||
+                                      "success"
+                                    }
+                                  >
+                                    {sentenceCase(EmplStatus)}
+                                  </Label>
+                                </TableCell>
+                                <TableCell align="right">
+                                  {/* <UserMoreMenu /> */}
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        {emptyRows > 0 && (
+                          <TableRow
+                            style={{ height: 53 * emptyRows }}
+                            key={Math.random}
+                          >
+                            <TableCell colSpan={6} />
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Scrollbar>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"

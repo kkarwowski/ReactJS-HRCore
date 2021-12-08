@@ -45,9 +45,12 @@ export function AuthProvider({ children }) {
     return updatePassword(currentUser, password);
   }
   const [isAdmin, setIsAdmin] = useState();
+  const [isDemo, setIsDemo] = useState();
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setIsDemo(user.email === "demo@hr-core.netlify.app ");
       const associateCollectionRef = doc(db, "Users", user.uid);
       getDoc(associateCollectionRef).then((result) => {
         setUserData(result.data());
@@ -62,6 +65,7 @@ export function AuthProvider({ children }) {
     currentUser,
     userData,
     isAdmin,
+    isDemo,
     setUserData,
     login,
     signup,

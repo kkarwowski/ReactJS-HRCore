@@ -30,6 +30,7 @@ import {
   deleteObject,
   uploadBytesResumable,
 } from "firebase/storage";
+import DownloadIcon from "@mui/icons-material/Download";
 import { loadingContext } from "../../../utils/context/contexts";
 import UserListToolbar from "./UserListToolbar";
 import UserListHead from "./UserListHead";
@@ -41,6 +42,7 @@ import imageIcon from "@iconify/icons-mdi/image";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
+import { IconButton } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import Scrollbar from "../../Scrollbar";
 import {
@@ -217,10 +219,7 @@ const AssociateDocuments = ({ userID }) => {
       Category: Meta.Metadata,
       FileName: uploadName,
     };
-    const docRef = await addDoc(
-      collection(db, "Associate_Document_Metadata"),
-      dataToUpload
-    );
+    await addDoc(collection(db, "Associate_Document_Metadata"), dataToUpload);
     setPopupOpen(false);
     reset();
   };
@@ -262,8 +261,10 @@ const AssociateDocuments = ({ userID }) => {
   };
 
   const DownloadFile = (fileName) => {
+    console.log(fileName);
     getDownloadURL(ref(storage, `documents/${userID}/${fileName}`))
       .then((url) => {
+        console.log(url);
         const xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
         xhr.onload = (event) => {
@@ -273,7 +274,7 @@ const AssociateDocuments = ({ userID }) => {
         xhr.send();
       })
       .catch((error) => {
-        // Handle any errors
+        console.log("download error", error);
       });
   };
 
@@ -603,6 +604,11 @@ const AssociateDocuments = ({ userID }) => {
                                 );
                               }
                             })}
+                          <TableCell align="left">
+                            <IconButton onClick={() => DownloadFile(fileName)}>
+                              <DownloadIcon />
+                            </IconButton>
+                          </TableCell>
                         </TableRow>
                       );
                     })}

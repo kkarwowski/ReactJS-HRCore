@@ -30,7 +30,7 @@ import { getDoc, doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useAuth } from "../utils/context/AuthContext";
 import Page from "../components/Page";
 const AssociateDetails = () => {
-  const { userData } = useAuth();
+  const { userData, isDemo } = useAuth();
   const history = useNavigate();
 
   const { setLoadingProgress } = useContext(loadingContext);
@@ -115,17 +115,32 @@ const AssociateDetails = () => {
         RecordChanges(picked);
       }
     }
-    setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
-      .then(() => {
-        setAssociateData(updatedAssociate);
-        setEdited(false);
-        setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-        setAlert(true);
-        setEdited(false);
-      });
+    {
+      !isDemo &&
+        setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
+          .then(() => {
+            setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+          })
+          .catch((error) => {
+            setErrorMessage(error.message);
+            setAlert(true);
+            setEdited(false);
+          });
+    }
+
+    setAssociateData(updatedAssociate);
+    setEdited(false);
+    // setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
+    // .then(() => {
+    //   setAssociateData(updatedAssociate);
+    //   setEdited(false);
+    //   setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+    // })
+    // .catch((error) => {
+    //   setErrorMessage(error.message);
+    //   setAlert(true);
+    //   setEdited(false);
+    // });
   };
 
   useEffect(

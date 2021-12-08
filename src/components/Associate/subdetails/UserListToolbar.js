@@ -63,7 +63,6 @@ export default function UserListToolbar({
 }) {
   const { loadingProgress } = useContext(loadingContext);
   const { isDemo } = useAuth();
-  console.log(isDemo);
   return (
     <RootStyle
       sx={{

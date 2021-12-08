@@ -82,7 +82,6 @@ const Home = () => {
           {/* </Box> */}
         </Fade>
       </Modal>
-      <Button onClick={handleOpen}>Open</Button>
       <Container maxWidth="xl">
         <Grid container spacing={3}>
           <Grid Grid item xs={12} sm={7} md={7}>

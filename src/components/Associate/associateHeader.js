@@ -49,6 +49,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { styled, alpha } from "@mui/material/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
+import { useAuth } from "../../utils/context/AuthContext";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -94,6 +96,8 @@ const AssociateHeader = ({ handleBack }) => {
   const handleChangetoTab = (event, newValue) => {
     setValue(newValue);
   };
+  const { isDemo } = useAuth();
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const diffDates = require("diff-dates");
@@ -115,34 +119,36 @@ const AssociateHeader = ({ handleBack }) => {
   const DeleteAssociate = async (id) => {
     setLoading(true);
     // delete from Associates
-    await deleteDoc(doc(db, "Associates", id));
-    // delete from Changes
-    try {
-      const q = query(
-        collection(db, "Changes"),
-        where("AssociateID", "==", id)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(async (document) => {
-        await deleteDoc(doc(db, "Changes", document.id));
-        console.log("Deleted from Changes DB");
-      });
-    } catch (e) {
-      console.log("Error");
-    }
-    // delete associate picture
-    try {
-      const storage = getStorage();
-      const storageRef = ref(storage, `associateImages/${id}.jpg`);
-      deleteObject(storageRef)
-        .then(() => {
-          console.log("Deleted Associate picture!");
-        })
-        .catch((error) => {
-          console.log(error);
+    {
+      !isDemo && (await deleteDoc(doc(db, "Associates", id)));
+      // delete from Changes
+      try {
+        const q = query(
+          collection(db, "Changes"),
+          where("AssociateID", "==", id)
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (document) => {
+          await deleteDoc(doc(db, "Changes", document.id));
+          console.log("Deleted from Changes DB");
         });
-    } catch (e) {
-      console.log("Error");
+      } catch (e) {
+        console.log("Error");
+      }
+      // delete associate picture
+      try {
+        const storage = getStorage();
+        const storageRef = ref(storage, `associateImages/${id}.jpg`);
+        deleteObject(storageRef)
+          .then(() => {
+            console.log("Deleted Associate picture!");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (e) {
+        console.log("Error");
+      }
     }
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
     setLoading(false);

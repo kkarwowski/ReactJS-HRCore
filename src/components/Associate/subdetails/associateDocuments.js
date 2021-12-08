@@ -46,6 +46,8 @@ import Fade from "@mui/material/Fade";
 import { IconButton } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import Scrollbar from "../../Scrollbar";
+import { useAuth } from "../../../utils/context/AuthContext";
+
 import {
   collection,
   getDocs,
@@ -124,6 +126,8 @@ const AssociateDocuments = ({ userID }) => {
   const [uploadName, setUploadName] = useState();
   const [working, setWorking] = useState(false);
   const [allCategories, setAllCategories] = useState();
+  const { isDemo } = useAuth();
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - fileList.length) : 0;
 
@@ -155,7 +159,9 @@ const AssociateDocuments = ({ userID }) => {
   const onDeleteFiles = () => {
     selected.forEach((filename) => {
       setFileList(fileList.filter((file) => file.fileName !== filename));
-      deleteFileFromFirebase(filename);
+      {
+        !isDemo && deleteFileFromFirebase(filename);
+      }
     });
     setDeleteSuccess(true);
     setSelected([]);

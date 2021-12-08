@@ -7,6 +7,7 @@ import {
   departmentsContext,
 } from "../../utils/context/contexts";
 import InputAdornment from "@mui/material/InputAdornment";
+import { useAuth } from "../../utils/context/AuthContext";
 
 import { useNavigate } from "react-router-dom";
 import {
@@ -45,6 +46,7 @@ import { Timestamp } from "firebase/firestore";
 import AssociateDocuments from "./subdetails/associateDocuments";
 
 export default function NewAssociate() {
+  const { isDemo } = useAuth();
   // const [currentStep, setCurrentStep] = useState(0);
   const stepLabels = ["Personal details", "Emergency contact", "Documents"];
   const { updateAssociates, setUpdateAssociates } = useContext(
@@ -96,7 +98,9 @@ export default function NewAssociate() {
   };
 
   const makeRequest = async (formData) => {
-    await uploadToFirebase(formData);
+    {
+      !isDemo && (await uploadToFirebase(formData));
+    }
     setCurrentStep((prev) => prev + 1);
   };
 

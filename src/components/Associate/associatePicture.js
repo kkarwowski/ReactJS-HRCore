@@ -11,6 +11,8 @@ import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { generateCropFile } from "../../utils/cropImage";
 import { styled } from "@mui/material/styles";
+import { useAuth } from "../../utils/context/AuthContext";
+
 import ResponsiveAvatar from "./ResponsiveAvatar";
 import {
   getStorage,
@@ -51,6 +53,8 @@ const AssociatePic = () => {
     updateAssociatesContext
   );
   const { associateData, setAssociateData } = useContext(associateContext);
+  const { isDemo } = useAuth();
+
   const updateProfileURL = async (url) => {
     const associateCollectionRef = doc(db, "Associates", associateData.id);
     await updateDoc(associateCollectionRef, {
@@ -114,13 +118,15 @@ const AssociatePic = () => {
       <Grid item xs={12} lg={12}>
         <Box sx={{ p: 0, pr: 1 }} dir="ltr">
           <label htmlFor="icon-button-file">
-            <Input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              ref={inputRef}
-              onChange={onSelectFile}
-            />
+            {!isDemo && (
+              <Input
+                accept="image/*"
+                id="icon-button-file"
+                type="file"
+                ref={inputRef}
+                onChange={onSelectFile}
+              />
+            )}
             <IconButton
               color="primary"
               aria-label="upload picture"
@@ -146,24 +152,26 @@ const AssociatePic = () => {
             <Fade in={open}>
               <Box sx={style}>
                 <div className="styles.container">
-                  <div className="styles.container-cropper">
-                    {image ? (
-                      <>
-                        <div className="styles.cropper">
-                          <Cropper
-                            image={image}
-                            crop={crop}
-                            zoom={zoom}
-                            aspect={1}
-                            onCropChange={setCrop}
-                            onZoomChange={setZoom}
-                            onCropComplete={onCropComplete}
-                            cropShape="round"
-                          />
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
+                  {!isDemo && (
+                    <div className="styles.container-cropper">
+                      {image ? (
+                        <>
+                          <div className="styles.cropper">
+                            <Cropper
+                              image={image}
+                              crop={crop}
+                              zoom={zoom}
+                              aspect={1}
+                              onCropChange={setCrop}
+                              onZoomChange={setZoom}
+                              onCropComplete={onCropComplete}
+                              cropShape="round"
+                            />
+                          </div>
+                        </>
+                      ) : null}
+                    </div>
+                  )}
                   {image && (
                     <div className="slider">
                       <Slider

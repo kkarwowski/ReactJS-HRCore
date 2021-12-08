@@ -265,19 +265,20 @@ const AssociateDocuments = ({ userID }) => {
     console.log(fileName);
     getDownloadURL(ref(storage, `documents/${userID}/${fileName}`))
       .then((url) => {
-        console.log(url);
-        // fileDownload(url, fileName);
         const xhr = new XMLHttpRequest();
-
         xhr.responseType = "blob";
         xhr.open("GET", url, true);
-
         xhr.onload = (event) => {
+          function saveBlob(blob, fileName) {
+            var a = document.createElement("a");
+            a.href = window.URL.createObjectURL(blob);
+            a.download = fileName;
+            a.dispatchEvent(new MouseEvent("click"));
+          }
           const blob = xhr.response;
-          console.log(blob);
+          saveBlob(blob, fileName);
         };
         xhr.send();
-        console.log(xhr);
       })
       .catch((error) => {
         console.log("download error", error);

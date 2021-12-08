@@ -30,7 +30,7 @@ export default function Router() {
         { path: "associates", element: <Associates /> },
         { path: "associates/:id", element: <AssociateDetails /> },
         { path: "associates/newassociate", element: <NewAssociate /> },
-        { path: "register", element: <SignUp /> },
+        { path: "register", element: isAdmin ? <SignUp /> : <Page403 /> },
         { path: "tasks", element: <MyTasks /> },
         {
           path: "admin/database",

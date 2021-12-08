@@ -166,24 +166,15 @@ const Login = () => {
                                       Login
                                     </Button>
 
-                                    <Button
+                                    {/* <Button
                                       variant="outlined"
                                       fullWidth
                                       onClick={() => handleDemoLogin()}
                                       sx={{ width: "100%", mb: 2 }}
                                     >
                                       Demo
-                                    </Button>
-                                    {/* <Grid
-                                    sx={{ p: 1, pb: 3 }}
-                                    container
-                                    columnSpacing={1}
-                                    rowSpacing={1}
-                                    direction="column"
-                                    justifyContent="center"
-                                    alignItems="center"
-                                  >
-                                    <Grid item xs={12}> */}
+                                    </Button> */}
+
                                     <Button
                                       type="button"
                                       onClick={() =>
@@ -192,8 +183,6 @@ const Login = () => {
                                     >
                                       Forgot Password?
                                     </Button>
-                                    {/* </Grid> */}
-                                    {/* </Grid> */}
                                   </Grid>
                                 </CardContent>
                               </Box>

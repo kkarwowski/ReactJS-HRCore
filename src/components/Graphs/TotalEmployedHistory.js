@@ -4,7 +4,7 @@ import ReactApexChart from "react-apexcharts";
 import { Card, CardHeader, Box } from "@mui/material";
 //
 import { BaseOptionChart } from "../../components/charts/";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------

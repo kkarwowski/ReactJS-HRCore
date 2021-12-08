@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
+import fileDownload from "js-file-download";
 import { filter } from "lodash";
 import {
   TableRow,
@@ -265,13 +266,18 @@ const AssociateDocuments = ({ userID }) => {
     getDownloadURL(ref(storage, `documents/${userID}/${fileName}`))
       .then((url) => {
         console.log(url);
+        // fileDownload(url, fileName);
         const xhr = new XMLHttpRequest();
+
         xhr.responseType = "blob";
+        xhr.open("GET", url, true);
+
         xhr.onload = (event) => {
           const blob = xhr.response;
+          console.log(blob);
         };
-        xhr.open("GET", url);
         xhr.send();
+        console.log(xhr);
       })
       .catch((error) => {
         console.log("download error", error);
@@ -506,131 +512,140 @@ const AssociateDocuments = ({ userID }) => {
             onSelectFile={onSelectFile}
             onDeleteFiles={onDeleteFiles}
           />
-          {/* <Scrollbar sx={{ height: 100 }}> */}
-          <TableContainer sx={{ minWidth: 800, minHeight: 100 }}>
-            {fileList && (
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={fileList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { fileName, size, type, uploadDate, category } =
-                        row;
-                      const isItemSelected = selected.indexOf(fileName) !== -1;
-                      const formattedDate = new Date(uploadDate);
-                      return (
-                        <TableRow
-                          hover
-                          key={fileName}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) =>
-                                handleSelectFile(event, fileName)
-                              }
-                            />
-                          </TableCell>
-                          <TableCell align="left">{fileName}</TableCell>
-                          <TableCell align="left">{size}</TableCell>
-                          <TableCell align="left">
-                            {type == "application/pdf" ? (
-                              <Icon
-                                icon={filePdfBox}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : type == "image/png" || type == "image/jpeg" ? (
-                              <Icon
-                                icon={imageIcon}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : type ==
-                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
-                              <Icon
-                                icon={fileExcelBox}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : type ==
-                              "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
-                              <Icon
-                                icon={fileWordBox}
-                                width={iconSize.width}
-                                height={iconSize.height}
-                              />
-                            ) : (
-                              type
-                            )}
-                          </TableCell>
-                          <TableCell align="left">
-                            {formattedDate.toLocaleDateString()}
-                          </TableCell>
-                          {additionalMeta &&
-                            additionalMeta.map((meta) => {
-                              const { Category, FileName, docID } = meta;
-
-                              if (fileName === FileName) {
-                                return (
-                                  <TableCell align="left">
-                                    <TextField
-                                      disabled={working}
-                                      size="small"
-                                      id={docID}
-                                      style={{ minWidth: 150 }}
-                                      defaultValue={Category}
-                                      onChange={(e, id) =>
-                                        updateDocCategory(e, docID)
-                                      }
-                                      select
-                                    >
-                                      {generateSelectOptions()}
-                                    </TextField>
-                                  </TableCell>
-                                );
-                              }
-                            })}
-                          <TableCell align="left">
-                            <IconButton onClick={() => DownloadFile(fileName)}>
-                              <DownloadIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 800, minHeight: 100 }}>
+              {fileList && (
+                <Table>
+                  <UserListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={fileList.length}
+                    numSelected={selected.length}
+                    onRequestSort={handleRequestSort}
+                    onSelectAllClick={handleSelectAllClick}
+                  />
                   <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        {/* <SearchNotFound searchQuery={filterName} /> */}
-                      </TableCell>
-                    </TableRow>
+                    {filteredUsers
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => {
+                        const { fileName, size, type, uploadDate, category } =
+                          row;
+                        const isItemSelected =
+                          selected.indexOf(fileName) !== -1;
+                        const formattedDate = new Date(uploadDate);
+                        return (
+                          <TableRow
+                            hover
+                            key={fileName}
+                            tabIndex={-1}
+                            role="checkbox"
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={isItemSelected}
+                                onChange={(event) =>
+                                  handleSelectFile(event, fileName)
+                                }
+                              />
+                            </TableCell>
+                            <TableCell align="left">{fileName}</TableCell>
+                            <TableCell align="left">{size}</TableCell>
+                            <TableCell align="left">
+                              {type == "application/pdf" ? (
+                                <Icon
+                                  icon={filePdfBox}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : type == "image/png" ||
+                                type == "image/jpeg" ? (
+                                <Icon
+                                  icon={imageIcon}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : type ==
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                                <Icon
+                                  icon={fileExcelBox}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : type ==
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
+                                <Icon
+                                  icon={fileWordBox}
+                                  width={iconSize.width}
+                                  height={iconSize.height}
+                                />
+                              ) : (
+                                type
+                              )}
+                            </TableCell>
+                            <TableCell align="left">
+                              {formattedDate.toLocaleDateString()}
+                            </TableCell>
+                            {additionalMeta &&
+                              additionalMeta.map((meta) => {
+                                const { Category, FileName, docID } = meta;
+
+                                if (fileName === FileName) {
+                                  return (
+                                    <TableCell align="left">
+                                      <TextField
+                                        disabled={working}
+                                        size="small"
+                                        id={docID}
+                                        style={{ minWidth: 150 }}
+                                        defaultValue={Category}
+                                        onChange={(e, id) =>
+                                          updateDocCategory(e, docID)
+                                        }
+                                        select
+                                      >
+                                        {generateSelectOptions()}
+                                      </TextField>
+                                    </TableCell>
+                                  );
+                                }
+                              })}
+                            <TableCell align="left">
+                              <IconButton
+                                onClick={() => DownloadFile(fileName)}
+                              >
+                                <DownloadIcon />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
                   </TableBody>
-                )}
-              </Table>
-            )}
-          </TableContainer>
-          {/* </Scrollbar> */}
+                  {isUserNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          {/* <SearchNotFound searchQuery={filterName} /> */}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              )}
+            </TableContainer>
+          </Scrollbar>
+
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"

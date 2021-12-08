@@ -40,8 +40,8 @@ const Home = () => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    // width: "30vw",
-    // height: "50vh",
+    width: { xs: "80vw", md: "40vw", lg: "40vw" },
+    height: { xs: "50vh", md: "70vh", lg: "70vh" },
     bgcolor: "white",
     textAlign: "center",
     // border: "2px solid #000",
@@ -64,11 +64,7 @@ const Home = () => {
         <Fade in={isOpen}>
           {/* <Box sx={style}> */}
           <Card sx={style} onClick={handleClose}>
-            <CardMedia
-              component="img"
-              height="303vh"
-              image="/images/demo.jpg"
-            />
+            <CardMedia component="img" height="60%" image="/images/demo.jpg" />
             <CardContent>
               <Container>
                 <Typography variant="h3" sx={{ pb: { xs: 1, md: 2, lg: 2 } }}>

@@ -14,6 +14,7 @@ import NewAssociate from "./components/Associate/newAssociate";
 import AssociateDetails from "./pages/AssociateDetails";
 import Admin from "./pages/Admin";
 import MyTasks from "./pages/Tasks";
+import Page403 from "./pages/Page403";
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +34,7 @@ export default function Router() {
         { path: "tasks", element: <MyTasks /> },
         {
           path: "admin/database",
-          element: isAdmin ? <Admin /> : <NewAssociate />,
+          element: isAdmin ? <Admin /> : <Page403 />,
         },
 
         { path: "/dashboard/*", element: <Page404 /> },

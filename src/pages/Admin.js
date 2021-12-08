@@ -7,6 +7,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DocCategoriesModify from "../components/Associate/Admin/DatabaseModify/DocCategoriessModify";
 import OfficesModify from "../components/Associate/Admin/DatabaseModify/OfficesModify";
+import Page from "../components/Page";
+import { styled } from "@mui/material/styles";
 
 const Admin = () => {
   const [expanded, setExpanded] = React.useState(false);
@@ -15,7 +17,7 @@ const Admin = () => {
     setExpanded(isExpanded ? panel : false);
   };
   return (
-    <>
+    <Page title="Admin">
       <Container maxWidth="lg">
         {/* <Typography variant="h3" pt={8} pb={5}>
         Hi, Welcome back
@@ -89,7 +91,7 @@ const Admin = () => {
           </Box>
         </Card>
       </Container>
-    </>
+    </Page>
   );
 };
 

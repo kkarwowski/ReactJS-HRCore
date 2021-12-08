@@ -28,7 +28,7 @@ import {
 import { db } from "../utils/firebase";
 import { getDoc, doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useAuth } from "../utils/context/AuthContext";
-
+import Page from "../components/Page";
 const AssociateDetails = () => {
   const { userData } = useAuth();
   const history = useNavigate();
@@ -163,42 +163,45 @@ const AssociateDetails = () => {
       >
         <associateContext.Provider value={{ associateData, setAssociateData }}>
           <editedContext.Provider value={{ edited, setEdited }}>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mb={2}
-            >
-              <Grid item>
-                <Snackbar
-                  open={alert}
-                  autoHideDuration={5000}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                >
-                  <Alert
-                    variant="filled"
-                    severity="error"
-                    onClose={() => setAlert(false)}
-                    sx={{ width: "100%", mt: 7 }}
+            <Page title="HR Core - Associate details">
+              <Grid
+                container
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                mb={2}
+              >
+                <Grid item>
+                  <Snackbar
+                    open={alert}
+                    autoHideDuration={5000}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   >
-                    {errorMessage}
-                  </Alert>
-                </Snackbar>
+                    <Alert
+                      variant="filled"
+                      severity="error"
+                      onClose={() => setAlert(false)}
+                      sx={{ width: "100%", mt: 7 }}
+                    >
+                      {errorMessage}
+                    </Alert>
+                  </Snackbar>
+                </Grid>
+                <Grid item>
+                  {edited && (
+                    <Fab
+                      color="primary"
+                      aria-label="add"
+                      size="medium"
+                      onClick={() => updateFirebaseAndState()}
+                    >
+                      <SaveIcon />
+                    </Fab>
+                  )}
+                </Grid>
               </Grid>
-              <Grid item>
-                {edited && (
-                  <Fab
-                    color="primary"
-                    aria-label="add"
-                    size="medium"
-                    onClick={() => updateFirebaseAndState()}
-                  >
-                    <SaveIcon />
-                  </Fab>
-                )}
-              </Grid>
-            </Grid>
+            </Page>
+
             <Dialog
               open={warn}
               onClose={handleClose}

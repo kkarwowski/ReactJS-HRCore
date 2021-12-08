@@ -166,14 +166,14 @@ const Login = () => {
                                       Login
                                     </Button>
 
-                                    {/* <Button
+                                    <Button
                                       variant="outlined"
                                       fullWidth
                                       onClick={() => handleDemoLogin()}
                                       sx={{ width: "100%", mb: 2 }}
                                     >
                                       Demo
-                                    </Button> */}
+                                    </Button>
 
                                     <Button
                                       type="button"

@@ -15,7 +15,7 @@ import AssociateDetails from "./pages/AssociateDetails";
 import Admin from "./pages/Admin";
 import MyTasks from "./pages/Tasks";
 import Page403 from "./pages/Page403";
-
+import ImportAssociates from "./components/Associate/Admin/ImportAssociates";
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -36,7 +36,10 @@ export default function Router() {
           path: "admin/database",
           element: isAdmin ? <Admin /> : <Page403 />,
         },
-
+        {
+          path: "admin/import",
+          element: isAdmin ? <ImportAssociates /> : <Page403 />,
+        },
         { path: "/dashboard/*", element: <Page404 /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> }

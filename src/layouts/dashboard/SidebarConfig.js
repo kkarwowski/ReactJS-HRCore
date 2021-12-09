@@ -26,12 +26,10 @@ const sidebarConfig = [
       {
         title: "all associates",
         path: "/dashboard/associates/",
-        icon: getIcon(peopleFill),
       },
       {
         title: "New Associate",
         path: "/dashboard/associates/newassociate",
-        icon: getIcon(personAddFill),
       },
     ],
   },
@@ -58,7 +56,10 @@ const sidebarConfig = [
       {
         title: "Database",
         path: "/dashboard/admin/database",
-        icon: getIcon(peopleFill),
+      },
+      {
+        title: "Import Data",
+        path: "/dashboard/admin/import",
       },
     ],
   },

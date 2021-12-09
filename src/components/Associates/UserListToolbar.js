@@ -77,7 +77,7 @@ export default function UserListToolbar({
         size="small"
         value={filterName}
         onChange={onFilterName}
-        placeholder="Search associates..."
+        placeholder="Search..."
         startAdornment={
           <InputAdornment position="start">
             <Box

@@ -44,7 +44,7 @@ import { collection, addDoc, getDoc, doc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import { Timestamp } from "firebase/firestore";
 import AssociateDocuments from "./subdetails/associateDocuments";
-
+import Page from "../Page";
 export default function NewAssociate() {
   const { isDemo } = useAuth();
   // const [currentStep, setCurrentStep] = useState(0);
@@ -139,7 +139,7 @@ export default function NewAssociate() {
   ];
 
   return (
-    <div className="App">
+    <Page title="HR Core - New Associate">
       <Container>
         <Typography variant="h3" sx={{ pb: 5 }}>
           Add new Associate
@@ -167,7 +167,7 @@ export default function NewAssociate() {
           {steps[currentStep]}
         </Card>
       </Container>
-    </div>
+    </Page>
   );
 }
 

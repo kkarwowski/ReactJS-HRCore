@@ -25,12 +25,12 @@ import { useAuth } from "../utils/context/AuthContext";
 
 const Home = () => {
   const { isDemo } = useAuth();
+
   const [isOpen, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
   const handleOpen = () => setOpen(true);
-
   useEffect(() => {
     setOpen(isDemo);
   }, []);
@@ -41,7 +41,7 @@ const Home = () => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: { xs: "80vw", md: "40vw", lg: "40vw" },
-    height: { xs: "50vh", md: "70vh", lg: "70vh" },
+    height: { xs: "80vh", md: "70vh", lg: "70vh" },
     bgcolor: "white",
     textAlign: "center",
     // border: "2px solid #000",

@@ -85,28 +85,6 @@ const ImportAssociates = () => {
         >
           Submit
         </button>
-        <br />
-        <br />
-        {csvArray.length > 0 ? (
-          <>
-            <table>
-              <thead>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Rank</th>
-              </thead>
-              <tbody>
-                {csvArray.map((item, i) => (
-                  <tr key={i}>
-                    <td>{item.name}</td>
-                    <td>{item.age}</td>
-                    <td>{item.rank}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        ) : null}
       </form>
       <Button onClick={() => console.log(csvArray)}> Log</Button>
     </>

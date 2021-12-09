@@ -1,13 +1,10 @@
 import { Navigate, useRoutes } from "react-router-dom";
-// layouts
 import DashboardLayout from "./layouts/dashboard";
 import LogoOnlyLayout from "./layouts/LogoOnlyLayout";
-//
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import { useAuth } from "./utils/context/AuthContext";
-
 import Page404 from "./pages/Page404";
 import Associates from "./pages/Associates";
 import NewAssociate from "./components/Associate/newAssociate";
@@ -41,8 +38,6 @@ export default function Router() {
           element: isAdmin ? <ImportAssociates /> : <Page403 />,
         },
         { path: "/dashboard/*", element: <Page404 /> },
-        // { path: 'products', element: <Products /> },
-        // { path: 'blog', element: <Blog /> }
       ],
     },
     {
@@ -54,13 +49,9 @@ export default function Router() {
       ),
       children: [
         { path: "login", element: <Login /> },
-        // { path: 'register', element: <Register /> },
-        // { path: "error", element: <NotFound /> },
         { path: "/", element: <Navigate to="/login" /> },
-        // { path: "*", element: <Navigate to="/error" /> },
       ],
     },
-    { path: "*", element: <Navigate to="/error" replace /> },
     { path: "*", element: <Navigate to="/error" replace /> },
   ]);
 }

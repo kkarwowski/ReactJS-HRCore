@@ -73,22 +73,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Box>
       </Box>
 
-      {/* <Box sx={{ mb: 1, mx: 1.5 }}> */}
-      {/* <Link underline="none" component={RouterLink} to="#"> */}
-      {/* <AccountStyle> */}
-      {/* <Avatar src={account.photoURL} alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
-              </Typography>
-            </Box> */}
-      {/* </AccountStyle> */}
-      {/* </Link> */}
-      {/* </Box> */}
-
       <NavSection navConfig={sidebarConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
@@ -104,31 +88,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             position: "relative",
             bgcolor: "grey.200",
           }}
-        >
-          {/* <Box
-            component="img"
-            src="/static/illustrations/illustration_avatar.png"
-            sx={{ width: 100, position: 'absolute', top: -50 }}
-          /> */}
-
-          {/* <Box sx={{ textAlign: "center" }}>
-            <Typography gutterBottom variant="h6">
-              Get more?
-            </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              From only $69
-            </Typography>
-          </Box>
-
-          <Button
-            fullWidth
-           
-            target="_blank"
-            variant="contained"
-          >
-            Upgrade to Pro
-          </Button> */}
-        </Stack>
+        ></Stack>
       </Box>
     </Scrollbar>
   );

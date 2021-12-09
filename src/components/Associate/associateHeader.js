@@ -303,7 +303,7 @@ const AssociateHeader = ({ handleBack }) => {
                   alignContent="flex-start"
                   p={1}
                 >
-                  <Grid item xs={12} lg={2}>
+                  <Grid item xs={12} lg={2} sx={{ pr: 1 }}>
                     <Button
                       variant="text"
                       sx={{ color: "#000000" }}

@@ -4,13 +4,15 @@ This project is being created with React JS and Firebase database.
 Includes Firebase authentification and Cloud Functions.
 
 
+## Live demo
 
+Live demo on Netlify [link](https://hrcore-app.web.app)
 
 ## Status
 
 Core aplication is working, but it is still work in progress as I learn React.
 ## Current Features
-- [x] Update Associate profile picture, crop, resize to 200px square and upload to Firebase 
+- [x] Update Associate profile picture, crop, resize to 200px square and upload to Firestore 
 - [x] Set document category when uploading a new document 
 - [x] Demo mode login button, restricts Demo user to affect State with Delete or Update functions. Demo user can't change data in Firebase or Firestore.
 - [x] Add, Delete Associate

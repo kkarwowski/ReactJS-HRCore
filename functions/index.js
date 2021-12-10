@@ -11,8 +11,8 @@ admin.initializeApp()
 // });
 
 
-exports.getAllEmployedScheaduled = functions.pubsub.schedule('0 0 1 * *')
-  .timeZone('Europe/London') // Users can choose timezone - default is America/Los_Angeles
+exports.getAllEmployedScheaduled = functions.pubsub.schedule('0 0 1 */2 *')
+  .timeZone('Europe/London'
   .onRun((context) => {
     const associatesRef = admin.firestore().collection("Associates")
     const totalAssociatesRef = admin.firestore().collection("TotalAssociatesChart")

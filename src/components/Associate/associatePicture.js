@@ -116,7 +116,7 @@ const AssociatePic = () => {
   return (
     <Grid container direction="row" alignItems="center" justifyContent="center">
       <Grid item xs={12} lg={12}>
-        <Box sx={{ p: 0, pr: 1 }} dir="ltr">
+        <Box sx={{ p: 0 }} dir="ltr">
           <label htmlFor="icon-button-file">
             {!isDemo && (
               <Input

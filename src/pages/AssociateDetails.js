@@ -20,7 +20,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import { useNavigate } from "react-router-dom";
 import {
   associateContext,
-  editedContext,
   loadingContext,
   updatedAssociateContext,
   updateAssociatesContext,
@@ -36,10 +35,11 @@ const AssociateDetails = () => {
   const { setLoadingProgress } = useContext(loadingContext);
   const { id } = useParams();
   const [associateData, setAssociateData] = useState();
-  const [edited, setEdited] = useState(false);
   const [warn, setWarn] = useState(false);
   const [alert, setAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
+  const [alertSuccess, setAlertSuccess] = useState(false);
+  const [alertMessage, setAlertMessage] = useState();
+  const [severity, setSeverity] = useState();
   const [updatedAssociate, setUpdatedAssociate] = useState();
   const { setUpdateAssociates } = useContext(updateAssociatesContext);
 
@@ -63,16 +63,16 @@ const AssociateDetails = () => {
     setWarn(false);
   };
 
-  const CheckIfChanged = (updateAssociates, associateData) => {
-    if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
-      setEdited(true);
-    } else {
-      setEdited(false);
-    }
-  };
-  const matchUpdatedAndCurrent = (obj1, obj2) => {
-    return isEqual(obj1, obj2);
-  };
+  // const CheckIfChanged = (updateAssociates, associateData) => {
+  //   if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
+  //     setEdited(true);
+  //   } else {
+  //     setEdited(false);
+  //   }
+  // };
+  // const matchUpdatedAndCurrent = (obj1, obj2) => {
+  //   return isEqual(obj1, obj2);
+  // };
 
   const GetDifferences = (object, base) => {
     return transform(object, (result, value, key) => {
@@ -122,14 +122,19 @@ const AssociateDetails = () => {
             setUpdateAssociates((updateAssociates) => updateAssociates + 1);
           })
           .catch((error) => {
-            setErrorMessage(error.message);
+            setAlertMessage(error.message);
+            setSeverity("error");
             setAlert(true);
-            setEdited(false);
+            // setEdited(false);
           });
     }
 
     setAssociateData(updatedAssociate);
-    setEdited(false);
+    setSeverity("success");
+    setAlertMessage("Successfully updated!");
+    setAlert(true);
+    console.log(severity, alertMessage);
+
     // setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
     // .then(() => {
     //   setAssociateData(updatedAssociate);
@@ -143,33 +148,30 @@ const AssociateDetails = () => {
     // });
   };
 
-  useEffect(
-    (associateData) => {
-      if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
-        setEdited(true);
-      } else {
-        setEdited(false);
-      }
-    },
-    [updatedAssociate]
-  );
+  // useEffect(
+  //   (associateData) => {
+  //     if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
+  //       setEdited(true);
+  //     } else {
+  //       setEdited(false);
+  //     }
+  //   },
+  //   [updatedAssociate]
+  // );
 
   const handleBack = () => {
-    if (edited) {
-      setWarn(true);
-    } else {
-      history("/dashboard/associates");
-    }
+    // if (edited) {
+    //   setWarn(true);
+    // } else {
+    history("/dashboard/associates");
+    // }
   };
+  const autoCloseSnack = () => {
+    setAlert(false);
+  };
+
   return (
     <>
-      <Button
-        onClick={() =>
-          console.log(GetDifferences(updatedAssociate, associateData))
-        }
-      >
-        Log
-      </Button>
       <updatedAssociateContext.Provider
         value={{
           updatedAssociate,
@@ -177,47 +179,34 @@ const AssociateDetails = () => {
         }}
       >
         <associateContext.Provider value={{ associateData, setAssociateData }}>
-          <editedContext.Provider value={{ edited, setEdited }}>
-            <Page title="HR Core - Associate details">
-              <Grid
-                container
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                mb={2}
-              >
-                <Grid item>
-                  <Snackbar
-                    open={alert}
-                    autoHideDuration={5000}
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          <Page title="HR Core - Associate details">
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mb={2}
+            >
+              <Grid item>
+                <Snackbar
+                  open={alert}
+                  autoHideDuration={4000}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  onClose={() => autoCloseSnack()}
+                >
+                  <Alert
+                    variant="filled"
+                    severity={`${severity}`}
+                    sx={{ width: "100%", mt: 7 }}
                   >
-                    <Alert
-                      variant="filled"
-                      severity="error"
-                      onClose={() => setAlert(false)}
-                      sx={{ width: "100%", mt: 7 }}
-                    >
-                      {errorMessage}
-                    </Alert>
-                  </Snackbar>
-                </Grid>
-                <Grid item>
-                  {edited && (
-                    <Fab
-                      color="primary"
-                      aria-label="add"
-                      size="medium"
-                      onClick={() => updateFirebaseAndState()}
-                    >
-                      <SaveIcon />
-                    </Fab>
-                  )}
-                </Grid>
+                    {alertMessage}
+                  </Alert>
+                </Snackbar>
               </Grid>
-            </Page>
+            </Grid>
+          </Page>
 
-            <Dialog
+          {/* <Dialog
               open={warn}
               onClose={handleClose}
               aria-labelledby="alert-dialog-title"
@@ -240,9 +229,13 @@ const AssociateDetails = () => {
                   Cancel Changes
                 </Button>
               </DialogActions>
-            </Dialog>
-            {associateData && <AssociateHeader handleBack={handleBack} />}
-          </editedContext.Provider>
+            </Dialog> */}
+          {associateData && (
+            <AssociateHeader
+              handleBack={handleBack}
+              updateFirebaseAndState={updateFirebaseAndState}
+            />
+          )}
         </associateContext.Provider>
       </updatedAssociateContext.Provider>
     </>

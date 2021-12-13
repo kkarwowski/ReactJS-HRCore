@@ -23,7 +23,6 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider/";
 import DatePicker from "@mui/lab/DatePicker";
 import {
   associateContext,
-  editedContext,
   officesContext,
   updateAssociatesContext,
   updatedAssociateContext,
@@ -34,10 +33,9 @@ import * as moment from "moment";
 import { Timestamp } from "firebase/firestore";
 import { alpha, styled } from "@mui/material/styles";
 
-const AssociateInfo = () => {
+const AssociateInfo = ({ updateFirebaseAndState }) => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { allOffices } = useContext(officesContext);
-  const { edited, setEdited } = useContext(editedContext);
   const { allDepartments } = useContext(departmentsContext);
   const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
@@ -70,7 +68,6 @@ const AssociateInfo = () => {
     maximumSignificantDigits: 3,
   });
   const onUpdateNested = (event) => {
-    setEdited(true);
     setUpdatedAssociate({
       ...updatedAssociate,
       PostalAddress: {
@@ -94,7 +91,8 @@ const AssociateInfo = () => {
     bgcolor: "grey.200",
     border: "2px solid",
     boxShadow: "none",
-    color: postalDisabled || personalDisabled ? "#abb2b9" : "black",
+    // color: postalDisabled || personalDisabled ? "#abb2b9" : "black",
+    color: "#abb2b9",
     "&:hover": {
       backgroundColor: "#e6ebf0",
       color: "#4782da",
@@ -132,17 +130,27 @@ const AssociateInfo = () => {
         </Grid>
         <Grid item>
           {openPersonal && (
-            <Button
-              sx={{
-                ...EditButtonStyles,
-              }}
-              variant="contained"
-              color="primary"
-              endIcon={<EditIcon />}
-              onClick={() => setPersonalDisabled((prev) => !prev)}
-            >
-              Edit
-            </Button>
+            <>
+              <Button
+                sx={EditButtonStyles}
+                variant="contained"
+                color="primary"
+                endIcon={<EditIcon />}
+                onClick={() => setPersonalDisabled((prev) => !prev)}
+              >
+                Edit
+              </Button>
+              {!personalDisabled && (
+                <Button
+                  sx={{ mt: 2, ml: 2 }}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => updateFirebaseAndState()}
+                >
+                  Save
+                </Button>
+              )}
+            </>
           )}
         </Grid>
       </Grid>
@@ -167,10 +175,6 @@ const AssociateInfo = () => {
               name="FirstName"
               label="First Name"
               disabled={personalDisabled}
-              // InputProps={{
-              //   disableUnderline: `${personalDisabled}`,
-              //   // color: "#ff0000",
-              // }}
               sx={DisabledTextBox}
               defaultValue={associateData.FirstName}
               onChange={(e) => onUpdate(e)}
@@ -459,15 +463,27 @@ const AssociateInfo = () => {
         </Grid>
         <Grid item>
           {openPostal && (
-            <Button
-              sx={EditButtonStyles}
-              variant="contained"
-              color="primary"
-              endIcon={<EditIcon />}
-              onClick={() => setPostalDisabled((prev) => !prev)}
-            >
-              Edit
-            </Button>
+            <>
+              <Button
+                sx={EditButtonStyles}
+                variant="contained"
+                color="primary"
+                endIcon={<EditIcon />}
+                onClick={() => setPostalDisabled((prev) => !prev)}
+              >
+                Edit
+              </Button>
+              {!postalDisabled && (
+                <Button
+                  sx={{ mt: 2, ml: 2 }}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => updateFirebaseAndState()}
+                >
+                  Save
+                </Button>
+              )}
+            </>
           )}
         </Grid>
       </Grid>

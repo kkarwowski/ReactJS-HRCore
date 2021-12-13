@@ -5,6 +5,7 @@ import {
   FormControl,
   TextField,
   Typography,
+  Button,
 } from "@mui/material";
 import {
   associateContext,
@@ -13,12 +14,34 @@ import {
 import { useContext, useState } from "react";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
+import EditIcon from "@mui/icons-material/Edit";
 
-const AssociateEmergencyInfo = () => {
+const AssociateEmergencyInfo = ({ updateFirebaseAndState }) => {
   const { associateData, setAssociateData } = useContext(associateContext);
   const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
   );
+  const [emergencyDisabled, setEmergencyDisabled] = useState(true);
+
+  const EditButtonStyles = {
+    mt: 2,
+    bgcolor: "grey.200",
+    border: "2px solid",
+    boxShadow: "none",
+    // color: postalDisabled || personalDisabled ? "#abb2b9" : "black",
+    color: "#abb2b9",
+    "&:hover": {
+      backgroundColor: "#e6ebf0",
+      color: "#4782da",
+    },
+  };
+
+  const DisabledTextBox = {
+    "& .Mui-disabled": {
+      opacity: 0.8,
+      "-webkit-text-fill-color": "black",
+    },
+  };
 
   const onUpdateNested = (event) => {
     setUpdatedAssociate({
@@ -55,7 +78,35 @@ const AssociateEmergencyInfo = () => {
 
   return (
     <Box sx={{ p: 0, pb: 1 }} dir="ltr">
-      <Typography variant="overline">Emergency Information</Typography>
+      <Grid container direction="rows" justifyContent="space-between">
+        <Grid item>
+          <Typography variant="overline">Emergency Information</Typography>
+        </Grid>
+        <Grid item>
+          <>
+            <Button
+              sx={EditButtonStyles}
+              variant="contained"
+              color="primary"
+              endIcon={<EditIcon />}
+              onClick={() => setEmergencyDisabled((prev) => !prev)}
+            >
+              Edit
+            </Button>
+            {!emergencyDisabled && (
+              <Button
+                sx={{ mt: 2, ml: 2 }}
+                variant="contained"
+                color="primary"
+                onClick={() => updateFirebaseAndState()}
+              >
+                Save
+              </Button>
+            )}
+          </>
+        </Grid>
+      </Grid>
+
       <Divider variant="middle" sx={{ pb: 2 }} />
       <FormControl sx={{ pt: 3 }}>
         {/* <form onSubmit={e =>onSubmit(e)}> */}
@@ -68,7 +119,7 @@ const AssociateEmergencyInfo = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={2} xm={2}>
+          <Grid item xs={12} md={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -76,9 +127,11 @@ const AssociateEmergencyInfo = () => {
               label="First Name"
               defaultValue={associateData.emergencyInfo.FirstName}
               onChange={(e) => onUpdateNested(e)}
+              disabled={emergencyDisabled}
+              sx={DisabledTextBox}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} md={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -86,9 +139,11 @@ const AssociateEmergencyInfo = () => {
               label="Last Name"
               defaultValue={associateData.emergencyInfo.LastName}
               onChange={(e) => onUpdateNested(e)}
+              disabled={emergencyDisabled}
+              sx={DisabledTextBox}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} md={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -96,9 +151,11 @@ const AssociateEmergencyInfo = () => {
               label="Relationship"
               defaultValue={associateData.emergencyInfo.Relationship}
               onChange={(e) => onUpdateNested(e)}
+              disabled={emergencyDisabled}
+              sx={DisabledTextBox}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} md={4}>
             <TextField
               style={{ width: "100%" }}
               size="small"
@@ -106,6 +163,8 @@ const AssociateEmergencyInfo = () => {
               label="Telephone Nummber"
               defaultValue={associateData.emergencyInfo.TelephoneNumber}
               onChange={(e) => onUpdateNested(e)}
+              disabled={emergencyDisabled}
+              sx={DisabledTextBox}
             />
           </Grid>
         </Grid>

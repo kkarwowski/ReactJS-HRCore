@@ -26,7 +26,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   associateContext,
   updateAssociatesContext,
-  editedContext,
 } from "../../utils/context/contexts";
 import AssociateSubdetails from "./subdetails/associateSubdetails";
 import AssociateInfo from "../Associate/subdetails/associatePersonal";
@@ -84,7 +83,7 @@ function a11yProps(index) {
   };
 }
 
-const AssociateHeader = ({ handleBack }) => {
+const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   const { updatedAssociate, setUpdateAssociates } = useContext(
     updateAssociatesContext
   );
@@ -102,7 +101,6 @@ const AssociateHeader = ({ handleBack }) => {
   const [loading, setLoading] = useState(false);
   const diffDates = require("diff-dates");
   const Todayy = new Date();
-  const { edited, setEdited } = useContext(editedContext);
 
   // const dateDiffYears = Date();
 
@@ -282,7 +280,7 @@ const AssociateHeader = ({ handleBack }) => {
         rowSpacing={2}
         columnSpacing={2}
         pb={4}
-        sx={{ p: { xs: 1, lg: 2 } }}
+        sx={{ pl: { xs: 1, lg: 2 }, pr: { xs: 1, lg: 2 } }}
       >
         <Grid item xs={12} lg={12}>
           <Card>
@@ -293,6 +291,7 @@ const AssociateHeader = ({ handleBack }) => {
                 lg={11}
                 alignItems="flex-start"
                 justifyContent="flex-start"
+                pt={1}
               >
                 <Grid
                   container
@@ -301,9 +300,9 @@ const AssociateHeader = ({ handleBack }) => {
                   justifyContent="space-around"
                   alignItems="flex-start"
                   alignContent="flex-start"
-                  p={1}
+                  // p={1}
                 >
-                  <Grid item xs={12} lg={2} sx={{ pr: 1 }}>
+                  <Grid item xs={12} lg={2.1}>
                     <Button
                       variant="text"
                       sx={{ color: "#000000" }}
@@ -315,7 +314,7 @@ const AssociateHeader = ({ handleBack }) => {
                     </Button>
                     <AssociatePic />
                   </Grid>
-                  <Grid item xs={12} lg={10}>
+                  <Grid item xs={12} lg={7.9}>
                     <Grid
                       container
                       direction="rows"
@@ -399,9 +398,10 @@ const AssociateHeader = ({ handleBack }) => {
                             <Grid item>
                               <Box
                                 sx={{
-                                  borderBottom: 1,
+                                  // borderBottom: 1,
                                   borderColor: "divider",
                                   pt: 3,
+                                  width: "400px",
                                 }}
                               >
                                 <Tabs
@@ -412,20 +412,39 @@ const AssociateHeader = ({ handleBack }) => {
                                   scrollButtons="auto"
                                   scrollButtons={true}
                                   allowScrollButtonsMobile
-                                  aria-label="scrollable auto tabs example"
                                 >
-                                  <Tab label="Personal" {...a11yProps(0)} />
-                                  <Tab label="Emergency" {...a11yProps(1)} />
-                                  <Tab label="Notes" {...a11yProps(2)} />
-                                  <Tab label="Documents" {...a11yProps(3)} />
-                                  <Tab label="Changes" {...a11yProps(4)} />
+                                  <Tab
+                                    label="Personal"
+                                    {...a11yProps(0)}
+                                    style={{ fontSize: 10 }}
+                                  />
+                                  <Tab
+                                    label="Emergency"
+                                    {...a11yProps(1)}
+                                    style={{ fontSize: 10 }}
+                                  />
+                                  <Tab
+                                    label="Notes"
+                                    {...a11yProps(2)}
+                                    style={{ fontSize: 10 }}
+                                  />
+                                  <Tab
+                                    label="Documents"
+                                    {...a11yProps(3)}
+                                    style={{ fontSize: 10 }}
+                                  />
+                                  <Tab
+                                    label="Changes"
+                                    {...a11yProps(4)}
+                                    style={{ fontSize: 10 }}
+                                  />
                                 </Tabs>
                               </Box>
                             </Grid>
                           </Grid>
                         </CardContent>
                       </Grid>
-                      <Grid item xs={1} md={1} lg={1} mt={2}>
+                      <Grid item xs={12} md={1} lg={1} mt={2}>
                         <Button
                           variant="contained"
                           aria-haspopup="true"
@@ -478,13 +497,15 @@ const AssociateHeader = ({ handleBack }) => {
         <Grid item xs={12} md={6} lg={9}>
           <Card>
             <TabPanel value={value} index={0}>
-              <AssociateInfo />
+              <AssociateInfo updateFirebaseAndState={updateFirebaseAndState} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <AssociateEmergencyInfo />
+              <AssociateEmergencyInfo
+                updateFirebaseAndState={updateFirebaseAndState}
+              />
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <AssociateNotes />
+              <AssociateNotes updateFirebaseAndState={updateFirebaseAndState} />
             </TabPanel>
             <TabPanel value={value} index={3}>
               <AssociateDocuments userID={associateData.id} />

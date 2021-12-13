@@ -139,11 +139,11 @@ const AssociateDocuments = ({ userID }) => {
   const isUserNotFound = filteredUsers.length === 0;
   const style = {
     position: "absolute",
-    top: "30%",
+    top: "40%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "16vw",
-    height: "20vh",
+    width: "90vw",
+    height: "60vh",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 20,
@@ -425,6 +425,7 @@ const AssociateDocuments = ({ userID }) => {
                 container
                 direction="column"
                 alignContent="center"
+                alignItems="center"
                 rowSpacing={3}
               >
                 <Grid item>

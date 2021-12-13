@@ -5,7 +5,7 @@ import { Card, CardHeader, Box } from "@mui/material";
 //
 import { BaseOptionChart } from "../../components/charts/";
 import { useState, useEffect, useContext } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
 
@@ -19,7 +19,8 @@ export default function TotalEmployedHistory() {
   }, []);
 
   const fetchDetails = async () => {
-    const data = await getDocs(collection(db, "TotalAssociatesChart"));
+    const q = query(collection(db, "TotalAssociatesChart"),orderBy("Date", "desc"),limit(40))
+    const data = await getDocs(q );
 
     setEmployedHistory(
       data.docs.map((user) => ({

@@ -38,14 +38,14 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    const getUserData = async () => {
-      const associateCollectionRef = doc(db, "Users", currentUser.uid);
-      const data = await getDoc(associateCollectionRef);
-      setUserData(data.data());
-    };
-    getUserData();
-  }, []);
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     const associateCollectionRef = doc(db, "Users", currentUser.uid);
+  //     const data = await getDoc(associateCollectionRef);
+  //     setUserData(data.data());
+  //   };
+  //   getUserData();
+  // }, []);
 
   return (
     <>

@@ -47,7 +47,6 @@ function App() {
     getAssociates();
     getDepartments();
     getOffices();
-    console.log("useEffect");
   }, [updateAssociates]);
 
   return (

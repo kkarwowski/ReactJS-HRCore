@@ -37,7 +37,7 @@
     "react-helmet-async": "^1.2.2",
     "react-hook-form": "^7.21.0",
     "react-query": "^3.34.1",
-    "react-router-dom": "^6.0.0-beta.4",
+    "react-router-dom": "^6.1.1",
     "react-scripts": "4.0.3",
     "simplebar": "^5.3.6",
     "simplebar-react": "^2.3.5",

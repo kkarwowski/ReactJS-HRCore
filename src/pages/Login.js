@@ -16,12 +16,18 @@ import { Formik, Form, ErrorMessage, Field } from "formik";
 import React, { useState } from "react";
 import Logo from "../components/Logo";
 import Page from "../components/Page";
+import { useNavigate, useLocation } from "react-router-dom";
 const Login = () => {
   const [alert, setAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [isLoginScreen, setIsLoginScreen] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const { login, resetUserPassword } = useAuth();
+  let navigate = useNavigate();
+
+  let location = useLocation();
+  // let { from } = location.state || { from: { pathname: "/" } };
+  let from = location.state?.from?.pathname || "/";
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -38,15 +44,21 @@ const Login = () => {
     Email: Yup.string().email().required().label("Email"),
   });
   const handleSubmit = async (values) => {
-    await login(values.Email, values.Password).catch(
-      (error) => (setErrorMessage(error.message), setAlert(true))
-    );
+    await login(values.Email, values.Password)
+      .then(() => {
+        navigate(from, { replace: true });
+      })
+      .catch((error) => (setErrorMessage(error.message), setAlert(true)));
   };
   const handleDemoLogin = async () => {
     await login(
       process.env.REACT_APP_DEMO_LOGIN,
       process.env.REACT_APP_DEMO_PASSWORD
-    ).catch((error) => (setErrorMessage(error.message), setAlert(true)));
+    )
+      .then(() => {
+        navigate(from, { replace: true });
+      })
+      .catch((error) => (setErrorMessage(error.message), setAlert(true)));
   };
   const handleReset = async (values) => {
     console.log("reseting password");

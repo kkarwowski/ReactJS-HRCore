@@ -1,4 +1,4 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, useRoutes, useLocation } from "react-router-dom";
 import DashboardLayout from "./layouts/dashboard";
 import LogoOnlyLayout from "./layouts/LogoOnlyLayout";
 import Login from "./pages/Login";
@@ -13,25 +13,46 @@ import Admin from "./pages/Admin";
 import MyTasks from "./pages/Tasks";
 import Page403 from "./pages/Page403";
 import ImportAssociates from "./components/Associate/Admin/ImportAssociates";
+import PrivateRoute from "./pages/PrivateRoute";
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const { currentUser, isAdmin } = useAuth();
+  let location = useLocation();
+  // console.log("location", location);
   return useRoutes([
     {
       path: "/dashboard",
       element: currentUser ? <DashboardLayout /> : <Navigate to="/login" />,
       children: [
         { element: <Navigate to="/dashboard/home" replace /> },
-        { path: "home", element: <Home /> },
-        { path: "associates", element: <Associates /> },
+        {
+          path: "home",
+          element: (
+            <PrivateRoute role="Standard">
+              <Home />
+            </PrivateRoute>
+          ),
+        },
+        {
+          path: "associates",
+          element: (
+            <PrivateRoute role="Standard">
+              <Associates />
+            </PrivateRoute>
+          ),
+        },
         { path: "associates/:id", element: <AssociateDetails /> },
         { path: "associates/newassociate", element: <NewAssociate /> },
         { path: "register", element: isAdmin ? <SignUp /> : <Page403 /> },
         { path: "tasks", element: <MyTasks /> },
         {
           path: "admin/database",
-          element: isAdmin ? <Admin /> : <Page403 />,
+          element: (
+            <PrivateRoute role="Admin">
+              <Admin />
+            </PrivateRoute>
+          ),
         },
         {
           path: "admin/import",
@@ -49,7 +70,8 @@ export default function Router() {
       ),
       children: [
         { path: "login", element: <Login /> },
-        { path: "/", element: <Navigate to="/login" /> },
+        { path: "/", element: <Navigate to="/dashboard/home" /> },
+        { path: "/error", element: <Page404 /> },
       ],
     },
     { path: "*", element: <Navigate to="/error" replace /> },

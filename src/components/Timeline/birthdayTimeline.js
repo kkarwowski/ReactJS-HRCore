@@ -57,7 +57,7 @@ export default function BirthdayTimeline() {
     <Card>
       <Grid container direction="column">
         <Grid item>
-          <Grid container direction="rows" justifyContent="space-between">
+          <Grid container direction="row" justifyContent="space-between">
             <Grid item pt={3} pl={2}>
               <Typography variant="h6">Upcoming Birthdays</Typography>
               {/* <CardHeader title="Upcoming Birthdays" />
@@ -80,7 +80,7 @@ export default function BirthdayTimeline() {
                   const { FirstName, profilePicture, DOB } = starter;
 
                   return (
-                    <TimelineItem>
+                    <TimelineItem key={profilePicture}>
                       <TimelineOppositeContent
                         color="text.secondary"
                         sx={{ m: "auto 0" }}

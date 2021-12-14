@@ -112,7 +112,7 @@ export default function DepartmentGraph() {
       <CardHeader title="Associates per Department" />
       {loading && (
         <Stack
-          direction="row"
+          // direction="row"
           alignItems="center"
           justifyContent="center"
           mb={5}

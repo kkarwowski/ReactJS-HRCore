@@ -21,7 +21,7 @@ export default function WelcomeCard() {
     <RootStyle>
       <Grid
         container
-        direction="rows"
+        direction="row"
         justifyContent="space-between"
         alignItems="center"
       >
@@ -45,7 +45,7 @@ export default function WelcomeCard() {
         </Grid>
 
         <Grid item xs={6} lg={6}>
-          <Grid container direction="rows" justifyContent="flex-end">
+          <Grid container direction="row" justifyContent="flex-end">
             <CardMedia
               component="img"
               sx={{ width: 200 }}

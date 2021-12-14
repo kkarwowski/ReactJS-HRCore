@@ -136,7 +136,7 @@ const Login = () => {
                               <Box>
                                 {/* sx={{ display: "flex", flexDirection: "column" }} */}
                                 {/* sx={{ flex: "0 1 auto" }} */}
-                                <CardContent alignItems="center">
+                                <CardContent>
                                   <Grid>
                                     <Grid
                                       sx={{ p: 1, pb: 5, pt: 1 }}

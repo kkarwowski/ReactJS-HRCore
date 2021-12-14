@@ -79,20 +79,20 @@ const Home = () => {
         </Fade>
       </Modal>
       <Container maxWidth="xl">
-        <Grid container spacing={3}>
-          <Grid Grid item xs={12} sm={7} md={7}>
+        <Grid container direction="row" spacing={3}>
+          <Grid item xs={12} sm={7} md={7}>
             <WelcomeCard />
           </Grid>
-          <Grid Grid item xs={12} sm={5} md={5}>
+          <Grid item xs={12} sm={5} md={5}>
             <TotalEmployedHistory />
           </Grid>
-          <Grid Grid item xs={12} sm={5} md={3}>
+          <Grid item xs={12} sm={5} md={3}>
             <TotalEmployed />
           </Grid>
-          <Grid Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <AverageSalary />
           </Grid>
-          <Grid Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <TotalEmployed />
           </Grid>
           <Grid item xs={12} md={6} lg={3}></Grid>

@@ -43,7 +43,7 @@ export default function StarterTimeline() {
               const { FirstName, LastName, StartDate, profilePicture } =
                 starter;
               return (
-                <TimelineItem>
+                <TimelineItem key={LastName}>
                   <TimelineOppositeContent
                     color="text.secondary"
                     sx={{ m: "auto 0" }}

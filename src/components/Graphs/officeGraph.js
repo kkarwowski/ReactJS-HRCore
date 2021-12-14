@@ -98,7 +98,7 @@ export default function OfficeGraph() {
       </Typography>
       {loadingOffice && (
         <Stack
-          direction="row"
+          // direction="row"
           alignItems="center"
           justifyContent="center"
           mb={5}

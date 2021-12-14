@@ -4,13 +4,21 @@ import ReactApexChart from "react-apexcharts";
 import { Card, CardHeader, Box } from "@mui/material";
 //
 import { BaseOptionChart } from "../../components/charts/";
-import { useState, useEffect, useContext } from "react";
-import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
 
-export default function TotalEmployedHistory() {
+const TotalEmployedHistory = () => {
   const [EmployedHistory, setEmployedHistory] = useState();
+
   useEffect(() => {
     const getTotal = async () => {
       fetchDetails();
@@ -19,15 +27,19 @@ export default function TotalEmployedHistory() {
   }, []);
 
   const fetchDetails = async () => {
-    const q = query(collection(db, "TotalAssociatesChart"),orderBy("Date", "desc"),limit(40))
-    const data = await getDocs(q );
-
-    setEmployedHistory(
-      data.docs.map((user) => ({
-        x: user.data().Date.toDate(),
-        y: user.data().Total,
-      }))
+    const q = query(
+      collection(db, "TotalAssociatesChart"),
+      orderBy("Date", "desc"),
+      limit(40)
     );
+    await getDocs(q).then((data) => {
+      setEmployedHistory(
+        data.docs.map((user) => ({
+          x: user.data().Date.toDate(),
+          y: user.data().Total,
+        }))
+      );
+    });
   };
   const GetPercentageChange = () => {
     const Min = Math.min(...EmployedHistory.map((o) => o.y));
@@ -35,7 +47,9 @@ export default function TotalEmployedHistory() {
     const percentage = Math.round(Math.abs((Min - Max) / Min) * 100);
     return percentage;
   };
-  if (EmployedHistory) GetPercentageChange();
+  // if (EmployedHistory) {
+  //   GetPercentageChange();
+  // }
   return (
     <div>
       {EmployedHistory && (
@@ -88,4 +102,5 @@ export default function TotalEmployedHistory() {
       )}
     </div>
   );
-}
+};
+export default TotalEmployedHistory;

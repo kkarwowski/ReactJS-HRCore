@@ -28,6 +28,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     flexShrink: 0,
     width: DRAWER_WIDTH,
+    background: "black",
   },
 }));
 
@@ -36,7 +37,8 @@ const AccountStyle = styled("div")(({ theme }) => ({
   alignItems: "center",
   padding: theme.spacing(2, 2.5),
   borderRadius: theme.shape.borderRadiusSm,
-  backgroundColor: theme.palette.grey[200],
+  // backgroundColor: theme.palette.grey[200],
+  backgroundColor: theme.palette.third.main,
 }));
 
 // ----------------------------------------------------------------------
@@ -69,7 +71,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     >
       <Box sx={{ px: 2.5, py: 3 }}>
         <Box component={RouterLink} to="/" sx={{ display: "inline-flex" }}>
-          <Logo sx={{ width: 60 }} />
+          <Logo sx={{ width: 60 }} color="white" />
         </Box>
       </Box>
 
@@ -77,7 +79,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
           alignItems="center"
           spacing={3}
@@ -89,7 +91,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             bgcolor: "grey.200",
           }}
         ></Stack>
-      </Box>
+      </Box> */}
     </Scrollbar>
   );
 
@@ -114,7 +116,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              bgcolor: "background.default",
+              bgcolor: "third.main",
+              // bgcolor: "background.default",
             },
           }}
         >

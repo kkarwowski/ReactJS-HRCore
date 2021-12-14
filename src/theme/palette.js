@@ -52,6 +52,10 @@ const SECONDARY = {
   darker: "#091A7A",
   contrastText: "#fff",
 };
+const THIRD = {
+  lighter: "#8fa6bf",
+  main: "#121E2D",
+};
 const INFO = {
   lighter: "#D0F2FF",
   light: "#74CAFF",
@@ -106,7 +110,7 @@ const palette = {
   primary: { ...PRIMARY },
   secondary: { ...SECONDARY },
   info: { ...INFO },
-
+  third: { ...THIRD },
   success: { ...SUCCESS },
   warning: { ...WARNING },
   error: { ...ERROR },

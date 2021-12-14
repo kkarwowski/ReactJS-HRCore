@@ -29,7 +29,9 @@ const ListItemStyle = styled((props) => (
   textTransform: "capitalize",
   paddingLeft: theme.spacing(5),
   paddingRight: theme.spacing(2.5),
-  color: theme.palette.text.secondary,
+  // color: "white",
+  // color: theme.palette.text.secondary,
+  color: theme.palette.third.lighter,
   "&:before": {
     top: 0,
     right: 0,
@@ -70,17 +72,21 @@ function NavItem({ item, active }) {
   };
 
   const activeRootStyle = {
-    color: "primary.main",
+    color: "white",
+    // color: "primary.main",
     fontWeight: "fontWeightMedium",
     bgcolor: alpha(
+      // theme.palette.primary.main,
       theme.palette.primary.main,
-      theme.palette.action.selectedOpacity
+      0.6
     ),
     "&:before": { display: "block" },
   };
 
   const activeSubStyle = {
-    color: "text.primary",
+    // color: "text.primary",
+    // color: "primary.main",
+    color: "white",
     fontWeight: "fontWeightMedium",
   };
 
@@ -134,6 +140,7 @@ function NavItem({ item, active }) {
                         ...(isActiveSub && {
                           transform: "scale(2)",
                           bgcolor: "primary.main",
+                          // bgcolor: "#fff",
                         }),
                       }}
                     />

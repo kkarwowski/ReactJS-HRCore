@@ -15,13 +15,16 @@ import NotificationsPopover from "./NotificationsPopover";
 
 const DRAWER_WIDTH = 280;
 const APPBAR_MOBILE = 64;
-const APPBAR_DESKTOP = 92;
+const APPBAR_DESKTOP = 70;
 
 const RootStyle = styled(AppBar)(({ theme }) => ({
   boxShadow: "none",
   backdropFilter: "blur(6px)",
   WebkitBackdropFilter: "blur(6px)", // Fix on Mobile
-  backgroundColor: theme.palette.background.paper,
+  // backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.grey[100],
+  borderBottom: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
+
   // 0.72
   [theme.breakpoints.up("lg")]: {
     width: `calc(100% - ${DRAWER_WIDTH + 1}px)`,

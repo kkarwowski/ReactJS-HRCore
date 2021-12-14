@@ -23,7 +23,7 @@ import { associatesContext } from "../../utils/context/contexts";
 // ----------------------------------------------------------------------
 
 const APPBAR_MOBILE = 64;
-const APPBAR_DESKTOP = 92;
+const APPBAR_DESKTOP = 70;
 const TvShowContainer = styled("div")(({ theme }) => ({
   width: "800px",
   "min-height": "4em",

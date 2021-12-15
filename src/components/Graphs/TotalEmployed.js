@@ -14,7 +14,7 @@ import { associatesContext } from "../../utils/context/contexts.js";
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",
   textAlign: "center",
-  padding: theme.spacing(5, 0),
+  padding: theme.spacing(2, 0),
   // color: theme.palette.primary.darker,
   // color: theme.palette.background.paper,
   color: "#095b80",
@@ -30,7 +30,7 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
   width: theme.spacing(8),
   height: theme.spacing(8),
   justifyContent: "center",
-  marginBottom: theme.spacing(2),
+  marginBottom: theme.spacing(1),
   color: "#000000", // color: theme.palette.warning.dark,
   // color: theme.palette.error.dark, // color: theme.palette.warning.dark,
   //   backgroundImage: `linear-gradient(135deg, ${alpha(

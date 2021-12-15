@@ -3,15 +3,7 @@ import { useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
-import {
-  Box,
-  Link,
-  Button,
-  Drawer,
-  Typography,
-  Avatar,
-  Stack,
-} from "@mui/material";
+import { Box, Drawer } from "@mui/material";
 // components
 import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
@@ -28,18 +20,17 @@ const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     flexShrink: 0,
     width: DRAWER_WIDTH,
-    background: "black",
   },
 }));
 
-const AccountStyle = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(2, 2.5),
-  borderRadius: theme.shape.borderRadiusSm,
-  // backgroundColor: theme.palette.grey[200],
-  backgroundColor: theme.palette.third.main,
-}));
+// const AccountStyle = styled("div")(({ theme }) => ({
+//   display: "flex",
+//   alignItems: "center",
+//   padding: theme.spacing(2, 2.5),
+//   borderRadius: theme.shape.borderRadiusSm,
+//   // backgroundColor: theme.palette.grey[200],
+//   backgroundColor: theme.palette.third.main,
+// }));
 
 // ----------------------------------------------------------------------
 
@@ -55,7 +46,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (
@@ -70,7 +60,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3 }}>
-        <Box component={RouterLink} to="/" sx={{ display: "inline-flex" }}>
+        <Box
+          // component={RouterLink}
+          // to="/"
+          sx={{ display: "inline-flex" }}
+          style={{ textDecoration: "none" }}
+        >
           <Logo sx={{ width: 60 }} color="white" />
         </Box>
       </Box>
@@ -102,7 +97,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           open={isOpenSidebar}
           onClose={onCloseSidebar}
           PaperProps={{
-            sx: { width: DRAWER_WIDTH },
+            sx: { width: DRAWER_WIDTH, bgcolor: "third.main" },
           }}
         >
           {renderContent}
@@ -116,8 +111,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              bgcolor: "third.main",
               // bgcolor: "background.default",
+              bgcolor: "third.main",
             },
           }}
         >

@@ -97,7 +97,7 @@ export default function BaseOptionChart() {
     chart: {
       toolbar: { show: false },
       zoom: { enabled: false },
-      // animations: { enabled: false },
+      animations: { enabled: true },
       foreColor: theme.palette.text.disabled,
       fontFamily: theme.typography.fontFamily,
     },
@@ -204,10 +204,10 @@ export default function BaseOptionChart() {
           strokeWidth: "100%",
           background: theme.palette.grey[500_16],
         },
-        dataLabels: {
-          value: LABEL_VALUE,
-          total: LABEL_TOTAL,
-        },
+        // dataLabels: {
+        // value: LABEL_VALUE,
+        // total: LABEL_TOTAL,
+        // },
       },
       // Radar
       radar: {

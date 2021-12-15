@@ -1,8 +1,8 @@
-import { forEach, merge } from "lodash";
+import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
 import { useTheme, styled } from "@mui/material/styles";
-import { Card, CardHeader, Stack, Button } from "@mui/material";
+import { Card, CardHeader, Stack } from "@mui/material";
 // utils
 import { fNumber } from "../../utils/formatNumber.js";
 //
@@ -15,9 +15,6 @@ import {
   departmentsContext,
   associatesContext,
 } from "../../utils/context/contexts.js";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../../utils/firebase.js";
-// ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 330;
 const LEGEND_HEIGHT = 60;

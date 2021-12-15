@@ -181,7 +181,7 @@ const Associates = () => {
       <Box>
         <Container maxWidth="xl" sx={{ pb: 5 }}>
           <Stack
-            // direction="row"
+            direction="row"
             alignItems="center"
             justifyContent="space-between"
             mb={2}
@@ -246,7 +246,7 @@ const Associates = () => {
                                 padding="none"
                               >
                                 <Stack
-                                  // direction="row"
+                                  direction="row"
                                   alignItems="center"
                                   spacing={0}
                                 >

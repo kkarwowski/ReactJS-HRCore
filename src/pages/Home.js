@@ -22,6 +22,7 @@ import TotalEmployedHistory from "../components/Graphs/TotalEmployedHistory";
 import AverageSalary from "../components/Graphs/AverageSalary";
 import Page from "../components/Page";
 import { useAuth } from "../utils/context/AuthContext";
+import MaleVSFemaleGraph from "../components/Graphs/MaleVSFemale";
 
 const Home = () => {
   const { isDemo } = useAuth();
@@ -86,21 +87,24 @@ const Home = () => {
           <Grid item xs={12} sm={5} md={5}>
             <TotalEmployedHistory />
           </Grid>
-          <Grid item xs={12} sm={5} md={3}>
+          <Grid item xs={12} sm={5} md={2}>
             <TotalEmployed />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <AverageSalary />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={2}>
             <TotalEmployed />
           </Grid>
-          <Grid item xs={12} md={6} lg={3}></Grid>
+          {/* <Grid item xs={12} md={6} lg={3}></Grid> */}
           <Grid item xs={12} md={6} lg={3}>
             <OfficeGraph />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <DepartmentGraph />
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MaleVSFemaleGraph />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <StarterTimeline />

@@ -65,7 +65,7 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack
-          // direction="row"
+          direction="row"
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >

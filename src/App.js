@@ -9,7 +9,18 @@ import {
   departmentsContext,
   resultsPerPageContext,
 } from "./utils/context/contexts";
-
+import {
+  ref,
+  on,
+  set,
+  push,
+  onValue,
+  onChildAdded,
+  get,
+  child,
+  getDatabase,
+} from "firebase/database";
+import { rtdb } from "./utils/firebase";
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "./utils/firebase";
@@ -22,7 +33,7 @@ function App() {
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
+  const [tasks, setTasks] = useState();
   useEffect(() => {
     document.title = "HR Core";
     const getAssociates = async () => {
@@ -43,8 +54,36 @@ function App() {
         setDepartments(data.docs.map((department) => department.data().name))
       );
     };
+    // const getTasks = () => {
+    //   const tasksRef = ref(rtdb, "Tasks");
+    //   // const tasksRef = ref(getDatabase());
 
+    //   // onChildAdded(tasksRef, (data) => {
+    //   //   // tasks.push(data.val());
+    //   //   console.log("value", data.val());
+    //   // });
+    //   onValue(tasksRef, (snapshot) => {
+    //     const data = snapshot.val();
+    //     console.log(data.name);
+    //     setTasks(data.name);
+    //   });
+    //   // get(child(tasksRef, `Tasks/`))
+    //   //   .then((snapshot) => {
+    //   //     if (snapshot.exists()) {
+    //   //       console.log("val", snapshot.val());
+    //   //       snapshot.map((f) => {
+    //   //         console.log(f);
+    //   //       });
+    //   //     } else {
+    //   //       console.log("No data available");
+    //   //     }
+    //   //   })
+    //   //   .catch((error) => {
+    //   //     console.error(error);
+    //   //   });
+    // };
     getAssociates();
+    // getTasks();
     getDepartments();
     getOffices();
   }, [updateAssociates]);

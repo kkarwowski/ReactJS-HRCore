@@ -8,7 +8,7 @@ const PrivateRoute = ({ children, role }) => {
   let location = useLocation();
 
   if (!currentUser) {
-    console.log("redirecting to", location);
+    console.log("ting to", location);
     return <Navigate to="/login" state={{ from: location }} />;
   }
   if (role === "Admin") {
@@ -16,7 +16,6 @@ const PrivateRoute = ({ children, role }) => {
       return <Page403 />;
     }
   }
-  console.log("redirecting to", location);
   return children;
 };
 

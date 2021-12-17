@@ -1,4 +1,5 @@
 import Page from "../components/Page";
+import AddTask from "../components/Tasks/AddTask";
 import { useEffect, useState } from "react";
 import {
   ref,
@@ -13,7 +14,7 @@ import {
   getDatabase,
 } from "firebase/database";
 import { rtdb } from "../utils/firebase";
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import GetTasks from "../utils/firebasertdb";
 const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -21,8 +22,9 @@ const MyTasks = () => {
     // const dbref = rtdb.ref("Tasks");
     // dbref.on()
 
-    push(ref(rtdb, "Tasks"), {
+    push(ref(rtdb, "Tasks/3bOT8x1SBesW3l9jVQmV"), {
       name: "TitleUpdate",
+      value: "",
       status: "pending",
       uid: "vJ7SMEC1Qq6WXwrKlidy",
     });
@@ -56,6 +58,12 @@ const MyTasks = () => {
   return (
     <Page title="HR Core - Tasks">
       <h1>My Tasks</h1>
+      <Grid container direction="row" sx={{ p: 2 }}>
+        <Grid item xs={12} md={3} lg={3}>
+          <AddTask />
+        </Grid>
+        <Grid item xs={12} md={3} lg={3}></Grid>
+      </Grid>
       <Button onClick={writeTasks}>Write</Button>
       <div>{pendT.length}</div>
       {

@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
           const associateCollectionRef = doc(db, "Users", user.uid);
           getDoc(associateCollectionRef).then((result) => {
             setUserData(result.data());
+            console.log(result.data());
             setIsAdmin(result.data().Role === "Admin");
           });
         }

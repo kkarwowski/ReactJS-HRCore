@@ -67,11 +67,9 @@ const MyTasks = () => {
             targetValue: snapshot.val()[id].TargetValue,
             taskName: snapshot.val()[id].TaskName,
             status: snapshot.val()[id].status,
+            approvers: snapshot.val()[id].approvers,
             requester: snapshot.val()[id].requester,
             requesterName: snapshot.val()[id].requesterName,
-            hrPerson: snapshot.val()[id].hrPerson,
-            manager: snapshot.val()[id].manager,
-            managerName: snapshot.val()[id].managerName,
             value: snapshot.val()[id].Value,
             timestamp: snapshot.val()[id].timestamp,
           });
@@ -110,10 +108,10 @@ const MyTasks = () => {
             )}
           </Grid>
           {
-            (tasks ?? console.log(tasks),
+            (tasks ?? console.log("taskssss", tasks),
             tasks.map((task) => {
               return (
-                <Grid item xs={12} md={4} lg={4}>
+                <Grid item xs={12} md={5} lg={5}>
                   <TaskCard task={task} />
                 </Grid>
                 // <>

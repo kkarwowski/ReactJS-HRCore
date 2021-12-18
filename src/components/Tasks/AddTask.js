@@ -23,7 +23,6 @@ const AddTask = ({ userDetails, myManager }) => {
   const { userData } = useAuth();
 
   const hrPerson = {
-    name: "Marco Casper",
     id: "4U1DWf95rJvgfAwDYs7m",
   };
 
@@ -36,11 +35,18 @@ const AddTask = ({ userDetails, myManager }) => {
       ...taskValues,
       status: "pending",
       TaskName: event.target.value,
-      hrPerson: hrPerson.id,
       requester: userDetails.id,
+      approvers: [
+        {
+          approverID: myManager.id,
+          status: "pending",
+        },
+        {
+          approverID: hrPerson.id,
+          status: "pending",
+        },
+      ],
       requesterName: userDetails.FirstName + " " + userDetails.LastName,
-      manager: myManager.id,
-      managerName: myManager.FirstName + " " + myManager.LastName,
       timestamp: Date.now(),
     });
   };
@@ -66,12 +72,13 @@ const AddTask = ({ userDetails, myManager }) => {
       >
         <Grid item md={12}>
           <TextField
+            name=""
             select
             label="Type"
             size="small"
             onChange={handleChangeSelectTask}
           >
-            <MenuItem key="1" value="Title change" name="TitleChange">
+            <MenuItem key="1" value="Title Change">
               Title Change
             </MenuItem>
             <MenuItem key="w" value="Another">
@@ -80,7 +87,7 @@ const AddTask = ({ userDetails, myManager }) => {
           </TextField>
         </Grid>
 
-        {show == "TitleChange" ? (
+        {show == "Title Change" ? (
           <>
             <Grid item md={12}>
               <TextField

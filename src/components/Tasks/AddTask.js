@@ -1,52 +1,76 @@
-import { Button, Card, Grid, MenuItem, TextField } from "@mui/material";
-import { useState, useContext } from "react";
+import {
+  Button,
+  Card,
+  Grid,
+  MenuItem,
+  TextField,
+  CardHeader,
+  CardContent,
+} from "@mui/material";
+import { useState, useContext, useEffect } from "react";
 import { Box } from "@mui/system";
-import { associatesContext } from "../../utils/context/contexts";
+import {
+  associatesContext,
+  myDetailsContext,
+} from "../../utils/context/contexts";
 import { useAuth } from "../../utils/context/AuthContext";
-
-const AddTask = () => {
-  const { userData } = useAuth();
+import { ref, push } from "firebase/database";
+import { rtdb } from "../../utils/firebase";
+const AddTask = ({ userDetails, myManager }) => {
+  // const { myDetails, setMyDetails } = useContext(myDetailsContext);
   const { associates, setAssociates } = useContext(associatesContext);
-  const [myUserDetails, setMyUserDetails] = useState();
-
   const [myManagerDetails, setMyManagerDetails] = useState();
+  const { userData } = useAuth();
 
   const hrPerson = {
     name: "Marco Casper",
     id: "4U1DWf95rJvgfAwDYs7m",
   };
-  setMyUserDetails(
-    associates.filter((associate) => associate.id === userData.id)
-  );
 
-  {
-    myUserDetails &&
-      setMyManagerDetails(
-        associates.filter((associate) => associate.id === myUserDetails.Manager)
-      );
-  }
   const [show, setShow] = useState();
-  const [taskValues, setTaskValues] = useState();
-  const handleChange = (event) => {
+  const [taskValues, setTaskValues] = useState({});
+
+  const handleChangeSelectTask = (event) => {
     setShow(event.target.value);
-    setTaskValues({ ...taskValues, TaskName: event.target.value });
+    setTaskValues({
+      ...taskValues,
+      status: "pending",
+      TaskName: event.target.value,
+      hrPerson: hrPerson.id,
+      requester: userDetails.id,
+      requesterName: userDetails.FirstName + " " + userDetails.LastName,
+      manager: myManager.id,
+      managerName: myManager.FirstName + " " + myManager.LastName,
+      timestamp: Date.now(),
+    });
   };
   const handleValues = (event) => {
     setTaskValues({ ...taskValues, [event.target.name]: event.target.value });
-    setTaskValues({ ...taskValues, hrPerson: hrPerson.id });
+    // setTaskValues({ ...taskValues, hrPerson: hrPerson.id });
   };
+  const writeTask = () => {
+    push(ref(rtdb, "Tasks/3bOT8x1SBesW3l9jVQmV"), taskValues);
+  };
+
   return (
     <Card>
+      <CardHeader title="New Task" />
       <Grid
         container
         direction="column"
+        spacing={1}
         sx={{
           p: 3,
-          "& .MuiTextField-root": { m: 1, width: "25ch" },
+          "& .MuiTextField-root": { m: 1, width: "35ch" },
         }}
       >
         <Grid item md={12}>
-          <TextField select label="Type" size="small" onChange={handleChange}>
+          <TextField
+            select
+            label="Type"
+            size="small"
+            onChange={handleChangeSelectTask}
+          >
             <MenuItem key="1" value="TitleChange" name="TitleChange">
               Title Change
             </MenuItem>
@@ -54,52 +78,64 @@ const AddTask = () => {
               Another
             </MenuItem>
           </TextField>
-          {show == "TitleChange" ? (
-            <>
-              <Grid item md={12}>
-                <TextField
-                  label="New Title"
-                  size="small"
-                  name="Value"
-                  onChange={handleValues}
-                ></TextField>
-              </Grid>
-              <Grid item md={12}>
-                <TextField
-                  select
-                  label="Target Associate"
-                  size="small"
-                  onChange={handleChange}
-                >
-                  {associates.map((associate) => (
-                    <MenuItem key={associate.id} value={associate.id}>
-                      {associate.FirstName} {associate.LastName}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item md={12}>
-                <TextField
-                  name={"YourManager"}
-                  label="Your Manager"
-                  disabled={true}
-                  value={associates && myManagerDetails.FirstName}
-                ></TextField>
-              </Grid>
-              <Grid item md={12}>
-                <TextField
-                  label="HR Person"
-                  value={hrPerson.name}
-                  disabled={true}
-                ></TextField>
-              </Grid>
-            </>
-          ) : null}
         </Grid>
+
+        {show == "TitleChange" ? (
+          <>
+            <Grid item md={12}>
+              <TextField
+                label="New Title"
+                size="small"
+                name="Value"
+                onChange={handleValues}
+              ></TextField>
+            </Grid>
+            <Grid item md={12}>
+              <TextField
+                select
+                label="Target Associate"
+                size="small"
+                name="TargetValue"
+                onChange={handleValues}
+              >
+                {associates.map((associate) => (
+                  <MenuItem key={associate.id} value={associate.id}>
+                    {associate.FirstName} {associate.LastName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item md={12}>
+              {myManager && (
+                <TextField
+                  size="small"
+                  name={"YourManager"}
+                  label="1st approver - Your Manager"
+                  disabled={true}
+                  value={myManager.FirstName + " " + myManager.LastName}
+                ></TextField>
+              )}
+            </Grid>
+
+            <Grid item md={12}>
+              <TextField
+                size="small"
+                label="2nd Approver - HR Person"
+                value={hrPerson.name}
+                disabled={true}
+              ></TextField>
+            </Grid>
+            <Grid item md={12}>
+              <Button fullWidth variant="contained" onClick={writeTask}>
+                Submit
+              </Button>
+            </Grid>
+          </>
+        ) : null}
       </Grid>
       <Button
         onClick={() => {
-          console.log(taskValues, userData);
+          console.log(taskValues);
         }}
       >
         Log

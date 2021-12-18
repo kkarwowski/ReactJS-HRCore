@@ -20,7 +20,6 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [userData, setUserData] = useState();
-
   function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
@@ -53,10 +52,10 @@ export function AuthProvider({ children }) {
       {
         if (user != null) {
           setIsDemo(user.email === "demo@hr-core.netlify.app");
-          const associateCollectionRef = doc(db, "Users", user.uid);
-          getDoc(associateCollectionRef).then((result) => {
+          const usersCollectionRef = doc(db, "Users", user.uid);
+
+          getDoc(usersCollectionRef).then((result) => {
             setUserData(result.data());
-            console.log(result.data());
             setIsAdmin(result.data().Role === "Admin");
           });
         }

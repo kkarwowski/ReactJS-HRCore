@@ -33,7 +33,6 @@ function App() {
   const [allDepartments, setDepartments] = useState([]);
   const [loadingProgress, setLoadingProgress] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [tasks, setTasks] = useState();
   useEffect(() => {
     document.title = "HR Core";
     const getAssociates = async () => {
@@ -54,6 +53,7 @@ function App() {
         setDepartments(data.docs.map((department) => department.data().name))
       );
     };
+
     // const getTasks = () => {
     //   const tasksRef = ref(rtdb, "Tasks");
     //   // const tasksRef = ref(getDatabase());

@@ -71,7 +71,7 @@ const AddTask = ({ userDetails, myManager }) => {
             size="small"
             onChange={handleChangeSelectTask}
           >
-            <MenuItem key="1" value="TitleChange" name="TitleChange">
+            <MenuItem key="1" value="Title change" name="TitleChange">
               Title Change
             </MenuItem>
             <MenuItem key="w" value="Another">

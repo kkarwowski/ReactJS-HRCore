@@ -8,6 +8,8 @@ import {
   CardContent,
   Avatar,
   Chip,
+  Divider,
+  Typography,
 } from "@mui/material";
 import { useState, useContext, useEffect } from "react";
 import { Box } from "@mui/system";
@@ -28,7 +30,10 @@ const TaskCard = ({ task }) => {
   };
   return (
     <Card>
-      <CardHeader title={task.taskName} subheader={task.value} />
+      <CardHeader
+        title={task.taskName}
+        subheader={("Proposed value: ", (<strong>{task.value}</strong>))}
+      />
       <Grid
         container
         direction="column"
@@ -41,14 +46,47 @@ const TaskCard = ({ task }) => {
         <Grid item>
           <Grid container direction="row" justifyContent="space-between">
             <Grid item>
-              <Avatar
-                src={getAvatarSrc(task.manager)}
-                alt="Profile Pic"
-                sx={{ width: 30, height: 30 }}
-              />
+              <Grid container direction="rows" spacing={2} alignItems="center">
+                <Grid item>
+                  <Avatar
+                    src={getAvatarSrc(task.manager)}
+                    alt="Profile Pic"
+                    sx={{ width: 30, height: 30 }}
+                  />
+                </Grid>
+
+                <Grid item>{task.managerName}</Grid>
+              </Grid>
             </Grid>
             <Grid item>
-              <Chip label="pending" color="warning" variant="outlined" />
+              <Chip
+                label={task.status}
+                size="small"
+                color={task.status === "pending" ? "warning" : "success"}
+                variant={task.status === "pending" ? "outlined" : "contained"}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Divider variant="fullWidth" sx={{ pb: 2 }} />
+          <Grid
+            container
+            direction="row"
+            spacing={2}
+            justifyContent="space-between"
+            sx={{ pt: 1 }}
+          >
+            <Grid item>
+              <Typography variant="iherit">status:</Typography>
+            </Grid>
+            <Grid item>
+              <Chip
+                label={task.status}
+                size="small"
+                color={task.status === "pending" ? "warning" : "success"}
+                variant={task.status === "pending" ? "outlined" : "contained"}
+              />
             </Grid>
           </Grid>
         </Grid>

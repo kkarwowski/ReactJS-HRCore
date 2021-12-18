@@ -97,31 +97,37 @@ const MyTasks = () => {
     <myDetailsContext.Provider value={{ myDetails, setMyDetails }}>
       <Page title="HR Core - Tasks">
         <h1>My Tasks</h1>
-        <Grid container direction="row" sx={{ p: 2 }}>
+        <Grid
+          container
+          direction="row"
+          sx={{ p: 2 }}
+          spacing={2}
+          rowSpacing={2}
+        >
           <Grid item xs={12} md={4} lg={4}>
             {userDetails && (
               <AddTask userDetails={userDetails} myManager={myManager} />
             )}
           </Grid>
-          <Grid item xs={12} md={4} lg={4}>
-            {
-              (tasks ?? console.log(tasks),
-              tasks.map((task) => {
-                return (
+          {
+            (tasks ?? console.log(tasks),
+            tasks.map((task) => {
+              return (
+                <Grid item xs={12} md={4} lg={4}>
                   <TaskCard task={task} />
-                  // <>
-                  //   <h3>{task.TaskName}</h3>
-                  //   <h3>{task.requesterName}</h3>
-                  //   <h3>{task.value}</h3>
-                  //   <h3>{task.managerName}</h3>
-                  //   <h3>{task.status}</h3>
-                  //   <h3>{moment(task.timestamp).format("ddd, MMM YYYY")}</h3>
-                  //   <br></br>
-                  // </>
-                );
-              }))
-            }
-          </Grid>
+                </Grid>
+                // <>
+                //   <h3>{task.TaskName}</h3>
+                //   <h3>{task.requesterName}</h3>
+                //   <h3>{task.value}</h3>
+                //   <h3>{task.managerName}</h3>
+                //   <h3>{task.status}</h3>
+                //   <h3>{moment(task.timestamp).format("ddd, MMM YYYY")}</h3>
+                //   <br></br>
+                // </>
+              );
+            }))
+          }
         </Grid>
         <Button onClick={writeTasks}>Write</Button>
         <div>{pendT.length}</div>

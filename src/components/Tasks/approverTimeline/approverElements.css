@@ -56,6 +56,7 @@
   padding: 5px;
   background-color: rgb(230, 228, 228);
   max-width: 200px;
+  border-radius: 10px;
 }
 .TimelineContentDetailsAvatarTitle {
   font-size: 10px;
@@ -77,7 +78,9 @@
 .TimelineContentStatusTime {
   font-size: 12px;
   font-style: bold;
+  opacity: 0.7;
 }
 .TimelineContentStatusText {
   font-size: 12px;
+  opacity: 0.7;
 }

@@ -73,6 +73,12 @@ const typography = {
     fontSize: pxToRem(13),
     ...responsiveFontSizes({ sm: 13, md: 13, lg: 13 }),
   },
+  tinyRegular: {
+    fontWeight: 500,
+    lineHeight: 18 / 10,
+    fontSize: pxToRem(13),
+    ...responsiveFontSizes({ sm: 14, md: 14, lg: 14 }),
+  },
   tiny: {
     fontWeight: 200,
     lineHeight: 20 / 8,

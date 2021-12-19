@@ -96,9 +96,7 @@ const MyTasks = () => {
     <myDetailsContext.Provider value={{ myDetails, setMyDetails }}>
       <Page title="HR Core - Tasks">
         <h1>My Tasks</h1>
-        <Card>
-          <ApprovalTimeline />
-        </Card>
+
         <Grid
           container
           direction="row"
@@ -115,7 +113,7 @@ const MyTasks = () => {
             (tasks ?? console.log("taskssss", tasks),
             tasks.map((task) => {
               return (
-                <Grid item xs={12} md={5} lg={5}>
+                <Grid item xs={12} md={4} lg={4}>
                   <TaskCard task={task} />
                 </Grid>
                 // <>

@@ -16,13 +16,14 @@ import {
   getDatabase,
 } from "firebase/database";
 import { rtdb } from "../utils/firebase";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Card } from "@mui/material";
 import GetTasks from "../utils/firebasertdb";
 import { associatesContext, myDetailsContext } from "../utils/context/contexts";
 import { useAuth } from "../utils/context/AuthContext";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import TaskCard from "../components/Tasks/TaskCard";
+import ApprovalTimeline from "../components/Tasks/approverTimeline/approvalTimeline";
 const MyTasks = () => {
   const { userData } = useAuth();
   const { associates } = useContext(associatesContext);
@@ -95,6 +96,9 @@ const MyTasks = () => {
     <myDetailsContext.Provider value={{ myDetails, setMyDetails }}>
       <Page title="HR Core - Tasks">
         <h1>My Tasks</h1>
+        <Card>
+          <ApprovalTimeline />
+        </Card>
         <Grid
           container
           direction="row"

@@ -1,0 +1,83 @@
+.TimelineContainer {
+  padding: 10px;
+}
+.TimelineBar {
+  list-style: none;
+  padding: 10;
+  margin: 10;
+  position: relative;
+}
+.TimelineBar:after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  background-color: #dddd;
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  z-index: -1;
+}
+.TimelineBar li {
+  margin-top: 10px;
+}
+
+.TimelineContent {
+  margin-left: 40px;
+  margin-top: -20px;
+  display: flex;
+  flex-direction: row;
+  padding-top: 8px;
+}
+.TimelineContentStatus {
+  display: column;
+  align-items: center;
+  min-width: 60px;
+}
+.TimelineContentAvatarContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding-left: 10px;
+}
+.TimelineContentAvatar {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding-left: 5px;
+}
+.TimelineContentAvatarDetails {
+  display: table-column;
+  align-items: flex-start;
+  padding-left: 15px;
+}
+.TimelineContentAvatarComments {
+  margin-top: 5px;
+  font-size: 10px;
+  padding: 5px;
+  background-color: rgb(230, 228, 228);
+  max-width: 200px;
+}
+.TimelineContentDetailsAvatarTitle {
+  font-size: 10px;
+}
+.TimelineContentDetailsAvatarName {
+  font-size: 14px;
+}
+.TimelineBar li i {
+  width: 20px;
+  height: 20px;
+  display: block;
+  text-align: center;
+  line-height: 20px;
+}
+.TimelineContentStatusDate {
+  font-size: 14px;
+  font-style: bold;
+}
+.TimelineContentStatusTime {
+  font-size: 12px;
+  font-style: bold;
+}
+.TimelineContentStatusText {
+  font-size: 12px;
+}

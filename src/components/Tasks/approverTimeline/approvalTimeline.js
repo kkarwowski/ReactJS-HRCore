@@ -12,9 +12,9 @@ const ApprovalTimeline = ({ task, getApproverDetails }) => {
       <div className="TimelineContainer">
         <ul className="TimelineBar">
           {task &&
-            task.approvers.map((approver) => {
-              const { approverID, status, timestamp, comment } = approver;
-              const approverDetails = getApproverDetails(approverID);
+            Object.entries(task.approvers).map(([key, value]) => {
+              const { status, timestamp, comment } = value;
+              const approverDetails = getApproverDetails(key);
               return (
                 <li>
                   <i>

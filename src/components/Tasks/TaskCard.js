@@ -21,7 +21,7 @@ import { useState, useContext, useEffect } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
-
+import { ref, getDatabase, update } from "firebase/database";
 const TaskCard = ({ task, userID }) => {
   const { associates, setAssociates } = useContext(associatesContext);
   const [expanded, setExpanded] = useState(false);
@@ -31,6 +31,7 @@ const TaskCard = ({ task, userID }) => {
   };
   const requesterDetails = getApproverDetails(task.requester);
   const targetDetails = getApproverDetails(task.TargetValue);
+  const [approverComments, setApproverComments] = useState();
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -45,7 +46,28 @@ const TaskCard = ({ task, userID }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log("TASK", task);
+
+  const updateValues = (e) => {
+    setApproverComments(e.target.value);
+  };
+  const ApproveTask = (status) => {
+    const dbrt = getDatabase();
+
+    // const ChangedRef = ref(dbrt, `Tasks/${task.TaskPath}/`);
+    // const ChangedRef = ref(
+    //   dbrt,
+    //   `Tasks/3bOT8x1SBesW3l9jVQmV/MyTasks/-MrNOML489WlD3Mo7kuy/`
+    // );
+    const ChangedRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers/${userID}`);
+    console.log(task.TaskPath);
+    console.log(approverComments);
+    update(ChangedRef, {
+      status: status,
+      comment: approverComments,
+      timestamp: Math.round(new Date().getTime() / 1000),
+    });
+  };
+  console.log("Task", task);
   return (
     <Card>
       <Grid
@@ -178,27 +200,44 @@ const TaskCard = ({ task, userID }) => {
               </Button>
             </Grid>
           )}
-          {task.approvers.some(function (user) {
-            return user.approverID === userID;
-          }) && (
+          {task.approvers.hasOwnProperty(userID) &
+          (task.approvers[userID].status === "pending") ? (
             <Grid item sx={{ pt: 2 }}>
-              <Grid container direction="row">
-                <Grid item sx={{ pr: 1 }}>
-                  <Button variant="contained">Approve</Button>
-                </Grid>
-                <Button variant="contained" color="error">
-                  Reject
-                </Button>
-              </Grid>
-              <Grid item sx={{ pt: 2 }}>
+              <Grid item sx={{ pb: 2 }}>
                 <TextField
                   label="Comment"
                   size="small"
                   style={{ width: "100%" }}
+                  onChange={updateValues}
                 ></TextField>
               </Grid>
+              <Grid container direction="row">
+                <Grid item sx={{ pr: 1 }} md={6} xs={6} lg={6}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => {
+                      ApproveTask("approved");
+                    }}
+                  >
+                    Approve
+                  </Button>
+                </Grid>
+                <Grid item sx={{ pr: 1 }} md={6} xs={6} lg={6}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                      ApproveTask("rejected");
+                    }}
+                  >
+                    Reject
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
-          )}
+          ) : null}
         </Collapse>
       </Grid>
     </Card>

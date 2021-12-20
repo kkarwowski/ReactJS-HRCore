@@ -34,19 +34,19 @@ const AddTask = ({ userDetails, myManager }) => {
       TaskName: event.target.value,
       requester: userDetails.id,
       approvers: [
+        myManager.id,
         {
-          approverID: myManager.id,
           status: "pending",
           timestamp: "pending",
         },
+        hrPerson.id,
         {
-          approverID: hrPerson.id,
           status: "pending",
           timestamp: "pending",
         },
       ],
       requesterName: userDetails.FirstName + " " + userDetails.LastName,
-      timestamp: Date.now(),
+      timestamp: Math.round(new Date().getTime() / 1000),
     });
   };
   const handleValues = (event) => {

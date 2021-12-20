@@ -22,7 +22,7 @@ import { associatesContext } from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
 
-const TaskCard = ({ task }) => {
+const TaskCard = ({ task, userID }) => {
   const { associates, setAssociates } = useContext(associatesContext);
   const [expanded, setExpanded] = useState(false);
   const getApproverDetails = (id) => {
@@ -45,20 +45,20 @@ const TaskCard = ({ task }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  console.log("TASK", task);
   return (
     <Card>
       <Grid
         container
         direction="column"
         sx={{
-          p: 3,
+          p: 2,
           "& .MuiTextField-root": { width: "100ch" },
         }}
       >
         <Grid item>
           <Grid container direction="column">
-            <Grid item sx={{ opacity: 0.7, fontSize: "12px", pt: 1 }}>
+            <Grid item sx={{ opacity: 0.7, fontSize: "12px" }}>
               Requester
             </Grid>
             <Grid item>
@@ -171,29 +171,34 @@ const TaskCard = ({ task }) => {
               getApproverDetails={getApproverDetails}
             />
           </Grid>
-          <Grid item sx={{ pt: 2 }}>
-            <Button variant="outlined" color="error">
-              Cancel Task
-            </Button>
-          </Grid>
-
-          <Grid item sx={{ pt: 2 }}>
-            <Grid container direction="row">
-              <Grid item sx={{ pr: 1 }}>
-                <Button variant="contained">Approve</Button>
-              </Grid>
-              <Button variant="contained" color="error">
-                Reject
+          {task.requester === userID && (
+            <Grid item sx={{ pt: 2 }}>
+              <Button variant="outlined" color="error" size="small">
+                Cancel Task
               </Button>
             </Grid>
+          )}
+          {task.approvers.some(function (user) {
+            return user.approverID === userID;
+          }) && (
             <Grid item sx={{ pt: 2 }}>
-              <TextField
-                label="Comment"
-                size="small"
-                style={{ width: "100%" }}
-              ></TextField>
+              <Grid container direction="row">
+                <Grid item sx={{ pr: 1 }}>
+                  <Button variant="contained">Approve</Button>
+                </Grid>
+                <Button variant="contained" color="error">
+                  Reject
+                </Button>
+              </Grid>
+              <Grid item sx={{ pt: 2 }}>
+                <TextField
+                  label="Comment"
+                  size="small"
+                  style={{ width: "100%" }}
+                ></TextField>
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </Collapse>
       </Grid>
     </Card>

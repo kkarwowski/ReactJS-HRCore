@@ -9,22 +9,41 @@ import {
   InputLabel,
   TextField,
   Card,
+  MenuItem,
 } from "@mui/material";
 import * as Yup from "yup";
 import { useAuth } from "../utils/context/AuthContext";
 import { Formik, Form } from "formik";
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import { associatesContext } from "../utils/context/contexts";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 const SignUp = () => {
+  const { associates, setAssociates } = useContext(associatesContext);
+
   const [showPassword, setShowPassword] = useState(false);
   const [newUser, setNewUser] = useState({
     Email: "",
     Password: "",
     ConfirmPassword: "",
   });
+  const [chosenProfile, setChosenProfile] = useState();
+  const uploadToFirebase = async (associateID, role) => {
+    const associate = associates.filter(
+      (ass) => ass.AssociateID === associateID
+    );
+    const formData = {
+      AssociateID: associate.id,
+      FirstName: associate.FirstName,
+      LastName: associate.LastName,
+      Role: role,
+    };
+    console.log(formData);
+    // const docRef = await addDoc(collection(db, "Users"), formData);
+  };
   const { signup } = useAuth();
   const handleChange = (prop) => (event) => {
     setNewUser({ ...newUser, [prop]: event.target.value });
@@ -41,6 +60,7 @@ const SignUp = () => {
   const stepOneValidationSchema = Yup.object({
     Email: Yup.string().email().required().label("Email"),
     Password: Yup.string().required("This field is required"),
+
     ConfirmPassword: Yup.string().when("Password", {
       is: (val) => (val && val.length > 0 ? true : false),
       then: Yup.string().oneOf(
@@ -51,7 +71,16 @@ const SignUp = () => {
   });
   const handleSubmit = async () => {
     console.log("submit");
-    await signup(newUser.Email.toString(), newUser.Password.toString());
+    console.log(chosenProfile);
+    // await signup(newUser.Email.toString(), newUser.Password.toString());
+    uploadToFirebase(chosenProfile.AssociateID, chosenProfile.Role);
+  };
+  const handleValues = (event) => {
+    console.log(event.target.value);
+    setChosenProfile({
+      ...chosenProfile,
+      [event.target.name]: event.target.value,
+    });
   };
   return (
     <Formik
@@ -92,6 +121,37 @@ const SignUp = () => {
                       onChange={handleChange("Email")}
                     />
                   </Grid>
+                  <Grid item xs={12} lg={12} sx={{ p: 1 }}>
+                    <TextField
+                      fullWidth={true}
+                      select
+                      label="Target Associate"
+                      name="AssociateID"
+                      onChange={handleValues}
+                    >
+                      {associates.map((associate) => (
+                        <MenuItem key={associate.id} value={associate.id}>
+                          {associate.FirstName} {associate.LastName}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={12} lg={12} sx={{ p: 1 }}>
+                    <TextField
+                      fullWidth={true}
+                      select
+                      label="Role"
+                      name="Role"
+                      onChange={handleValues}
+                    >
+                      <MenuItem key={1} value={"Admin"}>
+                        Admin
+                      </MenuItem>
+                      <MenuItem key={1} value={"Standard"}>
+                        Standard
+                      </MenuItem>
+                    </TextField>
+                  </Grid>
                   <Grid item xs={12} lg={12}>
                     <FormControl
                       sx={{ m: 1 }}
@@ -127,6 +187,7 @@ const SignUp = () => {
                       />
                     </FormControl>
                   </Grid>
+
                   <Grid item xs={12} lg={12}>
                     <FormControl
                       sx={{ m: 1 }}

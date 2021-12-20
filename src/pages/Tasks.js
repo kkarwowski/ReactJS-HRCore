@@ -15,6 +15,7 @@ import {
   get,
   child,
   getDatabase,
+  update,
 } from "firebase/database";
 // import { rtdb } from "../utils/firebase";
 import { Button, Grid, Card, Box, Typography, Stack } from "@mui/material";
@@ -25,23 +26,17 @@ import { db } from "../utils/firebase";
 import TaskCard from "../components/Tasks/TaskCard";
 const MyTasks = () => {
   const theme = useTheme();
-
   const { userData } = useAuth();
   const { associates } = useContext(associatesContext);
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
   const [tasks, setTasks] = useState({});
+  const [tasksToApprove, setTaskstoApprove] = useState({});
 
   useEffect(() => {
-    console.log(userData);
-    const getAssociateDetails = (id) => {
-      const associate = associates.filter((associatee) => associatee.id === id);
-      return associate[0];
-    };
-
     const getDTDB = () => {
       const dbrt = getDatabase();
-      const ChangedRef = ref(dbrt, `Tasks/${userData.AssociateID}`);
+      const ChangedRef = ref(dbrt, `Tasks/${userData.AssociateID}/MyTasks/`);
       onValue(ChangedRef, (snapshot) => {
         if (snapshot.val() != null) {
           const data = snapshot.val();
@@ -50,8 +45,30 @@ const MyTasks = () => {
           setTasks({});
         }
       });
+      const ChangedRefApprove = ref(
+        dbrt,
+        `Tasks/${userData.AssociateID}/ToApprove/`
+      );
+      onValue(ChangedRefApprove, (snapshot) => {
+        if (snapshot.val() != null) {
+          const data = snapshot.val();
+          Object.keys(data).forEach((key, index) => {
+            const Taskpath = data[key].TaskPath;
+            onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
+              const snapp = snapshot.val();
+              setTaskstoApprove((prev) => ({
+                ...prev,
+                [index]: snapp,
+              }));
+            });
+          });
+        } else {
+          setTaskstoApprove({});
+        }
+      });
     };
     getDTDB();
+
     const AssociatesCollectionRef = doc(db, "Associates", userData.AssociateID);
     getDoc(AssociatesCollectionRef).then((result) => {
       setUserDetails(result.data());
@@ -62,6 +79,9 @@ const MyTasks = () => {
       );
     });
   }, []);
+
+  const ApproveTask = () => {};
+
   const filterObject = (obj, filter, filterValue) =>
     Object.keys(obj).reduce(
       (acc, val) =>
@@ -78,10 +98,16 @@ const MyTasks = () => {
   return (
     <Page title="HR Core - Tasks">
       <h1>My Tasks</h1>
-
+      <Button
+        onClick={() => {
+          console.log(tasksToApprove);
+        }}
+      >
+        Log
+      </Button>
       <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
         <Grid item xs={12} md={4} lg={4}>
-          <Grid container direction="column" spacing={1}>
+          <Grid container direction="column" spacing={2}>
             <Grid item>
               <Box
                 sx={{
@@ -101,7 +127,7 @@ const MyTasks = () => {
                   </Typography>
                   <Box
                     sx={{
-                      backgroundColor: "black",
+                      backgroundColor: theme.palette.secondary.dark,
                       "border-radius": "5px",
                       px: 1,
                       py: 0.5,
@@ -117,21 +143,27 @@ const MyTasks = () => {
               Object.keys(pendingTasks).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
-                    <TaskCard task={pendingTasks[task]} />
+                    <TaskCard
+                      task={pendingTasks[task]}
+                      userID={userData.AssociateID}
+                    />
                   </Grid>
                 );
               })}
+            {userDetails && (
+              <AddTask userDetails={userDetails} myManager={myManager} />
+            )}
           </Grid>
           {/* {userDetails && (
             <AddTask userDetails={userDetails} myManager={myManager} />
           )} */}
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-          <Grid container direction="column" spacing={1}>
+          <Grid container direction="column" spacing={2}>
             <Grid item>
               <Box
                 sx={{
-                  backgroundColor: "#ddd",
+                  backgroundColor: theme.palette.primary.light,
                   px: 1,
                   py: 0.5,
                   "border-radius": "10px",
@@ -147,34 +179,37 @@ const MyTasks = () => {
                   </Typography>
                   <Box
                     sx={{
-                      backgroundColor: "black",
+                      backgroundColor: theme.palette.secondary.dark,
                       "border-radius": "5px",
                       px: 1,
                       py: 0.5,
                       color: "white",
                     }}
                   >
-                    2
+                    {Object.keys(tasksToApprove).length}
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-            {pendingTasks &&
-              Object.keys(pendingTasks).map((task, index) => {
+            {tasksToApprove &&
+              Object.keys(tasksToApprove).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
-                    <TaskCard task={pendingTasks[task]} />
+                    <TaskCard
+                      task={tasksToApprove[task]}
+                      userID={userData.AssociateID}
+                    />
                   </Grid>
                 );
               })}
           </Grid>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-          <Grid container direction="column" spacing={1}>
+          <Grid container direction="column" spacing={2}>
             <Grid item>
               <Box
                 sx={{
-                  backgroundColor: "#ddd",
+                  backgroundColor: theme.palette.primary.light,
                   px: 1,
                   py: 0.5,
                   "border-radius": "10px",
@@ -190,7 +225,7 @@ const MyTasks = () => {
                   </Typography>
                   <Box
                     sx={{
-                      backgroundColor: "black",
+                      backgroundColor: theme.palette.secondary.dark,
                       "border-radius": "5px",
                       px: 1,
                       py: 0.5,
@@ -206,7 +241,10 @@ const MyTasks = () => {
               Object.keys(completeTasks).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
-                    <TaskCard task={completeTasks[task]} />
+                    <TaskCard
+                      task={completeTasks[task]}
+                      userID={userData.AssociateID}
+                    />
                   </Grid>
                 );
               })}

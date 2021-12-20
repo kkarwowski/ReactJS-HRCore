@@ -45,7 +45,6 @@ export function AuthProvider({ children }) {
   }
   const [isAdmin, setIsAdmin] = useState();
   const [isDemo, setIsDemo] = useState();
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);

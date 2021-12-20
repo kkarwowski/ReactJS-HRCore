@@ -51,10 +51,18 @@ const AddTask = ({ userDetails, myManager }) => {
   };
   const handleValues = (event) => {
     setTaskValues({ ...taskValues, [event.target.name]: event.target.value });
-    // setTaskValues({ ...taskValues, hrPerson: hrPerson.id });
   };
   const writeTask = () => {
-    push(ref(rtdb, `Tasks/${userDetails.id}`), taskValues);
+    const newTask = push(
+      ref(rtdb, `Tasks/${userDetails.id}/MyTasks`),
+      taskValues
+    );
+    // write to each requester in To Approve with path to this specific task
+    taskValues.approvers.forEach((approver) => {
+      push(ref(rtdb, `Tasks/${approver.approverID}/ToApprove`), {
+        TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
+      });
+    });
   };
 
   return (

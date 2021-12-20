@@ -75,10 +75,7 @@ const MyTasks = () => {
     );
   const pendingTasks = filterObject(tasks, "status", "pending");
   const completeTasks = filterObject(tasks, "status", "complete");
-  console.log(pendingTasks);
-  // const pendT = tasks.filter((tas) => tas.status === "pending");
   return (
-    // <myDetailsContext.Provider value={{ myDetails, setMyDetails }}>
     <Page title="HR Core - Tasks">
       <h1>My Tasks</h1>
 
@@ -217,7 +214,6 @@ const MyTasks = () => {
         </Grid>
       </Grid>
     </Page>
-    // </myDetailsContext.Provider>
   );
 };
 export default MyTasks;

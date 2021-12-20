@@ -1,5 +1,6 @@
 import Page from "../components/Page";
 import AddTask from "../components/Tasks/AddTask";
+import { useTheme } from "@mui/material/styles";
 import { useEffect, useState, useContext } from "react";
 import moment from "moment";
 
@@ -15,39 +16,42 @@ import {
   child,
   getDatabase,
 } from "firebase/database";
-import { rtdb } from "../utils/firebase";
-import { Button, Grid, Card } from "@mui/material";
-import GetTasks from "../utils/firebasertdb";
-import { associatesContext, myDetailsContext } from "../utils/context/contexts";
+// import { rtdb } from "../utils/firebase";
+import { Button, Grid, Card, Box, Typography, Stack } from "@mui/material";
+import { associatesContext } from "../utils/context/contexts";
 import { useAuth } from "../utils/context/AuthContext";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import TaskCard from "../components/Tasks/TaskCard";
-import ApprovalTimeline from "../components/Tasks/approverTimeline/approvalTimeline";
 const MyTasks = () => {
+  const theme = useTheme();
+
   const { userData } = useAuth();
   const { associates } = useContext(associatesContext);
-  const [myDetails, setMyDetails] = useState();
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
-  const [tasks, setTasks] = useState([]);
-  const writeTasks = () => {
-    // const dbref = rtdb.ref("Tasks");
-    // dbref.on()
-
-    push(ref(rtdb, "Tasks/3bOT8x1SBesW3l9jVQmV"), {
-      name: "TitleUpdate",
-      value: "",
-      status: "done",
-      uid: "vJ7SMEC1Qq6WXwrKlidy",
-    });
-  };
+  const [tasks, setTasks] = useState({});
 
   useEffect(() => {
-    const tasksRef = ref(rtdb, `Tasks/${userData.AssociateID}`);
-    onChildChanged(tasksRef, (data) => setTasks(data.val()));
-    const dbRef = ref(getDatabase());
-    const all = [];
+    console.log(userData);
+    const getAssociateDetails = (id) => {
+      const associate = associates.filter((associatee) => associatee.id === id);
+      return associate[0];
+    };
+
+    const getDTDB = () => {
+      const dbrt = getDatabase();
+      const ChangedRef = ref(dbrt, `Tasks/${userData.AssociateID}`);
+      onValue(ChangedRef, (snapshot) => {
+        if (snapshot.val() != null) {
+          const data = snapshot.val();
+          setTasks({ ...data });
+        } else {
+          setTasks({});
+        }
+      });
+    };
+    getDTDB();
     const AssociatesCollectionRef = doc(db, "Associates", userData.AssociateID);
     getDoc(AssociatesCollectionRef).then((result) => {
       setUserDetails(result.data());
@@ -57,82 +61,163 @@ const MyTasks = () => {
         setMyManager(results.data())
       );
     });
-
-    get(child(dbRef, `Tasks/${userData.AssociateID}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-        for (let id in snapshot.val()) {
-          // console.log(`${id}: ${snapshot.val()[id].name}`);
-          all.push({
-            id: id,
-            targetValue: snapshot.val()[id].TargetValue,
-            taskName: snapshot.val()[id].TaskName,
-            status: snapshot.val()[id].status,
-            approvers: snapshot.val()[id].approvers,
-            requester: snapshot.val()[id].requester,
-            requesterName: snapshot.val()[id].requesterName,
-            value: snapshot.val()[id].Value,
-            timestamp: snapshot.val()[id].timestamp,
-          });
-        }
-        setTasks(all);
-        // setTasks(snapshot.val());
-      } else {
-        console.log("No data available");
-      }
-    });
   }, []);
-  // {
-  //   userDetails &&
-  //     setMyManager(
-  //       associates.filter(
-  //         (associate) => associate.Manager === userDetails.Manager
-  //       )
-  //     );
-  // }
-  console.log(tasks);
-  const pendT = tasks.filter((tas) => tas.status === "pending");
+  const filterObject = (obj, filter, filterValue) =>
+    Object.keys(obj).reduce(
+      (acc, val) =>
+        obj[val][filter] === filterValue
+          ? {
+              ...acc,
+              [val]: obj[val],
+            }
+          : acc,
+      {}
+    );
+  const pendingTasks = filterObject(tasks, "status", "pending");
+  const completeTasks = filterObject(tasks, "status", "complete");
+  console.log(pendingTasks);
+  // const pendT = tasks.filter((tas) => tas.status === "pending");
   return (
-    <myDetailsContext.Provider value={{ myDetails, setMyDetails }}>
-      <Page title="HR Core - Tasks">
-        <h1>My Tasks</h1>
+    // <myDetailsContext.Provider value={{ myDetails, setMyDetails }}>
+    <Page title="HR Core - Tasks">
+      <h1>My Tasks</h1>
 
-        <Grid
-          container
-          direction="row"
-          sx={{ p: 2 }}
-          spacing={2}
-          rowSpacing={2}
-        >
-          <Grid item xs={12} md={4} lg={4}>
-            {userDetails && (
-              <AddTask userDetails={userDetails} myManager={myManager} />
-            )}
+      <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
+        <Grid item xs={12} md={4} lg={4}>
+          <Grid container direction="column" spacing={1}>
+            <Grid item>
+              <Box
+                sx={{
+                  backgroundColor: theme.palette.primary.light,
+                  px: 1,
+                  py: 0.5,
+                  "border-radius": "10px",
+                }}
+              >
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography variant="h6" color="white">
+                    My Tasks
+                  </Typography>
+                  <Box
+                    sx={{
+                      backgroundColor: "black",
+                      "border-radius": "5px",
+                      px: 1,
+                      py: 0.5,
+                      color: "white",
+                    }}
+                  >
+                    {Object.keys(pendingTasks).length}
+                  </Box>
+                </Stack>
+              </Box>
+            </Grid>
+            {pendingTasks &&
+              Object.keys(pendingTasks).map((task, index) => {
+                return (
+                  <Grid item xs={12} md={4} lg={4}>
+                    <TaskCard task={pendingTasks[task]} />
+                  </Grid>
+                );
+              })}
           </Grid>
-          {
-            (tasks ?? console.log("taskssss", tasks),
-            tasks.map((task) => {
-              return (
-                <Grid item xs={12} md={4} lg={4}>
-                  <TaskCard task={task} />
-                </Grid>
-                // <>
-                //   <h3>{task.TaskName}</h3>
-                //   <h3>{task.requesterName}</h3>
-                //   <h3>{task.value}</h3>
-                //   <h3>{task.managerName}</h3>
-                //   <h3>{task.status}</h3>
-                //   <h3>{moment(task.timestamp).format("ddd, MMM YYYY")}</h3>
-                //   <br></br>
-                // </>
-              );
-            }))
-          }
+          {/* {userDetails && (
+            <AddTask userDetails={userDetails} myManager={myManager} />
+          )} */}
         </Grid>
-        <Button onClick={writeTasks}>Write</Button>
-        <div>{pendT.length}</div>
-      </Page>
-    </myDetailsContext.Provider>
+        <Grid item xs={12} md={4} lg={4}>
+          <Grid container direction="column" spacing={1}>
+            <Grid item>
+              <Box
+                sx={{
+                  backgroundColor: "#ddd",
+                  px: 1,
+                  py: 0.5,
+                  "border-radius": "10px",
+                }}
+              >
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography variant="h6" color="white">
+                    To approve
+                  </Typography>
+                  <Box
+                    sx={{
+                      backgroundColor: "black",
+                      "border-radius": "5px",
+                      px: 1,
+                      py: 0.5,
+                      color: "white",
+                    }}
+                  >
+                    2
+                  </Box>
+                </Stack>
+              </Box>
+            </Grid>
+            {pendingTasks &&
+              Object.keys(pendingTasks).map((task, index) => {
+                return (
+                  <Grid item xs={12} md={4} lg={4}>
+                    <TaskCard task={pendingTasks[task]} />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={4} lg={4}>
+          <Grid container direction="column" spacing={1}>
+            <Grid item>
+              <Box
+                sx={{
+                  backgroundColor: "#ddd",
+                  px: 1,
+                  py: 0.5,
+                  "border-radius": "10px",
+                }}
+              >
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography variant="h6" color="white">
+                    Complete
+                  </Typography>
+                  <Box
+                    sx={{
+                      backgroundColor: "black",
+                      "border-radius": "5px",
+                      px: 1,
+                      py: 0.5,
+                      color: "white",
+                    }}
+                  >
+                    {Object.keys(completeTasks).length}
+                  </Box>
+                </Stack>
+              </Box>
+            </Grid>
+            {completeTasks &&
+              Object.keys(completeTasks).map((task, index) => {
+                return (
+                  <Grid item xs={12} md={4} lg={4}>
+                    <TaskCard task={completeTasks[task]} />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </Grid>
+      </Grid>
+    </Page>
+    // </myDetailsContext.Provider>
   );
 };
 export default MyTasks;

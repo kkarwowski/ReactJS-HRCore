@@ -5,7 +5,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Avatar } from "@mui/material";
 import moment from "moment";
-
+import ApprovalAvatar from "./approvalAvatar";
 const ApprovalTimeline = ({ task, getApproverDetails }) => {
   return (
     <>
@@ -58,30 +58,15 @@ const ApprovalTimeline = ({ task, getApproverDetails }) => {
                         </>
                       )}
                     </div>
-
-                    <div className="TimelineContentAvatarContainer">
-                      <div className="TimelineContentAvatar">
-                        <Avatar
-                          src={approverDetails.profilePicture}
-                          sx={{ width: 40, height: 40 }}
-                        />
-                        <div className="TimelineContentAvatarDetails">
-                          <div className="TimelineContentDetailsAvatarName">
-                            {approverDetails.FirstName +
-                              " " +
-                              approverDetails.LastName}
-                          </div>
-                          <div className="TimelineContentDetailsAvatarTitle">
-                            {approverDetails.Title}
-                          </div>
-                          {comment && (
-                            <div className="TimelineContentAvatarComments">
-                              {comment}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    {approverDetails && (
+                      <ApprovalAvatar
+                        Title={approverDetails.Title}
+                        FirstName={approverDetails.FirstName}
+                        LastName={approverDetails.LastName}
+                        comment={comment}
+                        profilePicture={approverDetails.profilePicture}
+                      />
+                    )}
                   </div>
                 </li>
               );

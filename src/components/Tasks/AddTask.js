@@ -17,10 +17,7 @@ import { useAuth } from "../../utils/context/AuthContext";
 import { ref, push } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
 const AddTask = ({ userDetails, myManager }) => {
-  // const { myDetails, setMyDetails } = useContext(myDetailsContext);
   const { associates, setAssociates } = useContext(associatesContext);
-  const [myManagerDetails, setMyManagerDetails] = useState();
-  const { userData } = useAuth();
 
   const hrPerson = {
     id: "4U1DWf95rJvgfAwDYs7m",
@@ -40,10 +37,12 @@ const AddTask = ({ userDetails, myManager }) => {
         {
           approverID: myManager.id,
           status: "pending",
+          timestamp: "pending",
         },
         {
           approverID: hrPerson.id,
           status: "pending",
+          timestamp: "pending",
         },
       ],
       requesterName: userDetails.FirstName + " " + userDetails.LastName,
@@ -55,7 +54,7 @@ const AddTask = ({ userDetails, myManager }) => {
     // setTaskValues({ ...taskValues, hrPerson: hrPerson.id });
   };
   const writeTask = () => {
-    push(ref(rtdb, "Tasks/3bOT8x1SBesW3l9jVQmV"), taskValues);
+    push(ref(rtdb, `Tasks/${userDetails.id}`), taskValues);
   };
 
   return (

@@ -20,7 +20,7 @@ import { useState, useContext, useEffect } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
-import { ref, getDatabase, update } from "firebase/database";
+import { ref, getDatabase, update, onValue } from "firebase/database";
 import TaskProgress from "./approverTimeline/taskProgress";
 import LinearProgress, {
   linearProgressClasses,
@@ -57,15 +57,66 @@ const TaskCard = ({ task, userID }) => {
   const updateValues = (e) => {
     setApproverComments(e.target.value);
   };
+
   const ApproveTask = (status) => {
     const dbrt = getDatabase();
     const ApproveRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers/${userID}`);
     update(ApproveRef, {
       status: status,
-      comment: approverComments,
+      comment: approverComments ? approverComments : "",
       timestamp: Math.round(new Date().getTime() / 1000),
+    }).then(() => {
+      const ApproversRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers`);
+      onValue(
+        ApproversRef,
+        (snapshot) => {
+          const approversObj = snapshot.val();
+          Object.entries(approversObj).map(([key, value]) => {
+            if (key != userID) {
+              // both approved
+              if ((value.status === "approved") & (status === "approved")) {
+                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
+                update(WholeTaskRef, {
+                  status: "approved",
+                });
+                // I approved he recjected
+              } else if (
+                (value.status === "approved") &
+                (status === "recjected")
+              ) {
+                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
+                update(WholeTaskRef, {
+                  status: "rejected",
+                });
+                // he recected I approved
+              } else if (
+                (value.status === "rejected") &
+                (status === "approved")
+              ) {
+                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
+                update(WholeTaskRef, {
+                  status: "rejected",
+                });
+                //Both recjected
+              } else if (
+                (value.status === "rejected") &
+                (status === "rejected")
+              ) {
+                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
+                update(WholeTaskRef, {
+                  status: "rejected",
+                });
+              }
+            }
+          });
+        },
+        {
+          onlyOnce: true,
+        }
+      );
     });
   };
+
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 15,
     borderRadius: 5,
@@ -207,7 +258,7 @@ const TaskCard = ({ task, userID }) => {
               getApproverDetails={getApproverDetails}
             />
           </Grid>
-          {userID && task.requester === userID && (
+          {userID && task.requester === userID && task.status === "pending" && (
             <Grid item sx={{ pt: 2 }}>
               <Button variant="outlined" color="error" size="small">
                 Cancel Task

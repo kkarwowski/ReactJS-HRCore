@@ -92,7 +92,7 @@ const MyTasks = () => {
       {}
     );
   const pendingTasks = filterObject(tasks, "status", "pending");
-  const completeTasks = filterObject(tasks, "status", "complete");
+  const completeTasks = filterObject(tasks, "status", "approved");
   return (
     <Page title="HR Core - Tasks">
       <Button onClick={() => {}}>Log</Button>

@@ -8,12 +8,17 @@ const ApprovalAvatar = ({
   LastName,
   Title,
   comment,
+  awidth = 40,
+  aheight = 40,
 }) => {
   return (
     <div className="TimelineContentAvatarContainer">
       <div className="TimelineContentAvatar">
         {profilePicture && (
-          <Avatar src={profilePicture} sx={{ width: 40, height: 40 }} />
+          <Avatar
+            src={profilePicture}
+            sx={{ width: awidth, height: aheight }}
+          />
         )}
         <div className="TimelineContentAvatarDetails">
           <div className="TimelineContentDetailsAvatarName">

@@ -74,7 +74,7 @@ const AddTask = ({ userDetails, myManager }) => {
         spacing={1}
         sx={{
           p: 3,
-          "& .MuiTextField-root": { m: 1, width: "35ch" },
+          "& .MuiTextField-root": { m: 1, width: "100%" },
         }}
       >
         <Grid item md={12}>

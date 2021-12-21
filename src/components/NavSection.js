@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
 import {
@@ -17,7 +17,10 @@ import {
   ListItemText,
   ListItemIcon,
   ListItemButton,
+  Chip,
 } from "@mui/material";
+import { tasksToApproveContext } from "../utils/context/contexts";
+
 // ----------------------------------------------------------------------
 const ListItemStyle = styled((props) => (
   <ListItemButton disableGutters {...props} />
@@ -60,7 +63,7 @@ NavItem.propTypes = {
   active: PropTypes.func,
 };
 
-function NavItem({ item, active }) {
+function NavItem({ item, active, count }) {
   const theme = useTheme();
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
@@ -165,6 +168,14 @@ function NavItem({ item, active }) {
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
       <ListItemText disableTypography primary={title} />
       {info && info}
+      {count && (
+        <Chip
+          variant="contained"
+          label={count}
+          size="small"
+          sx={{ color: "white", backgroundColor: "#e36952", fontWeight: 500 }}
+        ></Chip>
+      )}
     </ListItemStyle>
   );
 }
@@ -174,6 +185,9 @@ NavSection.propTypes = {
 };
 
 export default function NavSection({ navConfig, ...other }) {
+  const { toApproveCount, setToApproveCount } = useContext(
+    tasksToApproveContext
+  );
   const { pathname } = useLocation();
   const match = (path) =>
     path ? !!matchPath({ path, end: true }, pathname) : false;
@@ -181,9 +195,18 @@ export default function NavSection({ navConfig, ...other }) {
   return (
     <Box {...other}>
       <List disablePadding>
-        {navConfig.map((item) => (
-          <NavItem key={item.title} item={item} active={match} />
-        ))}
+        {navConfig.map((item) =>
+          item.title === "My Tasks" ? (
+            <NavItem
+              key={item.title}
+              item={item}
+              active={match}
+              count={toApproveCount}
+            />
+          ) : (
+            <NavItem key={item.title} item={item} active={match} />
+          )
+        )}
       </List>
     </Box>
   );

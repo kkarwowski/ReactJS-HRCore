@@ -1,5 +1,4 @@
 // ----------------------------------------------------------------------
-
 function pxToRem(value) {
   return `${value / 16}rem`;
 }
@@ -18,7 +17,11 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
-const FONT_PRIMARY = "Public Sans, sans-serif";
+// const FONT_PRIMARY = "Lato, sans-serif";
+// const FONT_PRIMARY = "Poppins, sans-serif";
+// const FONT_PRIMARY = "Public Sans, sans-serif";
+// const FONT_PRIMARY = "Roboto Slab, sans-serif";
+const FONT_PRIMARY = "Bitter, sans-serif";
 
 const typography = {
   fontFamily: FONT_PRIMARY,
@@ -66,6 +69,12 @@ const typography = {
     lineHeight: 12 / 10,
     fontSize: pxToRem(17),
     ...responsiveFontSizes({ sm: 13, md: 13, lg: 13 }),
+  },
+  chip: {
+    fontWeight: 700,
+    lineHeight: 12 / 10,
+    fontSize: pxToRem(15),
+    ...responsiveFontSizes({ sm: 12, md: 12, lg: 12 }),
   },
   tinyBold: {
     fontWeight: 700,

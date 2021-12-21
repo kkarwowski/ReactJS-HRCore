@@ -10,7 +10,9 @@ import {
   Chip,
   Divider,
   Typography,
+  Stack,
 } from "@mui/material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Collapse from "@mui/material/Collapse";
 import moment from "moment";
 import { styled, useTheme } from "@mui/material/styles";
@@ -25,6 +27,7 @@ import TaskProgress from "./approverTimeline/taskProgress";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
+import { fontStyle } from "@mui/system";
 const TaskCard = ({ task, userID }) => {
   const theme = useTheme();
 
@@ -142,9 +145,6 @@ const TaskCard = ({ task, userID }) => {
       >
         <Grid item>
           <Grid container direction="column">
-            <Grid item sx={{ opacity: 0.7, fontSize: "12px" }}>
-              Requester
-            </Grid>
             <Grid item>
               <Grid
                 container
@@ -153,21 +153,31 @@ const TaskCard = ({ task, userID }) => {
                 justifyContent="space-between"
               >
                 <Grid item sx={{ pb: 2 }}>
-                  <Grid container direction="rows" alignItems="center">
-                    <Grid item sx={{ pt: 1 }}>
-                      <ApprovalAvatar
-                        profilePicture={requesterDetails.profilePicture}
-                        FirstName={requesterDetails.FirstName}
-                        LastName={requesterDetails.LastName}
-                        Title={requesterDetails.Title}
-                      />
-                    </Grid>
-                  </Grid>
+                  <Chip
+                    label={task.TaskName + " 💰"}
+                    size="small"
+                    // color={
+                    //   task.TaskName === "Title Change"
+                    //     ? "warning"
+                    //     : task.status === "rejected"
+                    //     ? "error"
+                    //     : "success"
+                    // }
+                    sx={{
+                      color: "#803849",
+                      backgroundColor: "#ffb7c8",
+                      fontSize: theme.typography.chip,
+                    }}
+                    variant={
+                      task.status === "pending" ? "outlined" : "contained"
+                    }
+                  />
                 </Grid>
                 <Grid item>
                   <Chip
                     label={task.status}
                     size="small"
+                    sx={{ fontWeight: 600 }}
                     color={
                       task.status === "pending"
                         ? "warning"
@@ -185,18 +195,47 @@ const TaskCard = ({ task, userID }) => {
           </Grid>
         </Grid>
 
-        <Grid item sx={{ opacity: 0.7, fontSize: "12px" }}>
-          Request Date
+        <Grid item>
+          <Grid
+            container
+            direction="row"
+            spacing={2}
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Grid item sx={{ pb: 2 }}>
+              <Grid container direction="rows" alignItems="center">
+                <Typography variant="h7" sx={{ opacity: 0.5 }}>
+                  by
+                </Typography>
+                <Grid item sx={{ pt: 1 }}>
+                  <ApprovalAvatar
+                    awidth={30}
+                    aheight={30}
+                    profilePicture={requesterDetails.profilePicture}
+                    FirstName={requesterDetails.FirstName}
+                    LastName={requesterDetails.LastName}
+                    Title={requesterDetails.Title}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Stack
+                direction="row"
+                spacing={1}
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <AccessTimeIcon fontSize="small" sx={{ opacity: 0.5 }} />
+                <Typography variant="h7" sx={{ opacity: 0.5 }}>
+                  {moment(task.timestamp).format("D MMM YY")}
+                </Typography>
+              </Stack>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item sx={{ fontSize: "14px", pt: 1 }}>
-          {moment(task.timestamp).format("D MMM YYYY")}
-        </Grid>
-        <Grid item sx={{ opacity: 0.7, fontSize: "12px", pt: 1 }}>
-          Category
-        </Grid>
-        <Grid item sx={{ fontSize: "14px", pt: 1 }}>
-          {task.TaskName}
-        </Grid>
+
         <Grid item sx={{ opacity: 0.7, fontSize: "12px", pt: 1 }}>
           Target associate
         </Grid>
@@ -209,9 +248,9 @@ const TaskCard = ({ task, userID }) => {
             Title={targetDetails.Title}
           />
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <TaskProgress />
-        </Grid>
+        </Grid> */}
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

@@ -19,7 +19,10 @@ import {
 } from "firebase/database";
 // import { rtdb } from "../utils/firebase";
 import { Button, Grid, Card, Box, Typography, Stack } from "@mui/material";
-import { associatesContext } from "../utils/context/contexts";
+import {
+  associatesContext,
+  tasksToApproveContext,
+} from "../utils/context/contexts";
 import { useAuth } from "../utils/context/AuthContext";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../utils/firebase";
@@ -32,7 +35,9 @@ const MyTasks = () => {
   const [myManager, setMyManager] = useState();
   const [tasks, setTasks] = useState({});
   const [tasksToApprove, setTaskstoApprove] = useState({});
-
+  const { toApproveCount, setToApproveCount } = useContext(
+    tasksToApproveContext
+  );
   useEffect(() => {
     const getDTDB = () => {
       const dbrt = getDatabase();
@@ -93,6 +98,7 @@ const MyTasks = () => {
     );
   const pendingTasks = filterObject(tasks, "status", "pending");
   const completeTasks = filterObject(tasks, "status", "approved");
+  setToApproveCount(Object.keys(tasksToApprove).length);
   return (
     <Page title="HR Core - Tasks">
       <Button onClick={() => {}}>Log</Button>
@@ -123,6 +129,7 @@ const MyTasks = () => {
                       px: 1,
                       py: 0.5,
                       color: "white",
+                      minWidth: "25px",
                     }}
                   >
                     {Object.keys(pendingTasks).length}
@@ -142,7 +149,9 @@ const MyTasks = () => {
                 );
               })}
             {userDetails && (
-              <AddTask userDetails={userDetails} myManager={myManager} />
+              <Grid item>
+                <AddTask userDetails={userDetails} myManager={myManager} />
+              </Grid>
             )}
           </Grid>
           {/* {userDetails && (
@@ -175,6 +184,7 @@ const MyTasks = () => {
                       px: 1,
                       py: 0.5,
                       color: "white",
+                      minWidth: "25px",
                     }}
                   >
                     {Object.keys(tasksToApprove).length}
@@ -221,6 +231,7 @@ const MyTasks = () => {
                       px: 1,
                       py: 0.5,
                       color: "white",
+                      minWidth: "25px",
                     }}
                   >
                     {Object.keys(completeTasks).length}

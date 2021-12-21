@@ -96,14 +96,14 @@ export default function MaleVSFemaleGraph() {
     plotOptions: {
       radialBar: {
         dataLabels: {
-          // total: {
-          //   show: true,
-          //   label: "Female vs Male",
-          //   // formatter: function (w) {
-          //   //   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-          //   //   return 249;
-          //   // },
-          // },
+          total: {
+            show: true,
+            label: "Female vs Male",
+            // formatter: function (w) {
+            //   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
+            //   return 249;
+            // },
+          },
         },
         hollow: {
           size: "50%",
@@ -114,7 +114,7 @@ export default function MaleVSFemaleGraph() {
   return (
     <Card>
       <CardHeader title="Male vs Female " />
-      {/* {allData && (
+      {allData && (
         <ChartWrapperStyle dir="ltr">
           <ReactApexChart
             options={chartOptions}
@@ -122,9 +122,9 @@ export default function MaleVSFemaleGraph() {
             type="radialBar"
             height={300}
           />
-        </ChartWrapperStyle> */}
-      {/* )} */}
-      <Svgg />
+        </ChartWrapperStyle>
+      )}
+      {/* <Svgg /> */}
     </Card>
   );
 }

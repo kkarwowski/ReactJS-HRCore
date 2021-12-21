@@ -95,7 +95,6 @@ const MyTasks = () => {
   const completeTasks = filterObject(tasks, "status", "complete");
   return (
     <Page title="HR Core - Tasks">
-      <h1>My Tasks</h1>
       <Button onClick={() => {}}>Log</Button>
       <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
         <Grid item xs={12} md={4} lg={4}>
@@ -103,7 +102,7 @@ const MyTasks = () => {
             <Grid item>
               <Box
                 sx={{
-                  backgroundColor: theme.palette.primary.light,
+                  background: theme.palette.primary.light,
                   px: 1,
                   py: 0.5,
                   "border-radius": "10px",

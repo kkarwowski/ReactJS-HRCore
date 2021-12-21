@@ -13,8 +13,7 @@ import {
 } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import moment from "moment";
-
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useContext, useEffect } from "react";
@@ -22,7 +21,13 @@ import { associatesContext } from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
 import { ref, getDatabase, update } from "firebase/database";
+import TaskProgress from "./approverTimeline/taskProgress";
+import LinearProgress, {
+  linearProgressClasses,
+} from "@mui/material/LinearProgress";
 const TaskCard = ({ task, userID }) => {
+  const theme = useTheme();
+
   const { associates, setAssociates } = useContext(associatesContext);
   const [expanded, setExpanded] = useState(false);
   const getApproverDetails = (id) => {
@@ -32,8 +37,10 @@ const TaskCard = ({ task, userID }) => {
   const requesterDetails = getApproverDetails(task.requester);
   const targetDetails = getApproverDetails(task.TargetValue);
   const [approverComments, setApproverComments] = useState();
+
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
+
     return <IconButton {...other} />;
   })(({ theme, expand }) => ({
     transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
@@ -52,24 +59,28 @@ const TaskCard = ({ task, userID }) => {
   };
   const ApproveTask = (status) => {
     const dbrt = getDatabase();
-
-    // const ChangedRef = ref(dbrt, `Tasks/${task.TaskPath}/`);
-    // const ChangedRef = ref(
-    //   dbrt,
-    //   `Tasks/3bOT8x1SBesW3l9jVQmV/MyTasks/-MrNOML489WlD3Mo7kuy/`
-    // );
-    const ChangedRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers/${userID}`);
-    console.log(task.TaskPath);
-    console.log(approverComments);
-    update(ChangedRef, {
+    const ApproveRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers/${userID}`);
+    update(ApproveRef, {
       status: status,
       comment: approverComments,
       timestamp: Math.round(new Date().getTime() / 1000),
     });
   };
+  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 15,
+    borderRadius: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor:
+        theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 5,
+      backgroundColor: theme.palette.mode === "light" ? "#1a90ff" : "#308fe8",
+    },
+  }));
   console.log("Task", task);
   return (
-    <Card>
+    <Card sx={{ background: "#fff" }}>
       <Grid
         container
         direction="column"
@@ -147,6 +158,9 @@ const TaskCard = ({ task, userID }) => {
             Title={targetDetails.Title}
           />
         </Grid>
+        <Grid item>
+          <TaskProgress />
+        </Grid>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -193,51 +207,53 @@ const TaskCard = ({ task, userID }) => {
               getApproverDetails={getApproverDetails}
             />
           </Grid>
-          {task.requester === userID && (
+          {userID && task.requester === userID && (
             <Grid item sx={{ pt: 2 }}>
               <Button variant="outlined" color="error" size="small">
                 Cancel Task
               </Button>
             </Grid>
           )}
-          {task.approvers.hasOwnProperty(userID) &
-          (task.approvers[userID].status === "pending") ? (
-            <Grid item sx={{ pt: 2 }}>
-              <Grid item sx={{ pb: 2 }}>
-                <TextField
-                  label="Comment"
-                  size="small"
-                  style={{ width: "100%" }}
-                  onChange={updateValues}
-                ></TextField>
-              </Grid>
-              <Grid container direction="row">
-                <Grid item sx={{ pr: 1 }} md={6} xs={6} lg={6}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={() => {
-                      ApproveTask("approved");
-                    }}
-                  >
-                    Approve
-                  </Button>
+          {console.log(task.approvers["4U1DWf95rJvgfAwDYs7m"].status, "ssss")}
+          {task.approvers.hasOwnProperty(userID)
+            ? task.approvers[userID].status === "pending" && (
+                <Grid item sx={{ pt: 2 }}>
+                  <Grid item sx={{ pb: 2 }}>
+                    <TextField
+                      label="Comment"
+                      size="small"
+                      style={{ width: "100%" }}
+                      onChange={updateValues}
+                    ></TextField>
+                  </Grid>
+                  <Grid container direction="row">
+                    <Grid item sx={{ pr: 1 }} md={6} xs={6} lg={6}>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        onClick={() => {
+                          ApproveTask("approved");
+                        }}
+                      >
+                        Approve
+                      </Button>
+                    </Grid>
+                    <Grid item sx={{ pr: 1 }} md={6} xs={6} lg={6}>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="error"
+                        onClick={() => {
+                          ApproveTask("rejected");
+                        }}
+                      >
+                        Reject
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </Grid>
-                <Grid item sx={{ pr: 1 }} md={6} xs={6} lg={6}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="error"
-                    onClick={() => {
-                      ApproveTask("rejected");
-                    }}
-                  >
-                    Reject
-                  </Button>
-                </Grid>
-              </Grid>
-            </Grid>
-          ) : null}
+              )
+            : null}
         </Collapse>
       </Grid>
     </Card>

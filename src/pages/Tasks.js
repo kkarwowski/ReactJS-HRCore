@@ -33,46 +33,45 @@ const MyTasks = () => {
   const { associates } = useContext(associatesContext);
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
-  const [tasks, setTasks] = useState({});
-  const [tasksToApprove, setTaskstoApprove] = useState({});
-  const { toApproveCount, setToApproveCount } = useContext(
-    tasksToApproveContext
-  );
+  // const [tasks, setTasks] = useState({});
+  // const [tasksToApprove, setTaskstoApprove] = useState({});
+  const { toApproveCount, setToApproveCount, tasks, tasksToApprove } =
+    useContext(tasksToApproveContext);
   useEffect(() => {
-    const getDTDB = () => {
-      const dbrt = getDatabase();
-      const ChangedRef = ref(dbrt, `Tasks/${userData.AssociateID}/MyTasks/`);
-      onValue(ChangedRef, (snapshot) => {
-        if (snapshot.val() != null) {
-          const data = snapshot.val();
-          setTasks({ ...data });
-        } else {
-          setTasks({});
-        }
-      });
-      const ChangedRefApprove = ref(
-        dbrt,
-        `Tasks/${userData.AssociateID}/ToApprove/`
-      );
-      onValue(ChangedRefApprove, (snapshot) => {
-        if (snapshot.val() != null) {
-          const data = snapshot.val();
-          Object.keys(data).forEach((key, index) => {
-            const Taskpath = data[key].TaskPath;
-            onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
-              const snapp = snapshot.val();
-              setTaskstoApprove((prev) => ({
-                ...prev,
-                [index]: { ...snapp, TaskPath: data[key].TaskPath },
-              }));
-            });
-          });
-        } else {
-          setTaskstoApprove({});
-        }
-      });
-    };
-    getDTDB();
+    // const getDTDB = () => {
+    //   const dbrt = getDatabase();
+    //   const ChangedRef = ref(dbrt, `Tasks/${userData.AssociateID}/MyTasks/`);
+    //   onValue(ChangedRef, (snapshot) => {
+    //     if (snapshot.val() != null) {
+    //       const data = snapshot.val();
+    //       setTasks({ ...data });
+    //     } else {
+    //       setTasks({});
+    //     }
+    //   });
+    //   const ChangedRefApprove = ref(
+    //     dbrt,
+    //     `Tasks/${userData.AssociateID}/ToApprove/`
+    //   );
+    //   onValue(ChangedRefApprove, (snapshot) => {
+    //     if (snapshot.val() != null) {
+    //       const data = snapshot.val();
+    //       Object.keys(data).forEach((key, index) => {
+    //         const Taskpath = data[key].TaskPath;
+    //         onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
+    //           const snapp = snapshot.val();
+    //           setTaskstoApprove((prev) => ({
+    //             ...prev,
+    //             [index]: { ...snapp, TaskPath: data[key].TaskPath },
+    //           }));
+    //         });
+    //       });
+    //     } else {
+    //       setTaskstoApprove({});
+    //     }
+    //   });
+    // };
+    // getDTDB();
 
     const AssociatesCollectionRef = doc(db, "Associates", userData.AssociateID);
     getDoc(AssociatesCollectionRef).then((result) => {
@@ -98,7 +97,7 @@ const MyTasks = () => {
     );
   const pendingTasks = filterObject(tasks, "status", "pending");
   const completeTasks = filterObject(tasks, "status", "approved");
-  setToApproveCount(Object.keys(tasksToApprove).length);
+
   return (
     <Page title="HR Core - Tasks">
       <Button onClick={() => {}}>Log</Button>

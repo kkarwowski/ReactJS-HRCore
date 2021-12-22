@@ -2,15 +2,13 @@ import {
   Button,
   Card,
   Grid,
-  MenuItem,
   TextField,
-  CardHeader,
-  CardContent,
-  Avatar,
   Chip,
-  Divider,
   Typography,
   Stack,
+  Box,
+  AvatarGroup,
+  Avatar,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Collapse from "@mui/material/Collapse";
@@ -22,15 +20,9 @@ import { useState, useContext, useEffect } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
-import { ref, getDatabase, update, onValue } from "firebase/database";
-import TaskProgress from "./approverTimeline/taskProgress";
-import LinearProgress, {
-  linearProgressClasses,
-} from "@mui/material/LinearProgress";
-import { fontStyle } from "@mui/system";
+import { ApproveTask } from "./taksFunctions";
+import CategoryChip from "./CardElements/CategoryChip";
 const TaskCard = ({ task, userID }) => {
-  const theme = useTheme();
-
   const { associates, setAssociates } = useContext(associatesContext);
   const [expanded, setExpanded] = useState(false);
   const getApproverDetails = (id) => {
@@ -61,78 +53,6 @@ const TaskCard = ({ task, userID }) => {
     setApproverComments(e.target.value);
   };
 
-  const ApproveTask = (status) => {
-    const dbrt = getDatabase();
-    const ApproveRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers/${userID}`);
-    update(ApproveRef, {
-      status: status,
-      comment: approverComments ? approverComments : "",
-      timestamp: Math.round(new Date().getTime() / 1000),
-    }).then(() => {
-      const ApproversRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers`);
-      onValue(
-        ApproversRef,
-        (snapshot) => {
-          const approversObj = snapshot.val();
-          Object.entries(approversObj).map(([key, value]) => {
-            if (key != userID) {
-              // both approved
-              if ((value.status === "approved") & (status === "approved")) {
-                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-                update(WholeTaskRef, {
-                  status: "approved",
-                });
-                // I approved he recjected
-              } else if (
-                (value.status === "approved") &
-                (status === "recjected")
-              ) {
-                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-                update(WholeTaskRef, {
-                  status: "rejected",
-                });
-                // he recected I approved
-              } else if (
-                (value.status === "rejected") &
-                (status === "approved")
-              ) {
-                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-                update(WholeTaskRef, {
-                  status: "rejected",
-                });
-                //Both recjected
-              } else if (
-                (value.status === "rejected") &
-                (status === "rejected")
-              ) {
-                const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-                update(WholeTaskRef, {
-                  status: "rejected",
-                });
-              }
-            }
-          });
-        },
-        {
-          onlyOnce: true,
-        }
-      );
-    });
-  };
-
-  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-    height: 15,
-    borderRadius: 5,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor:
-        theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
-    },
-    [`& .${linearProgressClasses.bar}`]: {
-      borderRadius: 5,
-      backgroundColor: theme.palette.mode === "light" ? "#1a90ff" : "#308fe8",
-    },
-  }));
-  console.log("Task", task);
   return (
     <Card sx={{ background: "#fff" }}>
       <Grid
@@ -152,26 +72,8 @@ const TaskCard = ({ task, userID }) => {
                 spacing={2}
                 justifyContent="space-between"
               >
-                <Grid item sx={{ pb: 2 }}>
-                  <Chip
-                    label={task.TaskName + " 💰"}
-                    size="small"
-                    // color={
-                    //   task.TaskName === "Title Change"
-                    //     ? "warning"
-                    //     : task.status === "rejected"
-                    //     ? "error"
-                    //     : "success"
-                    // }
-                    sx={{
-                      color: "#803849",
-                      backgroundColor: "#ffb7c8",
-                      fontSize: theme.typography.chip,
-                    }}
-                    variant={
-                      task.status === "pending" ? "outlined" : "contained"
-                    }
-                  />
+                <Grid item sx={{ pb: 1 }}>
+                  <CategoryChip taskname={task.TaskName} />
                 </Grid>
                 <Grid item>
                   <Chip
@@ -193,6 +95,19 @@ const TaskCard = ({ task, userID }) => {
               </Grid>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item>
+          <Box
+            sx={{
+              opacity: 0.7,
+              fontSize: "12px",
+              py: 1,
+              fontStyle: "italic",
+              maxWidth: "70%",
+            }}
+          >
+            {task.Reason ? task.Reason : null}
+          </Box>
         </Grid>
 
         <Grid item>
@@ -229,41 +144,79 @@ const TaskCard = ({ task, userID }) => {
               >
                 <AccessTimeIcon fontSize="small" sx={{ opacity: 0.5 }} />
                 <Typography variant="h7" sx={{ opacity: 0.5 }}>
-                  {moment(task.timestamp).format("D MMM YY")}
+                  {moment.unix(task.timestamp).format("D MMM YY")}
                 </Typography>
               </Stack>
             </Grid>
           </Grid>
         </Grid>
-
         <Grid item sx={{ opacity: 0.7, fontSize: "12px", pt: 1 }}>
           Target associate
         </Grid>
-
-        <Grid item sx={{ pt: 1 }}>
-          <ApprovalAvatar
-            profilePicture={targetDetails.profilePicture}
-            FirstName={targetDetails.FirstName}
-            LastName={targetDetails.LastName}
-            Title={targetDetails.Title}
-          />
+        {targetDetails && (
+          <Grid item sx={{ pt: 1 }}>
+            <ApprovalAvatar
+              awidth={30}
+              aheight={30}
+              profilePicture={targetDetails.profilePicture}
+              FirstName={targetDetails.FirstName}
+              LastName={targetDetails.LastName}
+              Title={targetDetails.Title}
+            />
+          </Grid>
+        )}
+        <Grid item sx={{ pt: 1 }}></Grid>
+        <Grid container direction="row" justifyContent="space-between">
+          <Grid item>
+            {!expanded ? (
+              <Grid container direction="column" alignContent="flex-start">
+                <Grid item sx={{ opacity: 0.7, fontSize: "12px", py: 1 }}>
+                  Approval
+                </Grid>
+                <Grid item>
+                  <AvatarGroup>
+                    {Object.entries(task.approvers).map(([key, value]) => {
+                      const { status } = value;
+                      const approverDetails = getApproverDetails(key);
+                      const statusColor = (status) => {
+                        if (status === "pending") {
+                          return "#ffa55a";
+                        } else return "#49e51b";
+                      };
+                      return (
+                        <Avatar
+                          src={approverDetails.profilePicture}
+                          sx={{
+                            width: 20,
+                            height: 20,
+                            "&.MuiAvatar-root": {
+                              border: `2px solid ${statusColor(status)}`,
+                            },
+                          }}
+                        />
+                      );
+                    })}
+                  </AvatarGroup>
+                </Grid>
+              </Grid>
+            ) : null}
+          </Grid>
+          <Grid item sx={{ mr: -1 }}>
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon fontSize="small" />
+            </ExpandMore>
+          </Grid>
         </Grid>
-        {/* <Grid item>
-          <TaskProgress />
-        </Grid> */}
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon fontSize="small" />
-        </ExpandMore>
+
         <Collapse in={expanded} unmountOnExit>
           {/* timeout="auto" */}
-
           <Grid item sx={{ opacity: 0.7, fontSize: "12px", pt: 1 }}>
-            New Title
+            New {task.TaskName.split(" ").slice(0, 1)}
           </Grid>
           <Grid item sx={{ fontSize: "14px", pt: 1 }}>
             {task.Value}
@@ -287,10 +240,10 @@ const TaskCard = ({ task, userID }) => {
               </Grid>
             </>
           )}
+
           <Grid item sx={{ opacity: 0.7, fontSize: "12px", pt: 1 }}>
             Approval
           </Grid>
-
           <Grid item>
             <ApprovalTimeline
               task={task}
@@ -304,7 +257,6 @@ const TaskCard = ({ task, userID }) => {
               </Button>
             </Grid>
           )}
-          {console.log(task.approvers["4U1DWf95rJvgfAwDYs7m"].status, "ssss")}
           {task.approvers.hasOwnProperty(userID)
             ? task.approvers[userID].status === "pending" && (
                 <Grid item sx={{ pt: 2 }}>
@@ -322,7 +274,12 @@ const TaskCard = ({ task, userID }) => {
                         fullWidth
                         variant="contained"
                         onClick={() => {
-                          ApproveTask("approved");
+                          ApproveTask(
+                            "approved",
+                            task.TaskPath,
+                            userID,
+                            approverComments
+                          );
                         }}
                       >
                         Approve
@@ -334,7 +291,12 @@ const TaskCard = ({ task, userID }) => {
                         variant="contained"
                         color="error"
                         onClick={() => {
-                          ApproveTask("rejected");
+                          ApproveTask(
+                            "rejected",
+                            task.TaskPath,
+                            userID,
+                            approverComments
+                          );
                         }}
                       >
                         Reject

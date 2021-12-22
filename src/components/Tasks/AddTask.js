@@ -5,17 +5,13 @@ import {
   MenuItem,
   TextField,
   CardHeader,
-  CardContent,
 } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
-import { Box } from "@mui/system";
-import {
-  associatesContext,
-  myDetailsContext,
-} from "../../utils/context/contexts";
-import { useAuth } from "../../utils/context/AuthContext";
+import { useState, useContext } from "react";
+import { associatesContext } from "../../utils/context/contexts";
 import { ref, push } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
+import ChangeTitleTask from "./addTaskElements/ChangeTitleTask";
+import IncreaseSalary from "./addTaskElements/IncreaseSalary";
 const AddTask = ({ userDetails, myManager }) => {
   const { associates, setAssociates } = useContext(associatesContext);
 
@@ -33,18 +29,16 @@ const AddTask = ({ userDetails, myManager }) => {
       status: "pending",
       TaskName: event.target.value,
       requester: userDetails.id,
-      approvers: [
-        myManager.id,
-        {
+      approvers: {
+        [myManager.id]: {
           status: "pending",
           timestamp: "pending",
         },
-        hrPerson.id,
-        {
+        [hrPerson.id]: {
           status: "pending",
           timestamp: "pending",
         },
-      ],
+      },
       requesterName: userDetails.FirstName + " " + userDetails.LastName,
       timestamp: Math.round(new Date().getTime() / 1000),
     });
@@ -58,8 +52,8 @@ const AddTask = ({ userDetails, myManager }) => {
       taskValues
     );
     // write to each requester in To Approve with path to this specific task
-    taskValues.approvers.forEach((approver) => {
-      push(ref(rtdb, `Tasks/${approver.approverID}/ToApprove`), {
+    Object.keys(taskValues.approvers).forEach((approver, index) => {
+      push(ref(rtdb, `Tasks/${approver}/ToApprove`), {
         TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
       });
     });
@@ -71,10 +65,10 @@ const AddTask = ({ userDetails, myManager }) => {
       <Grid
         container
         direction="column"
-        spacing={1}
+        spacing={3}
         sx={{
           p: 3,
-          "& .MuiTextField-root": { m: 1, width: "100%" },
+          "& .MuiTextField-root": { width: "100%" },
         }}
       >
         <Grid item md={12}>
@@ -88,72 +82,34 @@ const AddTask = ({ userDetails, myManager }) => {
             <MenuItem key="1" value="Title Change">
               Title Change
             </MenuItem>
-            <MenuItem key="w" value="Another">
+            <MenuItem key="2" value="Salary Increase">
+              Salary Increase
+            </MenuItem>
+            <MenuItem key="3" value="Another">
               Another
             </MenuItem>
           </TextField>
         </Grid>
 
         {show == "Title Change" ? (
-          <>
-            <Grid item md={12}>
-              <TextField
-                label="New Title"
-                size="small"
-                name="Value"
-                onChange={handleValues}
-              ></TextField>
-            </Grid>
-            <Grid item md={12}>
-              <TextField
-                select
-                label="Target Associate"
-                size="small"
-                name="TargetValue"
-                onChange={handleValues}
-              >
-                {associates.map((associate) => (
-                  <MenuItem key={associate.id} value={associate.id}>
-                    {associate.FirstName} {associate.LastName}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item md={12}>
-              {myManager && (
-                <TextField
-                  size="small"
-                  name={"YourManager"}
-                  label="1st approver - Your Manager"
-                  disabled={true}
-                  value={myManager.FirstName + " " + myManager.LastName}
-                ></TextField>
-              )}
-            </Grid>
-
-            <Grid item md={12}>
-              <TextField
-                size="small"
-                label="2nd Approver - HR Person"
-                value={hrPerson.name}
-                disabled={true}
-              ></TextField>
-            </Grid>
-            <Grid item md={12}>
-              <Button fullWidth variant="contained" onClick={writeTask}>
-                Submit
-              </Button>
-            </Grid>
-          </>
+          <ChangeTitleTask
+            handleValues={handleValues}
+            associates={associates}
+            myManager={myManager}
+            hrPerson={hrPerson}
+            writeTask={writeTask}
+          />
+        ) : null}
+        {show == "Salary Increase" ? (
+          <IncreaseSalary
+            handleValues={handleValues}
+            associates={associates}
+            myManager={myManager}
+            hrPerson={hrPerson}
+            writeTask={writeTask}
+          />
         ) : null}
       </Grid>
-      <Button
-        onClick={() => {
-          console.log(taskValues);
-        }}
-      >
-        Log
-      </Button>
     </Card>
   );
 };

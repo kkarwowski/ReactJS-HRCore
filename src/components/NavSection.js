@@ -168,7 +168,7 @@ function NavItem({ item, active, count }) {
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
       <ListItemText disableTypography primary={title} />
       {info && info}
-      {count && (
+      {count > 0 && (
         <Chip
           variant="contained"
           label={count}
@@ -185,9 +185,7 @@ NavSection.propTypes = {
 };
 
 export default function NavSection({ navConfig, ...other }) {
-  const { toApproveCount, setToApproveCount } = useContext(
-    tasksToApproveContext
-  );
+  const { toApproveCount } = useContext(tasksToApproveContext);
   const { pathname } = useLocation();
   const match = (path) =>
     path ? !!matchPath({ path, end: true }, pathname) : false;

@@ -54,6 +54,8 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [toApproveCount, setToApproveCount] = useState();
+  const [tasks, setTasks] = useState({});
+  const [tasksToApprove, setTaskstoApprove] = useState({});
   //
   const [currentUser, setCurrentUser] = useState();
   const [userData, setUserData] = useState();
@@ -121,40 +123,17 @@ function App() {
       );
     };
 
-    // const getTasks = () => {
-    //   const tasksRef = ref(rtdb, "Tasks");
-    //   // const tasksRef = ref(getDatabase());
-
-    //   // onChildAdded(tasksRef, (data) => {
-    //   //   // tasks.push(data.val());
-    //   //   console.log("value", data.val());
-    //   // });
-    //   onValue(tasksRef, (snapshot) => {
-    //     const data = snapshot.val();
-    //     console.log(data.name);
-    //     setTasks(data.name);
-    //   });
-    //   // get(child(tasksRef, `Tasks/`))
-    //   //   .then((snapshot) => {
-    //   //     if (snapshot.exists()) {
-    //   //       console.log("val", snapshot.val());
-    //   //       snapshot.map((f) => {
-    //   //         console.log(f);
-    //   //       });
-    //   //     } else {
-    //   //       console.log("No data available");
-    //   //     }
-    //   //   })
-    //   //   .catch((error) => {
-    //   //     console.error(error);
-    //   //   });
-    // };
     getAssociates();
     // getTasks();
     getDepartments();
     getOffices();
+    // {
+    //   userData && userData.AssociateID && getDTDB();
+    // }
+
     return unsubscribe;
   }, [updateAssociates]);
+
   const value = {
     currentUser,
     userData,
@@ -168,13 +147,59 @@ function App() {
     updateUserEmail,
     updateUserPassword,
   };
+  useEffect(() => {
+    const getDTDB = () => {
+      console.log("Getting tasks");
+      const dbrt = getDatabase();
+      const ChangedRef = ref(dbrt, `Tasks/${userData.AssociateID}/MyTasks/`);
+      onValue(ChangedRef, (snapshot) => {
+        if (snapshot.val() != null) {
+          const data = snapshot.val();
+          console.log("my tasks", snapshot.val());
+          setTasks({ ...data });
+        } else {
+          setTasks({});
+        }
+      });
+      const ChangedRefApprove = ref(
+        dbrt,
+        `Tasks/${userData.AssociateID}/ToApprove/`
+      );
+      onValue(ChangedRefApprove, (snapshot) => {
+        if (snapshot.val() != null) {
+          const data = snapshot.val();
+          Object.keys(data).forEach((key, index) => {
+            const Taskpath = data[key].TaskPath;
+            onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
+              const snapp = snapshot.val();
+              console.log("snapp", snapp);
+              setTaskstoApprove((prev) => ({
+                ...prev,
+                [index]: { ...snapp, TaskPath: data[key].TaskPath },
+              }));
+            });
+          });
+        } else {
+          setTaskstoApprove({});
+        }
+      });
+    };
+    {
+      userData && getDTDB();
+    }
+  }, [userData]);
 
+  useEffect(() => {
+    {
+      tasksToApprove && setToApproveCount(Object.keys(tasksToApprove).length);
+    }
+  }, [tasksToApprove]);
   return (
     <>
       {/* <AuthProvider> */}
       <AuthContext.Provider value={value}>
         <tasksToApproveContext.Provider
-          value={{ toApproveCount, setToApproveCount }}
+          value={{ toApproveCount, setToApproveCount, tasks, tasksToApprove }}
         >
           <resultsPerPageContext.Provider
             value={{ rowsPerPage, setRowsPerPage }}

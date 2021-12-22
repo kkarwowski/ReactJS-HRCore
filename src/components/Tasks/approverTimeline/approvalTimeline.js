@@ -60,6 +60,8 @@ const ApprovalTimeline = ({ task, getApproverDetails }) => {
                     </div>
                     {approverDetails && (
                       <ApprovalAvatar
+                        awidth={35}
+                        aheight={35}
                         Title={approverDetails.Title}
                         FirstName={approverDetails.FirstName}
                         LastName={approverDetails.LastName}

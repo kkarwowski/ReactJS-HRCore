@@ -7,8 +7,7 @@ const CategoryChip = ({ taskname }) => {
   const styling = {
     "Title Change": {
       color: "#803849",
-      backgroundColor: "#ffb7c8",
-
+      backgroundColor: "#ffd4de",
       fontSize: theme.typography.chip,
     },
     "Salary Increase": {
@@ -17,8 +16,21 @@ const CategoryChip = ({ taskname }) => {
       fontSize: theme.typography.chip,
     },
   };
+  // blue
+  //   color: "#007e97",
+  //       backgroundColor: "#ccf6fe",
 
-  return <Chip label={taskname} size="small" sx={styling[taskname]} />;
+  // greem
+
+  //   color: "#005043",
+  //       backgroundColor: "#99e9dc",
+  return (
+    <Chip
+      label={taskname === "Salary Increase" ? taskname + " 💰" : taskname}
+      size="small"
+      sx={styling[taskname]}
+    />
+  );
 };
 
 export default CategoryChip;

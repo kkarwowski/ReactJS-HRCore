@@ -1,5 +1,9 @@
 import React from "react";
 import { ref, getDatabase, update, onValue } from "firebase/database";
+export function CancelTask(status, TaskPath, userID, approverComments) {
+  // delete ToApprove tasks from each approver
+  // delete this task
+}
 
 export function ApproveTask(status, TaskPath, userID, approverComments) {
   const dbrt = getDatabase();

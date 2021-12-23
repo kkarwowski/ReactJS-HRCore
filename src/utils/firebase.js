@@ -28,4 +28,8 @@ const appCheck = initializeAppCheck(app, {
   ),
   isTokenAutoRefreshEnabled: true,
 });
+// enable this to get debug token
+// if (process.env.NODE_ENV !== "production") {
+//   appCheck.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+// }
 export { db, auth, rtdb };

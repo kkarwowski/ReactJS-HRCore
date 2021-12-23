@@ -23,7 +23,9 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const rtdb = getDatabase(app);
 const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider("6Le7k8MdAAAAACUZAidigavOiIDBZmgPKIzVvPbF"),
+  provider: new ReCaptchaV3Provider(
+    process.env.REACT_APP_FIREBASE_APP_CHECK_TOKEN
+  ),
   isTokenAutoRefreshEnabled: true,
 });
 export { db, auth, rtdb };

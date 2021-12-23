@@ -1,5 +1,5 @@
 import React from "react";
-import { ref, getDatabase, update, onValue } from "firebase/database";
+import { ref, getDatabase, update, onValue, remove } from "firebase/database";
 import { db } from "../../utils/firebase";
 import {
   doc,
@@ -13,7 +13,25 @@ export function CancelTask(status, TaskPath, userID, approverComments) {
   // delete this task
 }
 
-export async function ActOnTask(task, requesterDetails) {
+export function DeleteToApprove(id, taskPath) {
+  const dbrt = getDatabase();
+  //   console.log("task path", taskPath);
+  const ChangedRefApprove = ref(dbrt, `Tasks/${id}/ToApprove/`);
+  onValue(ChangedRefApprove, (snapshot) => {
+    const data = snapshot.val();
+    // console.log(data, "data");
+    Object.entries(data).map(([key, value]) => {
+      //   console.log("Value", value);
+      if (value.TaskPath === taskPath) {
+        // console.log("key", key);
+        const deleteRef = ref(dbrt, `Tasks/${id}/ToApprove/${key}`);
+        remove(deleteRef);
+      }
+    });
+  });
+}
+
+export async function ActOnTask(task, requesterDetails, userID) {
   console.log(requesterDetails, "approver details");
   const categoryToUse = task.TaskName.split(" ").slice(0, 1)[0];
 
@@ -27,7 +45,7 @@ export async function ActOnTask(task, requesterDetails) {
     AssociateID: task.TargetValue,
   };
   await addDoc(collection(db, "Changes"), changesObject);
-
+  DeleteToApprove(userID, task.TaskPath);
   // delete To Approve
   //   const dbrt = getDatabase();
 }
@@ -59,7 +77,7 @@ export function ApproveTask(
               update(WholeTaskRef, {
                 status: "approved",
               });
-              ActOnTask(task, requesterDetails);
+              ActOnTask(task, requesterDetails, userID);
               // I approved he recjected
             } else if (
               (value.status === "approved") &

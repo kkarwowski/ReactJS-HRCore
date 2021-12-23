@@ -45,6 +45,8 @@ const TaskCard = ({ task, userID }) => {
     }),
   }));
 
+  const getToApprove = () => {};
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -281,7 +283,8 @@ const TaskCard = ({ task, userID }) => {
                             task,
                             requesterDetails,
                             userID,
-                            approverComments
+                            approverComments,
+                            userID
                           );
                         }}
                       >
@@ -298,9 +301,9 @@ const TaskCard = ({ task, userID }) => {
                             "rejected",
                             task,
                             requesterDetails,
-
                             userID,
-                            approverComments
+                            approverComments,
+                            userID
                           );
                         }}
                       >

@@ -96,7 +96,10 @@ const MyTasks = () => {
       {}
     );
   const pendingTasks = filterObject(tasks, "status", "pending");
-  const completeTasks = filterObject(tasks, "status", "approved");
+  const approvedTasks = filterObject(tasks, "status", "approved");
+  const rejectedTasks = filterObject(tasks, "status", "rejected");
+
+  const completeTasks = { ...approvedTasks, ...rejectedTasks };
 
   return (
     <Page title="HR Core - Tasks">

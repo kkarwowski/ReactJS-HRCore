@@ -53,6 +53,7 @@ const TaskCard = ({ task, userID }) => {
     setApproverComments(e.target.value);
   };
 
+  console.log("Task Path", task.TaskPath);
   return (
     <Card sx={{ background: "#fff" }}>
       <Grid
@@ -189,6 +190,7 @@ const TaskCard = ({ task, userID }) => {
                           sx={{
                             width: 20,
                             height: 20,
+
                             "&.MuiAvatar-root": {
                               border: `2px solid ${statusColor(status)}`,
                             },
@@ -276,7 +278,8 @@ const TaskCard = ({ task, userID }) => {
                         onClick={() => {
                           ApproveTask(
                             "approved",
-                            task.TaskPath,
+                            task,
+                            requesterDetails,
                             userID,
                             approverComments
                           );
@@ -293,7 +296,9 @@ const TaskCard = ({ task, userID }) => {
                         onClick={() => {
                           ApproveTask(
                             "rejected",
-                            task.TaskPath,
+                            task,
+                            requesterDetails,
+
                             userID,
                             approverComments
                           );

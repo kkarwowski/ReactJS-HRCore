@@ -37,6 +37,7 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 export default function MaleVSFemaleGraph() {
   const { associates, setAssociates } = useContext(associatesContext);
   const [allData, setAllData] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getGenderCount = async () => {
@@ -53,7 +54,8 @@ export default function MaleVSFemaleGraph() {
       setAllData(all);
     };
     getGenderCount();
-  }, []);
+    setLoading(false);
+  }, [associates]);
 
   const fetchDetails = (gender) => {
     const filtered = associates.filter(
@@ -114,16 +116,31 @@ export default function MaleVSFemaleGraph() {
   return (
     <Card>
       <CardHeader title="Male vs Female " />
-      {allData && (
-        <ChartWrapperStyle dir="ltr">
-          <ReactApexChart
-            options={chartOptions}
-            series={allData}
-            type="radialBar"
-            height={300}
-          />
-        </ChartWrapperStyle>
+      {loading && (
+        <Stack
+          // direction="row"
+          alignItems="center"
+          justifyContent="center"
+          mb={5}
+        >
+          <CircularProgress />
+        </Stack>
       )}
+      {allData &&
+        allData.length > 1 &&
+        (console.log(allData, "data"),
+        (
+          <>
+            <ChartWrapperStyle dir="ltr">
+              <ReactApexChart
+                options={chartOptions}
+                series={allData}
+                type="radialBar"
+                height={300}
+              />
+            </ChartWrapperStyle>
+          </>
+        ))}
       {/* <Svgg /> */}
     </Card>
   );

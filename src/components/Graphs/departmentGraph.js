@@ -46,7 +46,6 @@ export default function DepartmentGraph() {
 
   useEffect(() => {
     const getDepartment = () => {
-      setLoading(false);
       const CHART_DATA = [];
       for (const dep of allDepartments.flat(2)) {
         // const ress = await fetchDetails(dep);

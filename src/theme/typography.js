@@ -67,8 +67,8 @@ const typography = {
   h7: {
     fontWeight: 400,
     lineHeight: 12 / 10,
-    fontSize: pxToRem(17),
-    ...responsiveFontSizes({ sm: 13, md: 13, lg: 13 }),
+    fontSize: pxToRem(14),
+    ...responsiveFontSizes({ sm: 12, md: 12, lg: 12 }),
   },
   chip: {
     fontWeight: 700,

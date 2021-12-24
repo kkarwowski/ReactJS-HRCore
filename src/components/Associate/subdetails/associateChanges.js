@@ -49,46 +49,54 @@ const AssociateChanges = ({ userID }) => {
               style={{ maxHeight: 400, overflow: "auto" }}
             >
               <TimelineSeparator />
-              {associateChanges.map((change) => {
-                const { Category, Timestamp, Value, ChangedBy } = change;
+              {associateChanges
+                .sort((a, b) =>
+                  new Date(b.Timestamp.toDate()) >
+                  new Date(a.Timestamp.toDate())
+                    ? 1
+                    : -1
+                )
 
-                return (
-                  <TimelineItem>
-                    <TimelineOppositeContent
-                      color="text.secondary"
-                      // sx={{ m: "auto 0" }}
-                    >
-                      <Typography variant="h7">
-                        <strong>{Category}</strong> changed to{" "}
-                        <strong>{Value}</strong>
-                      </Typography>
-                      <Typography variant="h7"> by {ChangedBy}</Typography>
-                    </TimelineOppositeContent>
-                    <TimelineSeparator>
-                      <TimelineConnector />
-                      <TimelineDot color="primary" variant="filled">
-                        {/* <CheckCircleOutlineIcon fontSize="small" /> */}
-                      </TimelineDot>
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent sx={{ m: "auto 0" }}>
-                      <Grid
-                        container
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="flex-end"
+                .map((change) => {
+                  const { Category, Timestamp, Value, ChangedBy } = change;
+
+                  return (
+                    <TimelineItem>
+                      <TimelineOppositeContent
+                        color="text.secondary"
+                        // sx={{ m: "auto 0" }}
                       >
-                        <Grid sx={{ pl: 0 }}>
-                          <Typography variant="h7">
-                            {moment(Timestamp.toDate()).format("MMMM Do Y")}
-                            {/* {moment(Timestamp.toDate()).format("DD/MM/yyyy")} */}
-                          </Typography>
+                        <Typography variant="h7">
+                          <strong>{Category}</strong> changed to{" "}
+                          <strong>{Value}</strong>
+                        </Typography>
+                        <Typography variant="h7"> by {ChangedBy}</Typography>
+                      </TimelineOppositeContent>
+                      <TimelineSeparator>
+                        <TimelineConnector />
+                        <TimelineDot color="primary" variant="filled">
+                          {/* <CheckCircleOutlineIcon fontSize="small" /> */}
+                        </TimelineDot>
+                        <TimelineConnector />
+                      </TimelineSeparator>
+                      <TimelineContent sx={{ m: "auto 0" }}>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="flex-end"
+                        >
+                          <Grid sx={{ pl: 0 }}>
+                            <Typography variant="h7">
+                              {moment(Timestamp.toDate()).format("MMMM Do Y")}
+                              {/* {moment(Timestamp.toDate()).format("DD/MM/yyyy")} */}
+                            </Typography>
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    </TimelineContent>
-                  </TimelineItem>
-                );
-              })}
+                      </TimelineContent>
+                    </TimelineItem>
+                  );
+                })}
             </Timeline>
           )}
         </Box>

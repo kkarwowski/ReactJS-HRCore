@@ -102,7 +102,6 @@ const MyTasks = () => {
 
   return (
     <Page title="HR Core - Tasks">
-      <Button onClick={() => {}}>Log</Button>
       <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
         <Grid item xs={12} md={4} lg={4}>
           <Grid container direction="column" spacing={2}>

@@ -25,11 +25,13 @@ const ChangeTitleTask = ({
           name="TargetValue"
           onChange={handleValues}
         >
-          {associates.map((associate) => (
-            <MenuItem key={associate.id} value={associate.id}>
-              {associate.FirstName} {associate.LastName}
-            </MenuItem>
-          ))}
+          {associates
+            .sort((a, b) => (a.FirstName > b.FirstName ? 1 : -1))
+            .map((associate) => (
+              <MenuItem key={associate.id} value={associate.id}>
+                {associate.FirstName} {associate.LastName}
+              </MenuItem>
+            ))}
         </TextField>
       </Grid>
       <Grid item md={12}>

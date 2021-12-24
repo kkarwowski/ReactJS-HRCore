@@ -16,27 +16,34 @@ export function CancelTask(status, TaskPath, userID, approverComments) {
 export function DeleteToApprove(id, taskPath) {
   const dbrt = getDatabase();
   //   console.log("task path", taskPath);
-  const ChangedRefApprove = ref(dbrt, `Tasks/${id}/ToApprove/`);
-  onValue(ChangedRefApprove, (snapshot) => {
-    const data = snapshot.val();
-    // console.log(data, "data");
-    Object.entries(data).map(([key, value]) => {
-      //   console.log("Value", value);
-      if (value.TaskPath === taskPath) {
-        // console.log("key", key);
-        const deleteRef = ref(dbrt, `Tasks/${id}/ToApprove/${key}`);
-        remove(deleteRef);
-      }
-    });
-  });
+  const ChangedRefApprove = ref(dbrt, `Tasks/${id}/ToApprove`);
+  onValue(
+    ChangedRefApprove,
+    (snapshot) => {
+      const data = snapshot.val();
+      console.log(data, "data");
+      Object.entries(data).map(([key, value]) => {
+        console.log("Value", value);
+        if (value.TaskPath === taskPath) {
+          console.log("key", key);
+          const deleteRef = ref(dbrt, `Tasks/${id}/ToApprove/${key}`);
+          remove(deleteRef);
+        }
+      });
+    },
+    {
+      onlyOnce: true,
+    }
+  );
 }
 
 export async function ActOnTask(task, requesterDetails, userID) {
   console.log(requesterDetails, "approver details");
   const categoryToUse = task.TaskName.split(" ").slice(0, 1)[0];
-
+  console.log(categoryToUse);
+  console.log({ [categoryToUse]: task.Value }, "taks to update");
   const associateRef = doc(db, "Associates", task.TargetValue);
-  await updateDoc(associateRef, { categoryToUse: task.Value });
+  await updateDoc(associateRef, { [categoryToUse]: task.Value });
   const changesObject = {
     ChangedBy: requesterDetails.FirstName + " " + requesterDetails.LastName,
     Timestamp: Timestamp.fromDate(new Date()),

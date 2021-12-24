@@ -19,8 +19,7 @@ import { useState, useContext } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { associatesContext } from "../utils/context/contexts";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../utils/firebase";
+
 const SignUp = () => {
   const { associates, setAssociates } = useContext(associatesContext);
 
@@ -41,7 +40,6 @@ const SignUp = () => {
       LastName: associate.LastName,
       Role: role,
     };
-    console.log(formData);
     // const docRef = await addDoc(collection(db, "Users"), formData);
   };
   const { signup } = useAuth();

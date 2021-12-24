@@ -51,7 +51,6 @@ const AssociateInfo = ({ updateFirebaseAndState }) => {
   const CountriesArray = JSON.parse(JSON.stringify(Countries));
 
   const onUpdate = async (event) => {
-    console.log(event.target.value);
     if (event.target.name === "Salary") {
       setUpdatedAssociate({
         ...updatedAssociate,

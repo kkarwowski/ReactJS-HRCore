@@ -128,7 +128,6 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(async (document) => {
           await deleteDoc(doc(db, "Changes", document.id));
-          console.log("Deleted from Changes DB");
         });
       } catch (e) {
         console.log("Error");
@@ -138,15 +137,9 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
         const storage = getStorage();
         const storageRef = ref(storage, `associateImages/${id}.jpg`);
         deleteObject(storageRef)
-          .then(() => {
-            console.log("Deleted Associate picture!");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } catch (e) {
-        console.log("Error");
-      }
+          .then(() => {})
+          .catch((error) => {});
+      } catch (e) {}
     }
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
     setLoading(false);

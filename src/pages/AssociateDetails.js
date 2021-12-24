@@ -133,7 +133,6 @@ const AssociateDetails = () => {
     setSeverity("success");
     setAlertMessage("Successfully updated!");
     setAlert(true);
-    console.log(severity, alertMessage);
 
     // setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
     // .then(() => {

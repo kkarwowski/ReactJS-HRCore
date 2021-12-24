@@ -268,7 +268,6 @@ const AssociateDocuments = ({ userID }) => {
   };
 
   const DownloadFile = (fileName) => {
-    console.log(fileName);
     getDownloadURL(ref(storage, `documents/${userID}/${fileName}`))
       .then((url) => {
         const xhr = new XMLHttpRequest();

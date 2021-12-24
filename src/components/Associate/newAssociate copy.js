@@ -53,7 +53,6 @@ const NewAssociate = () => {
   });
 
   const onUpdate = (event) => {
-    console.log("name ", event.target.name, " value ", event.target.value);
     setNewAssocaite({
       ...newAssociate,
       [event.target.name]: event.target.value,

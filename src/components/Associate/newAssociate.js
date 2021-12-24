@@ -93,7 +93,6 @@ export default function NewAssociate() {
   const uploadToFirebase = async (formData) => {
     const docRef = await addDoc(collection(db, "Associates"), formData);
     setAssocuateID(docRef.id);
-    console.log("ID of new user", docRef.id);
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
   };
 
@@ -105,7 +104,6 @@ export default function NewAssociate() {
   };
 
   const handleNextStep = (newData, final = false) => {
-    console.log(newData);
     setNewAssocaite((prev) => ({
       ...prev,
       ...newData,
@@ -119,7 +117,6 @@ export default function NewAssociate() {
       makeRequest(newObject);
       return;
     }
-    console.log(currentStep);
     setCurrentStep((prev) => prev + 1);
   };
 

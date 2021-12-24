@@ -55,7 +55,6 @@ const TaskCard = ({ task, userID }) => {
     setApproverComments(e.target.value);
   };
 
-  console.log("Task Path", task.TaskPath);
   return (
     <Card sx={{ background: "#fff" }}>
       <Grid

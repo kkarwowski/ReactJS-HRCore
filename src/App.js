@@ -108,7 +108,6 @@ function App() {
       // const data = await getDocs(q);
       const data = await getDocs(associatesCollectionRef);
       setAssociates(data.docs.map((user) => ({ ...user.data(), id: user.id })));
-      console.log(userData);
     };
     const getOffices = async () => {
       const data = await getDocs(collection(db, "Offices"));
@@ -149,7 +148,6 @@ function App() {
   };
   useEffect(() => {
     const getDTDB = () => {
-      console.log("Getting tasks");
       const dbrt = getDatabase();
       const ChangedRef = ref(dbrt, `Tasks/${userData.AssociateID}/MyTasks/`);
       onValue(ChangedRef, (snapshot) => {
@@ -172,7 +170,6 @@ function App() {
             const Taskpath = data[key].TaskPath;
             onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
               const snapp = snapshot.val();
-              console.log("snapp", snapp);
               setTaskstoApprove((prev) => ({
                 ...prev,
                 [index]: { ...snapp, TaskPath: data[key].TaskPath },

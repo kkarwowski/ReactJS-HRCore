@@ -57,7 +57,6 @@ const AssociateEmergencyInfo = ({ updateFirebaseAndState }) => {
       doc(db, "Associates", associateData.id),
       associateData
     );
-    console.log("result after post data", resutl);
   };
 
   //   const SaveDetails = async (id) => {

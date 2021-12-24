@@ -22,13 +22,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const rtdb = getDatabase(app);
-const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider(
-    process.env.REACT_APP_FIREBASE_APP_CHECK_TOKEN
-  ),
-  isTokenAutoRefreshEnabled: true,
-});
-// enable this to get debug token
+// const appCheck = initializeAppCheck(app, {
+//   provider: new ReCaptchaV3Provider(
+//     process.env.REACT_APP_FIREBASE_APP_CHECK_TOKEN
+//   ),
+//   // isTokenAutoRefreshEnabled: true,
+// });
+// enable this to get deb token
 // if (process.env.NODE_ENV !== "production") {
 //   appCheck.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 // }

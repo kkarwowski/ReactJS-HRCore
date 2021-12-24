@@ -84,10 +84,10 @@ const MyTasks = () => {
     });
   }, []);
 
-  const filterObject = (obj, filter, filterValue) =>
+  const filterObject = (obj, filter, filterValue, filterValue2) =>
     Object.keys(obj).reduce(
       (acc, val) =>
-        obj[val][filter] === filterValue
+        obj[val][filter] === filterValue || filterValue2
           ? {
               ...acc,
               [val]: obj[val],

@@ -91,7 +91,7 @@ function App() {
       setCurrentUser(user);
       {
         if (user != null) {
-          setIsDemo(user.email === "demo@hr-core.netlify.app");
+          setIsDemo(user.email === process.env.REACT_APP_DEMO_LOGIN);
           const usersCollectionRef = doc(db, "Users", user.uid);
 
           getDoc(usersCollectionRef).then((result) => {

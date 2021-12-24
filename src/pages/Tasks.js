@@ -72,7 +72,6 @@ const MyTasks = () => {
     //   });
     // };
     // getDTDB();
-
     const AssociatesCollectionRef = doc(db, "Associates", userData.AssociateID);
     getDoc(AssociatesCollectionRef).then((result) => {
       setUserDetails(result.data());

@@ -55,7 +55,7 @@ export default function MaleVSFemaleGraph() {
     };
     getGenderCount();
     setLoading(false);
-  }, [associates]);
+  }, []);
 
   const fetchDetails = (gender) => {
     const filtered = associates.filter(
@@ -126,21 +126,18 @@ export default function MaleVSFemaleGraph() {
           <CircularProgress />
         </Stack>
       )}
-      {allData &&
-        allData.length > 1 &&
-        (console.log(allData, "data"),
-        (
-          <>
-            <ChartWrapperStyle dir="ltr">
-              <ReactApexChart
-                options={chartOptions}
-                series={allData}
-                type="radialBar"
-                height={300}
-              />
-            </ChartWrapperStyle>
-          </>
-        ))}
+      {allData && allData.length > 1 && (
+        <>
+          <ChartWrapperStyle dir="ltr">
+            <ReactApexChart
+              options={chartOptions}
+              series={allData}
+              type="radialBar"
+              height={300}
+            />
+          </ChartWrapperStyle>
+        </>
+      )}
       {/* <Svgg /> */}
     </Card>
   );

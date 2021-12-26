@@ -27,6 +27,7 @@ import { useAuth } from "../utils/context/AuthContext";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import TaskCard from "../components/Tasks/TaskCard";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 const MyTasks = () => {
   const theme = useTheme();
   const { userData } = useAuth();
@@ -72,7 +73,8 @@ const MyTasks = () => {
     //   });
     // };
     // getDTDB();
-    const AssociatesCollectionRef = doc(db, "Associates", userData.AssociateID);
+    console.log(userData);
+    const AssociatesCollectionRef = doc(db, "Associates", userData.id);
     getDoc(AssociatesCollectionRef).then((result) => {
       setUserDetails(result.data());
       const ManagerCollectionRef = doc(db, "Associates", result.data().Manager);
@@ -83,10 +85,10 @@ const MyTasks = () => {
     });
   }, []);
 
-  const filterObject = (obj, filter, filterValue, filterValue2) =>
+  const filterObject = (obj, filter, filterValue) =>
     Object.keys(obj).reduce(
       (acc, val) =>
-        obj[val][filter] === filterValue || filterValue2
+        obj[val][filter] === filterValue
           ? {
               ...acc,
               [val]: obj[val],
@@ -102,6 +104,9 @@ const MyTasks = () => {
 
   return (
     <Page title="HR Core - Tasks">
+      <Stack direction="row" justifyContent="flex-end" px={2}>
+        <AddCircleIcon color="primary" fontSize="large" />
+      </Stack>
       <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
         <Grid item xs={12} md={4} lg={4}>
           <Grid container direction="column" spacing={2}>

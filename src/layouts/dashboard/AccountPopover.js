@@ -105,7 +105,7 @@ export default function AccountPopover() {
         {userData && (
           <MenuItem
             key={"Profile"}
-            to={`/dashboard/associates/${userData.AssociateID}`}
+            to={`/dashboard/associates/${userData.id}`}
             component={RouterLink}
             onClick={handleClose}
             sx={{ typography: "body2", py: 1, px: 2.5 }}

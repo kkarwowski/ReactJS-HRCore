@@ -46,7 +46,7 @@ const Home = () => {
     bgcolor: "white",
     textAlign: "center",
     // border: "2px solid #000",
-    boxShadow: 24,
+    boxShadow: 2,
     // p: 4,
   };
   return (

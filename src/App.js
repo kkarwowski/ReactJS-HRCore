@@ -95,7 +95,7 @@ function App() {
           const usersCollectionRef = doc(db, "Users", user.uid);
 
           getDoc(usersCollectionRef).then((result) => {
-            setUserData(result.data());
+            // setUserData(result.data());
             const associatesCollectionRef = doc(
               db,
               "Associates",

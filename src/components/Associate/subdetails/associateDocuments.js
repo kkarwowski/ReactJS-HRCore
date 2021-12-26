@@ -609,7 +609,8 @@ const AssociateDocuments = ({ userID }) => {
                                         disabled={working}
                                         size="small"
                                         id={docID}
-                                        style={{ minWidth: 150 }}
+                                        fullWidth
+                                        // style={{ minWidth: 150 }}
                                         defaultValue={Category}
                                         onChange={(e, id) =>
                                           updateDocCategory(e, docID)
@@ -626,7 +627,7 @@ const AssociateDocuments = ({ userID }) => {
                               <IconButton
                                 onClick={() => DownloadFile(fileName)}
                               >
-                                <DownloadIcon />
+                                <DownloadIcon color="primary" />
                               </IconButton>
                             </TableCell>
                           </TableRow>

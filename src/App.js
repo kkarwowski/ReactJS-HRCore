@@ -96,6 +96,14 @@ function App() {
 
           getDoc(usersCollectionRef).then((result) => {
             setUserData(result.data());
+            const associatesCollectionRef = doc(
+              db,
+              "Associates",
+              result.data().AssociateID
+            );
+            getDoc(associatesCollectionRef).then((res) => {
+              setUserData({ ...res.data() });
+            });
             setIsAdmin(result.data().Role === "Admin");
           });
         }
@@ -153,7 +161,6 @@ function App() {
       onValue(ChangedRef, (snapshot) => {
         if (snapshot.val() != null) {
           const data = snapshot.val();
-          console.log("my tasks", snapshot.val());
           setTasks({ ...data });
         } else {
           setTasks({});

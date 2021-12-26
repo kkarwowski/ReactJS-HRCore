@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import homeFill from "@iconify/icons-eva/home-fill";
 import personFill from "@iconify/icons-eva/person-fill";
 import settings2Fill from "@iconify/icons-eva/settings-2-fill";
@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 // components
 import MenuPopover from "../../components/MenuPopover";
+import { associatesContext } from "../../utils/context/contexts";
 //
 
 // ----------------------------------------------------------------------
@@ -27,8 +28,8 @@ import MenuPopover from "../../components/MenuPopover";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const { associates } = useContext(associatesContext);
   const { currentUser, logout, userData, setUserData } = useAuth();
-
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -38,14 +39,6 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(false);
   };
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     const associateCollectionRef = doc(db, "Users", currentUser.uid);
-  //     const data = await getDoc(associateCollectionRef);
-  //     setUserData(data.data());
-  //   };
-  //   getUserData();
-  // }, []);
 
   return (
     <>
@@ -70,10 +63,7 @@ export default function AccountPopover() {
             }),
           }}
         >
-          <Avatar>
-            {userData.FirstName.slice(0, 1)}
-            {userData.LastName.slice(0, 1)}
-          </Avatar>
+          <Avatar src={userData.profilePicture} />
         </IconButton>
       )}
 
@@ -85,11 +75,11 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {userData ? userData.FirstName : null}{" "}
+            {userData ? userData.FirstName : null}
             {userData ? userData.LastName : null}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {currentUser ? currentUser.email : null}
+            {userData ? userData.Title : null}
           </Typography>
         </Box>
 

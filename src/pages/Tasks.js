@@ -99,7 +99,10 @@ const MyTasks = () => {
     setOpen(true);
     handleCloseAction();
   };
-  const onSubmit = (data) => uploadFile(data);
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+  // const onSubmit = (data) => uploadFile(data);
   const handleClose = () => {
     setPopupOpen(false);
   };

@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
-import fileDownload from "js-file-download";
 import { filter } from "lodash";
 import {
   TableRow,

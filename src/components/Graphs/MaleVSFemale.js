@@ -13,8 +13,8 @@ import { useContext } from "react";
 import { associatesContext } from "../../utils/context/contexts.js";
 import Svgg from "./svgg";
 
-const CHART_HEIGHT = 330;
-const LEGEND_HEIGHT = 60;
+const CHART_HEIGHT = 320;
+const LEGEND_HEIGHT = 50;
 
 const ChartWrapperStyle = styled("div")(({ theme }) => ({
   height: CHART_HEIGHT,
@@ -84,35 +84,57 @@ export default function MaleVSFemaleGraph() {
   //     },
   //   },
   // });
+  const chartOptions = merge(
+    BaseOptionChart(),
+    {
+      height: 250,
+      width: 250,
+      labels: ["Male", "Female"],
+      colors: ["#0096FF", "#FF69B4"],
 
-  const chartOptions = merge(BaseOptionChart(), {
-    height: 250,
-    width: 250,
-
-    type: "radialBar",
-    legend: {
-      show: false,
-    },
-    colors: ["#0096FF", "#FF69B4"],
-    labels: ["Male", "Female"],
-    plotOptions: {
-      radialBar: {
-        dataLabels: {
-          total: {
-            show: true,
-            label: "Female vs Male",
-            // formatter: function (w) {
-            //   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-            //   return 249;
+      responsive: [
+        {
+          breakpoint: 250,
+          options: {
+            chart: {
+              width: 250,
+            },
+            // legend: {
+            // position: "top",
             // },
           },
         },
-        hollow: {
-          size: "50%",
-        },
-      },
-    },
-  });
+      ],
+    }
+    // const chartOptions = merge(BaseOptionChart(), {
+    //   height: 250,
+    //   width: 250,
+
+    //   type: "radialBar",
+    //   legend: {
+    //     show: false,
+    //   },
+    //   colors: ["#0096FF", "#FF69B4"],
+    //   labels: ["Male", "Female"],
+    //   plotOptions: {
+    //     radialBar: {
+    //       dataLabels: {
+    //         total: {
+    //           show: true,
+    //           label: "Female vs Male",
+    //           // formatter: function (w) {
+    //           //   // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
+    //           //   return 249;
+    //           // },
+    //         },
+    //       },
+    //       hollow: {
+    //         size: "50%",
+    //       },
+    //     },
+    //   },
+    // }
+  );
   return (
     <Card>
       <CardHeader title="Male vs Female " />
@@ -132,8 +154,9 @@ export default function MaleVSFemaleGraph() {
             <ReactApexChart
               options={chartOptions}
               series={allData}
-              type="radialBar"
-              height={300}
+              type="donut"
+              // type="radialBar"
+              height={290}
             />
           </ChartWrapperStyle>
         </>

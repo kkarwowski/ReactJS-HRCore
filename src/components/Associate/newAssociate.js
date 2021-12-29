@@ -153,7 +153,7 @@ export default function NewAssociate() {
           <Stepper
             activeStep={currentStep}
             alternativeLabel
-            sx={{ pt: 5, pb: 2 }}
+            sx={{ pt: 3, pb: 2 }}
           >
             {stepLabels.map((label) => (
               <Step key={label}>

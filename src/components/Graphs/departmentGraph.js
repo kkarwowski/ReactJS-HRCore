@@ -16,8 +16,8 @@ import {
   associatesContext,
 } from "../../utils/context/contexts.js";
 
-const CHART_HEIGHT = 330;
-const LEGEND_HEIGHT = 60;
+const CHART_HEIGHT = 350;
+const LEGEND_HEIGHT = 90;
 
 const ChartWrapperStyle = styled("div")(({ theme }) => ({
   height: CHART_HEIGHT,

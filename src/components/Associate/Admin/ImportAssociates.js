@@ -1,11 +1,14 @@
-import { Button } from "@mui/material";
-import { indexOf } from "lodash";
+import { Button, Grid, Box } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useRef } from "react";
 import { useState } from "react";
+import StyledDropzone from "./ImportCSVDropsozne";
 const ImportAssociates = () => {
   const [csvFile, setCsvFile] = useState();
   const [csvArray, setCsvArray] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const processCSV = (str, delim = ",") => {
+    setLoading(true);
     const headers = str.slice(0, str.indexOf("\n")).split(delim);
     const regHeaders = headers.slice(0, 12);
     const EmergencyHeaders = headers.slice(13, 17);
@@ -45,10 +48,13 @@ const ImportAssociates = () => {
         {},
         newEmergencyHeaders.map((v, i) => ({ [v]: emergencyValues[i] }))
       );
+      firstObject["profilePicture"] = "";
+
       return firstObject;
     });
 
     setCsvArray(newArray);
+    setLoading(false);
   };
 
   const submit = () => {
@@ -64,29 +70,41 @@ const ImportAssociates = () => {
     reader.readAsText(file);
   };
 
+  const fileInput = useRef();
+
+  ////////
+
   return (
     <>
-      <h1>Import</h1>
-      <form id="csv-form">
-        <input
-          type="file"
-          accept=".csv"
-          id="csvFile"
-          onChange={(e) => {
-            setCsvFile(e.target.files[0]);
-          }}
-        ></input>
-        <br />
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            if (csvFile) submit();
-          }}
-        >
-          Submit
-        </button>
-      </form>
-      <Button onClick={() => console.log(csvArray)}> Log</Button>
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <StyledDropzone setCsvFile={setCsvFile} />
+        </Grid>
+
+        <Grid item>
+          <LoadingButton
+            loading={loading}
+            disabled={!csvFile}
+            loadingPosition="start"
+            variant="contained"
+            onClick={() => {
+              submit();
+            }}
+          >
+            Submit
+          </LoadingButton>
+        </Grid>
+
+        <Grid item>
+          <Button onClick={() => console.log(csvArray)}> Log</Button>
+        </Grid>
+      </Grid>
     </>
   );
 };

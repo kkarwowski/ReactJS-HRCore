@@ -33,7 +33,7 @@ const Home = () => {
   };
   const handleOpen = () => setOpen(true);
   useEffect(() => {
-    setOpen(isDemo);
+    // setOpen(isDemo);
   }, []);
 
   const style = {

@@ -37,7 +37,7 @@ const ListItemStyle = styled((props) => (
   "&:before": {
     top: 0,
     right: 0,
-    width: 3,
+    width: 4,
     bottom: 0,
     content: "''",
     display: "none",

@@ -57,7 +57,7 @@ export default function OfficeGraph() {
       setLoadingOffice(false);
     };
     getOffice();
-  }, []);
+  }, [allOffices]);
 
   const fetchDetails = (off) => {
     const filtered = associates.filter(

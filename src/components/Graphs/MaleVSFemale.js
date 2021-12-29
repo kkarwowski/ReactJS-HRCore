@@ -55,7 +55,7 @@ export default function MaleVSFemaleGraph() {
     };
     getGenderCount();
     setLoading(false);
-  }, []);
+  }, [associates]);
 
   const fetchDetails = (gender) => {
     const filtered = associates.filter(

@@ -4,22 +4,6 @@ import { useTheme, styled, alpha } from "@mui/material/styles";
 import { useEffect, useState, useContext } from "react";
 import PaidIcon from "@mui/icons-material/Paid";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import moment from "moment";
-
-import {
-  ref,
-  on,
-  set,
-  push,
-  onValue,
-  onChildAdded,
-  onChildChanged,
-  get,
-  child,
-  getDatabase,
-  update,
-} from "firebase/database";
-// import { rtdb } from "../utils/firebase";
 import {
   Button,
   Grid,
@@ -33,8 +17,6 @@ import {
   Modal,
   Fade,
 } from "@mui/material";
-import PropTypes from "prop-types";
-
 import {
   associatesContext,
   tasksToApproveContext,
@@ -54,8 +36,8 @@ const MyTasks = () => {
   const openMenu = Boolean(anchorEl);
   const [PopupOpen, setPopupOpen] = useState(false);
   const { handleSubmit, reset, control } = useForm();
-
-  const { associates } = useContext(associatesContext);
+  const [taskType, setTaskType] = useState();
+  // const { associates } = useContext(associatesContext);
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
   const { toApproveCount, setToApproveCount, tasks, tasksToApprove } =
@@ -94,17 +76,21 @@ const MyTasks = () => {
   };
   const handleCloseAction = () => {
     setAnchorEl(null);
+    setTaskType(null);
+    setPopupOpen(false);
   };
-  const handleClickOpen = () => {
+  const handleClickOpen = (type) => {
+    setTaskType(type);
+    setPopupOpen(true);
+    console.log(PopupOpen);
+    // handleCloseAction();
+    setAnchorEl(null);
     setOpen(true);
-    handleCloseAction();
   };
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+
   // const onSubmit = (data) => uploadFile(data);
   const handleClose = () => {
-    setPopupOpen(false);
+    // setPopupOpen(false);
   };
 
   const StyledMenu = styled((props) => (
@@ -152,14 +138,14 @@ const MyTasks = () => {
 
   const style = {
     position: "absolute",
-    top: "40%",
+    top: { xs: "50%", md: "30%" },
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "90vw",
-    height: "60vh",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 20,
+    width: { md: "35vw", xs: "95vw" },
+    height: { md: "40vh", xs: "100vh" },
+    // bgcolor: "background.paper",
+    // border: "2px solid #000",
+    // boxShadow: 20,
     p: 4,
   };
   return (
@@ -168,42 +154,58 @@ const MyTasks = () => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={PopupOpen}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+        }}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500,
+          timeout: 200,
         }}
       >
         <Fade in={PopupOpen}>
           <Box sx={style}>
-            <form>
-              <Grid
-                container
-                direction="column"
-                alignContent="center"
-                alignItems="center"
-                rowSpacing={3}
-              >
-                <Grid item>
-                  <Typography>
-                    Please select category of uploaded file:
-                  </Typography>
-                </Grid>
+            {userDetails && myManager && (
+              <AddTask
+                userDetails={userDetails}
+                myManager={myManager}
+                taskType={taskType}
+                handleCloseAction={handleCloseAction}
+              />
+            )}
+            {/* sx={style} */}
+            {/* <Card sx={style}> */}
+            {/* <form>
+                <Grid
+                  container
+                  direction="column"
+                  alignContent="center"
+                  alignItems="center"
+                  rowSpacing={3}
+                >
+                  <Grid item>
+                    <Typography>
+                      Please select category of uploaded file:
+                    </Typography>
+                  </Grid>
 
-                <Grid item></Grid>
+                  <Grid item></Grid>
 
-                <Grid item>
-                  <Button onClick={handleSubmit(onSubmit)} variant="contained">
-                    Submit
-                  </Button>
-                </Grid>
+                  <Grid item>
+                    <Button
+                      onClick={handleSubmit(onSubmit)}
+                      variant="contained"
+                    >
+                      Submit
+                    </Button>
+                  </Grid>
 
-                {/* <Button onClick={() => reset()} variant={"outlined"}> */}
-                {/* Reset */}
-                {/* </Button> */}
-              </Grid>
-            </form>
+                  {/* <Button onClick={() => reset()} variant={"outlined"}> */}
+            {/* Reset */}
+            {/* </Button> */}
+            {/* </Grid> */}
+            {/* </form> */}
+            {/* </Card> */}
           </Box>
         </Fade>
       </Modal>
@@ -226,13 +228,23 @@ const MyTasks = () => {
             }}
             anchorEl={anchorEl}
             open={openMenu}
-            onClose={handleCloseAction}
+            onClose={() => {
+              setAnchorEl(null);
+            }}
           >
-            <MenuItem onClick={handleClickOpen} disableRipple>
+            <MenuItem
+              onClick={() => {
+                handleClickOpen("Salary Increase");
+              }}
+              disableRipple
+            >
               <PaidIcon sx={{ color: "#ff0000" }} />
               Salary Increase
             </MenuItem>
-            <MenuItem onClick={() => handleClickOpen()} disableRipple>
+            <MenuItem
+              onClick={() => handleClickOpen("Title Change")}
+              disableRipple
+            >
               <ManageAccountsIcon color={"#ff0000"} />
               Title Change
             </MenuItem>
@@ -275,8 +287,7 @@ const MyTasks = () => {
                 </Stack>
               </Box>
             </Grid>
-            {
-              (pendingTasks && console.log(pendingTasks),
+            {pendingTasks &&
               Object.keys(pendingTasks).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
@@ -286,13 +297,12 @@ const MyTasks = () => {
                     />
                   </Grid>
                 );
-              }))
-            }
-            {userDetails && (
+              })}
+            {/* {userDetails && (
               <Grid item>
                 <AddTask userDetails={userDetails} myManager={myManager} />
               </Grid>
-            )}
+            )} */}
           </Grid>
           {/* {userDetails && (
             <AddTask userDetails={userDetails} myManager={myManager} />

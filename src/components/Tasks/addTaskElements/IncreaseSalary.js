@@ -1,5 +1,7 @@
 import React from "react";
 import { Grid, Button, TextField, MenuItem } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+
 const IncreaseSalary = ({
   handleValues,
   associates,
@@ -7,6 +9,9 @@ const IncreaseSalary = ({
   myManager,
   writeTask,
 }) => {
+  const onSubmit = (data) => {
+    console.log(data);
+  };
   return (
     <>
       <Grid item md={12}>
@@ -65,11 +70,6 @@ const IncreaseSalary = ({
           name="Reason"
           onChange={handleValues}
         ></TextField>
-      </Grid>
-      <Grid item md={12}>
-        <Button fullWidth variant="contained" onClick={writeTask}>
-          Submit
-        </Button>
       </Grid>
     </>
   );

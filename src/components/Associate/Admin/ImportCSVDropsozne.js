@@ -31,7 +31,7 @@ const Container = styled.div`
   color: #a6a4a4;
   outline: none;
   transition: border 0.24s ease-in-out;
-  min-height: 50vh;
+  min-height: 30vh;
   min-width: 50wh;
   cursor: pointer;
 `;
@@ -67,6 +67,10 @@ function StyledDropzone(props) {
         <input {...getInputProps()} />
         <div className="container">
           Drag 'n' drop .csv file here, or click to select file.
+          <br />
+          <strong>
+            Important - character "," is not allowed in the CSV file.
+          </strong>
         </div>
 
         {acceptedFiles.length > 0 && (
@@ -75,7 +79,7 @@ function StyledDropzone(props) {
             {acceptedFileItems}
           </>
         )}
-        <CloudUploadIcon sx={{ fontSize: 160 }} />
+        <CloudUploadIcon sx={{ fontSize: 160, my: 2 }} />
       </Container>
     </div>
   );

@@ -1,12 +1,13 @@
 import { Button, Grid, Box } from "@mui/material";
+import fileDownload from "js-file-download";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useRef } from "react";
 import { useState } from "react";
 import StyledDropzone from "./ImportCSVDropsozne";
 const ImportAssociates = () => {
   const [csvFile, setCsvFile] = useState();
   const [csvArray, setCsvArray] = useState([]);
   const [loading, setLoading] = useState(false);
+  var fileDownload = require("js-file-download");
   const processCSV = (str, delim = ",") => {
     setLoading(true);
     const headers = str.slice(0, str.indexOf("\n")).split(delim);
@@ -70,7 +71,40 @@ const ImportAssociates = () => {
     reader.readAsText(file);
   };
 
-  const fileInput = useRef();
+  const uploadToFirebaseAndState = () => {
+    // Timestamp.fromDate(newData.DOB),
+  };
+
+  // emergencyInfo: {
+  //   TelephoneNumber: "",
+  //   LastName: "",
+  //   FirstName: "",
+  //   Relationship: "",
+  // },
+  // PostalAddress: {
+  //   City: "",
+  //   FirstLime: "",
+  //   SecondLine: "",
+  //   Postcode: "",
+  //   Country: "",
+  // },
+  // profilePicture: "",
+  // FirstName: "",
+  // Title: "",
+  // Department: "",
+  // Manager: "",
+  // PrivateEmail: "",
+  // Office: "",
+  // LastName: "",
+  // EmplStatus: "",
+  // StartDate: new Date(),
+  // Gender: "",
+  // WorkEmail: "",
+  // City: "",
+  // PhoneNumber: "",
+  // DOB: new Date(),
+  // Salary: "",
+  // Notes: "",
 
   ////////
 
@@ -103,6 +137,18 @@ const ImportAssociates = () => {
 
         <Grid item>
           <Button onClick={() => console.log(csvArray)}> Log</Button>
+        </Grid>
+        <Grid item>
+          <Button
+            onClick={() => {
+              fileDownload(
+                process.env.PUBLIC_URL + "/ImportTemplate.csv",
+                "filename.csv"
+              );
+            }}
+          >
+            Download Sample CSV
+          </Button>
         </Grid>
       </Grid>
     </>

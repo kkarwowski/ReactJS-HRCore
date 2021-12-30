@@ -10,8 +10,14 @@ function createGradient(color1, color2) {
 const GREY = {
   0: "#FFFFFF",
   100: "#F9FAFB",
-  200: "#F4F6F8",
-  300: "#DFE3E8",
+  200: "#f5f5f5",
+  // 200: "#F4F6F8",
+
+  300: "#f2f2f2",
+
+  // 300: "#ebeff2",
+
+  // 300: "#DFE3E8",
   400: "#C4CDD5",
   500: "#919EAB",
   600: "#637381",
@@ -124,7 +130,7 @@ const palette = {
     disabled: GREY[500],
     menu: "e5e5e5",
   },
-  background: { paper: GREY[200], default: GREY[200], neutral: GREY[200] },
+  background: { paper: GREY[200], default: GREY[300], neutral: GREY[200] },
   action: {
     active: GREY[600],
     hover: GREY[500_8],

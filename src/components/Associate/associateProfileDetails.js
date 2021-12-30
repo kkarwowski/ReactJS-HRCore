@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Grid, Card, CardHeader } from "@mui/material";
+import { Grid } from "@mui/material";
 
 const associateProfileDetails = (props) => {
   return (

@@ -53,7 +53,7 @@ export default function NewAssociate() {
     updateAssociatesContext
   );
   const { associates, setAssciates } = useContext(associatesContext);
-  const [associateID, setAssocuateID] = useState();
+  const [associateID, setAssociateID] = useState();
   const [newAssociate, setNewAssocaite] = useState({
     emergencyInfo: {
       TelephoneNumber: "",
@@ -92,7 +92,7 @@ export default function NewAssociate() {
 
   const uploadToFirebase = async (formData) => {
     const docRef = await addDoc(collection(db, "Associates"), formData);
-    setAssocuateID(docRef.id);
+    setAssociateID(docRef.id);
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
   };
 

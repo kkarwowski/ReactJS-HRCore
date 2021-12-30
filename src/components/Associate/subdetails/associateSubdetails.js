@@ -1,5 +1,12 @@
 import Box from "@mui/material/Box";
-import { Grid, Avatar, AvatarGroup, Skeleton } from "@mui/material";
+import {
+  Grid,
+  Avatar,
+  AvatarGroup,
+  Skeleton,
+  TextField,
+  MenuItem,
+} from "@mui/material";
 import { Typography } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import {
@@ -11,32 +18,48 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
-import { associateContext } from "../../../utils/context/contexts";
+import {
+  associateContext,
+  associatesContext,
+} from "../../../utils/context/contexts";
 
 const AssociateSubdetails = () => {
+  const { associates } = useContext(associatesContext);
   const { associateData, setAssociateData } = useContext(associateContext);
   const [managerDetails, setManagerDetails] = useState();
   const [TeamMembers, setTeamMembers] = useState([]);
 
   const fetchTeamMembers = async () => {
-    const associateCollectionRef = collection(db, "Associates");
-    const q = query(
-      associateCollectionRef,
-      where("Department", "==", associateData.Department)
+    const TempMembers = associates.filter(
+      (associate) => associate.Department === associateData.Department
     );
-    const thedata = await getDocs(q);
-    const TempMembers = [];
-    thedata.forEach((doc) => {
-      if (associateData.id !== doc.id) {
-        TempMembers.push(doc.data());
-      }
-    });
+    console.log(TempMembers, "tempMembers");
+    // const associateCollectionRef = collection(db, "Associates");
+    // const q = query(
+    //   associateCollectionRef,
+    //   where("Department", "==", associateData.Department)
+    // );
+    // const thedata = await getDocs(q);
+    // const TempMembers = [];
+    // thedata.forEach((doc) => {
+    //   if (associateData.id !== doc.id) {
+    //     TempMembers.push(doc.data());
+    //   }
+    // });
     return TempMembers;
   };
   const fetchManager = async (ID) => {
-    const associateCollectionRef = doc(db, "Associates", ID);
-    const thedata = await getDoc(associateCollectionRef);
-    return thedata.data();
+    try {
+      const manager = associates.filter((associate) => associate.id === ID);
+      console.log(manager[0]);
+      return manager[0];
+      // const associateCollectionRef = doc(db, "Associates", ID);
+      // const thedata = await getDoc(associateCollectionRef);
+      // return thedata.data();
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   };
 
   useEffect(() => {
@@ -51,7 +74,7 @@ const AssociateSubdetails = () => {
 
   return (
     <>
-      {managerDetails && TeamMembers ? (
+      {TeamMembers ? (
         <Box
           sx={{
             display: "flex",
@@ -72,41 +95,70 @@ const AssociateSubdetails = () => {
               alignItems="flex-start"
             >
               <Grid item xs={12} sx={{ pb: 1 }}>
-                <Grid
-                  container
-                  columnSpacing={2}
-                  direction="rows"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                >
-                  <Grid item xs={12} sx={{ pr: 2, pb: 1, pl: 4 }}>
-                    <Typography variant="overline" sx={{ pl: 1, pt: 1 }}>
-                      Manager
-                    </Typography>
-                  </Grid>
+                {managerDetails ? (
                   <Grid
                     container
+                    columnSpacing={2}
                     direction="rows"
-                    justifyContent="space-around"
+                    justifyContent="flex-start"
                     alignItems="center"
                   >
-                    <Grid item xs={2} sx={{ pr: 2, pl: 1 }}>
-                      <Avatar
-                        src={managerDetails.profilePicture}
-                        alt="Profile Pic"
-                        sx={{ width: 60, height: 60 }}
-                      />
+                    <Grid item xs={12} sx={{ pr: 2, pb: 1, pl: 4 }}>
+                      <Typography variant="overline" sx={{ pl: 1, pt: 1 }}>
+                        Manager
+                      </Typography>
                     </Grid>
-                    <Grid item xs={8} sx={{ pr: 2, pl: 3 }}>
-                      <Typography variant="h6">
-                        {managerDetails.FirstName} {managerDetails.LastName}
-                      </Typography>
-                      <Typography variant="h7">
-                        {managerDetails.Title}
-                      </Typography>
+                    <Grid
+                      container
+                      direction="rows"
+                      justifyContent="space-around"
+                      alignItems="center"
+                    >
+                      <Grid item xs={2} sx={{ pr: 2, pl: 1 }}>
+                        <Avatar
+                          src={managerDetails.profilePicture}
+                          alt="Profile Pic"
+                          sx={{ width: 60, height: 60 }}
+                        />
+                      </Grid>
+                      <Grid item xs={8} sx={{ pr: 2, pl: 3 }}>
+                        <Typography variant="h6">
+                          {managerDetails.FirstName} {managerDetails.LastName}
+                        </Typography>
+                        <Typography variant="h7">
+                          {managerDetails.Title}
+                        </Typography>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
+                ) : (
+                  <>
+                    <Grid item xs={12} sx={{ pt: 5, pl: 1, pb: 1 }}>
+                      <TextField
+                        select
+                        // fullWidth
+                        sx={{ width: "200px" }}
+                        name="Manager"
+                        // variant="standard"
+                        size="small"
+                        label="Choose Manager"
+                        defaultValue={associateData.Department}
+                        // onChange={(e) => onUpdate(e)}
+                      >
+                        {associates
+                          .sort((a, b) => (a.FirstName > b.FirstName ? 1 : -1))
+                          .map((associate, index) => (
+                            <MenuItem
+                              key={associate.id}
+                              value={`${associate.id}`}
+                            >
+                              {associate.FirstName} {associate.LastName}
+                            </MenuItem>
+                          ))}
+                      </TextField>
+                    </Grid>
+                  </>
+                )}
               </Grid>
               <Grid item xs={12} sx={{ pt: 5, pl: 1, pb: 1 }}>
                 <Typography variant="overline">Team Members</Typography>

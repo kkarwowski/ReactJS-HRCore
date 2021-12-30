@@ -91,6 +91,7 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   const openMenu = Boolean(anchorEl);
   const [value, setValue] = useState(0);
   const { associateData } = useContext(associateContext);
+  console.log(associateData);
   const history = useNavigate();
   const handleChangetoTab = (event, newValue) => {
     setValue(newValue);

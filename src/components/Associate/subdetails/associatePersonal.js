@@ -75,11 +75,6 @@ const AssociateInfo = ({ updateFirebaseAndState }) => {
       },
     });
   };
-  // const ConvertTimestampToDate = (tstamp) => {
-  //   console.log("t", tstamp);
-  //   const newDate = tstamp.toDate();
-  //   return newDate;
-  // };
 
   const handleOpenPersonal = () => {
     setOpenPersonal((prev) => !prev);

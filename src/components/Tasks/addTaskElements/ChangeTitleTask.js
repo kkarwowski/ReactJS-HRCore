@@ -1,12 +1,6 @@
 import React from "react";
 import { Grid, Button, TextField, MenuItem } from "@mui/material";
-const ChangeTitleTask = ({
-  handleValues,
-  associates,
-  hrPerson,
-  myManager,
-  writeTask,
-}) => {
+const ChangeTitleTask = ({ handleValues, associates, hrPerson, myManager }) => {
   return (
     <>
       <Grid item md={12}>
@@ -65,11 +59,6 @@ const ChangeTitleTask = ({
           name="Reason"
           onChange={handleValues}
         ></TextField>
-      </Grid>
-      <Grid item md={12}>
-        <Button fullWidth variant="contained" onClick={writeTask}>
-          Submit
-        </Button>
       </Grid>
     </>
   );

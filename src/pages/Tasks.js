@@ -171,6 +171,7 @@ const MyTasks = () => {
                 myManager={myManager}
                 taskType={taskType}
                 handleCloseAction={handleCloseAction}
+                setPopupOpen={setPopupOpen}
               />
             )}
             {/* sx={style} */}
@@ -293,7 +294,8 @@ const MyTasks = () => {
                   <Grid item xs={12} md={4} lg={4}>
                     <TaskCard
                       task={pendingTasks[task]}
-                      userID={userData.AssociateID}
+                      userID={userData.id}
+                      taskPath={task}
                     />
                   </Grid>
                 );

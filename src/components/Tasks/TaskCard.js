@@ -20,9 +20,9 @@ import { useState, useContext, useEffect } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
-import { ApproveTask } from "./taksFunctions";
+import { ApproveTask, CancelTask } from "./taksFunctions";
 import CategoryChip from "./CardElements/CategoryChip";
-const TaskCard = ({ task, userID }) => {
+const TaskCard = ({ task, userID, taskPath }) => {
   const { associates, setAssociates } = useContext(associatesContext);
   const [expanded, setExpanded] = useState(false);
   const getApproverDetails = (id) => {
@@ -54,7 +54,6 @@ const TaskCard = ({ task, userID }) => {
   const updateValues = (e) => {
     setApproverComments(e.target.value);
   };
-
   return (
     <Card sx={{ background: "#fff" }}>
       <Grid
@@ -255,7 +254,14 @@ const TaskCard = ({ task, userID }) => {
           </Grid>
           {userID && task.requester === userID && task.status === "pending" && (
             <Grid item sx={{ pt: 2 }}>
-              <Button variant="outlined" color="error" size="small">
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                onClick={() => {
+                  CancelTask(userID, taskPath);
+                }}
+              >
                 Cancel Task
               </Button>
             </Grid>

@@ -8,12 +8,48 @@ import {
   addDoc,
   Timestamp,
 } from "firebase/firestore";
-export function CancelTask(status, TaskPath, userID, approverComments) {
-  // delete ToApprove tasks from each approver
+export function CancelTask(userID, taskPath) {
+  const dbrt = getDatabase();
+  console.log(taskPath, userID);
+
+  const deleteThisTaskRef = ref(dbrt, `Tasks/${userID}/MyTasks/${taskPath}`);
+  onValue(
+    deleteThisTaskRef,
+    (snapshot) => {
+      const data = snapshot.val();
+      console.log(data, "dataaa");
+      Object.entries(data.approvers).map(([key, value]) => {
+        console.log(key, value);
+        const RefApprove = ref(dbrt, `Tasks/${key}/ToApprove`);
+        onValue(
+          RefApprove,
+          (snapshot) => {
+            const approverdata = snapshot.val();
+            console.log(approverdata, "approverData");
+            Object.entries(approverdata).map(([keyy, value]) => {
+              if (taskPath === value.TaskPath.split("/").slice(-1)[0]) {
+                const toDeleteREf = ref(dbrt, `Tasks/${key}/ToApprove/${keyy}`);
+                remove(toDeleteREf).then(() => {
+                  remove(deleteThisTaskRef);
+                });
+              }
+            });
+          },
+          {
+            onlyOnce: true,
+          }
+        );
+      });
+    },
+    {
+      onlyOnce: true,
+    }
+  );
+
   // delete this task
 }
 
-export function DeleteToApprove(id, taskPath) {
+export function DeleteToApprove(id, taskPath, cancel) {
   const dbrt = getDatabase();
   //   console.log("task path", taskPath);
   const ChangedRefApprove = ref(dbrt, `Tasks/${id}/ToApprove`);
@@ -24,6 +60,7 @@ export function DeleteToApprove(id, taskPath) {
       console.log(data, "data");
       Object.entries(data).map(([key, value]) => {
         console.log("Value", value);
+
         if (value.TaskPath === taskPath) {
           console.log("key", key);
           const deleteRef = ref(dbrt, `Tasks/${id}/ToApprove/${key}`);

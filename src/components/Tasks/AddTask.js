@@ -12,7 +12,13 @@ import { ref, push } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
 import ChangeTitleTask from "./addTaskElements/ChangeTitleTask";
 import IncreaseSalary from "./addTaskElements/IncreaseSalary";
-const AddTask = ({ userDetails, myManager, taskType, handleCloseAction }) => {
+const AddTask = ({
+  userDetails,
+  myManager,
+  taskType,
+  handleCloseAction,
+  setPopupOpen,
+}) => {
   const { associates, setAssociates } = useContext(associatesContext);
 
   const hrPerson = {
@@ -21,14 +27,15 @@ const AddTask = ({ userDetails, myManager, taskType, handleCloseAction }) => {
 
   // const [show, setShow] = useState();
   const [taskValues, setTaskValues] = useState({});
-
+  console.log(taskType, "task type");
   const handleValues = (event) => {
     // setShow(event.target.value);
+    console.log(event.target.value);
     setTaskValues({
       ...taskValues,
       [event.target.name]: event.target.value,
       status: "pending",
-      TaskName: event.target.value,
+      TaskName: taskType,
       requester: userDetails.id,
       approvers: {
         [myManager.id]: {
@@ -43,6 +50,7 @@ const AddTask = ({ userDetails, myManager, taskType, handleCloseAction }) => {
       requesterName: userDetails.FirstName + " " + userDetails.LastName,
       timestamp: Math.round(new Date().getTime() / 1000),
     });
+    console.log(taskValues);
   };
   // const handleValues = (event) => {
   //   setTaskValues({ ...taskValues,  });
@@ -58,6 +66,7 @@ const AddTask = ({ userDetails, myManager, taskType, handleCloseAction }) => {
         TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
       });
     });
+    setPopupOpen(false);
   };
   console.log("task type", taskType);
 
@@ -101,7 +110,7 @@ const AddTask = ({ userDetails, myManager, taskType, handleCloseAction }) => {
                 associates={associates}
                 myManager={myManager}
                 hrPerson={hrPerson}
-                writeTask={writeTask}
+                // writeTask={writeTask}
               />
             </Grid>
           </Grid>
@@ -114,7 +123,7 @@ const AddTask = ({ userDetails, myManager, taskType, handleCloseAction }) => {
                 associates={associates}
                 myManager={myManager}
                 hrPerson={hrPerson}
-                writeTask={writeTask}
+                // writeTask={writeTask}
               />
             </Grid>
           </Grid>

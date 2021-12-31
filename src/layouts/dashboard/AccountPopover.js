@@ -29,7 +29,7 @@ import { associatesContext } from "../../utils/context/contexts";
 
 export default function AccountPopover() {
   const { associates } = useContext(associatesContext);
-  const { currentUser, logout, userData, setUserData } = useAuth();
+  const { logout, userData } = useAuth();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -75,7 +75,7 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {userData ? userData.FirstName : null}
+            {userData ? userData.FirstName : null}{" "}
             {userData ? userData.LastName : null}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>

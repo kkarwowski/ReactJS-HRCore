@@ -23,6 +23,7 @@ const AddTask = ({
 
   const hrPerson = {
     id: "4U1DWf95rJvgfAwDYs7m",
+    name: "Marco Casper",
   };
 
   // const [show, setShow] = useState();

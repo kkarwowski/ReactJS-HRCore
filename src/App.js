@@ -166,10 +166,7 @@ function App() {
           setTasks({});
         }
       });
-      const ChangedRefApprove = ref(
-        dbrt,
-        `Tasks/${userData.AssociateID}/ToApprove/`
-      );
+      const ChangedRefApprove = ref(dbrt, `Tasks/${userData.id}/ToApprove/`);
       onValue(ChangedRefApprove, (snapshot) => {
         if (snapshot.val() != null) {
           const data = snapshot.val();

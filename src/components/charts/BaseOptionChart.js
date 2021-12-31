@@ -91,6 +91,7 @@ export default function BaseOptionChart() {
       theme.palette.chart.violet[0],
       theme.palette.chart.green[0],
       theme.palette.chart.red[0],
+      theme.palette.chart.purple[0],
     ],
 
     // Chart

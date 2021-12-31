@@ -350,7 +350,7 @@ const MyTasks = () => {
                   <Grid item xs={12} md={4} lg={4}>
                     <TaskCard
                       task={tasksToApprove[task]}
-                      userID={userData.AssociateID}
+                      userID={userData.id}
                     />
                   </Grid>
                 );
@@ -395,10 +395,7 @@ const MyTasks = () => {
               Object.keys(completeTasks).map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
-                    <TaskCard
-                      task={completeTasks[task]}
-                      userID={userData.AssociateID}
-                    />
+                    <TaskCard task={completeTasks[task]} userID={userData.id} />
                   </Grid>
                 );
               })}

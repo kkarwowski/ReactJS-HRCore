@@ -16,16 +16,17 @@ import { Formik, Form, ErrorMessage, Field } from "formik";
 import React, { useState } from "react";
 import Logo from "../components/Logo";
 import Page from "../components/Page";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 const Login = () => {
   const [alert, setAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [isLoginScreen, setIsLoginScreen] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const { login, resetUserPassword } = useAuth();
+  const { login, resetUserPassword, currentUser } = useAuth();
   let navigate = useNavigate();
 
   let location = useLocation();
+  console.log("location", location);
   // let { from } = location.state || { from: { pathname: "/" } };
   let from = location.state?.from?.pathname || "/";
   const handleClickShowPassword = () => {

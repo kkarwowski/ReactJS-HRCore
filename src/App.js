@@ -23,19 +23,17 @@ import {
   child,
   getDatabase,
 } from "firebase/database";
-import { rtdb } from "./utils/firebase";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   collection,
   getDocs,
   query,
   orderBy,
-  getDoc,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "./utils/firebase";
 import { AuthContext } from "./utils/context/AuthContext";
-
 import {
   createUserWithEmailAndPassword,
   updateEmail,
@@ -206,9 +204,9 @@ function App() {
       tasksToApprove && setToApproveCount(Object.keys(tasksToApprove).length);
     }
   }, [tasksToApprove]);
+
   return (
     <>
-      {/* <AuthProvider> */}
       <AuthContext.Provider value={value}>
         <tasksToApproveContext.Provider
           value={{ toApproveCount, setToApproveCount, tasks, tasksToApprove }}

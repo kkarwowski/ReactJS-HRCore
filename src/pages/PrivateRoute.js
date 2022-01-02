@@ -10,13 +10,14 @@ const PrivateRoute = ({ children, role }) => {
   if (currentUser && !currentUser) {
     console.log("ting to", location);
     return <Navigate to="/login" state={{ from: location }} />;
-  }
-  if (role === "Admin") {
-    if (!isAdmin && currentUser) {
-      return <Page403 />;
+  } else {
+    if (role === "Admin") {
+      if (!isAdmin && currentUser) {
+        return <Page403 />;
+      }
     }
+    return children;
   }
-  return children;
 };
 
 export default PrivateRoute;

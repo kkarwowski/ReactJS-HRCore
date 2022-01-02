@@ -40,6 +40,7 @@ export default function MaleVSFemaleGraph() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const getGenderCount = async () => {
       // setMaleData(fetchDetails("Male"));
       // setFemaleData(fetchDetails("Female"));
@@ -55,7 +56,7 @@ export default function MaleVSFemaleGraph() {
     };
     getGenderCount();
     setLoading(false);
-  }, [associates]);
+  }, []);
 
   const fetchDetails = (gender) => {
     const filtered = associates.filter(
@@ -148,7 +149,8 @@ export default function MaleVSFemaleGraph() {
           <CircularProgress />
         </Stack>
       )}
-      {allData && allData.length > 1 && (
+      {allData && console.log(allData.length)}
+      {allData && allData.length >= 1 && (
         <>
           <ChartWrapperStyle dir="ltr">
             <ReactApexChart

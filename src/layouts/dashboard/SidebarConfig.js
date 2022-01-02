@@ -42,7 +42,7 @@ const sidebarConfig = [
   },
   {
     title: "My Tasks",
-    path: "/dashboard/tasks",
+    path: "/tasks",
     icon: getIcon(clipboardTaskListLtr20Filled),
   },
   {

@@ -116,7 +116,7 @@ export default function DepartmentGraph() {
           <CircularProgress />
         </Stack>
       )}
-      {chartData && (
+      {chartData && chartData.length > 1 && (
         <ChartWrapperStyle dir="ltr">
           <ReactApexChart
             type="pie"

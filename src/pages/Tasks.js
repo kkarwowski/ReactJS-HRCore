@@ -44,15 +44,22 @@ const MyTasks = () => {
     useContext(tasksToApproveContext);
 
   useEffect(() => {
-    const AssociatesCollectionRef = doc(db, "Associates", userData.id);
-    getDoc(AssociatesCollectionRef).then((result) => {
-      setUserDetails(result.data());
-      const ManagerCollectionRef = doc(db, "Associates", result.data().Manager);
+    if (!userData) return;
+    else {
+      const AssociatesCollectionRef = doc(db, "Associates", userData.id);
+      getDoc(AssociatesCollectionRef).then((result) => {
+        setUserDetails(result.data());
+        const ManagerCollectionRef = doc(
+          db,
+          "Associates",
+          result.data().Manager
+        );
 
-      getDoc(ManagerCollectionRef).then((results) =>
-        setMyManager(results.data())
-      );
-    });
+        getDoc(ManagerCollectionRef).then((results) =>
+          setMyManager(results.data())
+        );
+      });
+    }
   }, []);
 
   const filterObject = (obj, filter, filterValue) =>

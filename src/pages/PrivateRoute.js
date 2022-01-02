@@ -4,10 +4,10 @@ import Page403 from "./Page403";
 
 const PrivateRoute = ({ children, role }) => {
   const { currentUser, isAdmin } = useAuth();
-  const userHasRole = role.includes(currentUser.Role) ? true : false;
+  // const userHasRole = role.includes(currentUser.Role) ? true : false;
   let location = useLocation();
 
-  if (!currentUser) {
+  if (currentUser && !currentUser) {
     console.log("ting to", location);
     return <Navigate to="/login" state={{ from: location }} />;
   }

@@ -44,6 +44,8 @@ const MyTasks = () => {
     useContext(tasksToApproveContext);
 
   useEffect(() => {
+    if (!userData) return;
+
     const AssociatesCollectionRef = doc(db, "Associates", userData.id);
     getDoc(AssociatesCollectionRef).then((result) => {
       setUserDetails(result.data());
@@ -53,7 +55,7 @@ const MyTasks = () => {
         setMyManager(results.data())
       );
     });
-  }, []);
+  }, [userData]);
 
   const filterObject = (obj, filter, filterValue) =>
     Object.keys(obj).reduce(

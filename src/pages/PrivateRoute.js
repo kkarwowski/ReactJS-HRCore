@@ -4,19 +4,21 @@ import Page403 from "./Page403";
 
 const PrivateRoute = ({ children, role }) => {
   const { currentUser, isAdmin } = useAuth();
-  const userHasRole = role.includes(currentUser.Role) ? true : false;
+  // const userHasRole = role.includes(currentUser.Role) ? true : false;
   let location = useLocation();
-
-  if (!currentUser) {
-    console.log("ting to", location);
+  let authToken = sessionStorage.getItem("Auth Token");
+  console.log("current user", currentUser);
+  if (!authToken) {
+    console.log("navigating to", location);
     return <Navigate to="/login" state={{ from: location }} />;
-  }
-  if (role === "Admin") {
-    if (!isAdmin && currentUser) {
-      return <Page403 />;
+  } else {
+    if (role === "Admin") {
+      if (!isAdmin && authToken) {
+        return <Page403 />;
+      }
     }
+    return children;
   }
-  return children;
 };
 
 export default PrivateRoute;

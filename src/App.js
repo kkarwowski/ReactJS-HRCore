@@ -2,7 +2,7 @@ import "./App.css";
 import ThemeConfig from "./theme";
 import GlobalStyles from "./theme/globalStyles";
 // import Router from "./routes";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Redirect } from "react-router-dom";
 import {
   associatesContext,
   officesContext,
@@ -79,6 +79,8 @@ function App() {
   }
 
   function logout() {
+    console.log("logout", auth);
+
     return signOut(auth);
   }
 
@@ -94,12 +96,17 @@ function App() {
     return updatePassword(currentUser, password);
   }
   //
+
   useEffect(() => {
-    //
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       {
         if (user != null) {
+          console.log(
+            user.email,
+            " user email",
+            process.env.REACT_APP_DEMO_LOGIN
+          );
           setIsDemo(user.email === process.env.REACT_APP_DEMO_LOGIN);
           const usersCollectionRef = doc(db, "Users", user.uid);
 
@@ -118,7 +125,11 @@ function App() {
         }
       }
     });
+    return unsubscribe;
+  }, []);
+  useEffect(() => {
     //
+
     document.title = "HR Core";
     const getAssociates = async () => {
       const q = query(associatesCollectionRef, orderBy("LastName"));
@@ -146,8 +157,6 @@ function App() {
     // {
     //   userData && userData.AssociateID && getDTDB();
     // }
-
-    return unsubscribe;
   }, [updateAssociates]);
 
   const value = {
@@ -231,13 +240,21 @@ function App() {
                         <Routes>
                           {/* <Routes> */}
                           <Route
-                            exactpath="/"
+                            path="/"
                             element={
                               <PrivateRoute role="Standard">
                                 <DashboardLayout />
                               </PrivateRoute>
                             }
                           >
+                            <Route
+                              path="/"
+                              element={
+                                <PrivateRoute role="Standard">
+                                  <Navigate to="/dashboard/home" />
+                                </PrivateRoute>
+                              }
+                            ></Route>
                             <Route
                               path="dashboard/associates"
                               element={
@@ -306,14 +323,14 @@ function App() {
 
                           <Route path="/login" element={<Login />} />
                           <Route path="*" element={<Page404 />} />
-                          <Route
+                          {/* <Route
                             path="/"
                             element={
                               <PrivateRoute role="Standard">
                                 <DashboardLayout />
                               </PrivateRoute>
                             }
-                          />
+                          /> */}
                         </Routes>
                       </ThemeConfig>
                     </departmentsContext.Provider>

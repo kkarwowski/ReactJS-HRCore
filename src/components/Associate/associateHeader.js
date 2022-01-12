@@ -96,7 +96,7 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   const handleChangetoTab = (event, newValue) => {
     setValue(newValue);
   };
-  const { isDemo } = useAuth();
+  const { isDemo, isAdmin } = useAuth();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -117,9 +117,12 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   };
   const DeleteAssociate = async (id) => {
     setLoading(true);
+    console.log(isDemo);
+    console.log("ID", id, isAdmin, "is amdin");
     // delete from Associates
-    {
-      !isDemo && (await deleteDoc(doc(db, "Associates", id)));
+    if (!isDemo && isAdmin) {
+      await deleteDoc(doc(db, "Associates", id));
+      console.log("deleting");
       // delete from Changes
       try {
         const q = query(
@@ -131,7 +134,7 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
           await deleteDoc(doc(db, "Changes", document.id));
         });
       } catch (e) {
-        console.log("Error");
+        console.log("Error", e);
       }
       // delete associate picture
       try {
@@ -140,8 +143,11 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
         deleteObject(storageRef)
           .then(() => {})
           .catch((error) => {});
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     }
+
     setUpdateAssociates((updateAssociates) => updateAssociates + 1);
     setLoading(false);
     handleClose();
@@ -368,7 +374,7 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
                                 justifyItems="center"
                                 sx={{ pt: 1 }}
                               >
-                                <Grid item Item xs={6}>
+                                <Grid item xs={6}>
                                   <Link
                                     target="_blank"
                                     href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}

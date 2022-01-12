@@ -95,7 +95,7 @@ const AssociateSubdetails = () => {
               alignItems="flex-start"
             >
               <Grid item xs={12} sx={{ pb: 1 }}>
-                {managerDetails ? (
+                {managerDetails && managerDetails ? (
                   <Grid
                     container
                     columnSpacing={2}
@@ -142,7 +142,7 @@ const AssociateSubdetails = () => {
                         // variant="standard"
                         size="small"
                         label="Choose Manager"
-                        defaultValue={associateData.Department}
+                        // defaultValue={associateData.Department}
                         // onChange={(e) => onUpdate(e)}
                       >
                         {associates

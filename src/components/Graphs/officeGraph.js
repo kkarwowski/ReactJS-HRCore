@@ -112,7 +112,7 @@ export default function OfficeGraph() {
             type="pie"
             series={officesData}
             options={chartOptions}
-            height={280}
+            // height={280}
           />
         </ChartWrapperStyle>
       )}

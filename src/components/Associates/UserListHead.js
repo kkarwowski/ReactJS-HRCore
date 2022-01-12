@@ -36,7 +36,7 @@ export default function UserListHead({
       <TableRow>
         {headLabel.map((headCell) => (
           <TableCell
-            key={headCell.id}
+            key={Math.random()}
             align={headCell.alignRight ? "right" : "left"}
             sortDirection={orderBy === headCell.id ? order : false}
           >

@@ -93,7 +93,7 @@ export default function UserListToolbar({
           control={
             <Switch
               sx={{ ml: 1 }}
-              defaultUnChecked
+              // defaultChecked={false}
               onChange={(event) => setChecked(event.target.checked)}
               checked={checked}
             />

@@ -122,7 +122,7 @@ export default function DepartmentGraph() {
             type="pie"
             series={chartData}
             options={chartOptions}
-            height={280}
+            // height={280}
           />
         </ChartWrapperStyle>
       )}

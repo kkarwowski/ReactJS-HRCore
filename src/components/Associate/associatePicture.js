@@ -133,7 +133,7 @@ const AssociatePic = () => {
             >
               <ResponsiveAvatar
                 src={associateData.profilePicture}
-                class={".crop-container"}
+                className={".crop-container"}
               />
             </IconButton>
           </label>

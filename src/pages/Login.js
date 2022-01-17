@@ -123,7 +123,7 @@ const Login = () => {
                           alignItems="center"
                         >
                           <Grid item xs={12} xl={12}>
-                            {/* <Logo sx={{ width: 200 }} /> */}
+                            <Logo sx={{ width: 200 }} />
                           </Grid>
                           {/* <Grid item xs={12} xl={12}>
                             <CardMedia

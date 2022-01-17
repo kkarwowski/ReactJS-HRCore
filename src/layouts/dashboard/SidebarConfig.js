@@ -52,16 +52,16 @@ const sidebarConfig = [
   },
   {
     title: "admin",
-    path: "/dashboard/admin",
+    path: "/admin",
     icon: getIcon(settingsFill),
     children: [
       {
         title: "Database",
-        path: "/dashboard/admin/database",
+        path: "/admin/database",
       },
       {
         title: "Import Data",
-        path: "/dashboard/admin/import",
+        path: "/admin/import",
       },
     ],
   },

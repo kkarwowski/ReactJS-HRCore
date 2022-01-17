@@ -54,6 +54,9 @@ import Page404 from "./pages/Page404";
 import SignUp from "./pages/SignUp";
 import MyTasks from "./pages/Tasks";
 import PrivateRoute from "./pages/PrivateRoute";
+import Admin from "./pages/Admin";
+import ImportAssociates from "./components/Associate/Admin/ImportAssociates";
+import ModifyDatabase from "./components/Associate/Admin/DatabaseModify";
 function App() {
   const associatesCollectionRef = collection(db, "Associates");
   const [updateAssociates, setUpdateAssociates] = useState(1);
@@ -316,6 +319,24 @@ function App() {
                               element={
                                 <PrivateRoute role="Standard">
                                   <MyTasks />
+                                </PrivateRoute>
+                              }
+                            ></Route>
+
+                            <Route
+                              path="admin/database"
+                              element={
+                                <PrivateRoute role="Admin">
+                                  <Admin />
+                                </PrivateRoute>
+                              }
+                            ></Route>
+
+                            <Route
+                              path="admin/import"
+                              element={
+                                <PrivateRoute role="Admin">
+                                  <ImportAssociates />
                                 </PrivateRoute>
                               }
                             ></Route>

@@ -6,7 +6,7 @@ import { Stack } from "@mui/material";
 
 const PrivateRoute = ({ children, role }) => {
   const { currentUser, isAdmin } = useAuth();
-  console.log(currentUser, "Route current user");
+  // console.log(currentUser, "Route current user");
   // const userHasRole = role.includes(currentUser.Role) ? true : false;
   let location = useLocation();
 

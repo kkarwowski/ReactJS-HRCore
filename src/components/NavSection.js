@@ -168,7 +168,6 @@ function NavItem({ item, active, count }) {
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
       <ListItemText disableTypography primary={title} />
       {info && info}
-      {console.log(count, "count")}
       {count > 0 && (
         <Chip
           variant="contained"

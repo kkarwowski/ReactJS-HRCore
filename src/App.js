@@ -133,6 +133,7 @@ function App() {
   useEffect(() => {
     //
 
+    console.log("effect for databases!!!!!!");
     document.title = "HR Core";
     const getAssociates = async () => {
       const q = query(associatesCollectionRef, orderBy("LastName"));
@@ -142,6 +143,7 @@ function App() {
     };
     const getOffices = async () => {
       const data = await getDocs(collection(db, "Offices"));
+      console.log("getting offices", data.docs);
       data.docs.map((office) =>
         setOffices(data.docs.map((office) => office.data().name))
       );
@@ -157,10 +159,11 @@ function App() {
     // getTasks();
     getDepartments();
     getOffices();
+
     // {
     //   userData && userData.AssociateID && getDTDB();
     // }
-  }, [updateAssociates]);
+  }, [updateAssociates, userData]);
 
   const value = {
     currentUser,

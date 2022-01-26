@@ -217,7 +217,7 @@ const MyTasks = () => {
           </Box>
         </Fade>
       </Modal>
-      <Grid container direction="row" justifyContent="flex-end">
+      <Grid container direction="row" justifyContent="flex-end" sx={{ pr: 2 }}>
         <Grid item>
           <Button
             variant="contained"
@@ -266,10 +266,11 @@ const MyTasks = () => {
             <Grid item>
               <Box
                 sx={{
-                  background: theme.palette.primary.light,
+                  background: "white",
                   px: 1,
                   py: 0.5,
                   "border-radius": "10px",
+                  boxShadow: 7,
                 }}
               >
                 <Stack
@@ -277,12 +278,12 @@ const MyTasks = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Typography variant="h6" color="white">
+                  <Typography variant="h6" color="black">
                     My Tasks
                   </Typography>
                   <Box
                     sx={{
-                      backgroundColor: theme.palette.secondary.dark,
+                      backgroundColor: "black",
                       "border-radius": "5px",
                       px: 1,
                       py: 0.5,
@@ -307,25 +308,18 @@ const MyTasks = () => {
                   </Grid>
                 );
               })}
-            {/* {userDetails && (
-              <Grid item>
-                <AddTask userDetails={userDetails} myManager={myManager} />
-              </Grid>
-            )} */}
           </Grid>
-          {/* {userDetails && (
-            <AddTask userDetails={userDetails} myManager={myManager} />
-          )} */}
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <Box
                 sx={{
-                  backgroundColor: theme.palette.primary.light,
+                  backgroundColor: "white",
                   px: 1,
                   py: 0.5,
                   "border-radius": "10px",
+                  boxShadow: 7,
                 }}
               >
                 <Stack
@@ -333,12 +327,12 @@ const MyTasks = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Typography variant="h6" color="white">
+                  <Typography variant="h6" color="black">
                     To approve
                   </Typography>
                   <Box
                     sx={{
-                      backgroundColor: theme.palette.secondary.dark,
+                      backgroundColor: "black",
                       "border-radius": "5px",
                       px: 1,
                       py: 0.5,
@@ -369,10 +363,11 @@ const MyTasks = () => {
             <Grid item>
               <Box
                 sx={{
-                  backgroundColor: theme.palette.primary.light,
+                  backgroundColor: "white",
                   px: 1,
                   py: 0.5,
                   "border-radius": "10px",
+                  boxShadow: 7,
                 }}
               >
                 <Stack
@@ -380,12 +375,12 @@ const MyTasks = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Typography variant="h6" color="white">
+                  <Typography variant="h6" color="black">
                     Complete
                   </Typography>
                   <Box
                     sx={{
-                      backgroundColor: theme.palette.secondary.dark,
+                      backgroundColor: "black",
                       "border-radius": "5px",
                       px: 1,
                       py: 0.5,

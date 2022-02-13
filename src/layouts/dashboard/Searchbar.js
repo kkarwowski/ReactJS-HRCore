@@ -135,7 +135,7 @@ export default function Searchbar() {
           </SearchbarStyle>
         </Slide>
 
-        {/* <SearchContent>
+        <SearchContent>
           {(filteredData.length != 0) & (wordEntered.length > 0) &&
             filteredData.slice(0, 5).map((value, key) => {
               return (
@@ -170,7 +170,7 @@ export default function Searchbar() {
                 // </a>
               );
             })}
-        </SearchContent> */}
+        </SearchContent>
 
         {/* {isOpen && (
           <List component="nav">

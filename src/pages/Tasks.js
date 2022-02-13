@@ -217,7 +217,12 @@ const MyTasks = () => {
           </Box>
         </Fade>
       </Modal>
-      <Grid container direction="row" justifyContent="flex-end" sx={{ pr: 2 }}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        sx={{ pr: 2, pt: 2 }}
+      >
         <Grid item>
           <Button
             variant="contained"
@@ -271,6 +276,7 @@ const MyTasks = () => {
                   py: 0.5,
                   "border-radius": "10px",
                   boxShadow: 7,
+                  borderBottom: "solid black 3px",
                 }}
               >
                 <Stack
@@ -320,6 +326,7 @@ const MyTasks = () => {
                   py: 0.5,
                   "border-radius": "10px",
                   boxShadow: 7,
+                  borderBottom: "solid #ff8c00 3px",
                 }}
               >
                 <Stack
@@ -345,6 +352,7 @@ const MyTasks = () => {
                 </Stack>
               </Box>
             </Grid>
+            {console.log(Object.keys(tasksToApprove).length, "lenghti")}
             {tasksToApprove &&
               Object.keys(tasksToApprove).map((task, index) => {
                 return (
@@ -368,6 +376,7 @@ const MyTasks = () => {
                   py: 0.5,
                   "border-radius": "10px",
                   boxShadow: 7,
+                  borderBottom: "solid  #18b809 3px",
                 }}
               >
                 <Stack

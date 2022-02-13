@@ -67,12 +67,12 @@ export default function OfficeGraph() {
     return filtered.length;
   };
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
-      theme.palette.warning.main,
-      theme.palette.error.main,
-    ],
+    // colors: [
+    //   theme.palette.primary.main,
+    //   theme.palette.info.main,
+    //   theme.palette.warning.main,
+    //   theme.palette.error.main,
+    // ],
     labels: OFFICES,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: "center" },

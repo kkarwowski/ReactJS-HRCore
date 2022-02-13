@@ -79,12 +79,13 @@ export default function DepartmentGraph() {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [
-      theme.palette.primary.main,
-      theme.palette.info.main,
-      theme.palette.warning.main,
-      theme.palette.error.main,
-    ],
+    // colors: [
+    // theme.palette.primary.main,
+    // theme.palette.info.main,
+    // theme.palette.warning.main,
+    // theme.palette.error.main,
+
+    // ],
     labels: allDepartments.flat(2),
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: "center" },

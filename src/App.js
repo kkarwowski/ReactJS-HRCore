@@ -133,7 +133,6 @@ function App() {
   useEffect(() => {
     //
 
-    console.log("effect for databases!!!!!!");
     document.title = "HR Core";
     const getAssociates = async () => {
       const q = query(associatesCollectionRef, orderBy("LastName"));
@@ -143,7 +142,6 @@ function App() {
     };
     const getOffices = async () => {
       const data = await getDocs(collection(db, "Offices"));
-      console.log("getting offices", data.docs);
       data.docs.map((office) =>
         setOffices(data.docs.map((office) => office.data().name))
       );
@@ -192,16 +190,23 @@ function App() {
       });
       const ChangedRefApprove = ref(dbrt, `Tasks/${userData.id}/ToApprove/`);
       onValue(ChangedRefApprove, (snapshot) => {
+        console.log("Run ToApprove tasks !!!!");
         if (snapshot.val() != null) {
           const data = snapshot.val();
           Object.keys(data).forEach((key, index) => {
             const Taskpath = data[key].TaskPath;
             onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
-              const snapp = snapshot.val();
-              setTaskstoApprove((prev) => ({
-                ...prev,
-                [index]: { ...snapp, TaskPath: data[key].TaskPath },
-              }));
+              if (snapshot.val() != null) {
+                const snapp = snapshot.val();
+                console.log("new task", snapp);
+                // setTaskstoApprove((prev) => ({
+                //   ...prev,
+                //   [index]: { ...snapp, TaskPath: data[key].TaskPath },
+                // }));
+                setTaskstoApprove(() => ({
+                  [index]: { ...snapp, TaskPath: data[key].TaskPath },
+                }));
+              }
             });
           });
         } else {

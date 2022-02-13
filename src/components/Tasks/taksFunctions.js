@@ -1,4 +1,3 @@
-import React from "react";
 import { ref, getDatabase, update, onValue, remove } from "firebase/database";
 import { db } from "../../utils/firebase";
 import {

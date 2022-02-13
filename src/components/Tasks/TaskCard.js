@@ -17,13 +17,18 @@ import { styled, useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState, useContext, useEffect } from "react";
-import { associatesContext } from "../../utils/context/contexts";
+import {
+  associatesContext,
+  tasksToApproveContext,
+} from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
 import { ApproveTask, CancelTask } from "./taksFunctions";
 import CategoryChip from "./CardElements/CategoryChip";
 const TaskCard = ({ task, userID, taskPath }) => {
   const { associates, setAssociates } = useContext(associatesContext);
+  const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
+
   const [expanded, setExpanded] = useState(false);
   const getApproverDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);
@@ -45,12 +50,13 @@ const TaskCard = ({ task, userID, taskPath }) => {
     }),
   }));
 
-  const getToApprove = () => {};
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  const updateTasksApproveState = (taskPath) => {
+    console.log(taskPath);
+    console.log(tasksToApprove, "all");
+  };
   const updateValues = (e) => {
     setApproverComments(e.target.value);
   };
@@ -259,6 +265,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
                 color="error"
                 size="small"
                 onClick={() => {
+                  console.log("toapprove");
                   CancelTask(userID, taskPath);
                 }}
               >

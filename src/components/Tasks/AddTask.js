@@ -36,7 +36,7 @@ const AddTask = ({
       ...taskValues,
       [event.target.name]: event.target.value,
       status: "pending",
-      TaskName: taskType,
+      taskName: taskType,
       requester: userDetails.id,
       approvers: {
         [myManager.id]: {
@@ -57,16 +57,13 @@ const AddTask = ({
   //   setTaskValues({ ...taskValues,  });
   // };
   const writeTask = () => {
-    const newTask = push(
-      ref(rtdb, `Tasks/${userDetails.id}/MyTasks`),
-      taskValues
-    );
+    const newTask = push(ref(rtdb, `All-Tasks/`), taskValues);
     // write to each requester in To Approve with path to this specific task
-    Object.keys(taskValues.approvers).forEach((approver, index) => {
-      push(ref(rtdb, `Tasks/${approver}/ToApprove`), {
-        TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
-      });
-    });
+    // Object.keys(taskValues.approvers).forEach((approver, index) => {
+    //   push(ref(rtdb, `Tasks/${approver}/ToApprove`), {
+    //     TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
+    //   });
+    // });
     setPopupOpen(false);
   };
   console.log("task type", taskType);

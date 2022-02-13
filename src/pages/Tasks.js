@@ -40,8 +40,7 @@ const MyTasks = () => {
   // const { associates } = useContext(associatesContext);
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
-  const { toApproveCount, setToApproveCount, tasks, tasksToApprove } =
-    useContext(tasksToApproveContext);
+  const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
 
   useEffect(() => {
     if (!userData) return;
@@ -233,7 +232,15 @@ const MyTasks = () => {
           >
             Add Task
           </Button>
-
+          <Button
+            variant="contained"
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={() => console.log(tasksToApprove)}
+            endIcon={<AddCircleIcon color="white" fontSize="large" />}
+          >
+            log
+          </Button>
           <StyledMenu
             id="demo-customized-menu"
             MenuListProps={{
@@ -352,7 +359,6 @@ const MyTasks = () => {
                 </Stack>
               </Box>
             </Grid>
-            {console.log(Object.keys(tasksToApprove).length, "lenghti")}
             {tasksToApprove &&
               Object.keys(tasksToApprove).map((task, index) => {
                 return (

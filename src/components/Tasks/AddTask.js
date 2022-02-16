@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState, useContext } from "react";
 import { associatesContext } from "../../utils/context/contexts";
-import { ref, push } from "firebase/database";
+import { ref, push, update, set } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
 import ChangeTitleTask from "./addTaskElements/ChangeTitleTask";
 import IncreaseSalary from "./addTaskElements/IncreaseSalary";
@@ -37,7 +37,6 @@ const AddTask = ({
       [event.target.name]: event.target.value,
       status: "pending",
       taskName: taskType,
-      requester: userDetails.id,
       approvers: {
         [myManager.id]: {
           status: "pending",
@@ -48,6 +47,8 @@ const AddTask = ({
           timestamp: "pending",
         },
       },
+      requester: userDetails.id,
+
       requesterName: userDetails.FirstName + " " + userDetails.LastName,
       timestamp: Math.round(new Date().getTime() / 1000),
     });
@@ -56,8 +57,17 @@ const AddTask = ({
   // const handleValues = (event) => {
   //   setTaskValues({ ...taskValues,  });
   // };
+
   const writeTask = () => {
-    const newTask = push(ref(rtdb, `All-Tasks/`), taskValues);
+    const newTaskKey = push(ref(rtdb, `All-Tasks/`), taskValues).key;
+    const writeList = [userDetails.id, myManager.id, hrPerson.id];
+    writeList.forEach((item) => {
+      update(ref(rtdb, `User-Tasks/` + item), { [newTaskKey]: true });
+      console.log("written to ", `User-Tasks/${item}`, "data", {
+        [newTaskKey]: true,
+      });
+    });
+
     // write to each requester in To Approve with path to this specific task
     // Object.keys(taskValues.approvers).forEach((approver, index) => {
     //   push(ref(rtdb, `Tasks/${approver}/ToApprove`), {

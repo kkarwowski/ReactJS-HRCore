@@ -149,7 +149,6 @@ export default function MaleVSFemaleGraph() {
           <CircularProgress />
         </Stack>
       )}
-      {allData && console.log(allData.length)}
       {allData && allData.length >= 1 && (
         <>
           <ChartWrapperStyle dir="ltr">

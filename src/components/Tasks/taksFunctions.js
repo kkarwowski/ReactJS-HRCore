@@ -1,4 +1,11 @@
-import { ref, getDatabase, update, onValue, remove } from "firebase/database";
+import {
+  ref,
+  getDatabase,
+  update,
+  onValue,
+  remove,
+  get,
+} from "firebase/database";
 import { db } from "../../utils/firebase";
 import {
   doc,
@@ -7,71 +14,80 @@ import {
   addDoc,
   Timestamp,
 } from "firebase/firestore";
-export function CancelTask(userID, taskPath) {
-  const dbrt = getDatabase();
-  console.log(taskPath, userID);
 
-  const deleteThisTaskRef = ref(dbrt, `Tasks/${userID}/MyTasks/${taskPath}`);
-  onValue(
-    deleteThisTaskRef,
-    (snapshot) => {
-      const data = snapshot.val();
-      console.log(data, "dataaa");
-      Object.entries(data.approvers).map(([key, value]) => {
-        console.log(key, value);
-        const RefApprove = ref(dbrt, `Tasks/${key}/ToApprove`);
-        onValue(
-          RefApprove,
-          (snapshot) => {
-            const approverdata = snapshot.val();
-            console.log(approverdata, "approverData");
-            Object.entries(approverdata).map(([keyy, value]) => {
-              if (taskPath === value.TaskPath.split("/").slice(-1)[0]) {
-                const toDeleteREf = ref(dbrt, `Tasks/${key}/ToApprove/${keyy}`);
-                remove(toDeleteREf).then(() => {
-                  remove(deleteThisTaskRef);
-                });
-              }
-            });
-          },
-          {
-            onlyOnce: true,
-          }
-        );
-      });
-    },
-    {
-      onlyOnce: true,
-    }
-  );
+export function CancelTask(userID, taskPath, approversArray) {
+  const dbrt = getDatabase();
+  console.log(taskPath, userID, approversArray);
+
+  const deleteThisTaskRef = ref(dbrt, `All-Tasks/${taskPath}`);
+
+  remove(deleteThisTaskRef).then(() => {
+    console.log("REMOVED MAIN TASK", deleteThisTaskRef);
+    approversArray.forEach((user) => {
+      console.log("REMOVING ", `User-Tasks/${user}/${taskPath}`);
+      remove(ref(dbrt, `User-Tasks/${user}/${taskPath}`));
+    });
+  });
+  // onValue(
+  //   deleteThisTaskRef,
+  //   (snapshot) => {
+  //     const data = snapshot.val();
+  //     console.log(data, "dataaa");
+  //     Object.entries(data.approvers).map(([key, value]) => {
+  //       console.log(key, value);
+  //       const RefApprove = ref(dbrt, `Tasks/${key}/ToApprove`);
+  //       onValue(
+  //         RefApprove,
+  //         (snapshot) => {
+  //           const approverdata = snapshot.val();
+  //           console.log(approverdata, "approverData");
+  //           Object.entries(approverdata).map(([keyy, value]) => {
+  //             if (taskPath === value.TaskPath.split("/").slice(-1)[0]) {
+  //               const toDeleteREf = ref(dbrt, `Tasks/${key}/ToApprove/${keyy}`);
+  //               remove(toDeleteREf).then(() => {
+  //                 remove(deleteThisTaskRef);
+  //               });
+  //             }
+  //           });
+  //         },
+  //         {
+  //           onlyOnce: true,
+  //         }
+  //       );
+  //     });
+  //   },
+  //   {
+  //     onlyOnce: true,
+  //   }
+  // );
 
   // delete this task
 }
 
-export function DeleteToApprove(id, taskPath, cancel) {
-  const dbrt = getDatabase();
-  //   console.log("task path", taskPath);
-  const ChangedRefApprove = ref(dbrt, `Tasks/${id}/ToApprove`);
-  onValue(
-    ChangedRefApprove,
-    (snapshot) => {
-      const data = snapshot.val();
-      console.log(data, "data");
-      Object.entries(data).map(([key, value]) => {
-        console.log("Value", value);
+// export function DeleteToApprove(id, taskPath, cancel) {
+//   const dbrt = getDatabase();
+//   //   console.log("task path", taskPath);
+//   const ChangedRefApprove = ref(dbrt, `Tasks/${id}/ToApprove`);
+//   onValue(
+//     ChangedRefApprove,
+//     (snapshot) => {
+//       const data = snapshot.val();
+//       console.log(data, "data");
+//       Object.entries(data).map(([key, value]) => {
+//         console.log("Value", value);
 
-        if (value.TaskPath === taskPath) {
-          console.log("key", key);
-          const deleteRef = ref(dbrt, `Tasks/${id}/ToApprove/${key}`);
-          remove(deleteRef);
-        }
-      });
-    },
-    {
-      onlyOnce: true,
-    }
-  );
-}
+//         if (value.taskPath === taskPath) {
+//           console.log("key", key);
+//           const deleteRef = ref(dbrt, `Tasks/${id}/ToApprove/${key}`);
+//           remove(deleteRef);
+//         }
+//       });
+//     },
+//     {
+//       onlyOnce: true,
+//     }
+//   );
+// }
 
 export async function ActOnTask(task, requesterDetails, userID) {
   console.log(requesterDetails, "approver details");
@@ -88,7 +104,7 @@ export async function ActOnTask(task, requesterDetails, userID) {
     AssociateID: task.TargetValue,
   };
   await addDoc(collection(db, "Changes"), changesObject);
-  DeleteToApprove(userID, task.TaskPath);
+  // DeleteToApprove(userID, task.taskPath);
   // delete To Approve
   //   const dbrt = getDatabase();
 }
@@ -101,14 +117,18 @@ export function ApproveTask(
   approverComments
 ) {
   const dbrt = getDatabase();
-  const ApproveRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers/${userID}`);
+  const ApproveRef = ref(
+    dbrt,
+    `All-Tasks/${task.taskPath}/approvers/${userID}`
+  );
+  console.log("PATHH", `All-Tasks/${task.taskPath}/approvers/${userID}`);
   update(ApproveRef, {
     status: status,
     comment: approverComments ? approverComments : "",
     timestamp: Math.round(new Date().getTime() / 1000),
   }).then(() => {
-    const ApproversRef = ref(dbrt, `Tasks/${task.TaskPath}/approvers`);
-    onValue(
+    const ApproversRef = ref(dbrt, `All-Tasks/${task.taskPath}/approvers/`);
+    get(
       ApproversRef,
       (snapshot) => {
         const approversObj = snapshot.val();
@@ -116,8 +136,7 @@ export function ApproveTask(
           if (key != userID) {
             // both approved
             if ((value.status === "approved") & (status === "approved")) {
-              const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-              update(WholeTaskRef, {
+              update(ApproveRef, {
                 status: "approved",
               });
               ActOnTask(task, requesterDetails, userID);
@@ -126,8 +145,7 @@ export function ApproveTask(
               (value.status === "approved") &
               (status === "recjected")
             ) {
-              const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-              update(WholeTaskRef, {
+              update(ApproveRef, {
                 status: "rejected",
               });
               // he recected I approved
@@ -135,8 +153,7 @@ export function ApproveTask(
               (value.status === "rejected") &
               (status === "approved")
             ) {
-              const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-              update(WholeTaskRef, {
+              update(ApproveRef, {
                 status: "rejected",
               });
               //Both recjected
@@ -144,8 +161,7 @@ export function ApproveTask(
               (value.status === "rejected") &
               (status === "rejected")
             ) {
-              const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);
-              update(WholeTaskRef, {
+              update(ApproveRef, {
                 status: "rejected",
               });
             }

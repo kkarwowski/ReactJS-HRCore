@@ -26,6 +26,9 @@ import {
   getDatabase,
   onChildRemoved,
   orderByChild,
+  orderByValue,
+  orderByKey,
+  onChildChanged,
 } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import {
@@ -70,8 +73,8 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(null);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [toApproveCount, setToApproveCount] = useState();
-  const [tasks, setTasks] = useState({});
-  const [tasksToApprove, setTaskstoApprove] = useState({});
+  const [tasks, setTasks] = useState([]);
+  // const [tasksToApprove, setTaskstoApprove] = useState({});
   //
   const [currentUser, setCurrentUser] = useState();
   const [userData, setUserData] = useState();
@@ -183,35 +186,69 @@ function App() {
   useEffect(() => {
     const getDTDB = () => {
       const dbrt = getDatabase();
-      const AllTasksRef = ref(dbrt, `All-Tasks/`);
-      const MyTaskRef = queryReal(
-        AllTasksRef,
-        orderByChild("requester"),
-        equalTo(`${userData.id}`)
-      );
-      onValue(MyTaskRef, (snapshot) => {
+      const MyTasksRef = ref(dbrt, `User-Tasks/${userData.id}`);
+
+      //   MyTasksRef,
+      //   orderByChild("requester"),
+      //   equalTo(`${userData.id}`)
+      // );
+      const arrayOfTasks = [...tasks];
+
+      onChildAdded(MyTasksRef, (snapshot) => {
         if (snapshot.val() != null) {
-          console.log(snapshot.val(), "New Items");
-          const data = snapshot.val();
-          setTasks({ ...data });
+          const taskKey = snapshot.key;
+          get(ref(dbrt, `All-Tasks/${taskKey}`)).then((snapshot) => {
+            if (snapshot.val() != null) {
+              console.log(snapshot.val(), "New Task");
+
+              const userTasksKey = snapshot.key;
+              const data = snapshot.val();
+              arrayOfTasks.push({ ...data, taskPath: userTasksKey });
+              setTasks(arrayOfTasks);
+            }
+          });
         } else {
-          setTasks({});
+          // setTasks({});
         }
       });
-      const ToApproveRef = queryReal(
-        AllTasksRef,
-        orderByChild("approver/"),
-        equalTo(`${userData.id}`)
-      );
-      onValue(ToApproveRef, (snapshot) => {
-        if (snapshot.val() != null) {
-          console.log(snapshot.val(), "New Items");
-          const data = snapshot.val();
-          setTaskstoApprove({ ...data });
-        } else {
-          // setTaskstoApprove({});
-        }
+      onChildRemoved(MyTasksRef, (snapshot) => {
+        const tasksRemoved = arrayOfTasks.filter(
+          (task) => task.taskPath != snapshot.key
+        );
+        console.log(snapshot.key, "removed task");
+        setTasks(tasksRemoved);
+        // console.log(arrayOfTasks, "array of tasks");
       });
+      onChildChanged(ref(dbrt, `All-Tasks`), (snapshot) => {
+        console.log(snapshot.val(), "updated task", snapshot.key);
+        const index = arrayOfTasks
+          .map(function (e) {
+            return e.taskPath;
+          })
+          .indexOf(snapshot.key);
+        arrayOfTasks[index] = snapshot.val();
+        // setTasks(arrayOfTasks);
+        console.log("index", index);
+        console.log(arrayOfTasks);
+        setTasks(arrayOfTasks);
+        // console.log(arrayOfTasks, "array of tasks");
+      });
+
+      // const ToApproveRef = queryReal(
+      //   AllTasksRef,
+      //   orderByChild("id"),
+      //   equalTo("4U1DWf95rJvgfAwDYs7m")
+      //   // equalTo(`${userData.id}`)
+      // );
+      // onValue(ToApproveRef, (snapshot) => {
+      //   if (snapshot.val() != null) {
+      //     console.log(snapshot.val(), "I'm Approver");
+      //     const data = snapshot.val();
+      //     setTaskstoApprove({ ...data });
+      //   } else {
+      //     // setTaskstoApprove({});
+      //   }
+      // });
       // const ChangedRefApprove = ref(dbrt, `Tasks/${userData.id}/ToApprove/`);
 
       // onValue(
@@ -269,12 +306,10 @@ function App() {
   }, [userData]);
 
   useEffect(() => {
-    {
-      tasksToApprove && setToApproveCount(Object.keys(tasksToApprove).length);
-      console.log("setting count", Object.keys(tasksToApprove).length);
-      console.log(tasksToApprove, "all the tasksssss");
-    }
-  }, [tasksToApprove]);
+    tasks && setToApproveCount(tasks.length);
+    // tasks && setToApproveCount(Object.keys(tasks).length);
+    console.log("setting count", tasks.length);
+  }, [tasks]);
 
   return (
     <>
@@ -284,8 +319,8 @@ function App() {
             toApproveCount,
             setToApproveCount,
             tasks,
-            tasksToApprove,
-            setTaskstoApprove,
+            // tasksToApprove,
+            // setTaskstoApprove,
           }}
         >
           <resultsPerPageContext.Provider

@@ -40,7 +40,12 @@ const MyTasks = () => {
   // const { associates } = useContext(associatesContext);
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
-  const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
+  const [pendingTasks, setPendingTasks] = useState();
+  const [approvedTasks, setApprovedTasks] = useState();
+  const [rejectedTasks, setRejectedTasks] = useState();
+  const [completeTasks, setCompleteTasks] = useState();
+  const [myPendingTasks, setMyPendingTasks] = useState();
+  const { tasks } = useContext(tasksToApproveContext);
 
   useEffect(() => {
     if (!userData) return;
@@ -60,23 +65,35 @@ const MyTasks = () => {
       });
     }
   }, []);
+  console.log("taskssss in Tasks file", tasks);
+  // const filterObject = (obj, filter, filterValue) =>
+  //   Object.keys(obj).reduce(
+  //     (acc, val) =>
+  //       obj[val][filter] === filterValue
+  //         ? {
+  //             ...acc,
+  //             [val]: obj[val],
+  //           }
+  //         : acc,
+  //     {}
+  //   );
 
-  const filterObject = (obj, filter, filterValue) =>
-    Object.keys(obj).reduce(
-      (acc, val) =>
-        obj[val][filter] === filterValue
-          ? {
-              ...acc,
-              [val]: obj[val],
-            }
-          : acc,
-      {}
+  // const pendingTasks = filterObject(tasks, "status", "pending");
+  // const approvedTasks = filterObject(tasks, "status", "approved");
+  // const rejectedTasks = filterObject(tasks, "status", "rejected");
+  useEffect(() => {
+    console.log("we have tasks", tasks);
+    setPendingTasks(tasks.filter((task) => task.status === "pending"));
+    console.log(pendingTasks, "pending");
+    setApprovedTasks(tasks.filter((task) => task.status === "approved"));
+    setRejectedTasks(tasks.filter((task) => task.status === "rejected"));
+    setCompleteTasks(approvedTasks, rejectedTasks);
+    setMyPendingTasks(
+      tasks.filter(
+        (task) => (task.requester === userData.id) & (task.status === "pending")
+      )
     );
-  const pendingTasks = filterObject(tasks, "status", "pending");
-  const approvedTasks = filterObject(tasks, "status", "approved");
-  const rejectedTasks = filterObject(tasks, "status", "rejected");
-
-  const completeTasks = { ...approvedTasks, ...rejectedTasks };
+  }, [tasks]);
   const handleClickAction = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -236,7 +253,7 @@ const MyTasks = () => {
             variant="contained"
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
-            onClick={() => console.log(tasksToApprove)}
+            onClick={() => console.log(tasks)}
             endIcon={<AddCircleIcon color="white" fontSize="large" />}
           >
             log
@@ -304,19 +321,20 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {Object.keys(pendingTasks).length}
+                    {myPendingTasks === undefined ? "0" : myPendingTasks.length}
+                    {console.log(myPendingTasks, "my tasks")}
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-            {pendingTasks &&
-              Object.keys(pendingTasks).map((task, index) => {
+            {myPendingTasks &&
+              myPendingTasks.map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
                     <TaskCard
-                      task={pendingTasks[task]}
+                      task={task}
                       userID={userData.id}
-                      taskPath={task}
+                      taskPath={task.taskPath}
                     />
                   </Grid>
                 );
@@ -354,18 +372,19 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {Object.keys(tasksToApprove).length}
+                    {pendingTasks === undefined ? "0" : pendingTasks.length}
                   </Box>
                 </Stack>
               </Box>
             </Grid>
-            {tasksToApprove &&
-              Object.keys(tasksToApprove).map((task, index) => {
+            {pendingTasks &&
+              pendingTasks.map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
                     <TaskCard
-                      task={tasksToApprove[task]}
+                      task={task}
                       userID={userData.id}
+                      taskPath={task.taskPath}
                     />
                   </Grid>
                 );
@@ -403,16 +422,20 @@ const MyTasks = () => {
                       minWidth: "25px",
                     }}
                   >
-                    {Object.keys(completeTasks).length}
+                    {completeTasks === undefined ? "0" : completeTasks.length}
                   </Box>
                 </Stack>
               </Box>
             </Grid>
             {completeTasks &&
-              Object.keys(completeTasks).map((task, index) => {
+              completeTasks.map((task, index) => {
                 return (
                   <Grid item xs={12} md={4} lg={4}>
-                    <TaskCard task={completeTasks[task]} userID={userData.id} />
+                    <TaskCard
+                      task={task}
+                      userID={userData.id}
+                      taskPath={task.taskPath}
+                    />
                   </Grid>
                 );
               })}

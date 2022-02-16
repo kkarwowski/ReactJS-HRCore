@@ -7,7 +7,7 @@ const ChangeTitleTask = ({ handleValues, associates, hrPerson, myManager }) => {
         <TextField
           label="New Title"
           size="small"
-          name="Value"
+          name="value"
           onChange={handleValues}
         ></TextField>
       </Grid>
@@ -16,7 +16,7 @@ const ChangeTitleTask = ({ handleValues, associates, hrPerson, myManager }) => {
           select
           label="Target Associate"
           size="small"
-          name="TargetValue"
+          name="targetValue"
           onChange={handleValues}
         >
           {associates
@@ -56,7 +56,7 @@ const ChangeTitleTask = ({ handleValues, associates, hrPerson, myManager }) => {
           rows={3}
           label="Reason"
           size="small"
-          name="Reason"
+          name="reason"
           onChange={handleValues}
         ></TextField>
       </Grid>

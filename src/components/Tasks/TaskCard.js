@@ -25,19 +25,32 @@ import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
 import { ApproveTask, CancelTask } from "./taksFunctions";
 import CategoryChip from "./CardElements/CategoryChip";
-const TaskCard = ({ task, userID, taskPath }) => {
+const TaskCard = ({ userID, taskPath }) => {
   const { associates, setAssociates } = useContext(associatesContext);
-  const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
-
+  const { tasks } = useContext(tasksToApproveContext);
   const [expanded, setExpanded] = useState(false);
   const getApproverDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);
     return associate[0];
   };
+  const [task, setTask] = useState();
   const requesterDetails = getApproverDetails(task.requester);
-  const targetDetails = getApproverDetails(task.TargetValue);
+  const targetDetails = getApproverDetails(task.targetValue);
   const [approverComments, setApproverComments] = useState();
-
+  const [approversArray, setApproversArray] = useState();
+  useEffect(() => {
+    const getTask = async () => {
+      setTask(tasks.filter((task) => task.taskPath === taskPath));
+    };
+    const getApprover = async () => {
+      const approversA = task.approvers.filter((key) => {
+        return key;
+      });
+      setApproversArray(approversA);
+    };
+    getTask();
+    getApprover();
+  }, [tasks]);
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
 
@@ -53,13 +66,14 @@ const TaskCard = ({ task, userID, taskPath }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const updateTasksApproveState = (taskPath) => {
-    console.log(taskPath);
-    console.log(tasksToApprove, "all");
-  };
+  // const updateTasksApproveState = (taskPath) => {
+  //   console.log(taskPath);
+  //   console.log(tasksToApprove, "all");
+  // };
   const updateValues = (e) => {
     setApproverComments(e.target.value);
   };
+
   return (
     <Card sx={{ background: "#fff" }}>
       <Grid
@@ -80,7 +94,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
                 justifyContent="space-between"
               >
                 <Grid item sx={{ pb: 1 }}>
-                  <CategoryChip taskname={task.TaskName} />
+                  <CategoryChip taskname={task.taskName} />
                 </Grid>
                 <Grid item>
                   <Chip
@@ -113,7 +127,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
               maxWidth: "70%",
             }}
           >
-            {task.Reason ? task.Reason : null}
+            {task.reason ? task.reason : null}
           </Box>
         </Grid>
 
@@ -224,10 +238,10 @@ const TaskCard = ({ task, userID, taskPath }) => {
         <Collapse in={expanded} unmountOnExit>
           {/* timeout="auto" */}
           <Grid item sx={{ opacity: 0.7, fontSize: "12px", pt: 1 }}>
-            New {task.TaskName.split(" ").slice(0, 1)}
+            New {task.taskName.split(" ").slice(0, 1)}
           </Grid>
           <Grid item sx={{ fontSize: "14px", pt: 1 }}>
-            {task.Value}
+            {task.value}
           </Grid>
           {task.comments && (
             <>
@@ -265,8 +279,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
                 color="error"
                 size="small"
                 onClick={() => {
-                  console.log("toapprove");
-                  CancelTask(userID, taskPath);
+                  CancelTask(userID, taskPath, approversArray);
                 }}
               >
                 Cancel Task

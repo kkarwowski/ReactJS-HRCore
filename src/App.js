@@ -49,6 +49,7 @@ import DashboardLayout from "./layouts/dashboard";
 import Associates from "./pages/Associates";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Thanks from "./pages/Thanks";
 import AssociateDetails from "./pages/AssociateDetails";
 import NewAssociate from "./components/Associate/newAssociate";
 import Page404 from "./pages/Page404";
@@ -332,7 +333,14 @@ function App() {
                                 </PrivateRoute>
                               }
                             ></Route>
-
+                            <Route
+                              path="thanks"
+                              element={
+                                <PrivateRoute role="Standard">
+                                  <Thanks />
+                                </PrivateRoute>
+                              }
+                            ></Route>
                             <Route
                               path="admin/database"
                               element={

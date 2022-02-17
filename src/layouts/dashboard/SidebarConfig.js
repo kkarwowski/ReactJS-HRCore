@@ -5,10 +5,11 @@ import peopleFill from "@iconify/icons-eva/people-fill";
 // import fileTextFill from "@iconify/icons-eva/file-text-fill";
 import lockFill from "@iconify/icons-eva/lock-fill";
 import personAddFill from "@iconify/icons-eva/person-add-fill";
-import personFill from "@iconify/icons-eva/person-fill";
+// import personFill from "@iconify/icons-eva/person-fill";
 import alertTriangleFill from "@iconify/icons-eva/alert-triangle-fill";
 import settingsFill from "@iconify/icons-eva/settings-fill";
 import clipboardTaskListLtr20Filled from "@iconify/icons-fluent/clipboard-task-list-ltr-20-filled";
+import awardIcon from "@iconify/icons-fa-solid/award";
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,11 @@ const sidebarConfig = [
     title: "My Tasks",
     path: "/tasks",
     icon: getIcon(clipboardTaskListLtr20Filled),
+  },
+  {
+    title: "Thanks",
+    path: "/thanks",
+    icon: getIcon(awardIcon),
   },
   {
     title: "register",

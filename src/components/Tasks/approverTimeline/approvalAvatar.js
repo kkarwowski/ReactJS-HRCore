@@ -19,7 +19,11 @@ const ApprovalAvatar = ({
         {profilePicture && (
           <Link
             to={`/dashboard/associates/${id}`}
-            style={{ textDecoration: "none" }}
+            style={{
+              "&:hover": {
+                backgroundColor: "white",
+              },
+            }}
           >
             <Avatar
               src={profilePicture}

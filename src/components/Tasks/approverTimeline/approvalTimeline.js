@@ -67,6 +67,7 @@ const ApprovalTimeline = ({ task, getApproverDetails }) => {
                         LastName={approverDetails.LastName}
                         comment={comment}
                         profilePicture={approverDetails.profilePicture}
+                        id={approverDetails.id}
                       />
                     )}
                   </div>

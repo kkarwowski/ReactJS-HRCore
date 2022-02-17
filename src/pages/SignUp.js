@@ -16,8 +16,8 @@ import { useAuth } from "../utils/context/AuthContext";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useState, useContext } from "react";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { associatesContext } from "../utils/context/contexts";
 
 const SignUp = () => {
@@ -174,9 +174,9 @@ const SignUp = () => {
                               edge="end"
                             >
                               {showPassword ? (
-                                <VisibilityOff />
+                                <VisibilityOffIcon />
                               ) : (
-                                <Visibility />
+                                <VisibilityIcon />
                               )}
                             </IconButton>
                           </InputAdornment>
@@ -211,9 +211,9 @@ const SignUp = () => {
                               edge="end"
                             >
                               {showPassword ? (
-                                <VisibilityOff />
+                                <VisibilityOffIcon />
                               ) : (
-                                <Visibility />
+                                <VisibilityIcon />
                               )}
                             </IconButton>
                           </InputAdornment>

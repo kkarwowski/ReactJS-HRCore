@@ -31,6 +31,7 @@ import {
   orderBy,
   doc,
   getDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "./utils/firebase";
 import { AuthContext } from "./utils/context/AuthContext";
@@ -190,9 +191,9 @@ function App() {
       });
       const ChangedRefApprove = ref(dbrt, `Tasks/${userData.id}/ToApprove/`);
       onValue(ChangedRefApprove, (snapshot) => {
-        console.log("Run ToApprove tasks !!!!");
         if (snapshot.val() != null) {
           const data = snapshot.val();
+          console.log("nbew data, changed?", data);
           Object.keys(data).forEach((key, index) => {
             const Taskpath = data[key].TaskPath;
             onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
@@ -203,7 +204,8 @@ function App() {
                 //   ...prev,
                 //   [index]: { ...snapp, TaskPath: data[key].TaskPath },
                 // }));
-                setTaskstoApprove(() => ({
+                setTaskstoApprove((prev) => ({
+                  ...prev,
                   [index]: { ...snapp, TaskPath: data[key].TaskPath },
                 }));
               }

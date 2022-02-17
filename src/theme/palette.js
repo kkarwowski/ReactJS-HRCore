@@ -133,7 +133,7 @@ const palette = {
     disabled: GREY[500],
     menu: "e5e5e5",
   },
-  background: { paper: GREY[200], default: GREY[300], neutral: GREY[200] },
+  background: { paper: GREY[100], default: GREY[300], neutral: GREY[200] },
   action: {
     active: GREY[600],
     hover: GREY[500_8],

@@ -252,10 +252,9 @@ const StepOne = (props) => {
                 <FormControl>
                   <InputLabel>Department</InputLabel>
                   <Field
-                    fullWidth
                     as={Select}
                     name="Department"
-                    // sx={{ minWidth: 350 }}
+                    sx={{ minWidth: 350 }}
                     required
                     size="small"
                     label="Department"
@@ -265,8 +264,8 @@ const StepOne = (props) => {
                         {department}
                       </MenuItem>
                     ))}
-                    <ErrorMessage name="Department" />
                   </Field>
+                  <ErrorMessage name="Department" />
                 </FormControl>
               </Grid>
             )}
@@ -339,12 +338,13 @@ const StepOne = (props) => {
                 <InputLabel id="demo-simple-select-label">Gender</InputLabel>
 
                 <Field
-                  fullWidth
                   labelId="demo-simple-select-label"
+                  shrink={true}
                   as={Select}
                   name="Gender"
                   sx={{ width: 195 }}
                   required
+                  inputProps={{ min: 0, style: { textAlign: "center" } }}
                   size="small"
                   label="Gender"
                 >
@@ -355,8 +355,8 @@ const StepOne = (props) => {
                     Male
                   </MenuItem>
                 </Field>
+                <ErrorMessage name="Gender" />
               </FormControl>
-              <ErrorMessage name="Gender" />
             </Grid>
             <Grid item sx={4} sm={4} xl={4}>
               <FormControl>
@@ -381,8 +381,8 @@ const StepOne = (props) => {
                     Terminated
                   </MenuItem>
                 </Field>
+                <ErrorMessage name="EmplStatus" />
               </FormControl>
-              <ErrorMessage name="EmplStatus" />
             </Grid>
             {allOffices && (
               <Grid item sx={4} sm={4} xl={4}>
@@ -403,8 +403,8 @@ const StepOne = (props) => {
                       </MenuItem>
                     ))}
                   </Field>
+                  <ErrorMessage name="Office" />
                 </FormControl>
-                <ErrorMessage name="Office" />
               </Grid>
             )}
             <Grid item sx={4} sm={4} xl={4}>
@@ -416,7 +416,11 @@ const StepOne = (props) => {
                 getOptionLabel={(associates) =>
                   associates.FirstName + " " + associates.LastName
                 }
-                onChange={(e, value) => setFieldValue("Manager", value.id)}
+                onChange={(e, value) => {
+                  if (value != null) {
+                    setFieldValue("Manager", value.id);
+                  }
+                }}
                 // onChange={(selected) => (selected = selected.FirstName)}
                 style={{ width: 300 }}
                 renderInput={(params) => (
@@ -429,8 +433,8 @@ const StepOne = (props) => {
                   />
                 )}
               />
+              <ErrorMessage name="Manager" />
             </Grid>
-            <ErrorMessage name="Manager" />
 
             <Grid item sx={4} sm={4} xl={4}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>

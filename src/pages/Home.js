@@ -80,7 +80,7 @@ const Home = () => {
         </Fade>
       </Modal>
       <Container maxWidth="xl">
-        <Grid container direction="row" spacing={3}>
+        <Grid container direction="row" spacing={3} sx={{ paddingTop: 1 }}>
           <Grid item xs={12} sm={7} md={7}>
             <WelcomeCard />
           </Grid>

@@ -55,7 +55,14 @@ const TaskCard = ({ task, userID, taskPath }) => {
     setApproverComments(e.target.value);
   };
   return (
-    <Card sx={{ background: "#fff" }}>
+    <Card
+      sx={{
+        background: "#fff",
+        // borderColor: "red",
+        // borderStyle: "solid",
+        // border: "10",
+      }}
+    >
       <Grid
         container
         direction="column"
@@ -132,6 +139,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
                     FirstName={requesterDetails.FirstName}
                     LastName={requesterDetails.LastName}
                     Title={requesterDetails.Title}
+                    id={requesterDetails.id}
                   />
                 </Grid>
               </Grid>
@@ -163,6 +171,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
               FirstName={targetDetails.FirstName}
               LastName={targetDetails.LastName}
               Title={targetDetails.Title}
+              id={task.TargetValue}
             />
           </Grid>
         )}

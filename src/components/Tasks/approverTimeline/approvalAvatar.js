@@ -14,36 +14,38 @@ const ApprovalAvatar = ({
   id,
 }) => {
   return (
-    <div className="TimelineContentAvatarContainer">
-      <div className="TimelineContentAvatar">
-        {profilePicture && (
-          <Link
-            to={`/dashboard/associates/${id}`}
-            style={{
-              "&:hover": {
-                backgroundColor: "white",
-              },
-            }}
-          >
+    <>
+      <div className="TimelineContentAvatarContainer">
+        <div className="TimelineContentAvatar">
+          {profilePicture && (
+            // <Link
+            //   to={`/dashboard/associates/${id}`}
+            //   style={{
+            //     "&:hover": {
+            //       backgroundColor: "white",
+            //     },
+            //   }}
+            // >
             <Avatar
               src={profilePicture}
               sx={{ width: awidth, height: aheight }}
             />
-          </Link>
-        )}
-        <div className="TimelineContentAvatarDetails">
-          <div className="TimelineContentDetailsAvatarName">
-            {FirstName + " " + LastName}
+            // </Link>
+          )}
+          <div className="TimelineContentAvatarDetails">
+            <div className="TimelineContentDetailsAvatarName">
+              {FirstName + " " + LastName}
+            </div>
+            {Title && (
+              <div className="TimelineContentDetailsAvatarTitle">{Title}</div>
+            )}
+            {comment && (
+              <div className="TimelineContentAvatarComments">{comment}</div>
+            )}
           </div>
-          {Title && (
-            <div className="TimelineContentDetailsAvatarTitle">{Title}</div>
-          )}
-          {comment && (
-            <div className="TimelineContentAvatarComments">{comment}</div>
-          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

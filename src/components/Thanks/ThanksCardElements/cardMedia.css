@@ -15,11 +15,11 @@
     #46eefa,
     #5ffbf1
   );
-  min-height: 100px;
+  min-height: 80px;
   min-width: 200px;
   color: azure;
   justify-content: center;
   align-items: center;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }

@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Card } from "@mui/material";
+import { Box } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import {
   ref,
   on,
@@ -21,7 +13,6 @@ import {
   getDatabase,
 } from "firebase/database";
 import { useAuth } from "../utils/context/AuthContext";
-
 import ThanksCard from "../components/Thanks/ThanksCard";
 import { Grid } from "@mui/material";
 
@@ -47,28 +38,13 @@ const Thanks = () => {
       ></Box>
     );
     return (
-      <div>
-        {/* {["left", "right", "top", "bottom"].map((anchor) => (
-          <React.Fragment key={anchor}>
-            <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-            <Drawer
-              anchor={anchor}
-              open={state[anchor]}
-              onClose={toggleDrawer(anchor, false)}
-            >
-              {list(anchor)}
-            </Drawer>
-          </React.Fragment>
-        ))} */}
-
-        <Drawer
-          anchor="right"
-          open={state["right"]}
-          onClose={toggleDrawer("right", false)}
-        >
-          {list("right")}
-        </Drawer>
-      </div>
+      <Drawer
+        anchor="right"
+        open={state["right"]}
+        onClose={toggleDrawer("right", false)}
+      >
+        {list("right")}
+      </Drawer>
     );
   };
 
@@ -93,12 +69,18 @@ const Thanks = () => {
   return (
     <>
       {TemporaryDrawer()}
-      <Grid container direction="row" columnSpacing={1} rowSpacing={1}>
+      <Grid
+        container
+        direction="row"
+        columnSpacing={1}
+        rowSpacing={1}
+        sx={{ p: 1 }}
+      >
         {thanks &&
           userData &&
           Object.entries(thanks).map(([key, value]) => {
             return (
-              <Grid item xs={1} md={2} lg={4}>
+              <Grid item xs={12} md={4} lg={4}>
                 <ThanksCard
                   thanksId={key}
                   thanksData={value}

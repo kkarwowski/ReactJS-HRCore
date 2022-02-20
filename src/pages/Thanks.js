@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
-import Drawer from "@mui/material/Drawer";
+import React, { useState, useEffect, useContext } from "react";
+import { Box, Drawer, Grid } from "@mui/material";
 import {
   ref,
   on,
@@ -12,45 +11,75 @@ import {
   child,
   getDatabase,
 } from "firebase/database";
+
 import { useAuth } from "../utils/context/AuthContext";
 import ThanksCard from "../components/Thanks/ThanksCard";
-import { Grid } from "@mui/material";
-
+import ThanksComments from "../components/Thanks/ThanksCommentsElements/ThanksComments";
+import ThanksCommentPost from "../components/Thanks/ThanksCommentsElements/ThanksCommentPost";
+import { thanksCommentsContext } from "../utils/context/contexts";
 const Thanks = () => {
-  const toggleDrawer = (anchor, open, setSel) => () => {
-    setState({ ...state, ["right"]: open });
-    console.log(anchor, setSel, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  const [showSideMenu, setShowSideMenu] = useState(false);
+  const [selectedThanks, setSelectedThanks] = useState({});
+  const { userData } = useAuth();
+  const [selectedCommentsandLikes, setSelectedCommentsandLikes] = useState();
+  const toggleDrawer = (open, id, likesAndComments, thanksData) => {
+    setShowSideMenu(open);
+    if (open) {
+      setSelectedThanks({
+        id,
+        likesAndComments,
+        thanksData,
+      });
+    }
   };
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
-  const [selectedThanks, setSelectedThanks] = useState();
+
   const TemporaryDrawer = () => {
-    const list = (anchor) => (
-      <Box
-        sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 350 }}
-        role="presentation"
-        // onClick={toggleDrawer(anchor, false)}
-        // onKeyDown={toggleDrawer(anchor, false)}
-      ></Box>
-    );
     return (
       <Drawer
+        // sx={{
+        //   "& .MuiPaper-root": {
+        //     position: "absolute",
+        //     top: "50px",
+        //   },
+        // }}
         anchor="right"
-        open={state["right"]}
-        onClose={toggleDrawer("right", false)}
+        open={showSideMenu}
+        onClose={() => toggleDrawer(false)}
       >
-        {list("right")}
+        <Box sx={{ width: 350, padding: 1 }}>
+          {selectedThanks && selectedThanks.likesAndComments != undefined && (
+            <ThanksCommentPost
+              count={
+                Object.keys(selectedThanks.likesAndComments.Comments).length
+              }
+              thanksId={selectedThanks.id}
+              userId={userData.id}
+            />
+          )}
+          {selectedThanks &&
+            selectedThanks.likesAndComments != undefined &&
+            Object.values(selectedThanks.likesAndComments.Comments).map(
+              (value) => {
+                return (
+                  <ThanksComments
+                    timestamp={value.Timestamp}
+                    id={value.Id}
+                    comment={value.Comment}
+                  />
+                  // <>
+                  //   <div>{value.Comment}</div>
+                  //   <div>{value.Timestamp}</div>
+                  //   <div>{value.Id}</div>
+                  // </>
+                );
+              }
+            )}
+        </Box>
       </Drawer>
     );
   };
 
-  const { userData } = useAuth();
-
-  const [thanks, setThanks] = useState([]);
+  const [thanks, setThanks] = useState();
   useEffect(() => {
     const dbrt = getDatabase();
 
@@ -68,29 +97,33 @@ const Thanks = () => {
 
   return (
     <>
-      {TemporaryDrawer()}
-      <Grid
-        container
-        direction="row"
-        columnSpacing={1}
-        rowSpacing={1}
-        sx={{ p: 1 }}
+      <thanksCommentsContext.Provider
+        value={{ selectedCommentsandLikes, setSelectedCommentsandLikes }}
       >
-        {thanks &&
-          userData &&
-          Object.entries(thanks).map(([key, value]) => {
-            return (
-              <Grid item xs={12} md={4} lg={4}>
-                <ThanksCard
-                  thanksId={key}
-                  thanksData={value}
-                  userId={userData.id}
-                  commentButton={toggleDrawer("right", true, selectedThanks)}
-                />
-              </Grid>
-            );
-          })}
-      </Grid>
+        {TemporaryDrawer()}
+        <Grid
+          container
+          direction="row"
+          columnSpacing={1}
+          rowSpacing={1}
+          sx={{ p: 1 }}
+        >
+          {thanks &&
+            userData &&
+            Object.entries(thanks).map(([key, value]) => {
+              return (
+                <Grid item xs={12} md={4} lg={4}>
+                  <ThanksCard
+                    thanksId={key}
+                    thanksData={value}
+                    userId={userData.id}
+                    toggleDrawer={toggleDrawer}
+                  />
+                </Grid>
+              );
+            })}
+        </Grid>
+      </thanksCommentsContext.Provider>
     </>
   );
 };

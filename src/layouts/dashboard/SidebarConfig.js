@@ -50,6 +50,16 @@ const sidebarConfig = [
     title: "Thanks",
     path: "/thanks",
     icon: getIcon(awardIcon),
+    children: [
+      {
+        title: "all thanks",
+        path: "/thanks",
+      },
+      {
+        title: "Give thanks",
+        path: "/thanks/givethanks",
+      },
+    ],
   },
   {
     title: "register",

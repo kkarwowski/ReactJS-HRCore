@@ -56,7 +56,6 @@ const AssociateChanges = ({ userID }) => {
                     ? 1
                     : -1
                 )
-
                 .map((change) => {
                   const { Category, Timestamp, Value, ChangedBy } = change;
 

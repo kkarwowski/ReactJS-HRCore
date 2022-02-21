@@ -59,6 +59,7 @@ import PrivateRoute from "./pages/PrivateRoute";
 import Admin from "./pages/Admin";
 import ImportAssociates from "./components/Associate/Admin/ImportAssociates";
 import ModifyDatabase from "./components/Associate/Admin/DatabaseModify";
+import GiveThanks from "./components/Thanks/GiveThanks";
 function App() {
   const associatesCollectionRef = collection(db, "Associates");
   const [updateAssociates, setUpdateAssociates] = useState(1);
@@ -342,10 +343,18 @@ function App() {
                               }
                             ></Route>
                             <Route
-                              path="admin/database"
+                              path="dashboard/associates/newassociate"
                               element={
-                                <PrivateRoute role="Admin">
-                                  <Admin />
+                                <PrivateRoute role="Standard">
+                                  <NewAssociate />
+                                </PrivateRoute>
+                              }
+                            ></Route>
+                            <Route
+                              path="thanks/givethanks"
+                              element={
+                                <PrivateRoute role="Stabdard">
+                                  <GiveThanks />
                                 </PrivateRoute>
                               }
                             ></Route>

@@ -35,13 +35,20 @@ import { associatesContext } from "../../utils/context/contexts";
 import { db } from "../../utils/firebase";
 import { thanksCommentsContext } from "../../utils/context/contexts";
 
-const ThanksCard = ({ thanksId, thanksData, userId, toggleDrawer }) => {
+const ThanksCard = ({
+  thanksId,
+  thanksData,
+  userId,
+  toggleDrawer,
+  giveThanksMode,
+}) => {
   const { selectedCommentsandLikes, setSelectedCommentsandLikes } = useContext(
     thanksCommentsContext
   );
   const [likesAndComments, setLikesAndComments] = useState();
   const { associates, setAssociates } = useContext(associatesContext);
   const [Liked, setLiked] = useState(false);
+  console.log(thanksData, "data");
   const getUserDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);
     return associate[0];
@@ -50,18 +57,20 @@ const ThanksCard = ({ thanksId, thanksData, userId, toggleDrawer }) => {
   const toUser = getUserDetails(thanksData.To);
 
   useEffect(() => {
-    const ThanksLikesRef = doc(db, "Thanks-Comments-Likes", thanksId);
-    onSnapshot(ThanksLikesRef, (result) => {
-      if (result.data() != null) {
-        setLikesAndComments(result.data());
-        setSelectedCommentsandLikes(result.data());
-        if (result.data().Likes.includes(userId)) {
-          setLiked(true);
-        } else {
-          setLiked(false);
+    if (!giveThanksMode) {
+      const ThanksLikesRef = doc(db, "Thanks-Comments-Likes", thanksId);
+      onSnapshot(ThanksLikesRef, (result) => {
+        if (result.data() != null) {
+          setLikesAndComments(result.data());
+          setSelectedCommentsandLikes(result.data());
+          if (result.data().Likes.includes(userId)) {
+            setLiked(true);
+          } else {
+            setLiked(false);
+          }
         }
-      }
-    });
+      });
+    }
   }, []);
 
   const handleLikePress = () => {
@@ -89,24 +98,38 @@ const ThanksCard = ({ thanksId, thanksData, userId, toggleDrawer }) => {
           columnSpacing={0.5}
         >
           <Grid item>
-            <LikeIcon
-              function={() => {
-                handleLikePress();
-              }}
-              sx={{ color: Liked ? "red" : "black", window: 18, height: 18 }}
-              status={Liked}
-            />
+            {!giveThanksMode ? (
+              <LikeIcon
+                function={() => {
+                  handleLikePress();
+                }}
+                sx={{ color: Liked ? "red" : "black", window: 18, height: 18 }}
+                status={Liked}
+              />
+            ) : (
+              <LikeIcon
+                sx={{ color: Liked ? "red" : "black", window: 18, height: 18 }}
+                status={Liked}
+              />
+            )}
           </Grid>
           <Grid item>{likesCount}</Grid>
           <Grid item>
-            <IconButton
-              onClick={() =>
-                toggleDrawer(true, thanksId, likesAndComments, thanksData)
-              }
-            >
-              {/* <Icon icon={commentO} color="black" width="18" height="18" /> */}
-              <Typography>Comments</Typography>
-            </IconButton>
+            {!giveThanksMode ? (
+              <IconButton
+                onClick={() =>
+                  toggleDrawer(true, thanksId, likesAndComments, thanksData)
+                }
+              >
+                {/* <Icon icon={commentO} color="black" width="18" height="18" /> */}
+                <Typography>Comments</Typography>
+              </IconButton>
+            ) : (
+              <IconButton>
+                {/* <Icon icon={commentO} color="black" width="18" height="18" /> */}
+                <Typography>Comments</Typography>
+              </IconButton>
+            )}
           </Grid>
           <Grid item>{commentCount}</Grid>
         </Grid>

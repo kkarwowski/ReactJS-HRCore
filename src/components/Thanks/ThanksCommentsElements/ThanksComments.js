@@ -1,4 +1,4 @@
-import { Avatar, Typography, Grid, Divider } from "@mui/material";
+import { Avatar, Typography, Grid, Divider, Box } from "@mui/material";
 import React, { useEffect, useContext, useState } from "react";
 
 import moment from "moment";
@@ -15,7 +15,6 @@ const ThanksComments = ({ timestamp, comment, id }) => {
   return (
     <>
       <Divider variant="fullWidth" />
-
       <Grid container direction="column" padding={1}>
         <Grid item>
           <Grid
@@ -24,7 +23,14 @@ const ThanksComments = ({ timestamp, comment, id }) => {
             alignItems="flex-start"
             columnSpacing={1}
           >
-            <Grid item>{user && <Avatar src={user.profilePicture} />}</Grid>
+            <Grid item>
+              {user && (
+                <Avatar
+                  src={user.profilePicture}
+                  sx={{ width: 25, height: 25 }}
+                />
+              )}
+            </Grid>
             <Grid item>
               <Grid container direction="column">
                 <Grid item>
@@ -38,14 +44,15 @@ const ThanksComments = ({ timestamp, comment, id }) => {
                     {moment.unix(timestamp).from(new Date())}
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <Typography variant="h7" sx={{ paddingLeft: 1 }}>
-                    {comment}
-                  </Typography>
-                </Grid>
+                <Grid item></Grid>
               </Grid>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Typography variant="h7">{comment}</Typography>{" "}
+          </Box>
         </Grid>
       </Grid>
     </>

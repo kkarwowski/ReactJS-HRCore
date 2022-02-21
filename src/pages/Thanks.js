@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Drawer, Grid } from "@mui/material";
+import {
+  Box,
+  Drawer,
+  Grid,
+  Switch,
+  FormControlLabel,
+  Card,
+  Button,
+} from "@mui/material";
 import {
   ref,
   on,
@@ -17,10 +25,14 @@ import ThanksCard from "../components/Thanks/ThanksCard";
 import ThanksComments from "../components/Thanks/ThanksCommentsElements/ThanksComments";
 import ThanksCommentPost from "../components/Thanks/ThanksCommentsElements/ThanksCommentPost";
 import { thanksCommentsContext } from "../utils/context/contexts";
+import Scrollbar from "../components/Scrollbar";
+
 const Thanks = () => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [selectedThanks, setSelectedThanks] = useState({});
   const { userData } = useAuth();
+  const [thanks, setThanks] = useState();
+
   const [selectedCommentsandLikes, setSelectedCommentsandLikes] = useState();
   const toggleDrawer = (open, id, likesAndComments, thanksData) => {
     setShowSideMenu(open);
@@ -56,30 +68,41 @@ const Thanks = () => {
               userId={userData.id}
             />
           )}
-          {selectedThanks &&
-            selectedThanks.likesAndComments != undefined &&
-            Object.values(selectedThanks.likesAndComments.Comments).map(
-              (value) => {
-                return (
-                  <ThanksComments
-                    timestamp={value.Timestamp}
-                    id={value.Id}
-                    comment={value.Comment}
-                  />
-                  // <>
-                  //   <div>{value.Comment}</div>
-                  //   <div>{value.Timestamp}</div>
-                  //   <div>{value.Id}</div>
-                  // </>
-                );
-              }
-            )}
+          <Box sx={{ height: "50%", width: 340 }}>
+            <Scrollbar sx={{ height: "100%" }}>
+              {selectedThanks &&
+                selectedThanks.likesAndComments != undefined &&
+                Object.values(selectedThanks.likesAndComments.Comments)
+                  // .sort((a, b) =>
+                  //   new Date(
+                  //     selectedThanks.likesAndComments.Comments[
+                  //       b
+                  //     ].Timestamp.toDate()
+                  //   ) >
+                  //   new Date(
+                  //     selectedThanks.likesAndComments.Comments[
+                  //       a
+                  //     ].Timestamp.toDate()
+                  //   )
+                  //     ? 1
+                  //     : -1
+                  // )
+                  .map((value) => {
+                    return (
+                      <ThanksComments
+                        timestamp={value.Timestamp}
+                        id={value.Id}
+                        comment={value.Comment}
+                      />
+                    );
+                  })}
+            </Scrollbar>
+          </Box>
         </Box>
       </Drawer>
     );
   };
 
-  const [thanks, setThanks] = useState();
   useEffect(() => {
     const dbrt = getDatabase();
 
@@ -101,6 +124,21 @@ const Thanks = () => {
         value={{ selectedCommentsandLikes, setSelectedCommentsandLikes }}
       >
         {TemporaryDrawer()}
+        <Grid
+          container
+          direction="row"
+          sx={{ p: 1 }}
+          justifyContent="space-between"
+        >
+          <Grid item>
+            <Card sx={{ paddingLeft: 1, paddingRight: 1 }}>
+              <FormControlLabel control={<Switch />} label="Received Thanks" />
+            </Card>
+          </Grid>
+          <Grid item>
+            <Button variant="contained">Give Thanks</Button>
+          </Grid>
+        </Grid>
         <Grid
           container
           direction="row"

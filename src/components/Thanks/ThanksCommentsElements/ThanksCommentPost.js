@@ -31,13 +31,14 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
   return (
     <Grid container direction="column" sx={{ paddingBottom: 2 }}>
       <Grid item>
-        Add Comment
+        Add comment
         <Grid container direction="column" paddingTop={3} rowSpacing={1}>
           <Grid item>
             <TextField
               label="Your comment"
               size="small"
               fullWidth
+              maxRows={3}
               onChange={(e) => setCommentField(e.target.value)}
               multiline
               InputLabelProps={{ shrink: commentField ? true : false }}
@@ -72,7 +73,10 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
                     <Button
                       size="small"
                       variant="outlined"
-                      sx={{ color: "black" }}
+                      sx={{
+                        textTransform: "none",
+                        color: "black",
+                      }}
                       onClick={() => {
                         setCommentField(presetComment);
                       }}

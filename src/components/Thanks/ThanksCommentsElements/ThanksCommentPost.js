@@ -9,9 +9,9 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
   const [commentField, setCommentField] = useState();
   const presetComments = [
     "Well done!👍",
-    "Congratulations 🎉",
     "Awesome 😍",
     "Keep it up 💪",
+    "Congratulations 🎉",
     "Good job 🤞",
     "Amazing work 😎",
   ];
@@ -38,6 +38,7 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
               label="Your comment"
               size="small"
               fullWidth
+              rows={2}
               maxRows={3}
               onChange={(e) => setCommentField(e.target.value)}
               multiline
@@ -66,7 +67,14 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
             <Typography paddingTop={1} paddingBottom={1}>
               Quick replies
             </Typography>
-            <Grid container direction="row" rowGap={1} columnGap={1}>
+            <Grid
+              container
+              direction="row"
+              rowGap={1}
+              columnGap={1}
+              // justifyContent="space-around"
+              justifyContent="flex-start"
+            >
               {presetComments.map((presetComment) => {
                 return (
                   <Grid item>

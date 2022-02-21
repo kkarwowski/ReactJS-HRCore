@@ -33,9 +33,11 @@ const ApprovalAvatar = ({
             // </Link>
           )}
           <div className="TimelineContentAvatarDetails">
-            <div className="TimelineContentDetailsAvatarName">
-              {FirstName + " " + LastName}
-            </div>
+            {FirstName && LastName && (
+              <div className="TimelineContentDetailsAvatarName">
+                {FirstName + " " + LastName}
+              </div>
+            )}
             {Title && (
               <div className="TimelineContentDetailsAvatarTitle">{Title}</div>
             )}

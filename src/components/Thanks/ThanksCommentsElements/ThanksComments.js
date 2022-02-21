@@ -1,5 +1,5 @@
 import { Avatar, Typography, Grid, Divider, Box } from "@mui/material";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import moment from "moment";
 import { associatesContext } from "../../../utils/context/contexts";
@@ -51,7 +51,7 @@ const ThanksComments = ({ timestamp, comment, id }) => {
         </Grid>
         <Grid item>
           <Box>
-            <Typography variant="h7">{comment}</Typography>{" "}
+            <Typography variant="h7">{comment}</Typography>
           </Box>
         </Grid>
       </Grid>

@@ -6,15 +6,17 @@ import {
   Box,
   Button,
   MenuItem,
-  Typography,
 } from "@mui/material";
 import { ref, push } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../utils/firebase";
 import React, { useState, useRef, useCallback, useContext } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import ReactCanvasConfetti from "react-canvas-confetti";
 import { useAuth } from "../../utils/context/AuthContext";
-import ThanksCard from "./ThanksCard";
+import "./ThanksCardElements/cardMedia.css";
+
 const GiveThanks = () => {
   const { userData } = useAuth();
   const { associates } = useContext(associatesContext);
@@ -80,13 +82,18 @@ const GiveThanks = () => {
   }, [makeShot]);
 
   const onSubmit = () => {
-    push(ref(rtdb, `Thanks`), giveThanksData).then(() => {
+    push(ref(rtdb, `Thanks`), giveThanksData).then((result) => {
       setGiveThanksData({
         Comment: undefined,
         To: undefined,
         From: "",
         Timestamp: Math.round(new Date().getTime() / 1000),
         Category: undefined,
+      });
+      console.log(result.key, "key");
+      setDoc(doc(db, "Thanks-Comments-Likes", result.key), {
+        Comments: {},
+        Likes: [],
       });
     });
   };
@@ -99,14 +106,28 @@ const GiveThanks = () => {
         sx={{ paddingTop: 2 }}
       >
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-
         <Grid item>
           <Box>
-            <Card sx={{ width: 400, height: 500, paddingTop: 2 }}>
-              <Grid container direction="column" padding={1} rowGap={1}>
-                <Grid item>
-                  <Typography textAlign="center">Give thanks!</Typography>
-                </Grid>
+            <Card sx={{ width: 400, height: 500 }}>
+              {giveThanksData.Category != undefined ? (
+                <div
+                  className={giveThanksData.Category}
+                  style={{ height: 140 }}
+                >
+                  {giveThanksData.Category === "TeamPlayer"
+                    ? "Team Player 🤼"
+                    : giveThanksData.Category === "Hero"
+                    ? "Hero 🥉"
+                    : giveThanksData.Category === "ThankYou"
+                    ? "Thank you! 🙏"
+                    : ""}
+                </div>
+              ) : (
+                <div className="Blank" style={{ color: "black ", height: 140 }}>
+                  Give Thanks
+                </div>
+              )}
+              <Grid container direction="column" padding={2} rowGap={1}>
                 <Grid item>
                   <TextField
                     name="Category"
@@ -124,13 +145,13 @@ const GiveThanks = () => {
                       })
                     }
                   >
-                    <MenuItem key="Team Player" value="Team Player">
+                    <MenuItem key="Team Player" value="TeamPlayer">
                       Team Player
                     </MenuItem>
                     <MenuItem key="Hero" value="Hero">
                       Hero
                     </MenuItem>
-                    <MenuItem key="thank you" value="Thank You!">
+                    <MenuItem key="thank you" value="ThankYou">
                       Thank You!
                     </MenuItem>
                   </TextField>
@@ -138,6 +159,7 @@ const GiveThanks = () => {
 
                 <Grid item>
                   <TextField
+                    label="For..."
                     select
                     name="To"
                     value={giveThanksData.To ? giveThanksData.To : ""}
@@ -164,7 +186,7 @@ const GiveThanks = () => {
                     multiline
                     maxRows={4}
                     name="Comment"
-                    label="Awesome feedback"
+                    label="Your comments"
                     value={giveThanksData.Comment ? giveThanksData.Comment : ""}
                     onChange={(event) =>
                       setGiveThanksData({
@@ -184,7 +206,7 @@ const GiveThanks = () => {
                       giveThanksData.To === undefined ||
                       giveThanksData.Category === undefined
                     }
-                    // onClick={() => onSubmit()}
+                    onClick={() => onSubmit()}
                     onMouseDown={fire}
                   >
                     Post
@@ -195,18 +217,6 @@ const GiveThanks = () => {
             </Card>
           </Box>
         </Grid>
-        {/* <Grid item>
-          {giveThanksData != undefined && (
-            <ThanksCard
-              thanksData={giveThanksData}
-              thanksData={null}
-              giveThanksMode={true}
-              thanksId={null}
-              toggleDrawer={null}
-              userId={null}
-            />
-          )}
-        </Grid> */}
       </Grid>
     </Container>
   );

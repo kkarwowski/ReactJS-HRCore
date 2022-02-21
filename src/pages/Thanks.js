@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -8,17 +8,7 @@ import {
   Card,
   Button,
 } from "@mui/material";
-import {
-  ref,
-  on,
-  set,
-  push,
-  onValue,
-  onChildAdded,
-  get,
-  child,
-  getDatabase,
-} from "firebase/database";
+import { ref, onValue, getDatabase } from "firebase/database";
 
 import { useAuth } from "../utils/context/AuthContext";
 import ThanksCard from "../components/Thanks/ThanksCard";
@@ -111,9 +101,7 @@ const Thanks = () => {
       if (snapshot.val() != null) {
         const data = snapshot.val();
         setThanks(data);
-        console.log("Thanks", data);
       } else {
-        console.log("no data");
       }
     });
   }, []);

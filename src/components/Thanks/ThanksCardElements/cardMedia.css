@@ -1,4 +1,4 @@
-.Container {
+.TeamPlayer {
   display: flex;
   background-image: linear-gradient(
     to right,
@@ -20,6 +20,61 @@
   color: azure;
   justify-content: center;
   align-items: center;
+  text-align: center;
   font-weight: 600;
+  margin: auto;
+  font-size: 1.5rem;
+}
+.Hero {
+  display: flex;
+  background-image: linear-gradient(
+    to right bottom,
+    #e5e565,
+    #f9b251,
+    #f7815d,
+    #dc5873,
+    #aa4386
+  );
+  min-height: 80px;
+  min-width: 200px;
+  color: azure;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 600;
+  margin: auto;
+  font-size: 1.5rem;
+}
+.ThankYou {
+  display: flex;
+  background-image: linear-gradient(
+    to right bottom,
+    #d6f600,
+    #e5d600,
+    #edb700,
+    #ed9700,
+    #e77914
+  );
+  min-height: 80px;
+  min-width: 200px;
+  color: azure;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 600;
+  margin: auto;
+  font-size: 1.5rem;
+}
+.Blank {
+  display: flex;
+  background-color: white;
+  min-height: 80px;
+  min-width: 200px;
+  color: azure;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 600;
+  margin: auto;
   font-size: 1.5rem;
 }

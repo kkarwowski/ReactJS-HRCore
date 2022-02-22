@@ -49,11 +49,11 @@
   display: flex;
   background-image: linear-gradient(
     to right bottom,
-    #d6f600,
-    #e5d600,
-    #edb700,
-    #ed9700,
-    #e77914
+    #721fde,
+    #ab00bc,
+    #c9009b,
+    #d8007d,
+    #dc1865
   );
   min-height: 80px;
   min-width: 200px;

@@ -251,9 +251,7 @@ function App() {
                     >
                       <ThemeConfig>
                         <GlobalStyles />
-                        {/* <Router /> */}
                         <Routes>
-                          {/* <Routes> */}
                           <Route
                             path="/"
                             element={
@@ -357,8 +355,15 @@ function App() {
                                   <GiveThanks />
                                 </PrivateRoute>
                               }
+                            />
+                            <Route
+                              path="admin/database"
+                              element={
+                                <PrivateRoute role="Admin">
+                                  <Admin />
+                                </PrivateRoute>
+                              }
                             ></Route>
-
                             <Route
                               path="admin/import"
                               element={
@@ -368,17 +373,8 @@ function App() {
                               }
                             ></Route>
                           </Route>
-
                           <Route path="/login" element={<Login />} />
                           <Route path="*" element={<Page404 />} />
-                          {/* <Route
-                            path="/"
-                            element={
-                              <PrivateRoute role="Standard">
-                                <DashboardLayout />
-                              </PrivateRoute>
-                            }
-                          /> */}
                         </Routes>
                       </ThemeConfig>
                     </departmentsContext.Provider>
@@ -388,7 +384,6 @@ function App() {
             </associatesContext.Provider>
           </resultsPerPageContext.Provider>
         </tasksToApproveContext.Provider>
-        {/* </AuthProvider> */}
       </AuthContext.Provider>
     </>
   );

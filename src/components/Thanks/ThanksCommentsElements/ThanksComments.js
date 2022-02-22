@@ -1,16 +1,38 @@
-import { Avatar, Typography, Grid, Divider, Box } from "@mui/material";
-import React, { useContext } from "react";
+import {
+  Avatar,
+  Typography,
+  Grid,
+  Divider,
+  Box,
+  IconButton,
+  TextField,
+} from "@mui/material";
+import { doc, updateDoc, deleteField } from "firebase/firestore";
+import { db } from "../../../utils/firebase";
 
+import React, { useContext, useState } from "react";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import moment from "moment";
 import { associatesContext } from "../../../utils/context/contexts";
 
-const ThanksComments = ({ timestamp, comment, id }) => {
+const ThanksComments = ({ timestamp, comment, id, commentId, thanksId }) => {
   const { associates, setAssociates } = useContext(associatesContext);
+  const [edit, setEdit] = useState(false);
   const getUserDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);
     return associate[0];
   };
   const user = getUserDetails(id);
+
+  const deleteComment = (commentID, thanksId) => {
+    const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
+    // console.log(commentRef, "Comment REF");
+    // console.log(commentID, idd, "ID");
+    updateDoc(commentRef, {
+      [`Comments.${commentID}`]: deleteField(),
+    });
+  };
 
   return (
     <>
@@ -43,6 +65,14 @@ const ThanksComments = ({ timestamp, comment, id }) => {
                   >
                     {moment.unix(timestamp).from(new Date())}
                   </Typography>
+                  <IconButton onClick={() => setEdit(!edit)}>
+                    <ModeEditIcon sx={{ width: 18, height: 18 }} />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => deleteComment(commentId, thanksId)}
+                  >
+                    <DeleteForeverIcon sx={{ width: 18, height: 18 }} />
+                  </IconButton>
                 </Grid>
                 <Grid item></Grid>
               </Grid>
@@ -50,9 +80,18 @@ const ThanksComments = ({ timestamp, comment, id }) => {
           </Grid>
         </Grid>
         <Grid item>
-          <Box>
-            <Typography variant="h7">{comment}</Typography>
-          </Box>
+          {edit ? (
+            <TextField
+              variant="outlined"
+              size="small"
+              value={comment}
+              inputProps={{ style: { fontSize: 12 } }}
+            ></TextField>
+          ) : (
+            <Box>
+              <Typography variant="h7">{comment}</Typography>
+            </Box>
+          )}
         </Grid>
       </Grid>
     </>

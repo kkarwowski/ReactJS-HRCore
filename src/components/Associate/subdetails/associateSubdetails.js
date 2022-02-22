@@ -87,7 +87,7 @@ const AssociateSubdetails = () => {
             },
           }}
         >
-          <Box sx={{ p: 1, pr: 1 }} dir="ltr">
+          <Box sx={{ p: 1, pr: 1, pt: 3 }} dir="ltr">
             <Grid
               container
               direction="column"

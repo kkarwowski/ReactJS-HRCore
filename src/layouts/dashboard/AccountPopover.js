@@ -1,12 +1,10 @@
 import { Icon } from "@iconify/react";
-import { useRef, useState, useEffect, useContext } from "react";
+import { useRef, useState, useContext } from "react";
 import homeFill from "@iconify/icons-eva/home-fill";
 import personFill from "@iconify/icons-eva/person-fill";
 import settings2Fill from "@iconify/icons-eva/settings-2-fill";
 import { Link as RouterLink } from "react-router-dom";
 import { useAuth } from "../../utils/context/AuthContext";
-import { getDoc, doc } from "firebase/firestore";
-import { db } from "../../utils/firebase";
 // material
 import { alpha } from "@mui/material/styles";
 import {

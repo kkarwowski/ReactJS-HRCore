@@ -108,7 +108,7 @@ const GiveThanks = () => {
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
         <Grid item>
           <Box>
-            <Card sx={{ width: 400, height: 500 }}>
+            <Card sx={{ width: { xs: 320, sm: 450, lg: 450 }, height: 500 }}>
               {giveThanksData.Category != undefined ? (
                 <div
                   className={giveThanksData.Category}
@@ -117,7 +117,7 @@ const GiveThanks = () => {
                   {giveThanksData.Category === "TeamPlayer"
                     ? "Team Player 🤼"
                     : giveThanksData.Category === "Hero"
-                    ? "Hero 🥉"
+                    ? "Hero 🏅"
                     : giveThanksData.Category === "ThankYou"
                     ? "Thank you! 🙏"
                     : ""}

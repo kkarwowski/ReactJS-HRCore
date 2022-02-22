@@ -117,8 +117,6 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   };
   const DeleteAssociate = async (id) => {
     setLoading(true);
-    console.log(isDemo);
-    console.log("ID", id, isAdmin, "is amdin");
     // delete from Associates
     if (!isDemo && isAdmin) {
       await deleteDoc(doc(db, "Associates", id));
@@ -400,18 +398,18 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
                                 sx={{
                                   // borderBottom: 1,
                                   borderColor: "divider",
-                                  pt: 3,
-                                  width: "400px",
+                                  pt: 1,
+                                  // width: "400px",
                                 }}
                               >
                                 <Tabs
                                   value={value}
                                   onChange={handleChangetoTab}
-                                  aria-label="basic tabs example"
-                                  variant="scrollable"
-                                  scrollButtons="auto"
-                                  scrollButtons={true}
-                                  allowScrollButtonsMobile
+                                  // aria-label="basic tabs example"
+                                  // variant="scrollable"
+                                  // scrollButtons="auto"
+                                  // scrollButtons={true}
+                                  // allowScrollButtonsMobile
                                 >
                                   <Tab
                                     label="Personal"

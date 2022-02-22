@@ -8,7 +8,13 @@ import {
   Card,
   Button,
 } from "@mui/material";
-import { ref, onValue, getDatabase } from "firebase/database";
+import {
+  ref,
+  onValue,
+  getDatabase,
+  limitToFirst,
+  query,
+} from "firebase/database";
 
 import { useAuth } from "../utils/context/AuthContext";
 import ThanksCard from "../components/Thanks/ThanksCard";
@@ -62,7 +68,7 @@ const Thanks = () => {
             <Scrollbar sx={{ height: "100%" }}>
               {selectedThanks &&
                 selectedThanks.likesAndComments != undefined &&
-                Object.values(selectedThanks.likesAndComments.Comments)
+                Object.entries(selectedThanks.likesAndComments.Comments)
                   // .sort((a, b) =>
                   //   new Date(
                   //     selectedThanks.likesAndComments.Comments[
@@ -77,12 +83,14 @@ const Thanks = () => {
                   //     ? 1
                   //     : -1
                   // )
-                  .map((value) => {
+                  .map(([key, value]) => {
                     return (
                       <ThanksComments
                         timestamp={value.Timestamp}
                         id={value.Id}
                         comment={value.Comment}
+                        commentId={key}
+                        thanksId={selectedThanks.id}
                       />
                     );
                   })}
@@ -96,7 +104,7 @@ const Thanks = () => {
   useEffect(() => {
     const dbrt = getDatabase();
 
-    const AllThanks = ref(dbrt, `Thanks`);
+    const AllThanks = query(ref(dbrt, `Thanks`), limitToFirst(10));
     onValue(AllThanks, (snapshot) => {
       if (snapshot.val() != null) {
         const data = snapshot.val();
@@ -127,28 +135,30 @@ const Thanks = () => {
             <Button variant="contained">Give Thanks</Button>
           </Grid>
         </Grid>
-        <Grid
-          container
-          direction="row"
-          columnSpacing={1}
-          rowSpacing={1}
-          sx={{ p: 1 }}
-        >
-          {thanks &&
-            userData &&
-            Object.entries(thanks).map(([key, value]) => {
-              return (
-                <Grid item xs={12} md={4} lg={4}>
-                  <ThanksCard
-                    thanksId={key}
-                    thanksData={value}
-                    userId={userData.id}
-                    toggleDrawer={toggleDrawer}
-                  />
-                </Grid>
-              );
-            })}
-        </Grid>
+        <Card>
+          <Grid
+            container
+            direction="row"
+            columnSpacing={1}
+            rowSpacing={1}
+            sx={{ p: 1 }}
+          >
+            {thanks &&
+              userData &&
+              Object.entries(thanks).map(([key, value]) => {
+                return (
+                  <Grid item xs={12} md={4} lg={4}>
+                    <ThanksCard
+                      thanksId={key}
+                      thanksData={value}
+                      userId={userData.id}
+                      toggleDrawer={toggleDrawer}
+                    />
+                  </Grid>
+                );
+              })}
+          </Grid>
+        </Card>
       </thanksCommentsContext.Provider>
     </>
   );

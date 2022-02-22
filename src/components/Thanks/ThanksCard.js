@@ -38,7 +38,6 @@ const ThanksCard = ({
   const [likesAndComments, setLikesAndComments] = useState();
   const { associates, setAssociates } = useContext(associatesContext);
   const [Liked, setLiked] = useState(false);
-  console.log(thanksData, "data");
   const getUserDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);
     return associate[0];
@@ -131,7 +130,7 @@ const ThanksCard = ({
         {thanksData.Category === "TeamPlayer"
           ? "Team Player 🤼"
           : thanksData.Category === "Hero"
-          ? "Hero 🥉"
+          ? "Hero 🏅"
           : thanksData.Category === "ThankYou"
           ? "Thank you! 🙏"
           : ""}

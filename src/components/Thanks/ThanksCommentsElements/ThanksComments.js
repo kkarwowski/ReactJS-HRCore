@@ -6,6 +6,7 @@ import {
   Box,
   IconButton,
   TextField,
+  Button,
 } from "@mui/material";
 import { doc, updateDoc, deleteField } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
@@ -16,24 +17,41 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import moment from "moment";
 import { associatesContext } from "../../../utils/context/contexts";
 
-const ThanksComments = ({ timestamp, comment, id, commentId, thanksId }) => {
+const ThanksComments = ({
+  timestamp,
+  comment,
+  id,
+  commentId,
+  thanksId,
+  userId,
+}) => {
   const { associates, setAssociates } = useContext(associatesContext);
   const [edit, setEdit] = useState(false);
+  const [newComment, setNewComment] = useState();
   const getUserDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);
     return associate[0];
   };
   const user = getUserDetails(id);
-
+  console.log(commentId, "comment Id", userId, "user");
   const deleteComment = (commentID, thanksId) => {
     const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
-    // console.log(commentRef, "Comment REF");
-    // console.log(commentID, idd, "ID");
     updateDoc(commentRef, {
       [`Comments.${commentID}`]: deleteField(),
     });
   };
+  const editComment = (commentID, thanksId, newComment) => {
+    const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
+    updateDoc(commentRef, {
+      [`Comments.${commentID}.Comment`]: newComment,
+    });
+    setEdit(false);
+  };
 
+  const pressEdit = () => {
+    setNewComment(comment);
+    setEdit(!edit);
+  };
   return (
     <>
       <Divider variant="fullWidth" />
@@ -65,14 +83,16 @@ const ThanksComments = ({ timestamp, comment, id, commentId, thanksId }) => {
                   >
                     {moment.unix(timestamp).from(new Date())}
                   </Typography>
-                  <IconButton onClick={() => setEdit(!edit)}>
-                    <ModeEditIcon sx={{ width: 18, height: 18 }} />
+                  <IconButton onClick={() => pressEdit()}>
+                    <ModeEditIcon sx={{ width: 16, height: 16 }} />
                   </IconButton>
-                  <IconButton
-                    onClick={() => deleteComment(commentId, thanksId)}
-                  >
-                    <DeleteForeverIcon sx={{ width: 18, height: 18 }} />
-                  </IconButton>
+                  {id === userId ? (
+                    <IconButton
+                      onClick={() => deleteComment(commentId, thanksId)}
+                    >
+                      <DeleteForeverIcon sx={{ width: 16, height: 16 }} />
+                    </IconButton>
+                  ) : null}
                 </Grid>
                 <Grid item></Grid>
               </Grid>
@@ -81,12 +101,25 @@ const ThanksComments = ({ timestamp, comment, id, commentId, thanksId }) => {
         </Grid>
         <Grid item>
           {edit ? (
-            <TextField
-              variant="outlined"
-              size="small"
-              value={comment}
-              inputProps={{ style: { fontSize: 12 } }}
-            ></TextField>
+            <>
+              <TextField
+                variant="outlined"
+                size="small"
+                value={newComment ? newComment : ""}
+                inputProps={{ style: { fontSize: 12 } }}
+                fullWidth
+                multiline
+                onChange={(event) => setNewComment(event.target.value)}
+                sx={{ borderColor: "yellow" }}
+              ></TextField>
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => editComment(commentId, thanksId, newComment)}
+              >
+                Save
+              </Button>
+            </>
           ) : (
             <Box>
               <Typography variant="h7">{comment}</Typography>

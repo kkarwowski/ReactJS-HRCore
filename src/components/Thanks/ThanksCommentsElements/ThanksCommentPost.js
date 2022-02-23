@@ -26,6 +26,7 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
         Timestamp: Math.round(new Date().getTime() / 1000),
       },
     });
+    setCommentField("");
   };
 
   return (

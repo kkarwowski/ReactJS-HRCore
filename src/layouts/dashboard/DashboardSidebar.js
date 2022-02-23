@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
-import { Box, Drawer } from "@mui/material";
+import { Box, Drawer, Grid, Typography } from "@mui/material";
 // components
 import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
@@ -60,20 +60,37 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3 }}>
-        <Box
-          // component={RouterLink}
-          // to="/"
-          sx={{ display: "inline-flex" }}
-          style={{ textDecoration: "none" }}
-        >
-          <Logo sx={{ width: 60 }} color="white" />
-        </Box>
+        {/* <Box> */}
+        <Grid container direction="column" alignItems="center">
+          <Logo sx={{ width: 90 }} color="white" />
+        </Grid>
+        {/* </Box> */}
       </Box>
 
       <NavSection navConfig={sidebarConfig} />
 
-      <Box sx={{ flexGrow: 1 }} />
-
+      <Box sx={{ flexGrow: 1 }}>
+        {/* <Grid
+          height="100%"
+          container
+          direction="row"
+          alignContent="space-around"
+          justifyItem="flex-end"
+        >
+          <Grid item>
+            <Typography variant="h7" color="white">
+              Version
+            </Typography>
+          </Grid>
+        </Grid> */}
+      </Box>
+      <Box>
+        <Grid container justifyContent="center" sx={{ pb: 2 }}>
+          <Typography variant="h7" color="lightGrey">
+            Version 0.75
+          </Typography>
+        </Grid>
+      </Box>
       {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
           alignItems="center"

@@ -7,6 +7,7 @@ import {
   limitToFirst,
   query,
 } from "firebase/database";
+import { Link } from "react-router-dom";
 
 import { useAuth } from "../utils/context/AuthContext";
 import ThanksCard from "../components/Thanks/ThanksCard";
@@ -42,7 +43,9 @@ const Thanks = () => {
           </Card>
         </Grid>
         <Grid item>
-          <Button variant="contained">Give Thanks</Button>
+          <Button variant="contained" component={Link} to={"givethanks"}>
+            Give Thanks
+          </Button>
         </Grid>
       </Grid>
       <Card>

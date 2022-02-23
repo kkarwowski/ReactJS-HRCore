@@ -25,6 +25,26 @@
   margin: auto;
   font-size: 1.5rem;
 }
+.Knowledge {
+  display: flex;
+  background-image: linear-gradient(
+    to right top,
+    #4a4ad6,
+    #0087ff,
+    #00b5ff,
+    #00ddf2,
+    #00ffd4
+  );
+  min-height: 80px;
+  min-width: 200px;
+  color: azure;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 600;
+  margin: auto;
+  font-size: 1.5rem;
+}
 .Hero {
   display: flex;
   background-image: linear-gradient(

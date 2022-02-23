@@ -39,7 +39,7 @@ const sidebarConfig = [
     icon: getIcon(lockFill),
   },
   {
-    title: "My Tasks",
+    title: "Tasks",
     path: "/tasks",
     icon: getIcon(clipboardTaskListLtr20Filled),
   },

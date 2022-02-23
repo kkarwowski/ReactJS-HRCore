@@ -13,6 +13,8 @@ import {
   Card,
   Table,
   Stack,
+  Badge,
+  SmallAvatar,
   Avatar,
   Button,
   TableRow,
@@ -250,12 +252,25 @@ const Associates = () => {
                                   alignItems="center"
                                   spacing={0}
                                 >
+                                  {/* <Badge
+                                    overlap="circular"
+                                    anchorOrigin={{
+                                      vertical: "bottom",
+                                      horizontal: "right",
+                                    }}
+                                    badgeContent="💡"
+                                  >
+                                    <Avatar
+                                      src={profilePicture}
+                                      alt="Profile Pic"
+                                      sx={{ width: 40, height: 40 }}
+                                    />
+                                  </Badge> */}
                                   <Avatar
                                     src={profilePicture}
                                     alt="Profile Pic"
                                     sx={{ width: 40, height: 40 }}
                                   />
-                                  {/* <Avatar src={filteredassociate.FirstName} />                                          */}
                                 </Stack>
                               </TableCell>
                               <TableCell align="left">

@@ -17,7 +17,6 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
   ];
   const postComment = () => {
     const thisUUID = uuidv4();
-    console.log("posting");
     const docREf = doc(db, `Thanks-Comments-Likes`, thanksId);
     updateDoc(docREf, {
       [`Comments.${thisUUID}`]: {

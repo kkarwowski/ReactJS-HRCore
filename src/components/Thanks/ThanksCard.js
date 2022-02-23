@@ -255,6 +255,8 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
             ? "Hero 🏅"
             : thanksData.Category === "ThankYou"
             ? "Thank you! 🙏"
+            : thanksData.Category === "Knowledge"
+            ? "Knowledge 💡"
             : ""}
         </div>
         <Grid
@@ -319,7 +321,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                       >
                         <Grid item>
                           <Typography variant="h7" sx={{ p: 1 }}>
-                            From
+                            from
                           </Typography>
                         </Grid>
                         <Grid item>

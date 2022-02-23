@@ -90,7 +90,6 @@ const GiveThanks = () => {
         Timestamp: Math.round(new Date().getTime() / 1000),
         Category: undefined,
       });
-      console.log(result.key, "key");
       setDoc(doc(db, "Thanks-Comments-Likes", result.key), {
         Comments: {},
         Likes: [],
@@ -120,6 +119,8 @@ const GiveThanks = () => {
                     ? "Hero 🏅"
                     : giveThanksData.Category === "ThankYou"
                     ? "Thank you! 🙏"
+                    : giveThanksData.Category === "Knowledge"
+                    ? "Knowledge 💡"
                     : ""}
                 </div>
               ) : (
@@ -153,6 +154,9 @@ const GiveThanks = () => {
                     </MenuItem>
                     <MenuItem key="thank you" value="ThankYou">
                       Thank You!
+                    </MenuItem>
+                    <MenuItem key="Knowledge" value="Knowledge">
+                      Knowledge
                     </MenuItem>
                   </TextField>
                 </Grid>

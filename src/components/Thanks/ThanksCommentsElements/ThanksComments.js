@@ -33,7 +33,6 @@ const ThanksComments = ({
     return associate[0];
   };
   const user = getUserDetails(id);
-  console.log(commentId, "comment Id", userId, "user");
   const deleteComment = (commentID, thanksId) => {
     const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
     updateDoc(commentRef, {
@@ -83,15 +82,17 @@ const ThanksComments = ({
                   >
                     {moment.unix(timestamp).from(new Date())}
                   </Typography>
-                  <IconButton onClick={() => pressEdit()}>
-                    <ModeEditIcon sx={{ width: 16, height: 16 }} />
-                  </IconButton>
                   {id === userId ? (
-                    <IconButton
-                      onClick={() => deleteComment(commentId, thanksId)}
-                    >
-                      <DeleteForeverIcon sx={{ width: 16, height: 16 }} />
-                    </IconButton>
+                    <>
+                      <IconButton onClick={() => pressEdit()}>
+                        <ModeEditIcon sx={{ width: 16, height: 16 }} />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => deleteComment(commentId, thanksId)}
+                      >
+                        <DeleteForeverIcon sx={{ width: 16, height: 16 }} />
+                      </IconButton>
+                    </>
                   ) : null}
                 </Grid>
                 <Grid item></Grid>

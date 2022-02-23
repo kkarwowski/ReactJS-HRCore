@@ -285,7 +285,7 @@ const MyTasks = () => {
                   alignItems="center"
                 >
                   <Typography variant="h6" color="black">
-                    My Tasks
+                    Tasks
                   </Typography>
                   <Box
                     sx={{

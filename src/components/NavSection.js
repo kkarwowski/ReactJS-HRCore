@@ -34,6 +34,9 @@ const ListItemStyle = styled((props) => (
   // color: "white",
   // color: theme.palette.text.secondary,
   color: theme.palette.third.lighter,
+  "&:hover": {
+    backgroundColor: "#213753",
+  },
   "&:before": {
     top: 0,
     right: 0,
@@ -76,6 +79,7 @@ function NavItem({ item, active, count }) {
   const activeRootStyle = {
     color: "white",
     // color: "primary.main",
+
     fontWeight: "fontWeightMedium",
     bgcolor: alpha(
       // theme.palette.primary.main,
@@ -194,7 +198,7 @@ export default function NavSection({ navConfig, ...other }) {
     <Box {...other}>
       <List disablePadding>
         {navConfig.map((item) =>
-          item.title === "My Tasks" ? (
+          item.title === "Tasks" ? (
             <NavItem
               key={item.title}
               item={item}

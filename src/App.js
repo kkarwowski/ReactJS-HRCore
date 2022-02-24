@@ -108,11 +108,6 @@ function App() {
       setCurrentUser(user);
       {
         if (user != null) {
-          console.log(
-            user.email,
-            " user email",
-            process.env.REACT_APP_DEMO_LOGIN
-          );
           setIsDemo(user.email === process.env.REACT_APP_DEMO_LOGIN);
           const usersCollectionRef = doc(db, "Users", user.uid);
 
@@ -195,13 +190,11 @@ function App() {
       onValue(ChangedRefApprove, (snapshot) => {
         if (snapshot.val() != null) {
           const data = snapshot.val();
-          console.log("nbew data, changed?", data);
           Object.keys(data).forEach((key, index) => {
             const Taskpath = data[key].TaskPath;
             onValue(ref(dbrt, `Tasks/${Taskpath}`), (snapshot) => {
               if (snapshot.val() != null) {
                 const snapp = snapshot.val();
-                console.log("new task", snapp);
                 // setTaskstoApprove((prev) => ({
                 //   ...prev,
                 //   [index]: { ...snapp, TaskPath: data[key].TaskPath },

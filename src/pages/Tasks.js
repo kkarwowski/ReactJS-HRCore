@@ -352,7 +352,7 @@ const MyTasks = () => {
                 </Stack>
               </Box>
             </Grid>
-            {console.log(Object.keys(tasksToApprove).length, "lenghti")}
+
             {tasksToApprove &&
               Object.keys(tasksToApprove).map((task, index) => {
                 return (

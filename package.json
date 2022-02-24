@@ -1,6 +1,6 @@
 {
   "name": "hrcore",
-  "version": "0.1.0",
+  "version": "0.75",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",

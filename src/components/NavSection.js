@@ -84,7 +84,7 @@ function NavItem({ item, active, count }) {
     bgcolor: alpha(
       // theme.palette.primary.main,
       theme.palette.primary.main,
-      0.6
+      0.4
     ),
     "&:before": { display: "block" },
   };
@@ -144,7 +144,7 @@ function NavItem({ item, active, count }) {
                         transition: (theme) =>
                           theme.transitions.create("transform"),
                         ...(isActiveSub && {
-                          transform: "scale(2)",
+                          transform: "scale(3)",
                           bgcolor: "primary.main",
                           // bgcolor: "#fff",
                         }),

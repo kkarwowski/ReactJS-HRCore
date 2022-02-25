@@ -1,3 +1,21 @@
+.comment_background {
+  /* border-radius: 20px; */
+  /* margin: 5px; */
+  height: 100%;
+  padding: 18px 18px 5px 18px;
+  /* background-color: rgb(235, 235, 235); */
+}
+.comment {
+  overflow-y: auto;
+  font-size: 0.8rem;
+  font-weight: 400;
+  max-height: 110px;
+  max-width: 100%;
+}
+.comment_giver {
+  padding-bottom: 0;
+  padding-top: 18px;
+}
 .TeamPlayer {
   display: flex;
   background-image: linear-gradient(
@@ -15,7 +33,7 @@
     #46eefa,
     #5ffbf1
   );
-  min-height: 80px;
+  min-height: 120px;
   min-width: 200px;
   color: azure;
   justify-content: center;
@@ -35,7 +53,7 @@
     #00ddf2,
     #00ffd4
   );
-  min-height: 80px;
+  min-height: 120px;
   min-width: 200px;
   color: azure;
   justify-content: center;
@@ -55,7 +73,7 @@
     #dc5873,
     #aa4386
   );
-  min-height: 80px;
+  min-height: 120px;
   min-width: 200px;
   color: azure;
   justify-content: center;
@@ -72,10 +90,10 @@
     #721fde,
     #ab00bc,
     #c9009b,
-    #d8007d,
+    #d12007d,
     #dc1865
   );
-  min-height: 80px;
+  min-height: 120px;
   min-width: 200px;
   color: azure;
   justify-content: center;
@@ -88,7 +106,7 @@
 .Blank {
   display: flex;
   background-color: white;
-  min-height: 80px;
+  min-height: 120px;
   min-width: 200px;
   color: azure;
   justify-content: center;

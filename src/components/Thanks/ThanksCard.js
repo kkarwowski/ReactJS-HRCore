@@ -248,103 +248,112 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
       </Drawer>
 
       <Card sx={{ maxWidth: 345 }}>
-        <div className={thanksData.Category}>
-          {thanksData.Category === "TeamPlayer"
-            ? "Team Player 🤼"
-            : thanksData.Category === "Hero"
-            ? "Hero 🏅"
-            : thanksData.Category === "ThankYou"
-            ? "Thank you! 🙏"
-            : thanksData.Category === "Knowledge"
-            ? "Knowledge 💡"
-            : ""}
-        </div>
-        <Grid
-          container
-          direction="column"
-          // justifyContent="center"
-          justifyContent="space-around"
-        >
-          <Grid item>
-            <CardActions>
-              <Grid container direction="column" rowSpacing={1}>
-                <Grid item>
-                  {toUser && (
-                    <ApprovalAvatar
-                      profilePicture={toUser.profilePicture}
-                      FirstName={toUser.FirstName}
-                      LastName={toUser.LastName}
-                      Title={toUser.Title}
-                      comment={thanksData.Comment}
-                      aheight={35}
-                      awidth={35}
-                    />
-                  )}
-                </Grid>
-                <Grid item>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignContent="center"
-                  >
-                    <Grid item>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        columnSpacing={1}
-                        paddingLeft={1}
-                      >
-                        <AccessTimeIcon
-                          fontSize="small"
-                          sx={{ opacity: 0.5 }}
-                        />
-                        <Typography
-                          variant="h7"
-                          sx={{ opacity: 0.5, paddingLeft: 1 }}
-                        >
-                          {thanksData.Timestamp &&
-                            moment.unix(thanksData.Timestamp).from(new Date())}
-                        </Typography>
-                      </Grid>
-                    </Grid>
+        <Box sx={{ display: "flex", flexDirection: "column", height: 400 }}>
+          <CardActions>
+            <Box>
+              <ApprovalAvatar
+                profilePicture={toUser.profilePicture}
+                FirstName={toUser.FirstName}
+                LastName={toUser.LastName}
+                Title={toUser.Title}
+                aheight={35}
+                awidth={35}
+              />
+            </Box>
+          </CardActions>
 
+          <Box>
+            <div className={thanksData.Category}>
+              {thanksData.Category === "TeamPlayer"
+                ? "Team Player 🤼"
+                : thanksData.Category === "Hero"
+                ? "Hero 🏅"
+                : thanksData.Category === "ThankYou"
+                ? "Thank you! 🙏"
+                : thanksData.Category === "Knowledge"
+                ? "Knowledge 💡"
+                : ""}
+            </div>
+          </Box>
+          <Box>
+            <>
+              <div className="comment_background">
+                <div className="comment">{thanksData.Comment}</div>
+
+                <div className="comment_giver">
+                  <>
                     <Grid item>
                       <Grid
                         container
                         direction="row"
+                        justifyContent="space-between"
+                        alignContent="center"
                         alignItems="center"
-                        justifyContent="flex-end"
-                        columnSpacing={1}
                       >
                         <Grid item>
-                          <Typography variant="h7" sx={{ p: 1 }}>
-                            from
-                          </Typography>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="flex-end"
+                            alignItems="center"
+                            columnSpacing={1}
+                            paddingLeft={1}
+                          >
+                            <AccessTimeIcon
+                              fontSize="small"
+                              sx={{ opacity: 0.5 }}
+                            />
+                            <Typography
+                              variant="h7"
+                              sx={{ opacity: 0.5, paddingLeft: 1 }}
+                            >
+                              {thanksData.Timestamp &&
+                                moment
+                                  .unix(thanksData.Timestamp)
+                                  .from(new Date())}
+                            </Typography>
+                          </Grid>
                         </Grid>
+
                         <Grid item>
-                          <Avatar
-                            src={fromUser.profilePicture}
-                            sx={{ width: 25, height: 25 }}
-                          />
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="h7">
-                            {fromUser.FirstName} {fromUser.LastName}
-                          </Typography>
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="flex-end"
+                            columnSpacing={1}
+                          >
+                            <Grid item>
+                              <Typography variant="h7" sx={{ p: 1 }}>
+                                by
+                              </Typography>
+                            </Grid>
+                            <Grid item>
+                              <Avatar
+                                src={fromUser.profilePicture}
+                                sx={{ width: 25, height: 25 }}
+                              />
+                            </Grid>
+                            <Grid item>
+                              <Typography variant="h7">
+                                {fromUser.FirstName} {fromUser.LastName}
+                              </Typography>
+                            </Grid>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </CardActions>
-          </Grid>
-          <Grid item>
+                  </>
+                </div>
+              </div>
+            </>
+          </Box>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Box>
             <Divider variant="fullWidth" />
-            <CardActions>
+            <CardActions sx={{ paddingTop: 0.5, paddingBottom: 0.5 }}>
               {likesAndComments ? (
                 <AllLikesAndComments
                   likesCount={Object.keys(likesAndComments.Likes).length}
@@ -354,8 +363,8 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                 <AllLikesAndComments likesCount="0" commentCount="0" />
               )}
             </CardActions>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Card>
     </>
   );

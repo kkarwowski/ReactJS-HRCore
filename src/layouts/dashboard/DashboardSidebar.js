@@ -23,15 +23,6 @@ const RootStyle = styled("div")(({ theme }) => ({
   },
 }));
 
-// const AccountStyle = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   padding: theme.spacing(2, 2.5),
-//   borderRadius: theme.shape.borderRadiusSm,
-//   // backgroundColor: theme.palette.grey[200],
-//   backgroundColor: theme.palette.third.main,
-// }));
-
 // ----------------------------------------------------------------------
 
 DashboardSidebar.propTypes = {
@@ -60,50 +51,21 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3 }}>
-        {/* <Box> */}
         <Grid container direction="column" alignItems="center">
           <Logo sx={{ width: 90 }} color="white" />
         </Grid>
-        {/* </Box> */}
       </Box>
 
       <NavSection navConfig={sidebarConfig} />
 
-      <Box sx={{ flexGrow: 1 }}>
-        {/* <Grid
-          height="100%"
-          container
-          direction="row"
-          alignContent="space-around"
-          justifyItem="flex-end"
-        >
-          <Grid item>
-            <Typography variant="h7" color="white">
-              Version
-            </Typography>
-          </Grid>
-        </Grid> */}
-      </Box>
+      <Box sx={{ flexGrow: 1 }}></Box>
       <Box>
         <Grid container justifyContent="center" sx={{ pb: 2 }}>
           <Typography variant="h7" color="lightGrey">
-            Version 0.75
+            Version 0.77
           </Typography>
         </Grid>
       </Box>
-      {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-        <Stack
-          alignItems="center"
-          spacing={3}
-          sx={{
-            p: 2.5,
-            pt: 2,
-            borderRadius: 2,
-            position: "relative",
-            bgcolor: "grey.200",
-          }}
-        ></Stack>
-      </Box> */}
     </Scrollbar>
   );
 

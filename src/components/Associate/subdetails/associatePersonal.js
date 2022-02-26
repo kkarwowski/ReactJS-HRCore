@@ -1,5 +1,4 @@
 import {
-  FormControl,
   MenuItem,
   TextField,
   Typography,
@@ -9,14 +8,10 @@ import {
   Button,
   Collapse,
 } from "@mui/material";
-import arrowIosForwardFill from "@iconify/icons-eva/arrow-ios-forward-fill";
-import arrowIosDownwardFill from "@iconify/icons-eva/arrow-ios-downward-fill";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import InputAdornment from "@mui/material/InputAdornment";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LoadingButton from "@mui/lab/LoadingButton";
-import frLocale from "date-fns/locale/fr";
 import EditIcon from "@mui/icons-material/Edit";
 import Countries from "../../../utils/contries.json";
 import LocalizationProvider from "@mui/lab/LocalizationProvider/";
@@ -28,10 +23,8 @@ import {
   updatedAssociateContext,
   departmentsContext,
 } from "../../../utils/context/contexts";
-import { useContext, useState, useEffect } from "react";
-import * as moment from "moment";
+import { useContext, useState } from "react";
 import { Timestamp } from "firebase/firestore";
-import { alpha, styled } from "@mui/material/styles";
 
 const AssociateInfo = ({ updateFirebaseAndState }) => {
   const { associateData, setAssociateData } = useContext(associateContext);
@@ -40,14 +33,11 @@ const AssociateInfo = ({ updateFirebaseAndState }) => {
   const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
   );
-  const [isUpdating, setIsUpdating] = useState(false);
   const [openPersonal, setOpenPersonal] = useState(true);
   const [openPostal, setOpenPostal] = useState(false);
   const [personalDisabled, setPersonalDisabled] = useState(true);
   const [postalDisabled, setPostalDisabled] = useState(true);
-  const { updateAssociates, setUpdateAssociates } = useContext(
-    updateAssociatesContext
-  );
+
   const CountriesArray = JSON.parse(JSON.stringify(Countries));
 
   const onUpdate = async (event) => {

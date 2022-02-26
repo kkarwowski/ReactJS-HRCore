@@ -18,7 +18,6 @@ export function CancelTask(userID, taskPath) {
       const data = snapshot.val();
       console.log(data, "dataaa");
       Object.entries(data.approvers).map(([key, value]) => {
-        console.log(key, value);
         const RefApprove = ref(dbrt, `Tasks/${key}/ToApprove`);
         onValue(
           RefApprove,

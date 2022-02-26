@@ -96,7 +96,7 @@ const AddTask = ({
           </TextField>
         </Grid> */}
 
-        {taskType == "Title Change" ? (
+        {taskType === "Title Change" ? (
           <Grid item md={12}>
             <Grid container direction="column" spacing={2}>
               <ChangeTitleTask
@@ -109,7 +109,7 @@ const AddTask = ({
             </Grid>
           </Grid>
         ) : null}
-        {taskType && taskType == "Salary Increase" ? (
+        {taskType && taskType === "Salary Increase" ? (
           <Grid item md={12}>
             <Grid container direction="column" spacing={2}>
               <IncreaseSalary

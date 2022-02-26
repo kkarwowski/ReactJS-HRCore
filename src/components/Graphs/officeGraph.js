@@ -39,7 +39,7 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 export default function OfficeGraph() {
   const { allOffices } = useContext(officesContext);
   const OFFICES = allOffices.flat(2);
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
   const theme = useTheme();
   const [loadingOffice, setLoadingOffice] = useState(true);
   const [officesData, setOfficesData] = useState();

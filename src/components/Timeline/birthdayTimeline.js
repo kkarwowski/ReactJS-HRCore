@@ -66,7 +66,7 @@ export default function BirthdayTimeline() {
             <Timeline position="left" sx={{ p: 3, pt: 4 }}>
               <TimelineSeparator />
               {BirthdayFunc(associates)
-                .filter((associate) => associate.emplStatus != "Terminated")
+                .filter((associate) => associate.emplStatus !== "Terminated")
                 .map((starter) => {
                   const { FirstName, profilePicture, DOB } = starter;
 

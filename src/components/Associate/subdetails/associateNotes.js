@@ -10,7 +10,7 @@ const AssociateNotes = ({ updateFirebaseAndState }) => {
   const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
   );
-  const { associateData, setAssociateData } = useContext(associateContext);
+  const { associateData } = useContext(associateContext);
   const [notesDisabled, setNotesDisabled] = useState(true);
 
   const onUpdate = (event) => {
@@ -32,12 +32,12 @@ const AssociateNotes = ({ updateFirebaseAndState }) => {
     },
   };
 
-  const DisabledTextBox = {
-    "& .Mui-disabled": {
-      opacity: 0.8,
-      "-webkit-text-fill-color": "black",
-    },
-  };
+  // const DisabledTextBox = {
+  //   "& .Mui-disabled": {
+  //     opacity: 0.8,
+  //     "-webkit-text-fill-color": "black",
+  //   },
+  // };
   return (
     <div>
       <Box sx={{ p: 0, pb: 1 }} dir="ltr">

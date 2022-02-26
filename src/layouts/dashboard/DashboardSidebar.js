@@ -33,11 +33,14 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    if (isOpenSidebar) {
-      onCloseSidebar();
-    }
-  }, [pathname]);
+  useEffect(
+    (pathname) => {
+      if (isOpenSidebar) {
+        onCloseSidebar();
+      }
+    },
+    [pathname]
+  );
 
   const renderContent = (
     <Scrollbar

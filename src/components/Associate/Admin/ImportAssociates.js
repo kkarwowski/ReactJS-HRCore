@@ -7,14 +7,13 @@ import {
   TableContainer,
   TableRow,
   TableHead,
-  Paper,
   Card,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useState, useContext } from "react";
 import StyledDropzone from "./ImportCSVDropsozne";
 import { Timestamp } from "firebase/firestore";
-import { collection, addDoc, doc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 import { updateAssociatesContext } from "../../../utils/context/contexts";
 import * as moment from "moment";
@@ -24,9 +23,7 @@ const ImportAssociates = () => {
   const [csvArray, setCsvArray] = useState([]);
   const [loading, setLoading] = useState(false);
   var fileDownload = require("js-file-download");
-  const { updateAssociates, setUpdateAssociates } = useContext(
-    updateAssociatesContext
-  );
+  const { setUpdateAssociates } = useContext(updateAssociatesContext);
 
   const processCSV = (str, delim = ",") => {
     const headers = str.slice(0, str.indexOf("\n")).split(delim);

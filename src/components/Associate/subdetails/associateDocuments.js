@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useMemo } from "react";
+import { useState, useContext, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { filter } from "lodash";
 import {
@@ -53,7 +53,6 @@ import {
   query,
   where,
   addDoc,
-  getDoc,
   doc,
   deleteDoc,
   updateDoc,
@@ -148,7 +147,7 @@ const AssociateDocuments = ({ userID }) => {
     boxShadow: 20,
     p: 4,
   };
-  const onSubmit = (data: any) => uploadFile(data);
+  const onSubmit = (data) => uploadFile(data);
 
   const getAllCategories = async () => {
     const querySnapshot = await getDocs(collection(db, "DocumentCategories"));

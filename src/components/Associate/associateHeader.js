@@ -158,7 +158,6 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
     setOpen(false);
   };
   const DateDifferenceCheck = () => {
-    const dateDiffYears = Date();
     const difference = diffDates(Todayy, associateData.StartDate.toDate());
 
     if (difference > 0) {

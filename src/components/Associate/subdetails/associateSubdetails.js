@@ -9,15 +9,7 @@ import {
 } from "@mui/material";
 import { Typography } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import {
-  getDocs,
-  where,
-  query,
-  collection,
-  doc,
-  getDoc,
-} from "firebase/firestore";
-import { db } from "../../../utils/firebase";
+
 import {
   associateContext,
   associatesContext,
@@ -33,19 +25,7 @@ const AssociateSubdetails = () => {
     const TempMembers = associates.filter(
       (associate) => associate.Department === associateData.Department
     );
-    console.log(TempMembers, "tempMembers");
-    // const associateCollectionRef = collection(db, "Associates");
-    // const q = query(
-    //   associateCollectionRef,
-    //   where("Department", "==", associateData.Department)
-    // );
-    // const thedata = await getDocs(q);
-    // const TempMembers = [];
-    // thedata.forEach((doc) => {
-    //   if (associateData.id !== doc.id) {
-    //     TempMembers.push(doc.data());
-    //   }
-    // });
+
     return TempMembers;
   };
   const fetchManager = async (ID) => {

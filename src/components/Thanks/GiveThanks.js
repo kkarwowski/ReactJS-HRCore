@@ -108,15 +108,15 @@ const GiveThanks = () => {
         <Grid item>
           <Box>
             <Card sx={{ width: { xs: 320, sm: 450, lg: 450 }, height: 500 }}>
-              {giveThanksData.Category != undefined ? (
+              {giveThanksData.Category !== undefined ? (
                 <div
                   className={giveThanksData.Category}
                   style={{ height: 140 }}
                 >
                   {giveThanksData.Category === "TeamPlayer"
-                    ? "Team Player 🤼"
+                    ? "Team Player 👍"
                     : giveThanksData.Category === "Hero"
-                    ? "Hero 🏅"
+                    ? "Superhero 🦸‍♂️"
                     : giveThanksData.Category === "ThankYou"
                     ? "Thank you! 🙏"
                     : giveThanksData.Category === "Knowledge"
@@ -150,7 +150,7 @@ const GiveThanks = () => {
                       Team Player
                     </MenuItem>
                     <MenuItem key="Hero" value="Hero">
-                      Hero
+                      Superhero
                     </MenuItem>
                     <MenuItem key="thank you" value="ThankYou">
                       Thank You!

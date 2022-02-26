@@ -17,7 +17,7 @@ import { db } from "../../../utils/firebase";
 import EditIcon from "@mui/icons-material/Edit";
 
 const AssociateEmergencyInfo = ({ updateFirebaseAndState }) => {
-  const { associateData, setAssociateData } = useContext(associateContext);
+  const { associateData } = useContext(associateContext);
   const { updatedAssociate, setUpdatedAssociate } = useContext(
     updatedAssociateContext
   );
@@ -53,10 +53,7 @@ const AssociateEmergencyInfo = ({ updateFirebaseAndState }) => {
     });
   };
   const SaveDetails = async () => {
-    const resutl = await updateDoc(
-      doc(db, "Associates", associateData.id),
-      associateData
-    );
+    await updateDoc(doc(db, "Associates", associateData.id), associateData);
   };
 
   //   const SaveDetails = async (id) => {
@@ -70,10 +67,10 @@ const AssociateEmergencyInfo = ({ updateFirebaseAndState }) => {
 
   //     console.log(res.status)
   // }
-  const onSubmit = (event) => {
-    event.preventDefault();
-    SaveDetails(associateData.id);
-  };
+  // const onSubmit = (event) => {
+  //   event.preventDefault();
+  //   SaveDetails(associateData.id);
+  // };
 
   return (
     <Box sx={{ p: 0, pb: 1 }} dir="ltr">

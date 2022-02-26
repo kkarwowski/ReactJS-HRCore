@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Grid, Card, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
@@ -12,14 +12,11 @@ import { db } from "../../../utils/firebase";
 import moment from "moment";
 const AssociateChanges = ({ userID }) => {
   const [associateChanges, setAssociateChanges] = useState();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getChanges = async (userID) => {
-      setLoading(true);
       const ress = await fetchDetails(userID);
       setAssociateChanges(ress);
-      setLoading(false);
     };
     getChanges();
   }, []);

@@ -44,13 +44,13 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 
 export default function AverageSalary() {
   const [loading, setLoading] = useState(true);
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
   const [chartData, setChartData] = useState();
 
   useEffect(() => {
     const salaries = [];
     const filtered = associates.filter(
-      (associate) => associate.EmplStatus == "Employed"
+      (associate) => associate.EmplStatus === "Employed"
     );
     filtered.forEach((associate) => {
       salaries.push(parseInt(associate.Salary));

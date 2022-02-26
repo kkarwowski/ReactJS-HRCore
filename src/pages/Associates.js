@@ -13,8 +13,6 @@ import {
   Card,
   Table,
   Stack,
-  Badge,
-  SmallAvatar,
   Avatar,
   Button,
   TableRow,

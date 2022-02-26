@@ -53,7 +53,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
   const getThanksLikesAndComments = () => {
     const ThanksLikesRef = doc(db, "Thanks-Comments-Likes", thanksId);
     onSnapshot(ThanksLikesRef, (result) => {
-      if (result.data() != null) {
+      if (result.data() !== null) {
         const likesAndComments = result.data();
 
         setLikesAndComments(result.data());
@@ -72,6 +72,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
   };
   useEffect(() => {
     getThanksLikesAndComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLikePress = () => {
@@ -150,7 +151,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
         onClose={() => setShowSideMenu(false)}
       >
         <Box sx={{ width: 350, padding: 1 }}>
-          {selectedThanks && selectedThanks.likesAndComments != undefined && (
+          {selectedThanks && selectedThanks.likesAndComments !== undefined && (
             <ThanksCommentPost
               count={
                 Object.keys(selectedThanks.likesAndComments.Comments).length
@@ -162,7 +163,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
           <Box sx={{ height: "50%", width: 340 }}>
             <Scrollbar sx={{ height: "100%" }}>
               {selectedThanks &&
-              selectedThanks.likesAndComments != undefined &&
+              selectedThanks.likesAndComments !== undefined &&
               Object.keys(selectedThanks.likesAndComments.Comments).length >
                 0 ? (
                 // Object.keys(selectedThanks.likesAndComments.Comments).length >
@@ -278,9 +279,11 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
           <Box>
             <div className={thanksData.Category}>
               {thanksData.Category === "TeamPlayer"
-                ? "Team Player 🤼"
-                : thanksData.Category === "Hero"
-                ? "Hero 🏅"
+                ? "Team Player 👍"
+                : thanksData.Category === "Hero" && toUser.Gender === "Male"
+                ? "Superhero 🦸‍♂️"
+                : thanksData.Category === "Hero" && toUser.Gender === "Female"
+                ? "Superhero 🦸‍♀️"
                 : thanksData.Category === "ThankYou"
                 ? "Thank you! 🙏"
                 : thanksData.Category === "Knowledge"

@@ -54,13 +54,14 @@ const Thanks = () => {
         direction="row"
         columnSpacing={1}
         rowSpacing={1}
+        alignItems="center"
         sx={{ p: 1 }}
       >
         {thanks &&
           userData &&
           Object.entries(thanks).map(([key, value]) => {
             return (
-              <Grid item xs={12} md={4} lg={2}>
+              <Grid item xs={12} md={4} lg={3}>
                 <ThanksCard
                   thanksId={key}
                   thanksData={value}

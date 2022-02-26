@@ -190,7 +190,7 @@ const GiveThanks = () => {
                     multiline
                     maxRows={4}
                     name="Comment"
-                    label="Your comments"
+                    label="Reason"
                     value={giveThanksData.Comment ? giveThanksData.Comment : ""}
                     onChange={(event) =>
                       setGiveThanksData({

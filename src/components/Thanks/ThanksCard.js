@@ -103,21 +103,34 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
               function={() => {
                 handleLikePress();
               }}
-              sx={{ color: Liked ? "red" : "black", window: 18, height: 18 }}
+              sx={{ color: Liked ? "red" : "black", window: 15, height: 15 }}
               status={Liked}
             />
           </Grid>
-          <Grid item>{likesCount}</Grid>
+          <Grid item>
+            <Typography variant="caption">{likesCount}</Typography>
+          </Grid>
           <Grid item>
             <IconButton
+              sx={{
+                // MuiButtonBase-root-MuiIconButton-root
+                "&:hover .MuiIconButton-root": {
+                  // position: "absolute",
+                  // top: "50px",
+                  backgroundColor: "red",
+                  borderRadius: 0,
+                },
+              }}
               onClick={() =>
                 toggleDrawer(true, thanksId, likesAndComments, thanksData)
               }
             >
-              <Typography>Comments</Typography>
+              <Typography variant="caption">Comments</Typography>
             </IconButton>
           </Grid>
-          <Grid item>{commentCount}</Grid>
+          <Grid item>
+            <Typography variant="caption">{commentCount}</Typography>
+          </Grid>
         </Grid>
       </>
     );

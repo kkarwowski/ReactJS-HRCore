@@ -9,21 +9,17 @@ import {
 } from "firebase/firestore";
 export function CancelTask(userID, taskPath) {
   const dbrt = getDatabase();
-  console.log(taskPath, userID);
-
   const deleteThisTaskRef = ref(dbrt, `Tasks/${userID}/MyTasks/${taskPath}`);
   onValue(
     deleteThisTaskRef,
     (snapshot) => {
       const data = snapshot.val();
-      console.log(data, "dataaa");
       Object.entries(data.approvers).map(([key, value]) => {
         const RefApprove = ref(dbrt, `Tasks/${key}/ToApprove`);
         onValue(
           RefApprove,
           (snapshot) => {
             const approverdata = snapshot.val();
-            console.log(approverdata, "approverData");
             Object.entries(approverdata).map(([keyy, value]) => {
               if (taskPath === value.TaskPath.split("/").slice(-1)[0]) {
                 const toDeleteREf = ref(dbrt, `Tasks/${key}/ToApprove/${keyy}`);
@@ -49,18 +45,13 @@ export function CancelTask(userID, taskPath) {
 
 export function DeleteToApprove(id, taskPath, cancel) {
   const dbrt = getDatabase();
-  //   console.log("task path", taskPath);
   const ChangedRefApprove = ref(dbrt, `Tasks/${id}/ToApprove`);
   onValue(
     ChangedRefApprove,
     (snapshot) => {
       const data = snapshot.val();
-      console.log(data, "data");
       Object.entries(data).map(([key, value]) => {
-        console.log("Value", value);
-
         if (value.TaskPath === taskPath) {
-          console.log("key", key);
           const deleteRef = ref(dbrt, `Tasks/${id}/ToApprove/${key}`);
           remove(deleteRef);
         }
@@ -73,10 +64,7 @@ export function DeleteToApprove(id, taskPath, cancel) {
 }
 
 export async function ActOnTask(task, requesterDetails, userID) {
-  console.log(requesterDetails, "approver details");
   const categoryToUse = task.TaskName.split(" ").slice(0, 1)[0];
-  console.log(categoryToUse);
-  console.log({ [categoryToUse]: task.Value }, "taks to update");
   const associateRef = doc(db, "Associates", task.TargetValue);
   await updateDoc(associateRef, { [categoryToUse]: task.Value });
   const changesObject = {

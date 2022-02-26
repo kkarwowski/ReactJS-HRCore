@@ -126,7 +126,6 @@ const ImportAssociates = () => {
           <LoadingButton
             loading={loading}
             disabled={!csvFile}
-            loadingPosition="start"
             variant="contained"
             onClick={() => {
               submit();

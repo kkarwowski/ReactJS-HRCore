@@ -101,11 +101,11 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
         >
           <Grid item>
             <LikeIcon
-              function={() => {
+              onClick={() => {
                 handleLikePress();
               }}
               sx={{ color: Liked ? "red" : "black", window: 15, height: 15 }}
-              status={Liked}
+              status={Liked.toString()}
             />
           </Grid>
           <Grid item>
@@ -185,6 +185,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                   .map(([key, value]) => {
                     return (
                       <ThanksComments
+                        key={key}
                         timestamp={value.Timestamp}
                         id={value.Id}
                         comment={value.Comment}

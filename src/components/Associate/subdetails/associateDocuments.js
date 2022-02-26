@@ -562,27 +562,27 @@ const AssociateDocuments = ({ userID }) => {
                             <TableCell align="left">{fileName}</TableCell>
                             <TableCell align="left">{size}</TableCell>
                             <TableCell align="left">
-                              {type == "application/pdf" ? (
+                              {type === "application/pdf" ? (
                                 <Icon
                                   icon={filePdfBox}
                                   width={iconSize.width}
                                   height={iconSize.height}
                                 />
-                              ) : type == "image/png" ||
-                                type == "image/jpeg" ? (
+                              ) : type === "image/png" ||
+                                type === "image/jpeg" ? (
                                 <Icon
                                   icon={imageIcon}
                                   width={iconSize.width}
                                   height={iconSize.height}
                                 />
-                              ) : type ==
+                              ) : type ===
                                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
                                 <Icon
                                   icon={fileExcelBox}
                                   width={iconSize.width}
                                   height={iconSize.height}
                                 />
-                              ) : type ==
+                              ) : type ===
                                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
                                 <Icon
                                   icon={fileWordBox}

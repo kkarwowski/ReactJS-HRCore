@@ -61,7 +61,7 @@ const Thanks = () => {
           userData &&
           Object.entries(thanks).map(([key, value]) => {
             return (
-              <Grid item xs={12} md={4} lg={3}>
+              <Grid item xs={12} md={4} lg={3} key={key}>
                 <ThanksCard
                   thanksId={key}
                   thanksData={value}

@@ -173,39 +173,6 @@ const MyTasks = () => {
                 setPopupOpen={setPopupOpen}
               />
             )}
-            {/* sx={style} */}
-            {/* <Card sx={style}> */}
-            {/* <form>
-                <Grid
-                  container
-                  direction="column"
-                  alignContent="center"
-                  alignItems="center"
-                  rowSpacing={3}
-                >
-                  <Grid item>
-                    <Typography>
-                      Please select category of uploaded file:
-                    </Typography>
-                  </Grid>
-
-                  <Grid item></Grid>
-
-                  <Grid item>
-                    <Button
-                      onClick={handleSubmit(onSubmit)}
-                      variant="contained"
-                    >
-                      Submit
-                    </Button>
-                  </Grid>
-
-                  {/* <Button onClick={() => reset()} variant={"outlined"}> */}
-            {/* Reset */}
-            {/* </Button> */}
-            {/* </Grid> */}
-            {/* </form> */}
-            {/* </Card> */}
           </Box>
         </Fade>
       </Modal>
@@ -266,7 +233,7 @@ const MyTasks = () => {
                   background: "white",
                   px: 1,
                   py: 0.5,
-                  "border-radius": "10px",
+                  borderRadius: "10px",
                   boxShadow: 7,
                   borderBottom: "solid black 3px",
                 }}
@@ -282,7 +249,7 @@ const MyTasks = () => {
                   <Box
                     sx={{
                       backgroundColor: "black",
-                      "border-radius": "5px",
+                      borderRadius: "5px",
                       px: 1,
                       py: 0.5,
                       color: "white",
@@ -297,7 +264,7 @@ const MyTasks = () => {
             {pendingTasks &&
               Object.keys(pendingTasks).map((task, index) => {
                 return (
-                  <Grid item xs={12} md={4} lg={4}>
+                  <Grid item xs={12} md={4} lg={4} key={index}>
                     <TaskCard
                       task={pendingTasks[task]}
                       userID={userData.id}
@@ -316,7 +283,7 @@ const MyTasks = () => {
                   backgroundColor: "white",
                   px: 1,
                   py: 0.5,
-                  "border-radius": "10px",
+                  borderRadius: "10px",
                   boxShadow: 7,
                   borderBottom: "solid #ff8c00 3px",
                 }}
@@ -332,7 +299,7 @@ const MyTasks = () => {
                   <Box
                     sx={{
                       backgroundColor: "black",
-                      "border-radius": "5px",
+                      borderRadius: "5px",
                       px: 1,
                       py: 0.5,
                       color: "white",
@@ -348,7 +315,7 @@ const MyTasks = () => {
             {tasksToApprove &&
               Object.keys(tasksToApprove).map((task, index) => {
                 return (
-                  <Grid item xs={12} md={4} lg={4}>
+                  <Grid item xs={12} md={4} lg={4} key={index}>
                     <TaskCard
                       task={tasksToApprove[task]}
                       userID={userData.id}
@@ -366,7 +333,7 @@ const MyTasks = () => {
                   backgroundColor: "white",
                   px: 1,
                   py: 0.5,
-                  "border-radius": "10px",
+                  borderRadius: "10px",
                   boxShadow: 7,
                   borderBottom: "solid  #18b809 3px",
                 }}
@@ -382,7 +349,7 @@ const MyTasks = () => {
                   <Box
                     sx={{
                       backgroundColor: "black",
-                      "border-radius": "5px",
+                      borderRadius: "5px",
                       px: 1,
                       py: 0.5,
                       color: "white",
@@ -397,7 +364,7 @@ const MyTasks = () => {
             {completeTasks &&
               Object.keys(completeTasks).map((task, index) => {
                 return (
-                  <Grid item xs={12} md={4} lg={4}>
+                  <Grid item xs={12} md={4} lg={4} key={index}>
                     <TaskCard task={completeTasks[task]} userID={userData.id} />
                   </Grid>
                 );

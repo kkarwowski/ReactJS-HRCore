@@ -125,7 +125,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
             alignItems="center"
           >
             <Grid item sx={{ pb: 2 }}>
-              <Grid container direction="rows" alignItems="center">
+              <Grid container direction="row" alignItems="center">
                 <Typography variant="h7" sx={{ opacity: 0.5 }}>
                   by
                 </Typography>
@@ -193,6 +193,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
                       };
                       return (
                         <Avatar
+                          key={approverDetails.profilePicture}
                           src={approverDetails.profilePicture}
                           sx={{
                             width: 20,

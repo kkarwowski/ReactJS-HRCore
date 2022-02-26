@@ -13,17 +13,17 @@ import {
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Collapse from "@mui/material/Collapse";
 import moment from "moment";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
 import { ApproveTask, CancelTask } from "./taksFunctions";
 import CategoryChip from "./CardElements/CategoryChip";
 const TaskCard = ({ task, userID, taskPath }) => {
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
   const [expanded, setExpanded] = useState(false);
   const getApproverDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);
@@ -44,8 +44,6 @@ const TaskCard = ({ task, userID, taskPath }) => {
       duration: theme.transitions.duration.shortest,
     }),
   }));
-
-  const getToApprove = () => {};
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

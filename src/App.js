@@ -2,7 +2,7 @@ import "./App.css";
 import ThemeConfig from "./theme";
 import GlobalStyles from "./theme/globalStyles";
 // import Router from "./routes";
-import { Routes, Route, Navigate, Redirect } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import {
   associatesContext,
   officesContext,
@@ -12,27 +12,9 @@ import {
   resultsPerPageContext,
   tasksToApproveContext,
 } from "./utils/context/contexts";
-import {
-  ref,
-  on,
-  set,
-  push,
-  onValue,
-  onChildAdded,
-  get,
-  child,
-  getDatabase,
-} from "firebase/database";
+import { ref, onValue, getDatabase } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  doc,
-  getDoc,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "./utils/firebase";
 import { AuthContext } from "./utils/context/AuthContext";
 import {
@@ -58,7 +40,6 @@ import MyTasks from "./pages/Tasks";
 import PrivateRoute from "./pages/PrivateRoute";
 import Admin from "./pages/Admin";
 import ImportAssociates from "./components/Associate/Admin/ImportAssociates";
-import ModifyDatabase from "./components/Associate/Admin/DatabaseModify";
 import GiveThanks from "./components/Thanks/GiveThanks";
 function App() {
   const associatesCollectionRef = collection(db, "Associates");
@@ -106,24 +87,23 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      {
-        if (user != null) {
-          setIsDemo(user.email === process.env.REACT_APP_DEMO_LOGIN);
-          const usersCollectionRef = doc(db, "Users", user.uid);
 
-          getDoc(usersCollectionRef).then((result) => {
-            // setUserData(result.data());
-            const associatesCollectionRef = doc(
-              db,
-              "Associates",
-              result.data().AssociateID
-            );
-            getDoc(associatesCollectionRef).then((res) => {
-              setUserData({ ...res.data() });
-            });
-            setIsAdmin(result.data().Role === "Admin");
+      if (user != null) {
+        setIsDemo(user.email === process.env.REACT_APP_DEMO_LOGIN);
+        const usersCollectionRef = doc(db, "Users", user.uid);
+
+        getDoc(usersCollectionRef).then((result) => {
+          // setUserData(result.data());
+          const associatesCollectionRef = doc(
+            db,
+            "Associates",
+            result.data().AssociateID
+          );
+          getDoc(associatesCollectionRef).then((res) => {
+            setUserData({ ...res.data() });
           });
-        }
+          setIsAdmin(result.data().Role === "Admin");
+        });
       }
     });
     return unsubscribe;
@@ -133,7 +113,7 @@ function App() {
 
     document.title = "HR Core";
     const getAssociates = async () => {
-      const q = query(associatesCollectionRef, orderBy("LastName"));
+      // const q = query(associatesCollectionRef, orderBy("LastName"));
       // const data = await getDocs(q);
       const data = await getDocs(associatesCollectionRef);
       setAssociates(data.docs.map((user) => ({ ...user.data(), id: user.id })));
@@ -211,15 +191,12 @@ function App() {
         }
       });
     };
-    {
-      userData && getDTDB();
-    }
+
+    userData && getDTDB();
   }, [userData]);
 
   useEffect(() => {
-    {
-      tasksToApprove && setToApproveCount(Object.keys(tasksToApprove).length);
-    }
+    tasksToApprove && setToApproveCount(Object.keys(tasksToApprove).length);
   }, [tasksToApprove]);
 
   return (

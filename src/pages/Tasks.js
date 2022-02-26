@@ -1,13 +1,12 @@
 import Page from "../components/Page";
 import AddTask from "../components/Tasks/AddTask";
-import { useTheme, styled, alpha } from "@mui/material/styles";
+import { styled, alpha } from "@mui/material/styles";
 import { useEffect, useState, useContext } from "react";
 import PaidIcon from "@mui/icons-material/Paid";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import {
   Button,
   Grid,
-  Card,
   Box,
   Typography,
   Stack,
@@ -17,31 +16,24 @@ import {
   Modal,
   Fade,
 } from "@mui/material";
-import {
-  associatesContext,
-  tasksToApproveContext,
-} from "../utils/context/contexts";
+import { tasksToApproveContext } from "../utils/context/contexts";
 import { useAuth } from "../utils/context/AuthContext";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import TaskCard from "../components/Tasks/TaskCard";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Controller, useForm } from "react-hook-form";
 
 const MyTasks = () => {
-  const theme = useTheme();
   const { userData } = useAuth();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
   const [PopupOpen, setPopupOpen] = useState(false);
-  const { handleSubmit, reset, control } = useForm();
   const [taskType, setTaskType] = useState();
   // const { associates } = useContext(associatesContext);
   const [userDetails, setUserDetails] = useState();
   const [myManager, setMyManager] = useState();
-  const { toApproveCount, setToApproveCount, tasks, tasksToApprove } =
-    useContext(tasksToApproveContext);
+  const { tasks, tasksToApprove } = useContext(tasksToApproveContext);
 
   useEffect(() => {
     if (!userData) return;

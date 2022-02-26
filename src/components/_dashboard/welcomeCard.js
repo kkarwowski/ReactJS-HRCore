@@ -1,17 +1,9 @@
-import {
-  Card,
-  Typography,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Grid,
-  Button,
-} from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
+import { Card, Typography, CardMedia, Grid, Button } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useAuth } from "../../utils/context/AuthContext";
 
 export default function WelcomeCard() {
-  const { logout, userData } = useAuth();
+  const { userData } = useAuth();
   const RootStyle = styled(Card)(({ theme }) => ({
     boxShadow: "none",
     // textAlign: "center",

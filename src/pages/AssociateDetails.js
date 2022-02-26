@@ -4,19 +4,7 @@ import { useParams } from "react-router-dom";
 import { transform, isEqual, isObject } from "lodash";
 import { Timestamp } from "firebase/firestore";
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  DialogContentText,
-  Fab,
-  Grid,
-  Snackbar,
-  Alert,
-} from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
+import { Grid, Snackbar, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
   associateContext,
@@ -35,9 +23,7 @@ const AssociateDetails = () => {
   const { setLoadingProgress } = useContext(loadingContext);
   const { id } = useParams();
   const [associateData, setAssociateData] = useState();
-  const [warn, setWarn] = useState(false);
   const [alert, setAlert] = useState(false);
-  const [alertSuccess, setAlertSuccess] = useState(false);
   const [alertMessage, setAlertMessage] = useState();
   const [severity, setSeverity] = useState();
   const [updatedAssociate, setUpdatedAssociate] = useState();
@@ -58,21 +44,6 @@ const AssociateDetails = () => {
     const data = await getDoc(associateCollectionRef);
     return data.data();
   };
-
-  const handleClose = () => {
-    setWarn(false);
-  };
-
-  // const CheckIfChanged = (updateAssociates, associateData) => {
-  //   if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
-  //     setEdited(true);
-  //   } else {
-  //     setEdited(false);
-  //   }
-  // };
-  // const matchUpdatedAndCurrent = (obj1, obj2) => {
-  //   return isEqual(obj1, obj2);
-  // };
 
   const GetDifferences = (object, base) => {
     return transform(object, (result, value, key) => {
@@ -115,55 +86,27 @@ const AssociateDetails = () => {
         RecordChanges(picked);
       }
     }
-    {
-      !isDemo &&
-        setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
-          .then(() => {
-            setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-          })
-          .catch((error) => {
-            setAlertMessage(error.message);
-            setSeverity("error");
-            setAlert(true);
-            // setEdited(false);
-          });
-    }
+
+    !isDemo &&
+      setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
+        .then(() => {
+          setUpdateAssociates((updateAssociates) => updateAssociates + 1);
+        })
+        .catch((error) => {
+          setAlertMessage(error.message);
+          setSeverity("error");
+          setAlert(true);
+          // setEdited(false);
+        });
 
     setAssociateData(updatedAssociate);
     setSeverity("success");
     setAlertMessage("Successfully updated!");
     setAlert(true);
-
-    // setDoc(doc(db, "Associates", `${associateData.id}`), updatedAssociate)
-    // .then(() => {
-    //   setAssociateData(updatedAssociate);
-    //   setEdited(false);
-    //   setUpdateAssociates((updateAssociates) => updateAssociates + 1);
-    // })
-    // .catch((error) => {
-    //   setErrorMessage(error.message);
-    //   setAlert(true);
-    //   setEdited(false);
-    // });
   };
 
-  // useEffect(
-  //   (associateData) => {
-  //     if (!matchUpdatedAndCurrent(updatedAssociate, associateData)) {
-  //       setEdited(true);
-  //     } else {
-  //       setEdited(false);
-  //     }
-  //   },
-  //   [updatedAssociate]
-  // );
-
   const handleBack = () => {
-    // if (edited) {
-    //   setWarn(true);
-    // } else {
     history("/dashboard/associates");
-    // }
   };
   const autoCloseSnack = () => {
     setAlert(false);
@@ -204,31 +147,6 @@ const AssociateDetails = () => {
               </Grid>
             </Grid>
           </Page>
-
-          {/* <Dialog
-              open={warn}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {"You have unsaved data!"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Please save your data or it will be lost.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => handleClose()}>Stay and Save</Button>
-                <Button
-                  onClick={() => history("/dashboard/associates")}
-                  color="error"
-                >
-                  Cancel Changes
-                </Button>
-              </DialogActions>
-            </Dialog> */}
           {associateData && (
             <AssociateHeader
               handleBack={handleBack}

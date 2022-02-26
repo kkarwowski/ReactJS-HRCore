@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { Avatar, IconButton, Grid } from "@mui/material";
+import { IconButton, Grid } from "@mui/material";
 import * as React from "react";
 import { useContext, useState, useRef } from "react";
 import Backdrop from "@mui/material/Backdrop";
@@ -39,19 +39,9 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const AvatarStyle = styled(".crop-container")(({ theme }) => ({
-  [theme.breakpoints.up("lg")]: {
-    sx: {
-      width: 200,
-      height: 200,
-    },
-  },
-}));
 
 const AssociatePic = () => {
-  const { updateAssociates, setUpdateAssociates } = useContext(
-    updateAssociatesContext
-  );
+  const { setUpdateAssociates } = useContext(updateAssociatesContext);
   const { associateData, setAssociateData } = useContext(associateContext);
   const { isDemo } = useAuth();
 

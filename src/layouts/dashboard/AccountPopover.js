@@ -26,7 +26,6 @@ import { associatesContext } from "../../utils/context/contexts";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const { associates } = useContext(associatesContext);
   const { logout, userData } = useAuth();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);

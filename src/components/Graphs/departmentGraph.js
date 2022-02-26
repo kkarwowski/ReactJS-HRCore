@@ -39,7 +39,7 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 
 export default function DepartmentGraph() {
   const { allDepartments } = useContext(departmentsContext);
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
 
   const [chartData, setChartData] = useState();
   const [loading, setLoading] = useState(true);
@@ -60,7 +60,7 @@ export default function DepartmentGraph() {
 
   const fetchDetails = (dep) => {
     const filtered = associates.filter(
-      (associate) => associate.Department == dep
+      (associate) => associate.Department === dep
     );
 
     // const citiesRef = collection(db, "Associates");

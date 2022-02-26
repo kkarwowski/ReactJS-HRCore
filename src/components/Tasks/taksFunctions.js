@@ -1,4 +1,3 @@
-import React from "react";
 import { ref, getDatabase, update, onValue, remove } from "firebase/database";
 import { db } from "../../utils/firebase";
 import {
@@ -114,7 +113,7 @@ export function ApproveTask(
       (snapshot) => {
         const approversObj = snapshot.val();
         Object.entries(approversObj).map(([key, value]) => {
-          if (key != userID) {
+          if (key !== userID) {
             // both approved
             if ((value.status === "approved") & (status === "approved")) {
               const WholeTaskRef = ref(dbrt, `Tasks/${task.TaskPath}`);

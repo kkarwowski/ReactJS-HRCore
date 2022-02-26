@@ -6,15 +6,7 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import {
-  Card,
-  Button,
-  CardHeader,
-  Stack,
-  Avatar,
-  Typography,
-  Grid,
-} from "@mui/material";
+import { Card, CardHeader, Avatar, Typography, Grid } from "@mui/material";
 import moment from "moment";
 import { associatesContext } from "../../utils/context/contexts.js";
 
@@ -24,7 +16,7 @@ export default function StarterTimeline() {
   // const today = "20201-11-15T12:30:00";
   // const today = "20201-11-15T12:30:00";
 
-  const { associates, setAssociates } = React.useContext(associatesContext);
+  const { associates } = React.useContext(associatesContext);
   const GetInitial = (name) => {
     return name.slice(0, 1) + ".";
   };

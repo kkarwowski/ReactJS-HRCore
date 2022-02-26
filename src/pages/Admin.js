@@ -8,7 +8,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DocCategoriesModify from "../components/Associate/Admin/DatabaseModify/DocCategoriessModify";
 import OfficesModify from "../components/Associate/Admin/DatabaseModify/OfficesModify";
 import Page from "../components/Page";
-import { styled } from "@mui/material/styles";
 
 const Admin = () => {
   const [expanded, setExpanded] = React.useState(false);
@@ -19,9 +18,6 @@ const Admin = () => {
   return (
     <Page title="Admin">
       <Container maxWidth="lg">
-        {/* <Typography variant="h3" pt={8} pb={5}>
-        Hi, Welcome back
-      </Typography> */}
         <h1>Admin</h1>
         <Card>
           <Box p={2}>

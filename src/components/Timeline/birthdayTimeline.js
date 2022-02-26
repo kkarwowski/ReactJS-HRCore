@@ -7,16 +7,7 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import CakeIcon from "@mui/icons-material/Cake";
-import {
-  Card,
-  Button,
-  CardHeader,
-  Stack,
-  Avatar,
-  Typography,
-  Grid,
-  CardMedia,
-} from "@mui/material";
+import { Card, Avatar, Typography, Grid } from "@mui/material";
 import moment from "moment";
 import { associatesContext } from "../../utils/context/contexts.js";
 
@@ -24,7 +15,7 @@ export default function BirthdayTimeline() {
   const todayDate = new Date();
   const now = moment(todayDate);
 
-  const { associates, setAssociates } = React.useContext(associatesContext);
+  const { associates } = React.useContext(associatesContext);
   const GetInitial = (name) => {
     return name.slice(0, 1) + ".";
   };

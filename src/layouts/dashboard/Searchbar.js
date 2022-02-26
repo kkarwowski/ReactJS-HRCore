@@ -1,25 +1,17 @@
 import { Icon } from "@iconify/react";
 import "./SearchBar.css";
-import { useState, useContext, useRef } from "react";
+import { useState, useRef } from "react";
 import searchFill from "@iconify/icons-eva/search-fill";
 // material
 import { styled, alpha } from "@mui/material/styles";
-import { Link } from "react-router-dom";
 import {
   Box,
-  Avatar,
   Input,
   Slide,
-  Button,
   InputAdornment,
   ClickAwayListener,
   IconButton,
-  List,
-  Grid,
-  ListItem,
-  TextField,
 } from "@mui/material";
-import { associatesContext } from "../../utils/context/contexts";
 // ----------------------------------------------------------------------
 
 const APPBAR_MOBILE = 64;
@@ -48,8 +40,6 @@ const SearchbarStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Searchbar() {
-  const { associates: associatesData, setAssociates: setAssociatesData } =
-    useContext(associatesContext);
   const [isOpen, setOpen] = useState(false);
   const inputRef = useRef(null);
   const handleOpen = () => {
@@ -60,9 +50,9 @@ export default function Searchbar() {
     setOpen(false);
   };
 
-  const HandleClear = (props) => {
-    inputRef.current.value = "";
-  };
+  // const HandleClear = (props) => {
+  //   inputRef.current.value = "";
+  // };
 
   // const handleFilter = (event) => {
   //   const searchWord = event.target.value;

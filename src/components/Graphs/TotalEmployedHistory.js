@@ -5,14 +5,7 @@ import { Card, CardHeader, Box } from "@mui/material";
 //
 import { BaseOptionChart } from "../../components/charts/";
 import { useState, useEffect } from "react";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  limit,
-} from "firebase/firestore";
+import { collection, query, getDocs, orderBy, limit } from "firebase/firestore";
 import { db } from "../../utils/firebase.js";
 // ----------------------------------------------------------------------
 

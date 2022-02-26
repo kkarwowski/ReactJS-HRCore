@@ -1,11 +1,4 @@
-import {
-  Button,
-  Card,
-  Grid,
-  MenuItem,
-  TextField,
-  CardHeader,
-} from "@mui/material";
+import { Button, Card, Grid, CardHeader } from "@mui/material";
 import { useState, useContext } from "react";
 import { associatesContext } from "../../utils/context/contexts";
 import { ref, push } from "firebase/database";
@@ -19,7 +12,7 @@ const AddTask = ({
   handleCloseAction,
   setPopupOpen,
 }) => {
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
 
   const hrPerson = {
     id: "4U1DWf95rJvgfAwDYs7m",

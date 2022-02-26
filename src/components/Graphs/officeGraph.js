@@ -2,7 +2,7 @@ import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
 import { useTheme, styled } from "@mui/material/styles";
-import { Card, CardHeader, Stack, Typography, Button } from "@mui/material";
+import { Card, CardHeader, Stack, Typography } from "@mui/material";
 // utils
 import { fNumber } from "../../utils/formatNumber";
 //
@@ -62,7 +62,7 @@ export default function OfficeGraph() {
   const fetchDetails = (off) => {
     const filtered = associates.filter(
       (associate) =>
-        associate.Office == off && associate.EmplStatus == "Employed"
+        associate.Office === off && associate.EmplStatus === "Employed"
     );
     return filtered.length;
   };

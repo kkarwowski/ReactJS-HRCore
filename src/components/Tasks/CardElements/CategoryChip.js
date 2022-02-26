@@ -1,6 +1,6 @@
 import React from "react";
 import { Chip } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 const CategoryChip = ({ taskname }) => {
   const theme = useTheme();
 

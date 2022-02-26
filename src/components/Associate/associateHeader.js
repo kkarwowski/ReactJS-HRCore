@@ -84,9 +84,7 @@ function a11yProps(index) {
 }
 
 const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
-  const { updatedAssociate, setUpdateAssociates } = useContext(
-    updateAssociatesContext
-  );
+  const { setUpdateAssociates } = useContext(updateAssociatesContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
   const [value, setValue] = useState(0);

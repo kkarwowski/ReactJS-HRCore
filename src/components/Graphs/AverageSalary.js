@@ -1,15 +1,14 @@
 import { Icon } from "@iconify/react";
 import poundOutlined from "@iconify/icons-ant-design/pound-outlined";
-import poundCircleFilled from "@iconify/icons-ant-design/pound-circle-filled";
 // material
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Card, Typography } from "@mui/material";
 // utils
 import { useState, useEffect, useContext } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { associatesContext } from "../../utils/context/contexts.js";
 // ---------------------------------------------------------------------
-import _, { sum } from "lodash";
+import _ from "lodash";
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",

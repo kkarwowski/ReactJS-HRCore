@@ -1,7 +1,7 @@
 import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 // material
-import { useTheme, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Card, CardHeader, Stack } from "@mui/material";
 // utils
 //
@@ -33,7 +33,7 @@ const ChartWrapperStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function MaleVSFemaleGraph() {
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
   const [allData, setAllData] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -57,7 +57,7 @@ export default function MaleVSFemaleGraph() {
   const fetchDetails = (gender) => {
     const filtered = associates.filter(
       (associate) =>
-        associate.Gender == gender && associate.EmplStatus == "Employed"
+        associate.Gender === gender && associate.EmplStatus === "Employed"
     );
     return filtered.length;
   };

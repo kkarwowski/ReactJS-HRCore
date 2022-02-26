@@ -36,7 +36,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
   const { userData } = useAuth();
 
   const [likesAndComments, setLikesAndComments] = useState();
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
   const [Liked, setLiked] = useState(false);
   const getUserDetails = (id) => {
     const associate = associates.filter((associatee) => associatee.id === id);

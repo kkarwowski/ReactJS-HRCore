@@ -1,6 +1,5 @@
 import React from "react";
-import { Grid, Button, TextField, MenuItem } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
+import { Grid, TextField, MenuItem } from "@mui/material";
 
 const IncreaseSalary = ({ handleValues, associates, hrPerson, myManager }) => {
   return (

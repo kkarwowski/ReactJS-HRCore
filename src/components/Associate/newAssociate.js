@@ -1,6 +1,5 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import {
-  associateContext,
   associatesContext,
   officesContext,
   updateAssociatesContext,
@@ -22,10 +21,8 @@ import {
   MenuItem,
   TextField,
   Grid,
-  Box,
   Card,
   Typography,
-  Divider,
   Step,
   Stepper,
   StepLabel,
@@ -33,14 +30,13 @@ import {
   Select,
 } from "@mui/material";
 
-import * as moment from "moment";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import { Timestamp } from "firebase/firestore";
 import AssociateDocuments from "./subdetails/associateDocuments";
@@ -49,10 +45,7 @@ export default function NewAssociate() {
   const { isDemo } = useAuth();
   // const [currentStep, setCurrentStep] = useState(0);
   const stepLabels = ["Personal details", "Emergency contact", "Documents"];
-  const { updateAssociates, setUpdateAssociates } = useContext(
-    updateAssociatesContext
-  );
-  const { associates, setAssciates } = useContext(associatesContext);
+  const { setUpdateAssociates } = useContext(updateAssociatesContext);
   const [associateID, setAssociateID] = useState();
   const [newAssociate, setNewAssocaite] = useState({
     emergencyInfo: {
@@ -97,9 +90,8 @@ export default function NewAssociate() {
   };
 
   const makeRequest = async (formData) => {
-    {
-      !isDemo && (await uploadToFirebase(formData));
-    }
+    !isDemo && (await uploadToFirebase(formData));
+
     setCurrentStep((prev) => prev + 1);
   };
 
@@ -143,7 +135,6 @@ export default function NewAssociate() {
         </Typography>
         <Button
           variant="contained"
-          size="large"
           onClick={() => history("/dashboard/associates")}
           size="medium"
         >
@@ -192,7 +183,7 @@ const stepOneValidationSchema = Yup.object({
 const StepOne = (props) => {
   const { allOffices } = useContext(officesContext);
   const { allDepartments } = useContext(departmentsContext);
-  const { associates, setAssciates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
   const handleSubmit = (values) => {
     props.next(values);
   };

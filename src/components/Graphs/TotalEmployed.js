@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import androidFilled from "@iconify/icons-ant-design/team-outlined";
 // material
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Card, Typography } from "@mui/material";
 // utils
 import { fShortenNumber } from "../../utils/formatNumber";
@@ -45,12 +45,12 @@ const IconWrapperStyle = styled("div")(({ theme }) => ({
 
 export default function TotalEmployed() {
   const [totalEMPL, setTotal] = useState();
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const filtered = associates.filter(
-      (associate) => associate.EmplStatus == "Employed"
+      (associate) => associate.EmplStatus === "Employed"
     );
     setTotal(filtered.length);
     setLoading(false);

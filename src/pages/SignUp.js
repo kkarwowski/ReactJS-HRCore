@@ -21,7 +21,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { associatesContext } from "../utils/context/contexts";
 
 const SignUp = () => {
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [newUser, setNewUser] = useState({
@@ -34,15 +34,15 @@ const SignUp = () => {
     const associate = associates.filter(
       (ass) => ass.AssociateID === associateID
     );
-    const formData = {
-      AssociateID: associate.id,
-      FirstName: associate.FirstName,
-      LastName: associate.LastName,
-      Role: role,
-    };
+    // const formData = {
+    //   AssociateID: associate.id,
+    //   FirstName: associate.FirstName,
+    //   LastName: associate.LastName,
+    //   Role: role,
+    // };
     // const docRef = await addDoc(collection(db, "Users"), formData);
   };
-  const { signup } = useAuth();
+  // const { signup } = useAuth();
   const handleChange = (prop) => (event) => {
     setNewUser({ ...newUser, [prop]: event.target.value });
   };

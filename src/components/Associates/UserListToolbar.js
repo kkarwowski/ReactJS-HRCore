@@ -2,28 +2,18 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import { Icon } from "@iconify/react";
 import searchFill from "@iconify/icons-eva/search-fill";
-import trash2Fill from "@iconify/icons-eva/trash-2-fill";
-import roundFilterList from "@iconify/icons-ic/round-filter-list";
 // material
 import { styled } from "@mui/material/styles";
-import { CSVLink, CSVDownload } from "react-csv";
-import DownloadIcon from "@mui/icons-material/Download";
 
 import {
   Box,
   Switch,
   Toolbar,
-  Tooltip,
-  IconButton,
-  Typography,
   OutlinedInput,
   InputAdornment,
-  Checkbox,
   FormGroup,
   FormControlLabel,
-  Button,
 } from "@mui/material";
-import { useState } from "react";
 
 // ----------------------------------------------------------------------
 

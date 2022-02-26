@@ -25,7 +25,7 @@ const ThanksComments = ({
   thanksId,
   userId,
 }) => {
-  const { associates, setAssociates } = useContext(associatesContext);
+  const { associates } = useContext(associatesContext);
   const [edit, setEdit] = useState(false);
   const [newComment, setNewComment] = useState();
   const getUserDetails = (id) => {

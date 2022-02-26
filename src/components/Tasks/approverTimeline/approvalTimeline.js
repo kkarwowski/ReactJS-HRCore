@@ -3,7 +3,6 @@ import "./approverElements.css";
 import CircleIcon from "@mui/icons-material/Circle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { Avatar } from "@mui/material";
 import moment from "moment";
 import ApprovalAvatar from "./approvalAvatar";
 const ApprovalTimeline = ({ task, getApproverDetails }) => {

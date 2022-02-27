@@ -16,7 +16,7 @@ const Admin = () => {
     setExpanded(isExpanded ? panel : false);
   };
   return (
-    <Page title="Admin">
+    <Page title="HR Core - Admin">
       <Container maxWidth="lg">
         <h1>Admin</h1>
         <Card>

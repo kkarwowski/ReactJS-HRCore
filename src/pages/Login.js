@@ -179,13 +179,13 @@ const Login = () => {
                                   </Button>
 
                                   {/* <Button
-                                      variant="outlined"
-                                      fullWidth
-                                      onClick={() => handleDemoLogin()}
-                                      sx={{ width: "100%", mb: 2 }}
-                                    >
-                                      Demo
-                                    </Button> */}
+                                    variant="outlined"
+                                    fullWidth
+                                    onClick={() => handleDemoLogin()}
+                                    sx={{ width: "100%", mb: 2 }}
+                                  >
+                                    Demo
+                                  </Button> */}
 
                                   <Button
                                     type="button"

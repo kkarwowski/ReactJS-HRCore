@@ -7,7 +7,7 @@ import alertTriangleFill from "@iconify/icons-eva/alert-triangle-fill";
 import settingsFill from "@iconify/icons-eva/settings-fill";
 import clipboardTaskListLtr20Filled from "@iconify/icons-fluent/clipboard-task-list-ltr-20-filled";
 import awardIcon from "@iconify/icons-fa-solid/award";
-
+import umbrellaBeach from "@iconify/icons-fa-solid/umbrella-beach";
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
@@ -42,6 +42,11 @@ const sidebarConfig = [
     title: "Tasks",
     path: "/tasks",
     icon: getIcon(clipboardTaskListLtr20Filled),
+  },
+  {
+    title: "Holidays",
+    path: "/holidays",
+    icon: getIcon(umbrellaBeach),
   },
   {
     title: "Thanks",

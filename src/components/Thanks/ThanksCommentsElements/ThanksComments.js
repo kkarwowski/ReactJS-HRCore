@@ -95,7 +95,6 @@ const ThanksComments = ({
                     </>
                   ) : null}
                 </Grid>
-                <Grid item></Grid>
               </Grid>
             </Grid>
           </Grid>

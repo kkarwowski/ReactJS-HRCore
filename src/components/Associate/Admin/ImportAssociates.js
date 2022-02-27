@@ -17,6 +17,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 import { updateAssociatesContext } from "../../../utils/context/contexts";
 import * as moment from "moment";
+import Page from "../../../components/Page";
 
 const ImportAssociates = () => {
   const [csvFile, setCsvFile] = useState();
@@ -96,10 +97,10 @@ const ImportAssociates = () => {
       // console.log(text);
       processCSV(text);
     };
-    // csvArray.forEach((obj) => {
-    //   console.log("new obj", obj);
-    //   uploadToFirebase(obj);
-    // });
+    csvArray.forEach((obj) => {
+      console.log("new obj", obj);
+      uploadToFirebase(obj);
+    });
     setLoading(false);
   };
 
@@ -111,119 +112,121 @@ const ImportAssociates = () => {
 
   return (
     <>
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        justifyItems="center"
-        spacing={2}
-      >
-        <Grid item>
-          <StyledDropzone setCsvFile={setCsvFile} />
-        </Grid>
+      <Page title="HR Core - Import">
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          justifyItems="center"
+          spacing={2}
+        >
+          <Grid item>
+            <StyledDropzone setCsvFile={setCsvFile} />
+          </Grid>
 
-        <Grid item>
-          <LoadingButton
-            loading={loading}
-            disabled={!csvFile}
-            variant="contained"
-            onClick={() => {
-              submit();
-            }}
-          >
-            Submit
-          </LoadingButton>
-        </Grid>
+          <Grid item>
+            <LoadingButton
+              loading={loading}
+              disabled={!csvFile}
+              variant="contained"
+              onClick={() => {
+                submit();
+              }}
+            >
+              Submit
+            </LoadingButton>
+          </Grid>
 
-        <Grid item>
-          <Button onClick={() => console.log(csvArray)}> Log</Button>
-        </Grid>
-        <Grid item>
-          <Button>
-            <a
-              href={process.env.PUBLIC_URL + "/ImportTemplate.csv"}
-              download="ImportTemplate.csv"
-            >
-              Download sample CSV
-            </a>
-          </Button>
-        </Grid>
-        {csvArray.length > 1 && (
-          <TableContainer component={Card} sx={{ p: 2, mx: 2 }}>
-            <Table
-              sx={{ minWidth: 650 }}
-              size="small"
-              aria-label="a dense table"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">First Name</TableCell>
-                  <TableCell align="left">Last Name</TableCell>
-                  <TableCell align="left">Title</TableCell>
-                  <TableCell align="left">Department</TableCell>
-                  <TableCell align="left">Gender</TableCell>
-                  <TableCell align="left">Employement Status</TableCell>
-                  <TableCell align="left">Salary&nbsp;(£)</TableCell>
-                  <TableCell align="left">Manager</TableCell>
-                  <TableCell align="left">Office</TableCell>
-                  <TableCell align="left">DOB</TableCell>
-                  <TableCell align="left">Phone Number</TableCell>
-                  <TableCell align="left">Private Email</TableCell>
-                  <TableCell align="left">Work Email</TableCell>
-                  <TableCell align="left">Start Date</TableCell>
-                  <TableCell align="left">Eme. First Name</TableCell>
-                  <TableCell align="left">Eme. Last Name</TableCell>
-                  <TableCell align="left">Eme. Relationship</TableCell>
-                  <TableCell align="left">Eme. Phone num</TableCell>
-                  <TableCell align="left">Postal City</TableCell>
-                  <TableCell align="left">Postal Country</TableCell>
-                  <TableCell align="left">Postal 1st Line</TableCell>
-                  <TableCell align="left">Postal Post code</TableCell>
-                  <TableCell align="left">Postal 2nd Line</TableCell>
-                  <TableCell align="left">Notes</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {csvArray.map((row) => (
-                  <TableRow
-                    key={row.LastName}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    {/* <TableCell component="th" scope="row">
+          <Grid item>
+            <Button onClick={() => console.log(csvArray)}> Log</Button>
+          </Grid>
+          <Grid item>
+            <Button>
+              <a
+                href={process.env.PUBLIC_URL + "/ImportTemplate.csv"}
+                download="ImportTemplate.csv"
+              >
+                Download sample CSV
+              </a>
+            </Button>
+          </Grid>
+          {csvArray.length > 1 && (
+            <TableContainer component={Card} sx={{ p: 2, mx: 2 }}>
+              <Table
+                sx={{ minWidth: 650 }}
+                size="small"
+                aria-label="a dense table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">First Name</TableCell>
+                    <TableCell align="left">Last Name</TableCell>
+                    <TableCell align="left">Title</TableCell>
+                    <TableCell align="left">Department</TableCell>
+                    <TableCell align="left">Gender</TableCell>
+                    <TableCell align="left">Employement Status</TableCell>
+                    <TableCell align="left">Salary&nbsp;(£)</TableCell>
+                    <TableCell align="left">Manager</TableCell>
+                    <TableCell align="left">Office</TableCell>
+                    <TableCell align="left">DOB</TableCell>
+                    <TableCell align="left">Phone Number</TableCell>
+                    <TableCell align="left">Private Email</TableCell>
+                    <TableCell align="left">Work Email</TableCell>
+                    <TableCell align="left">Start Date</TableCell>
+                    <TableCell align="left">Eme. First Name</TableCell>
+                    <TableCell align="left">Eme. Last Name</TableCell>
+                    <TableCell align="left">Eme. Relationship</TableCell>
+                    <TableCell align="left">Eme. Phone num</TableCell>
+                    <TableCell align="left">Postal City</TableCell>
+                    <TableCell align="left">Postal Country</TableCell>
+                    <TableCell align="left">Postal 1st Line</TableCell>
+                    <TableCell align="left">Postal Post code</TableCell>
+                    <TableCell align="left">Postal 2nd Line</TableCell>
+                    <TableCell align="left">Notes</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {csvArray.map((row) => (
+                    <TableRow
+                      key={row.LastName}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      {/* <TableCell component="th" scope="row">
                       {row.FirstName}
                     </TableCell> */}
-                    <TableCell align="left">{row.FirstName}</TableCell>
-                    <TableCell align="left">{row.LastName}</TableCell>
-                    <TableCell align="left">{row.Title}</TableCell>
-                    <TableCell align="left">{row.Department}</TableCell>
-                    <TableCell align="left">{row.Gender}</TableCell>
-                    <TableCell align="left">{row.EmplStatus}</TableCell>
-                    <TableCell align="left">{row.Salary}</TableCell>
-                    <TableCell align="left">{row.Manager}</TableCell>
-                    <TableCell align="left">{row.Office}</TableCell>
-                    <TableCell align="left">
-                      {moment(row.DOB.toDate()).format("DD/MM/YYYY")}
-                    </TableCell>
-                    <TableCell align="left">{row.PhoneNumber}</TableCell>
-                    <TableCell align="left">{row.PrivateEmail}</TableCell>
-                    <TableCell align="left">{row.WorkEmail}</TableCell>
-                    <TableCell align="left">
-                      {moment(row.StartDate.toDate()).format("DD/MM/YYYY")}
-                    </TableCell>
-                    {Object.entries(row.emergencyInfo).map(([key, value]) => {
-                      return <TableCell align="left">{value}</TableCell>;
-                    })}
-                    {Object.entries(row.PostalAddress).map(([key, value]) => {
-                      return <TableCell align="left">{value}</TableCell>;
-                    })}
-                    <TableCell align="left">{row.Notes}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-      </Grid>
+                      <TableCell align="left">{row.FirstName}</TableCell>
+                      <TableCell align="left">{row.LastName}</TableCell>
+                      <TableCell align="left">{row.Title}</TableCell>
+                      <TableCell align="left">{row.Department}</TableCell>
+                      <TableCell align="left">{row.Gender}</TableCell>
+                      <TableCell align="left">{row.EmplStatus}</TableCell>
+                      <TableCell align="left">{row.Salary}</TableCell>
+                      <TableCell align="left">{row.Manager}</TableCell>
+                      <TableCell align="left">{row.Office}</TableCell>
+                      <TableCell align="left">
+                        {moment(row.DOB.toDate()).format("DD/MM/YYYY")}
+                      </TableCell>
+                      <TableCell align="left">{row.PhoneNumber}</TableCell>
+                      <TableCell align="left">{row.PrivateEmail}</TableCell>
+                      <TableCell align="left">{row.WorkEmail}</TableCell>
+                      <TableCell align="left">
+                        {moment(row.StartDate.toDate()).format("DD/MM/YYYY")}
+                      </TableCell>
+                      {Object.entries(row.emergencyInfo).map(([key, value]) => {
+                        return <TableCell align="left">{value}</TableCell>;
+                      })}
+                      {Object.entries(row.PostalAddress).map(([key, value]) => {
+                        return <TableCell align="left">{value}</TableCell>;
+                      })}
+                      <TableCell align="left">{row.Notes}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </Grid>
+      </Page>
     </>
   );
 };

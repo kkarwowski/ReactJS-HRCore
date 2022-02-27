@@ -65,7 +65,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box>
         <Grid container justifyContent="center" sx={{ pb: 2 }}>
           <Typography variant="h7" color="lightGrey">
-            Version 0.77
+            Version 0.78.1
           </Typography>
         </Grid>
       </Box>

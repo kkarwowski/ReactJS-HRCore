@@ -29,9 +29,8 @@ const Home = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleOpen = () => setOpen(true);
   useEffect(() => {
-    // setOpen(isDemo);
+    setOpen(isDemo);
   }, []);
 
   const style = {
@@ -48,7 +47,7 @@ const Home = () => {
     // p: 4,
   };
   return (
-    <Page title="HR Core - dashboard">
+    <Page title="HR Core - Dashboard">
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

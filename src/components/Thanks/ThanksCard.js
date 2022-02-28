@@ -113,15 +113,6 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
           </Grid>
           <Grid item>
             <IconButton
-              sx={{
-                // MuiButtonBase-root-MuiIconButton-root
-                "&:hover .MuiIconButton-root": {
-                  // position: "absolute",
-                  // top: "50px",
-                  backgroundColor: "red",
-                  borderRadius: 0,
-                },
-              }}
               onClick={() =>
                 toggleDrawer(true, thanksId, likesAndComments, thanksData)
               }
@@ -168,7 +159,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                 0 ? (
                 // Object.keys(selectedThanks.likesAndComments.Comments).length >
                 Object.entries(selectedThanks.likesAndComments.Comments)
-                  // .sort((a, b) =>
+                  // .sort(( a ,  b ) =>
                   //   new Date(
                   //     selectedThanks.likesAndComments.Comments[
                   //       b

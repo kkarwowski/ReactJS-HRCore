@@ -5,6 +5,8 @@ HR Management system app to manage your company employees.
 This project is being created with React JS and Firebase database.
 Includes Firebase authentification and Cloud Functions.
 
+![alt text](<https://github.com/kkarwowski/Gifs/blob/master/Dashboard%20(Custom).jpg> "Dashbpard")
+
 ## Live demo
 
 Live demo on [Netlify](https://hrcore-app.web.app)
@@ -35,3 +37,10 @@ Core aplication is working, but it is still work in progress as I learn React.
 - [ ] Terminate Associate with a click of a button
 - [ ] Edit my own profile, hide data regullar user shoudn't be able to see ( my notes, my documents etc...)
 - [ ] View, request holidays
+
+## Screenshots
+
+![alt text](<https://github.com/kkarwowski/Gifs/blob/master/Assocaites%20(Custom).jpg> "Associates")
+![alt text](<https://github.com/kkarwowski/Gifs/blob/master/Associate%20profile%20(Custom).jpg> "Associate")
+![alt text](<https://github.com/kkarwowski/Gifs/blob/master/Thanks%20(Custom).jpg> "Thanks")
+![alt text](<https://github.com/kkarwowski/Gifs/blob/master/Task%20(Custom).jpg> "Tasks")

@@ -84,15 +84,10 @@ const Home = () => {
           <Grid item xs={12} sm={5} md={5}>
             <TotalEmployedHistory />
           </Grid>
-          <Grid item xs={12} sm={5} md={2}>
+
+          {/* <Grid item xs={12} sm={6} md={2}>
             <TotalEmployed />
-          </Grid>
-          <Grid item xs={12} sm={6} md={2}>
-            <AverageSalary />
-          </Grid>
-          <Grid item xs={12} sm={6} md={2}>
-            <TotalEmployed />
-          </Grid>
+          </Grid> */}
           {/* <Grid item xs={12} md={6} lg={3}></Grid> */}
           <Grid item xs={12} md={6} lg={3}>
             <OfficeGraph />
@@ -100,14 +95,21 @@ const Home = () => {
           <Grid item xs={12} md={6} lg={3}>
             <DepartmentGraph />
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* <Grid item xs={12} md={6} lg={2}>
             <MaleVSFemaleGraph />
-          </Grid>
+          </Grid> */}
+
           <Grid item xs={12} md={6} lg={4}>
             <StarterTimeline />
           </Grid>
+          <Grid item xs={12} sm={6} md={2}>
+            <AverageSalary />
+          </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <BirthdayTimeline />
+          </Grid>
+          <Grid item xs={12} sm={5} md={2}>
+            <TotalEmployed />
           </Grid>
         </Grid>
       </Container>

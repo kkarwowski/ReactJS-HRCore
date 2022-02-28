@@ -33,11 +33,11 @@ const sidebarConfig = [
       },
     ],
   },
-  {
-    title: "login",
-    path: "/login",
-    icon: getIcon(lockFill),
-  },
+  // {
+  //   title: "login",
+  //   path: "/login",
+  //   icon: getIcon(lockFill),
+  // },
   {
     title: "Tasks",
     path: "/tasks",
@@ -63,11 +63,11 @@ const sidebarConfig = [
       },
     ],
   },
-  {
-    title: "register",
-    path: "/dashboard/register",
-    icon: getIcon(personAddFill),
-  },
+  // {
+  //   title: "register",
+  //   path: "/dashboard/register",
+  //   icon: getIcon(personAddFill),
+  // },
   {
     title: "admin",
     path: "/admin",
@@ -83,11 +83,11 @@ const sidebarConfig = [
       },
     ],
   },
-  {
-    title: "Not found",
-    path: "/dashboard/error",
-    icon: getIcon(alertTriangleFill),
-  },
+  // {
+  //   title: "Not found",
+  //   path: "/dashboard/error",
+  //   icon: getIcon(alertTriangleFill),
+  // },
 ];
 
 export default sidebarConfig;

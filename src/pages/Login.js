@@ -103,7 +103,6 @@ const Login = () => {
               {({ values, validateOnMount, resetForm }) => (
                 <Form>
                   <Grid container>
-                    {/* <Container> */}
                     <Box
                       sx={{
                         p: 1,
@@ -113,96 +112,72 @@ const Login = () => {
                         flexDirection: "row",
                       }}
                     >
-                      <Card sx={{ width: 400 }}>
+                      <Card sx={{ minWidth: 380, p: 2 }}>
                         <Grid
                           container
                           direction="column"
                           justifyItems="center"
                           justifyContent="center"
                           alignItems="center"
+                          rowGap={1}
                         >
                           <Grid item xs={12} xl={12}>
-                            <Logo sx={{ width: 200 }} />
+                            <Logo sx={{ width: 200, pb: 2 }} />
                           </Grid>
-                          {/* <Grid item xs={12} xl={12}>
-                            <CardMedia
-                              component="img"
-                              sx={{ width: 300 }}
-                              image="/images/Data Arranging_Isometric.png"
-                              alt="Logo"
-                            />
-                          </Grid> */}
-                          <Grid item xs={12} xl={12}>
-                            <Box width="100%">
-                              {/* sx={{ display: "flex", flexDirection: "column" }} */}
-                              {/* sx={{ flex: "0 1 auto" }} */}
-                              <CardContent>
-                                <Grid>
-                                  <Grid
-                                    sx={{ p: 1, pb: 5, pt: 1 }}
-                                    container
-                                    columnSpacing={1}
-                                    rowSpacing={1}
-                                    direction="column"
-                                    justifyItems="Center"
-                                    alignItems="Center"
-                                  >
-                                    <Field
-                                      as={TextField}
-                                      label="Email"
-                                      type="email"
-                                      name="Email"
-                                      fullWidth
-                                      size="small"
-                                    />
-                                    <Grid item xs={12}>
-                                      <ErrorMessage name="Email" />
-                                    </Grid>
-                                    <Field
-                                      fullWidth
-                                      as={TextField}
-                                      label="Password"
-                                      type="password"
-                                      name="Password"
-                                      size="small"
-                                    />
-                                    <Grid item xs={12}>
-                                      <ErrorMessage name="Password" />
-                                    </Grid>
-                                  </Grid>
-                                  <Button
-                                    sx={{ width: "100%", mb: 2 }}
-                                    type="submit"
-                                    variant="contained"
-                                  >
-                                    Login
-                                  </Button>
 
-                                  {/* <Button
-                                    variant="outlined"
-                                    fullWidth
-                                    onClick={() => handleDemoLogin()}
-                                    sx={{ width: "100%", mb: 2 }}
-                                  >
-                                    Demo
-                                  </Button> */}
-
-                                  <Button
-                                    type="button"
-                                    onClick={() =>
-                                      setIsLoginScreen(!isLoginScreen)
-                                    }
-                                  >
-                                    Forgot Password?
-                                  </Button>
-                                </Grid>
-                              </CardContent>
-                            </Box>
+                          <Field
+                            as={TextField}
+                            label="Email"
+                            type="email"
+                            name="Email"
+                            fullWidth
+                            size="small"
+                          />
+                          <Grid item xs={12}>
+                            <ErrorMessage name="Email" />
+                          </Grid>
+                          <Field
+                            fullWidth
+                            as={TextField}
+                            label="Password"
+                            type="password"
+                            name="Password"
+                            size="small"
+                          />
+                          <Grid item xs={12}>
+                            <ErrorMessage name="Password" />
                           </Grid>
                         </Grid>
+                        <Button
+                          sx={{ width: "100%", mb: 2 }}
+                          type="submit"
+                          variant="contained"
+                        >
+                          Login
+                        </Button>
+
+                        {/* <Button
+                          variant="outlined"
+                          fullWidth
+                          onClick={() => handleDemoLogin()}
+                          sx={{
+                            width: "100%",
+                            mb: 2,
+                            color: "white",
+                            backgroundImage: `linear-gradient(to right, #a28ae5, #af7be9, #c168e9, #d54de3, #eb12d8)`,
+                          }}
+                        >
+                          Demo login
+                        </Button> */}
+
+                        <Button
+                          type="button"
+                          onClick={() => setIsLoginScreen(!isLoginScreen)}
+                        >
+                          Forgot Password?
+                        </Button>
                       </Card>
                     </Box>
-                    {/* </Container> */}
                   </Grid>
                 </Form>
               )}
@@ -210,45 +185,51 @@ const Login = () => {
           </Grid>
         )}
         {!isLoginScreen && (
-          <Box sx={{ width: "100%" }}>
-            <Grid
-              sx={{ p: 1, pb: 5, pt: 6 }}
-              container
-              alignItems="center"
-              justifyContent="Center"
-              direction="column"
+          <Grid
+            sx={{ p: 1, pb: 5, pt: 6 }}
+            container
+            columnSpacing={1}
+            rowSpacing={1}
+            direction="column"
+            justifyContent="Center"
+            alignItems="Center"
+          >
+            <Formik
+              validationSchema={stepTwoValidationSchema}
+              onSubmit={handleReset}
+              initialValues={{
+                Email: "",
+              }}
             >
-              <Grid item xs={12} sm={12} lg={12}>
-                <Formik
-                  validationSchema={stepTwoValidationSchema}
-                  onSubmit={handleReset}
-                  initialValues={{
-                    Email: "",
-                  }}
-                >
-                  {({ values, validateOnMount }) => (
-                    <Form>
-                      <Box sx={{ p: 1, pb: 5, pt: 6, width: "1" }}>
-                        <Card sx={{ p: 3 }}>
-                          {/* <Grid
-                          sx={{ p: 1, pb: 5, pt: 6 }}
-                          container
-                          columnSpacing={1}
-                          rowSpacing={1}
-                          direction="column"
-                          justifyItems="Center"
-                          alignItems="Center"
-                        > */}
-                          <Grid item xs={12} xl={12}>
-                            <Logo sx={{ width: 200 }} />
-                          </Grid>
-                          <Grid item>
+              {({ values, validateOnMount }) => (
+                <Form>
+                  <Box
+                    sx={{
+                      p: 1,
+                      pb: 5,
+                      pt: 6,
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Card sx={{ width: 380 }}>
+                      <Grid
+                        sx={{ p: 1, pb: 5 }}
+                        container
+                        alignItems="center"
+                        justifyContent="center"
+                        direction="column"
+                      >
+                        <Grid item xs={12} xl={12}>
+                          <Logo sx={{ width: 200, pb: 2 }} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} lg={12}>
+                          <Grid item sx={{ pb: 2 }}>
                             <Typography variant="outlined">
                               Get a reset link
                             </Typography>
                           </Grid>
                           <TextField
-                            // style={{ width: "100%" }}
                             label="Email address"
                             type="email"
                             name="Email"
@@ -259,7 +240,7 @@ const Login = () => {
                           <Button
                             type="submit"
                             variant="contained"
-                            sx={{ width: "100%", mb: 2, mb: 2, mt: 2 }}
+                            sx={{ width: "100%", mb: 2, mt: 2 }}
                           >
                             Reset
                           </Button>
@@ -269,15 +250,14 @@ const Login = () => {
                           >
                             Back
                           </Button>
-                          {/* </Grid> */}
-                        </Card>
-                      </Box>
-                    </Form>
-                  )}
-                </Formik>
-              </Grid>
-            </Grid>
-          </Box>
+                        </Grid>
+                      </Grid>
+                    </Card>
+                  </Box>
+                </Form>
+              )}
+            </Formik>
+          </Grid>
         )}
       </Page>
     </div>

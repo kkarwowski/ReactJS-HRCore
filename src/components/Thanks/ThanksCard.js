@@ -253,7 +253,12 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
         </Box>
       </Drawer>
 
-      <Card sx={{ maxWidth: 345 }}>
+      <Card
+        sx={{
+          maxWidth: { xs: 345, md: 345, lg: 400 },
+          minWidth: { xs: 345, md: "50%", lg: "30%" },
+        }}
+      >
         <Box sx={{ display: "flex", flexDirection: "column", height: 400 }}>
           <CardActions>
             <Box>

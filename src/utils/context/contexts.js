@@ -11,3 +11,4 @@ export const updatedAssociateContext = createContext();
 export const resultsPerPageContext = createContext();
 export const tasksToApproveContext = createContext();
 export const thanksCommentsContext = createContext();
+export const notificationsContext = createContext();

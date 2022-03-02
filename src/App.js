@@ -11,8 +11,15 @@ import {
   departmentsContext,
   resultsPerPageContext,
   tasksToApproveContext,
+  notificationsContext,
 } from "./utils/context/contexts";
-import { ref, onValue, getDatabase } from "firebase/database";
+import {
+  ref,
+  onValue,
+  getDatabase,
+  query,
+  limitToFirst,
+} from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "./utils/firebase";
@@ -53,6 +60,8 @@ function App() {
   const [toApproveCount, setToApproveCount] = useState();
   const [tasks, setTasks] = useState({});
   const [tasksToApprove, setTaskstoApprove] = useState({});
+  const [notifications, setNotifications] = useState([]);
+
   //
   const [currentUser, setCurrentUser] = useState();
   const [userData, setUserData] = useState();
@@ -167,6 +176,26 @@ function App() {
           setTasks({});
         }
       });
+      const refNotifications = query(
+        ref(dbrt, `Notifications/${userData.id}`),
+        // ref(dbrt, `Notifications/3bOT8x1SBesW3l9jVQmV`),
+        limitToFirst(30)
+      );
+      onValue(refNotifications, (snapshot) => {
+        if (snapshot.val() != null) {
+          const data = snapshot.val();
+          console.log("Notification", data);
+          const tempArray = [];
+
+          Object.entries(data).forEach(([key, value]) => {
+            // setNotifications([...,{ ...value, id: key }]);
+            tempArray.push({ ...value, ID: key });
+            // setNotifications((prev) => [...prev, { ...value, id: key }]);
+          });
+          setNotifications(tempArray);
+        } else {
+        }
+      });
       const ChangedRefApprove = ref(dbrt, `Tasks/${userData.id}/ToApprove/`);
       onValue(ChangedRefApprove, (snapshot) => {
         if (snapshot.val() != null) {
@@ -209,158 +238,162 @@ function App() {
           <resultsPerPageContext.Provider
             value={{ rowsPerPage, setRowsPerPage }}
           >
-            <associatesContext.Provider value={{ associates, setAssociates }}>
-              <updateAssociatesContext.Provider
-                value={{ updateAssociates, setUpdateAssociates }}
-              >
-                <loadingContext.Provider
-                  value={{ loadingProgress, setLoadingProgress }}
+            <notificationsContext.Provider
+              value={{ notifications, setNotifications }}
+            >
+              <associatesContext.Provider value={{ associates, setAssociates }}>
+                <updateAssociatesContext.Provider
+                  value={{ updateAssociates, setUpdateAssociates }}
                 >
-                  <officesContext.Provider value={{ allOffices, setOffices }}>
-                    <departmentsContext.Provider
-                      value={{ allDepartments, setDepartments }}
-                    >
-                      <ThemeConfig>
-                        <GlobalStyles />
-                        <Routes>
-                          <Route
-                            path="/"
-                            element={
-                              <PrivateRoute role="Standard">
-                                <DashboardLayout />
-                              </PrivateRoute>
-                            }
-                          >
+                  <loadingContext.Provider
+                    value={{ loadingProgress, setLoadingProgress }}
+                  >
+                    <officesContext.Provider value={{ allOffices, setOffices }}>
+                      <departmentsContext.Provider
+                        value={{ allDepartments, setDepartments }}
+                      >
+                        <ThemeConfig>
+                          <GlobalStyles />
+                          <Routes>
                             <Route
                               path="/"
                               element={
                                 <PrivateRoute role="Standard">
-                                  <Navigate to="/dashboard/home" />
+                                  <DashboardLayout />
                                 </PrivateRoute>
                               }
-                            ></Route>
-                            <Route
-                              path="dashboard/associates"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <Associates />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="dashboard/associates/:id"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <AssociateDetails />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="dashboard/associates/newassociate"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <NewAssociate />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="dashboard/home"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <Home />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              exactpath="/"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <Home />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="dashboard/*"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <Page404 />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="dashboard/register"
-                              element={
-                                <PrivateRoute role="Admin">
-                                  <SignUp />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="tasks"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <MyTasks />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="thanks"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <Thanks />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="holidays"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <Holidays />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="dashboard/associates/newassociate"
-                              element={
-                                <PrivateRoute role="Standard">
-                                  <NewAssociate />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="thanks/givethanks"
-                              element={
-                                <PrivateRoute role="Stabdard">
-                                  <GiveThanks />
-                                </PrivateRoute>
-                              }
-                            />
-                            <Route
-                              path="admin/database"
-                              element={
-                                <PrivateRoute role="Admin">
-                                  <Admin />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                            <Route
-                              path="admin/import"
-                              element={
-                                <PrivateRoute role="Admin">
-                                  <ImportAssociates />
-                                </PrivateRoute>
-                              }
-                            ></Route>
-                          </Route>
-                          <Route path="/login" element={<Login />} />
-                          <Route path="*" element={<Page404 />} />
-                        </Routes>
-                      </ThemeConfig>
-                    </departmentsContext.Provider>
-                  </officesContext.Provider>
-                </loadingContext.Provider>
-              </updateAssociatesContext.Provider>
-            </associatesContext.Provider>
+                            >
+                              <Route
+                                path="/"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <Navigate to="/dashboard/home" />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="dashboard/associates"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <Associates />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="dashboard/associates/:id"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <AssociateDetails />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="dashboard/associates/newassociate"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <NewAssociate />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="dashboard/home"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <Home />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                exactpath="/"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <Home />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="dashboard/*"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <Page404 />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="dashboard/register"
+                                element={
+                                  <PrivateRoute role="Admin">
+                                    <SignUp />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="tasks"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <MyTasks />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="thanks"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <Thanks />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="holidays"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <Holidays />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="dashboard/associates/newassociate"
+                                element={
+                                  <PrivateRoute role="Standard">
+                                    <NewAssociate />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="thanks/givethanks"
+                                element={
+                                  <PrivateRoute role="Stabdard">
+                                    <GiveThanks />
+                                  </PrivateRoute>
+                                }
+                              />
+                              <Route
+                                path="admin/database"
+                                element={
+                                  <PrivateRoute role="Admin">
+                                    <Admin />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                              <Route
+                                path="admin/import"
+                                element={
+                                  <PrivateRoute role="Admin">
+                                    <ImportAssociates />
+                                  </PrivateRoute>
+                                }
+                              ></Route>
+                            </Route>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="*" element={<Page404 />} />
+                          </Routes>
+                        </ThemeConfig>
+                      </departmentsContext.Provider>
+                    </officesContext.Provider>
+                  </loadingContext.Provider>
+                </updateAssociatesContext.Provider>
+              </associatesContext.Provider>
+            </notificationsContext.Provider>
           </resultsPerPageContext.Provider>
         </tasksToApproveContext.Provider>
       </AuthContext.Provider>

@@ -179,9 +179,14 @@ const MyTasks = () => {
       <Grid
         container
         direction="row"
-        justifyContent="flex-end"
-        sx={{ pr: 2, pt: 2 }}
+        justifyContent="space-between"
+        sx={{ px: 2 }}
       >
+        <Grid item>
+          <Typography variant="h4" gutterBottom>
+            Tasks
+          </Typography>
+        </Grid>
         <Grid item>
           <Button
             variant="contained"
@@ -192,36 +197,36 @@ const MyTasks = () => {
           >
             Add Task
           </Button>
-
-          <StyledMenu
-            id="demo-customized-menu"
-            MenuListProps={{
-              "aria-labelledby": "demo-customized-button",
-            }}
-            anchorEl={anchorEl}
-            open={openMenu}
-            onClose={() => {
-              setAnchorEl(null);
-            }}
-          >
-            <MenuItem
-              onClick={() => {
-                handleClickOpen("Salary Increase");
-              }}
-              disableRipple
-            >
-              <PaidIcon sx={{ color: "#ff0000" }} />
-              Salary Increase
-            </MenuItem>
-            <MenuItem
-              onClick={() => handleClickOpen("Title Change")}
-              disableRipple
-            >
-              <ManageAccountsIcon color={"#ff0000"} />
-              Title Change
-            </MenuItem>
-          </StyledMenu>
         </Grid>
+
+        <StyledMenu
+          id="demo-customized-menu"
+          MenuListProps={{
+            "aria-labelledby": "demo-customized-button",
+          }}
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={() => {
+            setAnchorEl(null);
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              handleClickOpen("Salary Increase");
+            }}
+            disableRipple
+          >
+            <PaidIcon sx={{ color: "#ff0000" }} />
+            Salary Increase
+          </MenuItem>
+          <MenuItem
+            onClick={() => handleClickOpen("Title Change")}
+            disableRipple
+          >
+            <ManageAccountsIcon color={"#ff0000"} />
+            Title Change
+          </MenuItem>
+        </StyledMenu>
       </Grid>
 
       <Grid container direction="row" sx={{ p: 2 }} spacing={2} rowSpacing={2}>
@@ -244,7 +249,7 @@ const MyTasks = () => {
                   alignItems="center"
                 >
                   <Typography variant="h6" color="black">
-                    Tasks
+                    My Tasks
                   </Typography>
                   <Box
                     sx={{

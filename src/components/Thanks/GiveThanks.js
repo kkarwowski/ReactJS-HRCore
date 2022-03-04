@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   MenuItem,
+  Typography,
 } from "@mui/material";
 import { ref, push } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
@@ -215,7 +216,8 @@ const GiveThanks = () => {
                         giveThanksData.Comment === undefined ||
                         giveThanksData.Comment === "" ||
                         giveThanksData.To === undefined ||
-                        giveThanksData.Category === undefined
+                        giveThanksData.Category === undefined ||
+                        giveThanksData.Comment.length <= 50
                       }
                       onClick={() => onSubmit()}
                       onMouseDown={fire}
@@ -223,7 +225,13 @@ const GiveThanks = () => {
                       Post
                     </Button>
                   </Grid>
-                  <Grid item></Grid>
+                  <Grid item>
+                    {giveThanksData.Comment &&
+                      giveThanksData.Comment.length >= 25 &&
+                      giveThanksData.Comment.length <= 50 && (
+                        <Typography>Keep typing 😉</Typography>
+                      )}
+                  </Grid>
                 </Grid>
               </Card>
             </Box>

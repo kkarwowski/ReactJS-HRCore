@@ -609,9 +609,11 @@ const StepTwo = (props) => {
   );
 };
 const StepThree = ({ id }) => {
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const { isDemo } = useAuth();
+
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -639,12 +641,14 @@ const StepThree = ({ id }) => {
           <Button onClick={() => history(`/associates/`)}>
             All Associates
           </Button>
-          <Button
-            onClick={() => history(`/dashboard/associates/${id}`)}
-            color="success"
-          >
-            See new Associate profile
-          </Button>
+          {!isDemo && (
+            <Button
+              onClick={() => history(`/dashboard/associates/${id}`)}
+              color="success"
+            >
+              See new Associate profile
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
       <Grid container sx={{ padding: 2 }}>

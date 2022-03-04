@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Switch, FormControlLabel, Card, Button } from "@mui/material";
+import {
+  Grid,
+  Switch,
+  FormControlLabel,
+  Card,
+  Button,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import {
   ref,
   onValue,
   getDatabase,
   limitToFirst,
   query,
+  orderByKey,
 } from "firebase/database";
 import { Link } from "react-router-dom";
 
@@ -19,12 +28,20 @@ const Thanks = () => {
 
   useEffect(() => {
     const dbrt = getDatabase();
-    const AllNotifications = query(ref(dbrt, `Notifications/${userData.id}`));
-    const AllThanks = query(ref(dbrt, `Thanks`), limitToFirst(10));
+    // const AllNotifications = query(ref(dbrt, `Notifications/${userData.id}`));
+    const AllThanks = query(
+      ref(dbrt, `Thanks`),
+      orderByKey("Timestamp"),
+      limitToFirst(10)
+    );
     onValue(AllThanks, (snapshot) => {
       if (snapshot.val() != null) {
         const data = snapshot.val();
-        setThanks(data);
+        const tempArray = [];
+        Object.entries(data).forEach(([key, value]) => {
+          tempArray.push({ ...value, ThanksID: key });
+        });
+        setThanks(tempArray.reverse());
       } else {
       }
     });
@@ -50,7 +67,6 @@ const Thanks = () => {
             </Button>
           </Grid>
         </Grid>
-        {/* <Card> */}
         <Grid
           container
           direction="row"
@@ -59,21 +75,24 @@ const Thanks = () => {
           alignItems="center"
           sx={{ p: 1 }}
         >
-          {thanks &&
-            userData &&
-            Object.entries(thanks).map(([key, value]) => {
+          {thanks && userData ? (
+            thanks.map((thank) => {
               return (
-                <Grid item xs={12} md={3} lg={3} key={key}>
+                <Grid item xs={12} md={3} lg={3} key={thank.ThanksID}>
                   <ThanksCard
-                    thanksId={key}
-                    thanksData={value}
+                    thanksId={thank.ThanksID}
+                    thanksData={thank}
                     userId={userData.id}
                   />
                 </Grid>
               );
-            })}
+            })
+          ) : (
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          )}
         </Grid>
-        {/* </Card> */}
       </Page>
     </>
   );

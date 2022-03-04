@@ -275,6 +275,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
 
           <Box>
             <div className={thanksData.Category}>
+              {/* <div className={thanksData.Category} style={{ minHeight: 80 }}> */}
               {thanksData.Category === "TeamPlayer"
                 ? "Team Player 👍"
                 : thanksData.Category === "Hero" && toUser.Gender === "Male"
@@ -313,8 +314,8 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                             paddingLeft={1}
                           >
                             <AccessTimeIcon
-                              fontSize="small"
-                              sx={{ opacity: 0.5 }}
+                              // fontSize="small"
+                              sx={{ opacity: 0.5, width: 12 }}
                             />
                             <Typography
                               variant="h7"
@@ -332,12 +333,15 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                           <Grid
                             container
                             direction="row"
-                            alignItems="center"
+                            alignContent="center"
                             justifyContent="flex-end"
                             columnSpacing={1}
                           >
                             <Grid item>
-                              <Typography variant="h7" sx={{ p: 1 }}>
+                              <Typography
+                                variant="h7"
+                                sx={{ paddingLeft: 0.5 }}
+                              >
                                 by
                               </Typography>
                             </Grid>

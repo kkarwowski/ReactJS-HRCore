@@ -256,24 +256,26 @@ export default function NotificationsPopover() {
         <Divider />
         <Scrollbar sx={{ height: { xs: 340, sm: 400, lg: 400 } }}>
           {/* { xs: 340, sm: 340, lg: 340 } */}
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader
-                disableSticky
-                sx={{ py: 1, px: 2.5, typography: "overline" }}
-              >
-                New
-              </ListSubheader>
-            }
-          >
-            {unRead.map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                notification={notification}
-              />
-            ))}
-          </List>
+          {totalUnRead > 0 && (
+            <List
+              disablePadding
+              subheader={
+                <ListSubheader
+                  disableSticky
+                  sx={{ py: 1, px: 2.5, typography: "overline" }}
+                >
+                  New
+                </ListSubheader>
+              }
+            >
+              {unRead.map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  notification={notification}
+                />
+              ))}
+            </List>
+          )}
           <List
             disablePadding
             subheader={

@@ -120,7 +120,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
           <Grid
             container
             direction="row"
-            spacing={2}
+            spacing={1}
             justifyContent="space-between"
             alignItems="center"
           >
@@ -129,7 +129,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
                 <Typography variant="h7" sx={{ opacity: 0.5 }}>
                   by
                 </Typography>
-                <Grid item sx={{ pt: 1 }}>
+                <Grid item sx={{ pt: 0 }}>
                   <ApprovalAvatar
                     awidth={30}
                     aheight={30}

@@ -19,7 +19,7 @@ const Thanks = () => {
 
   useEffect(() => {
     const dbrt = getDatabase();
-
+    const AllNotifications = query(ref(dbrt, `Notifications/${userData.id}`));
     const AllThanks = query(ref(dbrt, `Thanks`), limitToFirst(10));
     onValue(AllThanks, (snapshot) => {
       if (snapshot.val() != null) {

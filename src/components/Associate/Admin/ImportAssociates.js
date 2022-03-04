@@ -8,6 +8,7 @@ import {
   TableRow,
   TableHead,
   Card,
+  Typography,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useState, useContext } from "react";
@@ -17,9 +18,13 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 import { updateAssociatesContext } from "../../../utils/context/contexts";
 import * as moment from "moment";
+import { useAuth } from "../../../utils/context/AuthContext";
+
 import Page from "../../../components/Page";
 
 const ImportAssociates = () => {
+  const { isDemo, isAdmin } = useAuth();
+
   const [csvFile, setCsvFile] = useState();
   const [csvArray, setCsvArray] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -127,7 +132,7 @@ const ImportAssociates = () => {
           <Grid item>
             <LoadingButton
               loading={loading}
-              disabled={!csvFile}
+              disabled={!csvFile || isDemo}
               variant="contained"
               onClick={() => {
                 submit();
@@ -136,10 +141,10 @@ const ImportAssociates = () => {
               Submit
             </LoadingButton>
           </Grid>
-
-          <Grid item>
-            <Button onClick={() => console.log(csvArray)}> Log</Button>
-          </Grid>
+          {isDemo && <Typography>Button disabled in Demo mode</Typography>}
+          {/* <Grid item> */}
+          {/* <Button onClick={() => console.log(csvArray)}> Log</Button> */}
+          {/* </Grid> */}
           <Grid item>
             <Button>
               <a

@@ -49,6 +49,7 @@ import Admin from "./pages/Admin";
 import ImportAssociates from "./components/Associate/Admin/ImportAssociates";
 import GiveThanks from "./components/Thanks/GiveThanks";
 import Holidays from "./pages/Holidays";
+import Calendar from "./components/calendar/Calendar";
 function App() {
   const associatesCollectionRef = collection(db, "Associates");
   const [updateAssociates, setUpdateAssociates] = useState(1);
@@ -347,7 +348,8 @@ function App() {
                                 path="holidays"
                                 element={
                                   <PrivateRoute role="Standard">
-                                    <Holidays />
+                                    {/* <Holidays /> */}
+                                    <Calendar />
                                   </PrivateRoute>
                                 }
                               ></Route>

@@ -1,9 +1,18 @@
 import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
 import menu2Fill from "@iconify/icons-eva/menu-2-fill";
+import { useLocation } from "react-router-dom";
+
 // material
 import { alpha, styled } from "@mui/material/styles";
-import { Box, Stack, AppBar, Toolbar, IconButton } from "@mui/material";
+import {
+  Box,
+  Stack,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Breadcrumbs,
+} from "@mui/material";
 // components
 import { MHidden } from "../../components/@material-extend";
 //
@@ -46,6 +55,11 @@ DashboardNavbar.propTypes = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }) {
+  const location = useLocation();
+  const pathArray = location.pathname.split("/").filter((x) => x);
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   return (
     <RootStyle>
       <ToolbarStyle>
@@ -59,7 +73,19 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         </MHidden>
         {/* <Grid container direction="rows" justifyContent="space-between"> */}
         {/* <Grid item> */}
-        <Searchbar />
+        <Breadcrumbs aria-label="breadcrumb">
+          {pathArray.map((name, index) =>
+            name === "givethanks" ? (
+              <div>Give Thanks</div>
+            ) : name === "newassociate" ? (
+              <div>New Associate</div>
+            ) : (
+              <div>{capitalizeFirstLetter(name)}</div>
+            )
+          )}
+        </Breadcrumbs>
+        {/* <Searchbar /> */}
+
         {/* </Grid> */}
 
         <Box sx={{ flexGrow: 1 }} />

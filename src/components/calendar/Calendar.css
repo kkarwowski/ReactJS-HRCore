@@ -1,0 +1,64 @@
+.ContainerGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(1, 0.5fr) repeat(4, 1fr);
+}
+/* 
+.item {
+  width: 50px;
+  height: 50px;
+  background-color: brown;
+  grid-column: 1 2 / 3;
+  grid-row: 1;
+} */
+.item {
+  /* .item:nth-child(-n + 7) { */
+  grid-column: 1 / span 7;
+
+  width: 100%;
+  height: 50px;
+  background-color: yellow;
+}
+
+.grid {
+  border: 5px solid rgb(111, 41, 97);
+  display: grid;
+  grid-template-areas:
+    "one one one one one one one"
+    "two two two two two two two"
+    "three three three three three three three"
+    "four four four four four four four";
+
+  gap: 10px;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 50px);
+  inline-size: 500px;
+}
+
+.grid > * {
+  background-color: rgba(111, 41, 97, 0.4);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.one {
+  grid-area: one;
+}
+
+.two {
+  grid-area: two;
+}
+
+.three {
+  grid-area: three;
+}
+
+.four {
+  grid-area: four;
+}
+
+.grid > .five {
+  background-color: orange;
+  grid-row: one-start / three-end;
+  grid-column: three-start / four-start;
+}

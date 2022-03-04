@@ -382,7 +382,7 @@ const AssociateInfo = ({ updateFirebaseAndState }) => {
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   sx={DisabledTextBox}
-                  disabled={personalDisabled}
+                  // disabled={personalDisabled}
                   disabled={associateData.TerminationtDate ? false : true}
                   label="Termination Date"
                   name="TerminationDate"

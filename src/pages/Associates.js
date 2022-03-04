@@ -186,7 +186,7 @@ const Associates = () => {
             justifyContent="space-between"
             mb={2}
           >
-            <Typography variant="h3" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               Associates
             </Typography>
 

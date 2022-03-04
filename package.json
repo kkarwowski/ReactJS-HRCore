@@ -46,6 +46,7 @@
     "react-scripts": "^5.0.0",
     "simplebar": "^5.3.6",
     "simplebar-react": "^2.3.5",
+    "source-map-explorer": "^2.5.2",
     "styled-components": "^5.3.3",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
@@ -54,7 +55,8 @@
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": [

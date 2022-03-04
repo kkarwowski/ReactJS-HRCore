@@ -133,13 +133,15 @@ export default function NewAssociate() {
         <Typography variant="h4" sx={{ pb: 1 }}>
           Add new Associate
         </Typography>
-        <Button
-          variant="contained"
-          onClick={() => history("/dashboard/associates")}
-          size="medium"
-        >
-          Back
-        </Button>
+        {currentStep === 0 && (
+          <Button
+            variant="outlined"
+            onClick={() => history("/dashboard/associates")}
+            size="medium"
+          >
+            Back
+          </Button>
+        )}
         <Card sx={{ mt: 2 }}>
           <Stepper
             activeStep={currentStep}
@@ -240,15 +242,15 @@ const StepOne = (props) => {
             </Grid>
             {allDepartments && (
               <Grid item sx={4} sm={4} xl={4}>
-                <FormControl>
+                <FormControl fullWidth>
                   <InputLabel>Department</InputLabel>
                   <Field
                     as={Select}
                     name="Department"
-                    sx={{ minWidth: 350 }}
                     required
                     size="small"
                     label="Department"
+                    fullWidth
                   >
                     {allDepartments.map((department, index) => (
                       <MenuItem key={index} value={`${department}`}>
@@ -256,6 +258,21 @@ const StepOne = (props) => {
                       </MenuItem>
                     ))}
                   </Field>
+                  {/* <Field
+                  fullWidth
+                  as={Select}
+                  name="Department"
+                  // sx={{ width: "100%" }}
+                  required
+                  size="small"
+                  label="Department"
+                >
+                  {allDepartments.map((department, index) => (
+                    <MenuItem key={index} value={`${department}`}>
+                      {department}
+                    </MenuItem>
+                  ))}
+                </Field> */}
                   <ErrorMessage name="Department" />
                 </FormControl>
               </Grid>
@@ -325,17 +342,16 @@ const StepOne = (props) => {
               <ErrorMessage name="Salary" />
             </Grid>
             <Grid item sx={4} sm={4} xl={4}>
-              <FormControl>
-                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-
+              <FormControl fullWidth>
+                <InputLabel>Gender</InputLabel>
                 <Field
-                  labelId="demo-simple-select-label"
+                  // labelId="demo-simple-select-label"
                   shrink={true}
                   as={Select}
                   name="Gender"
-                  sx={{ width: 195 }}
+                  // sx={{ width: 195 }}
                   required
-                  inputProps={{ min: 0, style: { textAlign: "center" } }}
+                  // inputProps={{ min: 0, style: { textAlign: "center" } }}
                   size="small"
                   label="Gender"
                 >
@@ -350,7 +366,7 @@ const StepOne = (props) => {
               </FormControl>
             </Grid>
             <Grid item sx={4} sm={4} xl={4}>
-              <FormControl>
+              <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
                   Employment Status
                 </InputLabel>
@@ -358,7 +374,7 @@ const StepOne = (props) => {
                   labelId="demo-simple-select-label"
                   as={Select}
                   name="EmplStatus"
-                  sx={{ width: 195 }}
+                  // sx={{ width: 195 }}
                   required
                   size="small"
                   // id="demo-simple-select"
@@ -377,12 +393,12 @@ const StepOne = (props) => {
             </Grid>
             {allOffices && (
               <Grid item sx={4} sm={4} xl={4}>
-                <FormControl>
+                <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">Office</InputLabel>
                   <Field
                     as={Select}
                     name="Office"
-                    sx={{ width: 195 }}
+                    // sx={{ width: 195 }}
                     required
                     size="small"
                     label="Office"
@@ -401,6 +417,7 @@ const StepOne = (props) => {
             <Grid item sx={4} sm={4} xl={4}>
               <Field
                 name="Manager"
+                fullWidth
                 component={Autocomplete}
                 size="small"
                 options={associates}
@@ -413,7 +430,7 @@ const StepOne = (props) => {
                   }
                 }}
                 // onChange={(selected) => (selected = selected.FirstName)}
-                style={{ width: 300 }}
+                // style={{ width: 300 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -444,7 +461,9 @@ const StepOne = (props) => {
                       // Timestamp.fromDate(new Date(StartDate))
                     );
                   }}
-                  renderInput={(params) => <TextField {...params} />}
+                  renderInput={(params) => (
+                    <TextField size="small" {...params} />
+                  )}
                 />
               </LocalizationProvider>
             </Grid>
@@ -462,7 +481,9 @@ const StepOne = (props) => {
                     setFieldValue("DOB", new Date(DOB));
                     // setFieldValue("DOB", Timestamp.fromDate(new Date(DOB)));
                   }}
-                  renderInput={(params) => <TextField {...params} />}
+                  renderInput={(params) => (
+                    <TextField size="small" {...params} />
+                  )}
                 />
               </LocalizationProvider>
             </Grid>
@@ -568,8 +589,9 @@ const StepTwo = (props) => {
             >
               <Grid item>
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   type="button"
+                  sx={{ marginRight: 2 }}
                   onClick={() => props.prev(values)}
                 >
                   Back
@@ -625,25 +647,29 @@ const StepThree = ({ id }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <AssociateDocuments userID={id} />
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="flex-end"
-        rowSpacing={2}
-        columnSpacing={2}
-        pt={3}
-        pb={4}
-      >
-        <Grid item>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={() => setOpen(true)}
-          >
-            Finish
-          </Button>
+      <Grid container sx={{ padding: 2 }}>
+        <Grid item xs={12} lg={12} md={12}>
+          <AssociateDocuments userID={id} />
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          rowSpacing={2}
+          columnSpacing={2}
+          pt={3}
+          pb={4}
+        >
+          <Grid item>
+            <Button
+              variant="contained"
+              type="button"
+              onClick={() => setOpen(true)}
+            >
+              Finish
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </div>

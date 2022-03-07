@@ -402,9 +402,9 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
                                 <Tabs
                                   value={value}
                                   onChange={handleChangetoTab}
-                                  // aria-label="basic tabs example"
-                                  // variant="scrollable"
-                                  // scrollButtons="auto"
+                                  aria-label="basic tabs example"
+                                  variant="scrollable"
+                                  scrollButtons="auto"
                                   // scrollButtons={true}
                                   // allowScrollButtonsMobile
                                 >

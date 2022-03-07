@@ -15,6 +15,8 @@ import {
   limitToFirst,
   query,
   orderByKey,
+  orderByValue,
+  orderByChild,
 } from "firebase/database";
 import { Link } from "react-router-dom";
 
@@ -25,27 +27,46 @@ import Page from "../components/Page";
 const Thanks = () => {
   const { userData } = useAuth();
   const [thanks, setThanks] = useState();
-
+  const [filterID, setFilterID] = useState();
   useEffect(() => {
     const dbrt = getDatabase();
     // const AllNotifications = query(ref(dbrt, `Notifications/${userData.id}`));
     const AllThanks = query(
-      ref(dbrt, `Thanks`),
-      orderByKey("Timestamp"),
-      limitToFirst(10)
+      ref(dbrt, "Thanks"),
+      // orderByChild("Category"),
+      limitToFirst(20)
     );
+    console.log(AllThanks);
     onValue(AllThanks, (snapshot) => {
       if (snapshot.val() != null) {
+        console.log("snap", snapshot);
         const data = snapshot.val();
+        console.log("Data", data);
         const tempArray = [];
         Object.entries(data).forEach(([key, value]) => {
           tempArray.push({ ...value, ThanksID: key });
         });
-        setThanks(tempArray.reverse());
+        setThanks(
+          tempArray.sort((a, b) => (a.Timestamp < b.Timestamp ? 1 : -1))
+        );
       } else {
       }
     });
   }, []);
+
+  const setID = (id) => {
+    setFilterID(id);
+  };
+
+  const filteredThanks = (array, id) => {
+    if (id) {
+      console.log(id, "id");
+      return array.filter((thank) => {
+        return thank.To === id;
+      });
+    }
+    return array;
+  };
 
   return (
     <>
@@ -58,7 +79,20 @@ const Thanks = () => {
         >
           <Grid item>
             <Card sx={{ paddingLeft: 1, paddingRight: 1 }}>
-              <FormControlLabel control={<Switch />} label="Received Thanks" />
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={(e) => {
+                      if (e.target.checked === true) {
+                        setFilterID(userData.id);
+                      } else {
+                        setFilterID(undefined);
+                      }
+                    }}
+                  />
+                }
+                label="Received Thanks"
+              />
             </Card>
           </Grid>
           <Grid item>
@@ -75,8 +109,9 @@ const Thanks = () => {
           alignItems="center"
           sx={{ p: 1 }}
         >
-          {thanks && userData ? (
-            thanks.map((thank) => {
+          {thanks && filteredThanks && userData ? (
+            (console.log(filteredThanks(thanks, filterID)),
+            filteredThanks(thanks, filterID).map((thank) => {
               return (
                 <Grid item xs={12} md={3} lg={3} key={thank.ThanksID}>
                   <ThanksCard
@@ -86,7 +121,7 @@ const Thanks = () => {
                   />
                 </Grid>
               );
-            })
+            }))
           ) : (
             <Box sx={{ display: "flex" }}>
               <CircularProgress />

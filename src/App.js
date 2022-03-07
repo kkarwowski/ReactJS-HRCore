@@ -184,7 +184,6 @@ function App() {
       onValue(refNotifications, (snapshot) => {
         if (snapshot.val() != null) {
           const data = snapshot.val();
-          console.log("Notification", data);
           const tempArray = [];
 
           Object.entries(data).forEach(([key, value]) => {

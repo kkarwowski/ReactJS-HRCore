@@ -189,7 +189,6 @@ export default function NotificationsPopover() {
   const Read = notifications.filter((item) => item.isUnRead === false);
   const totalUnRead = unRead.length;
   const noun = totalUnRead.length >= 2 ? "notifications" : "notification";
-  console.log("notifications array", notifications);
   const handleOpen = () => {
     setOpen(true);
   };

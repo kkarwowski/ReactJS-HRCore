@@ -84,8 +84,14 @@ const TaskCard = ({ task, userID, taskPath }) => {
                 <Grid item>
                   <Chip
                     label={task.status}
+                    sx={{
+                      fontWeight: 600,
+                      //   "& .MuiChip-label": {
+                      //     color: task.status === "approved" ? "white" : "black",
+                      //   },
+                    }}
                     size="small"
-                    sx={{ fontWeight: 600 }}
+                    // sx={{ fontWeight: 600 }}
                     color={
                       task.status === "pending"
                         ? "warning"

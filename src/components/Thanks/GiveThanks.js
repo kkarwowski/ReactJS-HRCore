@@ -8,7 +8,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { ref, push } from "firebase/database";
+import { ref, push, serverTimestamp } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
@@ -26,7 +26,9 @@ const GiveThanks = () => {
     Comment: undefined,
     To: undefined,
     From: "",
-    Timestamp: Math.round(new Date().getTime() / 1000),
+    // Timestamp: Math.round(new Date().getTime() / 1000),
+    Timestamp: serverTimestamp(),
+    // Times: serverTimestamp(),
     Category: undefined,
   });
   const canvasStyles = {
@@ -89,7 +91,9 @@ const GiveThanks = () => {
         Comment: undefined,
         To: undefined,
         From: "",
-        Timestamp: Math.round(new Date().getTime() / 1000),
+        // Timestamp: Math.round(new Date().getTime() / 1000),
+        Timestamp: serverTimestamp(),
+        // Times: serverTimestamp(),
         Category: undefined,
       });
       setDoc(doc(db, "Thanks-Comments-Likes", result.key), {

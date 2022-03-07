@@ -76,11 +76,11 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         <Breadcrumbs aria-label="breadcrumb">
           {pathArray.map((name, index) =>
             name === "givethanks" ? (
-              <div>Give Thanks</div>
+              <div key={name}>Give Thanks</div>
             ) : name === "newassociate" ? (
-              <div>New Associate</div>
+              <div key={name}>New Associate</div>
             ) : (
-              <div>{capitalizeFirstLetter(name)}</div>
+              <div key={name}>{capitalizeFirstLetter(name)}</div>
             )
           )}
         </Breadcrumbs>

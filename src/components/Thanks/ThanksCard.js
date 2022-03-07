@@ -322,8 +322,8 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                               sx={{ opacity: 0.5, paddingLeft: 1 }}
                             >
                               {thanksData.Timestamp &&
-                                moment
-                                  .unix(thanksData.Timestamp)
+                                moment(thanksData.Timestamp)
+                                  // .unix(thanksData.Timestamp)
                                   .from(new Date())}
                             </Typography>
                           </Grid>

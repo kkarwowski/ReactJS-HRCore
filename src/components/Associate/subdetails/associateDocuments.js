@@ -564,6 +564,7 @@ const AssociateDocuments = ({ userID }) => {
                             <TableCell align="left">
                               {type === "application/pdf" ? (
                                 <Icon
+                                  color="red"
                                   icon={filePdfBox}
                                   width={iconSize.width}
                                   height={iconSize.height}
@@ -579,12 +580,14 @@ const AssociateDocuments = ({ userID }) => {
                                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
                                 <Icon
                                   icon={fileExcelBox}
+                                  color="green"
                                   width={iconSize.width}
                                   height={iconSize.height}
                                 />
                               ) : type ===
                                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? (
                                 <Icon
+                                  color="#4782da"
                                   icon={fileWordBox}
                                   width={iconSize.width}
                                   height={iconSize.height}

@@ -19,6 +19,8 @@ import { MHidden } from "../../components/@material-extend";
 import Searchbar from "./Searchbar";
 import AccountPopover from "./AccountPopover";
 import NotificationsPopover from "./NotificationsPopover";
+import { associatesContext } from "../../utils/context/contexts";
+import { useContext } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -55,8 +57,15 @@ DashboardNavbar.propTypes = {
 };
 
 export default function DashboardNavbar({ onOpenSidebar }) {
+  const { associates, setAssciates } = useContext(associatesContext);
+
   const location = useLocation();
-  const pathArray = location.pathname.split("/").filter((x) => x);
+  let pathArray = location.pathname.split("/").filter((x) => x);
+  const getAssociateDetails = (id) => {
+    const associate = associates.filter((associatee) => associatee.id === id);
+    return associate[0];
+  };
+  const associatedetails = getAssociateDetails(pathArray[2]);
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -74,6 +83,12 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         {/* <Grid container direction="rows" justifyContent="space-between"> */}
         {/* <Grid item> */}
         <Breadcrumbs aria-label="breadcrumb">
+          {console.log(pathArray, "array")}
+
+          {pathArray.length === 3 && pathArray.includes("associates")
+            ? (pathArray[2] =
+                associatedetails.FirstName + " " + associatedetails.LastName)
+            : null}
           {pathArray.map((name, index) =>
             name === "givethanks" ? (
               <div key={name}>Give Thanks</div>

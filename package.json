@@ -78,6 +78,7 @@
   },
   "devDependencies": {
     "@iconify/icons-fluent": "^1.1.33",
-    "@iconify/react": "^3.1.0"
+    "@iconify/icons-logos": "^1.2.4",
+    "@iconify/react": "^3.1.4"
   }
 }

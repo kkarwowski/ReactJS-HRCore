@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import { Icon } from "@iconify/react";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useState, useContext } from "react";
 import Label from "../Label";
@@ -22,6 +23,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PropTypes from "prop-types";
 import EmailIcon from "@mui/icons-material/Email";
+import microsoftTeams from "@iconify/icons-logos/microsoft-teams";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {
   associateContext,
@@ -101,12 +103,6 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   const diffDates = require("diff-dates");
   const Todayy = new Date();
 
-  // const dateDiffYears = Date();
-
-  // const formatDate = (dateString) => {
-  //   const options = { year: "numeric", month: "long", day: "numeric" };
-  //   return new Date(dateString).toLocaleDateString(undefined, options);
-  // };
   const handleClickAction = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -374,9 +370,10 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
                                     target="_blank"
                                     href={`https://teams.microsoft.com/l/chat/0/0?users=${associateData.WorkEmail}`}
                                   >
-                                    <img
-                                      src="https://img.icons8.com/fluency/30/000000/microsoft-teams-2019.png"
-                                      sx={{ pr: 2 }}
+                                    <Icon
+                                      icon={microsoftTeams}
+                                      width="30"
+                                      height="30"
                                     />
                                   </Link>
                                 </Grid>

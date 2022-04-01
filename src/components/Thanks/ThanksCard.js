@@ -80,7 +80,7 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
       updateDoc(doc(db, "Thanks-Comments-Likes", thanksId), {
         Likes: arrayUnion(userId),
       });
-      addNotification(toUser, userData, "liked");
+      addNotification(toUser.id, userData, "liked");
     }
     setLiked(!Liked);
   };

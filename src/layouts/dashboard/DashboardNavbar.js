@@ -83,9 +83,8 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         {/* <Grid container direction="rows" justifyContent="space-between"> */}
         {/* <Grid item> */}
         <Breadcrumbs aria-label="breadcrumb">
-          {console.log(pathArray, "array")}
-
-          {pathArray.length === 3 && pathArray.includes("associates")
+          {pathArray.length === 3 &&
+          pathArray.includes("associates" && associatedetails)
             ? (pathArray[2] =
                 associatedetails.FirstName + " " + associatedetails.LastName)
             : null}

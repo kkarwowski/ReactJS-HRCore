@@ -5,6 +5,7 @@ import { ref, push } from "firebase/database";
 import { rtdb } from "../../utils/firebase";
 import ChangeTitleTask from "./addTaskElements/ChangeTitleTask";
 import IncreaseSalary from "./addTaskElements/IncreaseSalary";
+import { addNotification } from "../Thanks/thanksFunctions";
 const AddTask = ({
   userDetails,
   myManager,
@@ -59,6 +60,7 @@ const AddTask = ({
       push(ref(rtdb, `Tasks/${approver}/ToApprove`), {
         TaskPath: `${taskValues.requester}/MyTasks/${newTask.key}`,
       });
+      addNotification(approver, "task");
     });
     setPopupOpen(false);
   };

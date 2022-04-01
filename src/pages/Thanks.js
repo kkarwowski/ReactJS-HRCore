@@ -46,9 +46,7 @@ const Thanks = () => {
     );
     onValue(AllThanks, (snapshot) => {
       if (snapshot.val() != null) {
-        console.log("snap", snapshot);
         const data = snapshot.val();
-        console.log("Data", data);
         const tempArray = [];
         Object.entries(data).forEach(([key, value]) => {
           tempArray.push({ ...value, ThanksID: key });
@@ -63,7 +61,6 @@ const Thanks = () => {
 
   const filteredThanks = (array, id) => {
     if (id) {
-      console.log(id, "id");
       return array.filter((thank) => {
         return thank.To === id;
       });
@@ -151,7 +148,6 @@ const Thanks = () => {
           alignItems="center"
         >
           {thanks && filteredThanks && userData ? (
-            (console.log(filteredThanks(thanks, filterID)),
             filteredThanks(thanks, filterID).map((thank) => {
               return (
                 <Grid item xs={12} md={3} lg={3} key={thank.ThanksID}>
@@ -162,7 +158,7 @@ const Thanks = () => {
                   />
                 </Grid>
               );
-            }))
+            })
           ) : (
             <Box sx={{ display: "flex" }}>
               <CircularProgress />

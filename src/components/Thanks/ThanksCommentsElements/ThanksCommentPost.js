@@ -25,7 +25,7 @@ const ThanksCommentPost = ({ count, thanksId, fromUser, toUser }) => {
         Timestamp: Math.round(new Date().getTime() / 1000),
       },
     });
-    addNotification(toUser, fromUser, "comment");
+    addNotification(toUser.id, fromUser, "comment");
     setCommentField("");
   };
 

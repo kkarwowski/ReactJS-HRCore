@@ -91,7 +91,6 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
   const openMenu = Boolean(anchorEl);
   const [value, setValue] = useState(0);
   const { associateData } = useContext(associateContext);
-  console.log(associateData);
   const history = useNavigate();
   const handleChangetoTab = (event, newValue) => {
     setValue(newValue);
@@ -114,7 +113,6 @@ const AssociateHeader = ({ handleBack, updateFirebaseAndState }) => {
     // delete from Associates
     if (!isDemo && isAdmin) {
       await deleteDoc(doc(db, "Associates", id));
-      console.log("deleting");
       // delete from Changes
       try {
         const q = query(

@@ -26,6 +26,8 @@ import {
   ListSubheader,
   ListItemAvatar,
   ListItemButton,
+  Skeleton,
+  Grid,
 } from "@mui/material";
 
 import Scrollbar from "../../components/Scrollbar";
@@ -133,49 +135,56 @@ function renderContent(notification) {
   };
 }
 
-function NotificationItem({ notification }) {
+function NotificationItem({ notification, click, handleClose }) {
   const { avatar, title } = renderContent(notification);
+  const { userData } = useAuth();
 
   return (
-    <ListItemButton
-      to="/thanks"
-      disableGutters
-      component={RouterLink}
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        mt: "1px",
-        ...(notification.isUnRead && {
-          bgcolor: "action.selected",
-        }),
-      }}
-    >
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: "background.neutral" }}>{avatar}</Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: "flex",
-              alignItems: "center",
-              color: "text.disabled",
-            }}
-          >
-            <Box
-              component={Icon}
-              icon={clockFill}
-              sx={{ mr: 0.5, width: 16, height: 16 }}
-            />
-            {moment(notification.Timestamp).from(new Date())}
-            {/* {moment.unix(notification.Timestamp).from(new Date())} */}
-          </Typography>
-        }
-      />
-    </ListItemButton>
+    userData && (
+      <ListItemButton
+        onClick={() => {
+          click(notification.ID, userData.id);
+          handleClose();
+        }}
+        to="/thanks"
+        disableGutters
+        component={RouterLink}
+        sx={{
+          py: 1.5,
+          px: 2.5,
+          mt: "1px",
+          ...(notification.isUnRead && {
+            bgcolor: "action.selected",
+          }),
+        }}
+      >
+        <ListItemAvatar>
+          <Avatar sx={{ bgcolor: "background.neutral" }}>{avatar}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={title}
+          secondary={
+            <Typography
+              variant="caption"
+              sx={{
+                mt: 0.5,
+                display: "flex",
+                alignItems: "center",
+                color: "text.disabled",
+              }}
+            >
+              <Box
+                component={Icon}
+                icon={clockFill}
+                sx={{ mr: 0.5, width: 16, height: 16 }}
+              />
+              {moment(notification.Timestamp).from(new Date())}
+              {/* {moment.unix(notification.Timestamp).from(new Date())} */}
+            </Typography>
+          }
+        />
+      </ListItemButton>
+    )
   );
 }
 
@@ -200,12 +209,12 @@ export default function NotificationsPopover() {
 
   const handleMarkAllAsRead = () => {
     unRead.forEach((not) => {
-      handleMarkRead(not.ID);
+      handleMarkRead(not.ID, userData.id);
     });
   };
 
-  const handleMarkRead = (id) => {
-    update(ref(dbrt, `Notifications/${userData.id}/${id}`), {
+  const handleMarkRead = (notificationId, userId) => {
+    update(ref(dbrt, `Notifications/${userId}/${notificationId}`), {
       isUnRead: false,
     });
   };
@@ -272,28 +281,41 @@ export default function NotificationsPopover() {
                 <NotificationItem
                   key={notification.id}
                   notification={notification}
+                  click={handleMarkRead}
+                  close={handleClose}
                 />
               ))}
             </List>
           )}
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader
-                disableSticky
-                sx={{ py: 1, px: 2.5, typography: "overline" }}
-              >
-                Read
-              </ListSubheader>
-            }
-          >
-            {Read.map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                notification={notification}
-              />
-            ))}
-          </List>
+          {Read.length > 0 && (
+            <List
+              disablePadding
+              subheader={
+                <ListSubheader
+                  disableSticky
+                  sx={{ py: 1, px: 2.5, typography: "overline" }}
+                >
+                  Read
+                </ListSubheader>
+              }
+            >
+              {Read.map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  notification={notification}
+                />
+              ))}
+            </List>
+          )}
+          {(Read.length === 0) & (unRead.length === 0) ? (
+            <Typography
+              variant="body1"
+              textAlign="center"
+              sx={{ paddingTop: 2 }}
+            >
+              No notifications...
+            </Typography>
+          ) : null}
         </Scrollbar>
 
         <Divider />

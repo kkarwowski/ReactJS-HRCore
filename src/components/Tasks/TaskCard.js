@@ -16,21 +16,17 @@ import moment from "moment";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState, useContext } from "react";
-import { associatesContext } from "../../utils/context/contexts";
+import { useState } from "react";
 import ApprovalTimeline from "./approverTimeline/approvalTimeline";
 import ApprovalAvatar from "./approverTimeline/approvalAvatar";
 import { ApproveTask, CancelTask } from "./taksFunctions";
 import CategoryChip from "./CardElements/CategoryChip";
+import { GetAssociateDetails } from "../../utils/getAssociateDetails";
 const TaskCard = ({ task, userID, taskPath }) => {
-  const { associates } = useContext(associatesContext);
   const [expanded, setExpanded] = useState(false);
-  const getApproverDetails = (id) => {
-    const associate = associates.filter((associatee) => associatee.id === id);
-    return associate[0];
-  };
-  const requesterDetails = getApproverDetails(task.requester);
-  const targetDetails = getApproverDetails(task.TargetValue);
+
+  const requesterDetails = GetAssociateDetails(task.requester);
+  const targetDetails = GetAssociateDetails(task.TargetValue);
   const [approverComments, setApproverComments] = useState();
 
   const ExpandMore = styled((props) => {
@@ -191,7 +187,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
                   <AvatarGroup>
                     {Object.entries(task.approvers).map(([key, value]) => {
                       const { status } = value;
-                      const approverDetails = getApproverDetails(key);
+                      const approverDetails = GetAssociateDetails(key);
                       const statusColor = (status) => {
                         if (status === "pending") {
                           return "#ffa55a";
@@ -263,7 +259,7 @@ const TaskCard = ({ task, userID, taskPath }) => {
           <Grid item>
             <ApprovalTimeline
               task={task}
-              getApproverDetails={getApproverDetails}
+              getApproverDetails={GetAssociateDetails}
             />
           </Grid>
           {userID && task.requester === userID && task.status === "pending" && (

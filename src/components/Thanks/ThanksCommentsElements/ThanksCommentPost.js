@@ -1,11 +1,11 @@
-import React from "react";
 import { Grid, Chip, TextField, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../utils/firebase";
+import { addNotification } from "../thanksFunctions";
 
-const ThanksCommentPost = ({ count, thanksId, userId }) => {
+const ThanksCommentPost = ({ count, thanksId, fromUser, toUser }) => {
   const [commentField, setCommentField] = useState();
   const presetComments = [
     "Well done!👍",
@@ -21,10 +21,11 @@ const ThanksCommentPost = ({ count, thanksId, userId }) => {
     updateDoc(docREf, {
       [`Comments.${thisUUID}`]: {
         Comment: commentField,
-        Id: userId,
+        Id: fromUser.id,
         Timestamp: Math.round(new Date().getTime() / 1000),
       },
     });
+    addNotification(toUser, fromUser, "comment");
     setCommentField("");
   };
 

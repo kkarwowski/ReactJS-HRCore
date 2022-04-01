@@ -138,7 +138,7 @@ function NotificationItem({ notification }) {
 
   return (
     <ListItemButton
-      to="#"
+      to="/thanks"
       disableGutters
       component={RouterLink}
       sx={{
@@ -170,7 +170,8 @@ function NotificationItem({ notification }) {
               icon={clockFill}
               sx={{ mr: 0.5, width: 16, height: 16 }}
             />
-            {moment.unix(notification.Timestamp).from(new Date())}
+            {moment(notification.Timestamp).from(new Date())}
+            {/* {moment.unix(notification.Timestamp).from(new Date())} */}
           </Typography>
         }
       />

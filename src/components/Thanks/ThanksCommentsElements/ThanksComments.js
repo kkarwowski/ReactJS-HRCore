@@ -11,11 +11,11 @@ import {
 import { doc, updateDoc, deleteField } from "firebase/firestore";
 import { db } from "../../../utils/firebase";
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import moment from "moment";
-import { associatesContext } from "../../../utils/context/contexts";
+import { GetAssociateDetails } from "../../../utils/getAssociateDetails";
 
 const ThanksComments = ({
   timestamp,
@@ -25,14 +25,10 @@ const ThanksComments = ({
   thanksId,
   userId,
 }) => {
-  const { associates } = useContext(associatesContext);
   const [edit, setEdit] = useState(false);
   const [newComment, setNewComment] = useState();
-  const getUserDetails = (id) => {
-    const associate = associates.filter((associatee) => associatee.id === id);
-    return associate[0];
-  };
-  const user = getUserDetails(id);
+
+  const user = GetAssociateDetails(id);
   const deleteComment = (commentID, thanksId) => {
     const commentRef = doc(db, "Thanks-Comments-Likes", thanksId);
     updateDoc(commentRef, {

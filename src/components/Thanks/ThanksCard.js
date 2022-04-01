@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Drawer,
@@ -24,26 +24,22 @@ import IconButton from "@mui/material/IconButton";
 import ApprovalAvatar from "../Tasks/approverTimeline/approvalAvatar";
 import "./ThanksCardElements/cardMedia.css";
 import { LikeIcon } from "./ThanksCardElements/LikeIcon";
-import { associatesContext } from "../../utils/context/contexts";
 import { db } from "../../utils/firebase";
 import { useAuth } from "../../utils/context/AuthContext";
 import Scrollbar from "../../components/Scrollbar";
-
+import { addNotification } from "./thanksFunctions";
 import ThanksComments from "./ThanksCommentsElements/ThanksComments";
 import ThanksCommentPost from "./ThanksCommentsElements/ThanksCommentPost";
+import { GetAssociateDetails } from "../../utils/getAssociateDetails";
 const ThanksCard = ({ thanksId, thanksData, userId }) => {
   const [selectedThanks, setSelectedThanks] = useState({});
   const { userData } = useAuth();
 
   const [likesAndComments, setLikesAndComments] = useState();
-  const { associates } = useContext(associatesContext);
   const [Liked, setLiked] = useState(false);
-  const getUserDetails = (id) => {
-    const associate = associates.filter((associatee) => associatee.id === id);
-    return associate[0];
-  };
-  const fromUser = getUserDetails(thanksData.From);
-  const toUser = getUserDetails(thanksData.To);
+
+  const fromUser = GetAssociateDetails(thanksData.From);
+  const toUser = GetAssociateDetails(thanksData.To);
   const [showSideMenu, setShowSideMenu] = useState(false);
 
   const toggleDrawer = (open) => {
@@ -80,13 +76,13 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
       updateDoc(doc(db, "Thanks-Comments-Likes", thanksId), {
         Likes: arrayRemove(userId),
       });
-      setLiked(!Liked);
     } else {
       updateDoc(doc(db, "Thanks-Comments-Likes", thanksId), {
         Likes: arrayUnion(userId),
       });
-      setLiked(!Liked);
+      addNotification(toUser, userData, "liked");
     }
+    setLiked(!Liked);
   };
 
   const AllLikesAndComments = ({ likesCount, commentCount }) => {
@@ -148,7 +144,8 @@ const ThanksCard = ({ thanksId, thanksData, userId }) => {
                 Object.keys(selectedThanks.likesAndComments.Comments).length
               }
               thanksId={selectedThanks.thanksId}
-              userId={userData.id}
+              fromUser={userData}
+              toUser={toUser}
             />
           )}
           <Box sx={{ height: "50%", width: 340 }}>

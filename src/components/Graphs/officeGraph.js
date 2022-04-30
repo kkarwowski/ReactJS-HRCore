@@ -90,7 +90,7 @@ export default function OfficeGraph() {
       pie: { donut: { labels: { show: false } } },
     },
   });
-
+  console.log(officesData);
   return (
     <Card>
       <Typography component="div">

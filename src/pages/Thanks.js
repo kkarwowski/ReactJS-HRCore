@@ -40,13 +40,14 @@ const Thanks = () => {
     const AllThanks = query(
       ref(dbrt, "Thanks"),
       orderByChild("Timestamp"),
-      startAt(monthAgo),
+      // startAt(monthAgo),
       limitToLast(pagination)
       // endAt("TeamPlayer")
     );
     onValue(AllThanks, (snapshot) => {
       if (snapshot.val() != null) {
         const data = snapshot.val();
+        console.log(data, "all thanks");
         const tempArray = [];
         Object.entries(data).forEach(([key, value]) => {
           tempArray.push({ ...value, ThanksID: key });

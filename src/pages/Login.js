@@ -156,7 +156,7 @@ const Login = () => {
                           Login
                         </Button>
 
-                        {/* <Button
+                         <Button
                           variant="outlined"
                           fullWidth
                           onClick={() => handleDemoLogin()}
@@ -168,7 +168,7 @@ const Login = () => {
                           }}
                         >
                           Demo login
-                        </Button> */}
+                        </Button> 
 
                         <Button
                           type="button"

@@ -7,10 +7,6 @@ Includes Firebase authentification and Cloud Functions.
 
 ![alt text](<https://github.com/kkarwowski/Gifs/blob/master/Dashboard%20(Custom).jpg> "Dashbpard")
 
-## Live demo
-
-Live demo on [Netlify](https://hrcore-app.web.app)
-
 ## Status
 
 Core aplication is working, but it is still work in progress as I learn React.

@@ -9,7 +9,7 @@ Includes Firebase authentification and Cloud Functions.
 
 ## Status
 
-Core aplication is working, but it is still work in progress as I learn React.
+Project has been archived, I cannot provide any assitance.
 
 ## Current Features
 
